@@ -23,7 +23,7 @@
 #' # Add alignment name
 #' getAlignmentSignal(myAlignPath,mySpecies,informative_gaps = FALSE, alignment_name = 'gene_XYZ')
 #'
-getAlignmentSignal <- function(alignment_path,species_info,informative_gaps,alignment_name){
+getAlignmentSignal <- function(alignment_path,species_info,informative_gaps,alignment_name,max_missing){
 
   # Set whether gaps are treated as missing data or indels
   if(missing(informative_gaps)){
@@ -43,7 +43,11 @@ getAlignmentSignal <- function(alignment_path,species_info,informative_gaps,alig
     } else{
       alignment_path <- file_path_as_absolute(alignment_path)
       alignment_name <- as.character(alignment_name)}
-      }
+    }
+  
+  if(missing(max_missing)){
+    max_missing <- 0
+  }
 
   if(informative_gaps != TRUE){
     informative_gaps <- FALSE
@@ -63,7 +67,7 @@ getAlignmentSignal <- function(alignment_path,species_info,informative_gaps,alig
     } else{ stop("Argument 3 (Species information) is neither a phylo object, nor a character vector of species longer than 3.") }
   }
 
-  split_support <- getSplitSupport(alignment_path,info_gap,spp_list)
+  split_support <- getSplitSupport(alignment_path,info_gap,spp_list,max_missing)
 
   if(!is.data.frame(split_support)){
     stop("Error in parsing alingment. Check alignment to ensure chosen taxa are present and identically named.")
@@ -78,25 +82,25 @@ getAlignmentSignal <- function(alignment_path,species_info,informative_gaps,alig
   quadallelic_count <- split_support %>% filter(Site_Pattern %in% c('quadallelic','gap_quadallelic')) %>% nrow()
   pentallelic_count <- split_support %>% filter(Site_Pattern %in% c('pentallelic')) %>% nrow()
 
-  # Print output information
-  print(paste("Alignment File:",alignment_path))
-  print(paste("Species Requested:",spp_list))
-
-  print(paste("Alignment contains",site_count,"sites."))
-
-  if(info_gap == "0"){
-    print(paste("Alignment contains",non_base_count,"non-base sites. (Note: Gaps were interpreted as missing/non-base data.)"))
-  }
-  if(info_gap == "1"){
-    print(paste("Alignment contains",non_base_count,"non-base sites. (Note: Gaps were interpreted as informative indels.)"))
-  }
-
-  print(paste("Alignment contains",invariant_count,"invariant sites."))
-  print(paste("Alignment contains",singleton_count,"singleton sites."))
-  print(paste("Alignment contains",biallelic_count,"biallelic sites."))
-  print(paste("Alignment contains",triallelic_count,"triallelic sites."))
-  print(paste("Alignment contains",quadallelic_count,"quadallelic sites."))
-  print(paste("Alignment contains",pentallelic_count,"pentallelic sites."))
+  # # Print output information
+  # print(paste("Alignment File:",alignment_path))
+  # print(paste("Species Requested:",spp_list))
+  # 
+  # print(paste("Alignment contains",site_count,"sites."))
+  # 
+  # if(info_gap == "0"){
+  #   print(paste("Alignment contains",non_base_count,"non-base sites. (Note: Gaps were interpreted as missing/non-base data.)"))
+  # }
+  # if(info_gap == "1"){
+  #   print(paste("Alignment contains",non_base_count,"non-base sites. (Note: Gaps were interpreted as informative indels.)"))
+  # }
+  # 
+  # print(paste("Alignment contains",invariant_count,"invariant sites."))
+  # print(paste("Alignment contains",singleton_count,"singleton sites."))
+  # print(paste("Alignment contains",biallelic_count,"biallelic sites."))
+  # print(paste("Alignment contains",triallelic_count,"triallelic sites."))
+  # print(paste("Alignment contains",quadallelic_count,"quadallelic sites."))
+  # print(paste("Alignment contains",pentallelic_count,"pentallelic sites."))
 
   split_support <- split_support %>%
     mutate(Alignment_Name = alignment_name) %>% # Add alignment name

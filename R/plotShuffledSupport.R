@@ -37,6 +37,7 @@ plotShuffledSupport <- function(comparison,signal,tree,support_scales,xmax){
 
   # Get taxa from signal analysis
   signal_taxa <- signal %>%
+    filter(Site_Pattern != 'non_base') %>%
     filter(!is.na(Split_1)) %>%
     head(1) %>%
     select(starts_with('Split_')) %>%

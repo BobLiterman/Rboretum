@@ -26,6 +26,7 @@ getTreeSupport <- function(tree,signal,existing_splits){
   signal_taxa <- signal %>%
     filter(!is.na(Split_1)) %>%
     head(1) %>%
+    filter(Site_Pattern != 'non_base') %>%
     select(starts_with('Split_')) %>%
     select_if(~ !any(is.na(.))) %>%
     unite(col = "Taxa",sep = ";") %>%

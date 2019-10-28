@@ -231,10 +231,11 @@ def process_nonbase_gap(pos):
         return(";".join(sorted(non_base_taxa)))
 
 # Tries to rescue signal from columns with missing data for up to 'max_missing' taxa
-def reprocess_nonbase(nonbase_df,max_missing):
+def reprocess_nonbase(nonbase_df):
+    
     # Create empty dataframe
     converted_nonbase = nonbase_df[0:0]
-    final_columns = ['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']
+    final_columns = ['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']
 
     # For each row with some missing data:
     for i in range(0,nonbase_df.shape[0]):
@@ -242,12 +243,11 @@ def reprocess_nonbase(nonbase_df,max_missing):
         temp_row = nonbase_df[i:i+1].reset_index().copy()
         temp_pos = int(temp_row['Zeroed_Site_Position'][0])
         non_base_taxa = sorted(str(temp_row['Non_Base_Taxa'][0]).split(sep=";"))
+        temp_row.loc[0,'Non_Base_Count'] = int(len(non_base_taxa))
 
         # If more than max_missing are missing, replace row
-        if len(non_base_taxa) > max_missing:
-            converted_nonbase = pd.concat([converted_nonbase,temp_row],axis=0, sort=False, ignore_index=True)
-
-        else:
+        if len(spp_list) - len(non_base_taxa) >= 4:
+            
             non_base_index = [j for j,x in enumerate(spp_list) if x in non_base_taxa]
 
             old_seq = pruned_alignment[:, temp_pos]
@@ -383,8 +383,10 @@ def reprocess_nonbase(nonbase_df,max_missing):
                     temp_row.loc[0,'Site_Pattern'] = "non_base_pentallelic"
                         
                     converted_nonbase = pd.concat([converted_nonbase,temp_row],axis=0, sort=False, ignore_index=True)
+                    
+        else:
+            converted_nonbase = pd.concat([converted_nonbase,temp_row],axis=0, sort=False, ignore_index=True)
 
-    
     converted_nonbase = converted_nonbase.sort_values(by=['Zeroed_Site_Position']).reindex(columns=final_columns).reset_index().drop('index',axis=1)
     
     return(converted_nonbase)
@@ -508,7 +510,7 @@ def process_pentallelic(pos):
 
     return(sorted([base_1_taxa, base_2_taxa, base_3_taxa, base_4_taxa, base_5_taxa]))
 
-def getSplitSupport(alignment_path,info_gap,spp_string,max_missing):
+def getSplitSupport(alignment_path,info_gap,spp_string):
 
     alignment_path = str(alignment_path)
     info_gap = str(info_gap)
@@ -516,16 +518,15 @@ def getSplitSupport(alignment_path,info_gap,spp_string,max_missing):
     global spp_list
     spp_list = sorted(str(spp_string).split(";"))
     
-    max_missing = int(max_missing)
     # Get site split info, or False if alignment cannot be processed for given species set
-    all_sites_df = splitMain(alignment_path,info_gap,spp_list,max_missing)
+    all_sites_df = splitMain(alignment_path,info_gap,spp_list)
 
     if all_sites_df.shape[0] == 0:
         return -1
     else:
         return(all_sites_df)
 
-def splitMain(alignment_path,info_gap,spp_list,max_missing):
+def splitMain(alignment_path,info_gap,spp_list):
 
     # Create dummy return for errors
     empty = pd.DataFrame()
@@ -568,7 +569,7 @@ def splitMain(alignment_path,info_gap,spp_list,max_missing):
         # Create dataframe of each position (0-based) and it's variation pattern
         site_df = pd.DataFrame(pattern_list, columns=['Zeroed_Site_Position', 'Site_Pattern'])
         site_count = pruned_alignment.get_alignment_length()
-        final_columns = ['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']
+        final_columns = ['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']
 
         invariant_count = 0
         non_base_count = 0
@@ -585,6 +586,7 @@ def splitMain(alignment_path,info_gap,spp_list,max_missing):
 
             # Add dummy columns
             invariant_df['Non_Base_Taxa'] = np.nan
+            invariant_df['Non_Base_Count'] = np.nan
             invariant_df['Singleton_Taxa'] = np.nan
             invariant_df['Split_1'] = np.nan
             invariant_df['Split_2'] = np.nan
@@ -593,7 +595,7 @@ def splitMain(alignment_path,info_gap,spp_list,max_missing):
             invariant_df['Split_5'] = np.nan
 
         else:
-            invariant_df = pd.DataFrame(columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5'])
+            invariant_df = pd.DataFrame(columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5'])
 
         invariant_count = invariant_df.shape[0]
 
@@ -622,19 +624,10 @@ def splitMain(alignment_path,info_gap,spp_list,max_missing):
             non_base_df['Split_4'] = np.nan
             non_base_df['Split_5'] = np.nan
             
-            # If missing taxa allowed, reprocess nonbase data
-            if max_missing > 0:
+            non_base_df = reprocess_nonbase(non_base_df)
                 
-                if (len(spp_list) - max_missing) < 4:
-                    print("Can't allow so many missing taxa that total < 4. Running with max allowable missing")
-                    non_base_df = reprocess_nonbase(non_base_df,len(spp_list)-4)
-                
-                else:
-                    non_base_df = reprocess_nonbase(non_base_df,max_missing)
-
-
         else:
-            non_base_df = pd.DataFrame(columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5'])
+            non_base_df = pd.DataFrame(columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5'])
 
         non_base_count = non_base_df.shape[0]
 
@@ -649,6 +642,7 @@ def splitMain(alignment_path,info_gap,spp_list,max_missing):
 
             # Add dummy columns
             singleton_df['Non_Base_Taxa'] = np.nan
+            singleton_df['Non_Base_Count'] = np.nan
             singleton_df['Split_1'] = np.nan
             singleton_df['Split_2'] = np.nan
             singleton_df['Split_3'] = np.nan
@@ -656,7 +650,7 @@ def splitMain(alignment_path,info_gap,spp_list,max_missing):
             singleton_df['Split_5'] = np.nan
 
         else:
-            singleton_df = pd.DataFrame(columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5'])
+            singleton_df = pd.DataFrame(columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5'])
 
         singleton_count = singleton_df.shape[0]
 
@@ -671,13 +665,14 @@ def splitMain(alignment_path,info_gap,spp_list,max_missing):
 
             # Add dummy columns
             biallelic_df['Non_Base_Taxa'] = np.nan
+            biallelic_df['Non_Base_Count'] = np.nan
             biallelic_df['Singleton_Taxa'] = np.nan
             biallelic_df['Split_3'] = np.nan
             biallelic_df['Split_4'] = np.nan
             biallelic_df['Split_5'] = np.nan
 
         else:
-            biallelic_df = pd.DataFrame(columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5'])
+            biallelic_df = pd.DataFrame(columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5'])
 
         biallelic_count = biallelic_df.shape[0]
 
@@ -692,12 +687,13 @@ def splitMain(alignment_path,info_gap,spp_list,max_missing):
 
             # Add dummy columns
             triallelic_df['Non_Base_Taxa'] = np.nan
+            triallelic_df['Non_Base_Count'] = np.nan
             triallelic_df['Singleton_Taxa'] = np.nan
             triallelic_df['Split_4'] = np.nan
             triallelic_df['Split_5'] = np.nan
 
         else:
-            triallelic_df = pd.DataFrame(columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5'])
+            triallelic_df = pd.DataFrame(columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5'])
 
         triallelic_count = triallelic_df.shape[0]
 
@@ -712,11 +708,12 @@ def splitMain(alignment_path,info_gap,spp_list,max_missing):
 
             # Add dummy columns
             quadallelic_df['Non_Base_Taxa'] = np.nan
+            quadallelic_df['Non_Base_Count'] = np.nan
             quadallelic_df['Singleton_Taxa'] = np.nan
             quadallelic_df['Split_5'] = np.nan
 
         else:
-            quadallelic_df = pd.DataFrame(columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5'])
+            quadallelic_df = pd.DataFrame(columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5'])
 
         quadallelic_count = quadallelic_df.shape[0]
 
@@ -731,10 +728,11 @@ def splitMain(alignment_path,info_gap,spp_list,max_missing):
 
             # Add dummy columns
             pentallelic_df['Non_Base_Taxa'] = np.nan
+            pentallelic_df['Non_Base_Count'] = np.nan
             pentallelic_df['Singleton_Taxa'] = np.nan
 
         else:
-            pentallelic_df = pd.DataFrame(columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5'])
+            pentallelic_df = pd.DataFrame(columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5'])
 
         pentallelic_count = pentallelic_df.shape[0]
 

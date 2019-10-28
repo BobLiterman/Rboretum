@@ -443,7 +443,7 @@ def splitMain(alignment_path,info_gap,spp_list):
         non_base_df = site_df[site_df['Site_Pattern'].isin(['non_base'])].reset_index(drop=True)
 
         if non_base_df.shape[0] > 0:
-            pool = mp.Pool(processes=7)
+            pool = mp.Pool(processes=pool_cpu)
 
             if info_gap == "0":
                 non_base_taxa = pool.map(
@@ -473,7 +473,7 @@ def splitMain(alignment_path,info_gap,spp_list):
         singleton_df = site_df[site_df['Site_Pattern'].isin(['singleton','gap_singleton'])].reset_index(drop=True)
 
         if singleton_df.shape[0] > 0:
-            pool = mp.Pool(processes=7)
+            pool = mp.Pool(processes=pool_cpu)
             singleton_taxa = pool.map(process_singletons, singleton_df['Zeroed_Site_Position'])
             pool.close()
             singleton_df['Singleton_Taxa'] = singleton_taxa

@@ -7,13 +7,14 @@
 #' @param tree x
 #' @param support_scales x
 #' @param xmax x
+#' @param max_missing x
 #' @return Tree with nodepoint geoms scaled to support, and colored by number of trees containing that split
 #' @export
 #' @examples
 #' plotShuffledSupport(comparison,signal,tree,support_scales,xmax)
 #'
 
-plotShuffledSupport <- function(comparison,signal,tree,support_scales,xmax){
+plotShuffledSupport <- function(comparison,signal,tree,support_scales,xmax,max_missing){
 
   if(missing(support_scales)){
     scale_values <- FALSE
@@ -34,10 +35,17 @@ plotShuffledSupport <- function(comparison,signal,tree,support_scales,xmax){
       stop('xmax argument must be numeric')
     }
   }
+  
+  if(missing(max_missing)){
+    max_missing <- 0
+  }
+  
+  signal <- signal %>% 
+    filter(Non_Base_Count <= max_missing)
 
   # Get taxa from signal analysis
   signal_taxa <- signal %>%
-    filter(!starts_with(Site_Pattern,'non_base')) %>%
+    filter(!grepl("non_base",Site_Pattern)) %>%
     filter(!is.na(Split_1)) %>%
     head(1) %>%
     select(starts_with('Split_')) %>%
@@ -72,7 +80,7 @@ plotShuffledSupport <- function(comparison,signal,tree,support_scales,xmax){
     mutate(Clade = as.character(Clade)) %>%
     filter(!is.na(Split_Node))
 
-  informative_patterns <- c('biallelic','gap_biallelic','triallelic','gap_triallelic','quadallelic','gap_quadallelic','pentallelic','gap_pentallelic')
+  informative_patterns <- c('non_base_gap_biallelic','non_base_gap_triallelic','non_base_gap_quadallelic','non_base_gap_pentallelic','non_base_biallelic','non_base_triallelic','non_base_quadallelic','non_base_pentallelic','biallelic','gap_biallelic','triallelic','gap_triallelic','quadallelic','gap_quadallelic','pentallelic','gap_pentallelic')
 
   signal_counts <- signal %>%
     filter(Site_Pattern %in% informative_patterns) %>% select(starts_with('Split_')) %>%

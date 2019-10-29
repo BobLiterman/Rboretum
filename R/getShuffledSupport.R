@@ -9,7 +9,7 @@
 #' getShuffledSupport(comparison,signal,existing_support)
 #'
 
-getShuffledSupport <- function(comparison,signal,existing_support){
+getShuffledSupport <- function(comparison,signal,existing_support,max_missing){
 
   if(missing(existing_support)){
     existing_support <- FALSE
@@ -20,9 +20,17 @@ getShuffledSupport <- function(comparison,signal,existing_support){
     print("existing_support argument not a dataframe, processing results separately.")
     existing_support <- FALSE
   }
+  
+  if(missing(max_missing)){
+    max_missing <- 0
+  }
+  
+  signal <- signal %>% 
+    filter(Non_Base_Count <= max_missing)
 
   # Get taxa from signal analysis
   signal_taxa <- signal %>%
+    filter(!grepl("non_base",Site_Pattern)) %>%
     filter(!is.na(Split_1)) %>%
     head(1) %>%
     select(starts_with('Split_')) %>%
@@ -47,13 +55,21 @@ getShuffledSupport <- function(comparison,signal,existing_support){
     stop("Taxa from arguments don't match")
   }
 
-  informative_patterns <- c('biallelic','gap_biallelic','triallelic','gap_triallelic','quadallelic','gap_quadallelic','pentallelic','gap_pentallelic')
+  informative_patterns <- c('non_base_biallelic','non_base_gap_biallelic',
+                            'non_base_triallelic','non_base_gap_triallelic',
+                            'non_base_quadallelic','non_base_gap_quadallelic',
+                            'non_base_pentallelic','non_base_gap_pentallelic',
+                            'biallelic','gap_biallelic',
+                            'triallelic','gap_triallelic',
+                            'quadallelic','gap_quadallelic',
+                            'pentallelic','gap_pentallelic')
 
   signal_counts <- signal %>%
-    filter(Site_Pattern %in% informative_patterns) %>% select(starts_with('Split_')) %>%
+    filter(Site_Pattern %in% informative_patterns) %>% 
+    select(starts_with('Split_')) %>%
     unlist() %>% table()
 
-  alignment_name <- signal$Alignment_Name[1]
+  alignment_name <- paste(c(signal$Alignment_Name[1],"_m",as.character(max_missing)),collapse = '')
 
   support_list <- c()
   for(clade in comparison$Clade){

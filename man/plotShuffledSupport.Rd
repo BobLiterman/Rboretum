@@ -4,7 +4,14 @@
 \alias{plotShuffledSupport}
 \title{Plot Alignment Support and Node Prevalence for Specific Topology}
 \usage{
-plotShuffledSupport(comparison, signal, tree, support_scales, xmax)
+plotShuffledSupport(
+  comparison,
+  signal,
+  tree,
+  support_scales,
+  xmax,
+  max_missing
+)
 }
 \arguments{
 \item{comparison}{x}
@@ -16,6 +23,8 @@ plotShuffledSupport(comparison, signal, tree, support_scales, xmax)
 \item{support_scales}{x}
 
 \item{xmax}{x}
+
+\item{max_missing}{x}
 }
 \value{
 Tree with nodepoint geoms scaled to support, and colored by number of trees containing that split

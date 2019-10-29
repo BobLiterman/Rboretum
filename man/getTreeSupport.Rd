@@ -4,7 +4,7 @@
 \alias{getTreeSupport}
 \title{Get Alignment Support for Specific Topology}
 \usage{
-getTreeSupport(tree, signal, existing_splits)
+getTreeSupport(tree, signal, existing_splits, max_missing)
 }
 \arguments{
 \item{tree}{Rooted phylo object}
@@ -12,6 +12,8 @@ getTreeSupport(tree, signal, existing_splits)
 \item{signal}{Output table from getAlignmentSignal run with same taxa as in tree}
 
 \item{existing_splits}{OPTIONAL: Should be output of getTreeSupport from the same tree, run with other alignments}
+
+\item{max_missing}{x}
 }
 \value{
 The same split table from getAllSplits(tree), but with a support column listing total site counts supporting each split

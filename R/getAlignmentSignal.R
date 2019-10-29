@@ -23,7 +23,7 @@
 #' # Add alignment name
 #' getAlignmentSignal(myAlignPath,mySpecies,informative_gaps = FALSE, alignment_name = 'gene_XYZ')
 #'
-getAlignmentSignal <- function(alignment_path,species_info,informative_gaps,alignment_name,max_missing){
+getAlignmentSignal <- function(alignment_path,species_info,informative_gaps,alignment_name){
 
   # Set whether gaps are treated as missing data or indels
   if(missing(informative_gaps)){
@@ -44,10 +44,6 @@ getAlignmentSignal <- function(alignment_path,species_info,informative_gaps,alig
       alignment_path <- file_path_as_absolute(alignment_path)
       alignment_name <- as.character(alignment_name)}
     }
-  
-  if(missing(max_missing)){
-    max_missing <- 0
-  }
 
   if(informative_gaps != TRUE){
     informative_gaps <- FALSE
@@ -67,20 +63,20 @@ getAlignmentSignal <- function(alignment_path,species_info,informative_gaps,alig
     } else{ stop("Argument 3 (Species information) is neither a phylo object, nor a character vector of species longer than 3.") }
   }
 
-  split_support <- getSplitSupport(alignment_path,info_gap,spp_list,max_missing)
+  split_support <- getSplitSupport(alignment_path,info_gap,spp_list)
 
   if(!is.data.frame(split_support)){
     stop("Error in parsing alingment. Check alignment to ensure chosen taxa are present and identically named.")
   }
 
-  site_count <- nrow(split_support)
-  non_base_count <- split_support %>% filter(Site_Pattern=='non_base') %>% nrow()
-  invariant_count <- split_support %>% filter(Site_Pattern %in% c('invariant','gap_invariant')) %>% nrow()
-  singleton_count <- split_support %>% filter(Site_Pattern %in% c('singleton','gap_singleton')) %>% nrow()
-  biallelic_count <- split_support %>% filter(Site_Pattern %in% c('biallelic','gap_biallelic')) %>% nrow()
-  triallelic_count <- split_support %>% filter(Site_Pattern %in% c('triallelic','gap_triallelic')) %>% nrow()
-  quadallelic_count <- split_support %>% filter(Site_Pattern %in% c('quadallelic','gap_quadallelic')) %>% nrow()
-  pentallelic_count <- split_support %>% filter(Site_Pattern %in% c('pentallelic')) %>% nrow()
+  # site_count <- nrow(split_support)
+  # non_base_count <- split_support %>% filter(Site_Pattern=='non_base') %>% nrow()
+  # invariant_count <- split_support %>% filter(Site_Pattern %in% c('invariant','gap_invariant')) %>% nrow()
+  # singleton_count <- split_support %>% filter(Site_Pattern %in% c('singleton','gap_singleton')) %>% nrow()
+  # biallelic_count <- split_support %>% filter(Site_Pattern %in% c('biallelic','gap_biallelic')) %>% nrow()
+  # triallelic_count <- split_support %>% filter(Site_Pattern %in% c('triallelic','gap_triallelic')) %>% nrow()
+  # quadallelic_count <- split_support %>% filter(Site_Pattern %in% c('quadallelic','gap_quadallelic')) %>% nrow()
+  # pentallelic_count <- split_support %>% filter(Site_Pattern %in% c('pentallelic')) %>% nrow()
 
   # # Print output information
   # print(paste("Alignment File:",alignment_path))
@@ -106,6 +102,7 @@ getAlignmentSignal <- function(alignment_path,species_info,informative_gaps,alig
     mutate(Alignment_Name = alignment_name) %>% # Add alignment name
     rename(Alignment_Position = Zeroed_Site_Position) %>%
     mutate(Alignment_Position = as.integer(Alignment_Position) + 1) %>% # Convert position to 1-based
-    select(Alignment_Name,Alignment_Position,Site_Pattern,Non_Base_Taxa,Singleton_Taxa,Split_1,Split_2,Split_3,Split_4,Split_5)
+    select(Alignment_Name,Alignment_Position,Site_Pattern,Non_Base_Taxa,Non_Base_Count,Singleton_Taxa,Split_1,Split_2,Split_3,Split_4,Split_5)
+
   return(split_support)
 }

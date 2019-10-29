@@ -4,7 +4,7 @@
 \alias{getShuffledSupport}
 \title{Plot Alignment Support for Specific Topology}
 \usage{
-getShuffledSupport(comparison, signal, existing_support)
+getShuffledSupport(comparison, signal, existing_support, max_missing)
 }
 \arguments{
 \item{signal}{Output table from getAlignmentSignal run with same taxa as in tree}

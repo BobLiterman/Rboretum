@@ -5,13 +5,14 @@
 #' @param tree Rooted phylo object
 #' @param signal Output table from getAlignmentSignal run with same taxa as in tree
 #' @param existing_splits OPTIONAL: Should be output of getTreeSupport from the same tree, run with other alignments
+#' @param max_missing x
 #' @return The same split table from getAllSplits(tree), but with a support column listing total site counts supporting each split
 #' @export
 #' @examples
 #' getTreeSupport(tree,signal)
 #'
 
-getTreeSupport <- function(tree,signal,existing_splits){
+getTreeSupport <- function(tree,signal,existing_splits,max_missing){
 
   if(missing(existing_splits)){
     existing_splits <- FALSE
@@ -22,9 +23,15 @@ getTreeSupport <- function(tree,signal,existing_splits){
     print("existing_splits argument not a dataframe, processing results separately.")
     existing_splits <- FALSE
   }
-
+  if(missing(max_missing)){
+    max_missing <- 0
+  }
+  
+  signal <- signal %>% 
+    filter(Non_Base_Count <= max_missing)
+  
   signal_taxa <- signal %>%
-    filter(!starts_with(Site_Pattern,'non_base')) %>%
+    filter(!grepl("non_base",Site_Pattern)) %>%
     filter(!is.na(Split_1)) %>%
     head(1) %>%
     select(starts_with('Split_')) %>%
@@ -32,7 +39,7 @@ getTreeSupport <- function(tree,signal,existing_splits){
     unite(col = "Taxa",sep = ";") %>%
     pull() %>% as.character() %>% str_split(pattern = ";") %>% unlist() %>% sort()
 
-  alignment_name <-  as.character(signal$Alignment_Name[1])
+  alignment_name <-  paste(c(as.character(signal$Alignment_Name[1]),'_m',as.character(max_missing)),collapse = '')
 
   tree_taxa <- sort(tree$tip.label)
 
@@ -46,10 +53,13 @@ getTreeSupport <- function(tree,signal,existing_splits){
 
   splits <- Rboretum::getAllSplits(rooted_tree = tree) %>% mutate(Clade = as.character(Clade),Mirror_Clade = as.character(Mirror_Clade))
 
-  biallelic <- c('biallelic','gap_biallelic')
-  biallelic_splits <- signal %>% filter(Site_Pattern %in% biallelic) %>% select(starts_with('Split_')) %>% unlist() %>% table()
+  biallelic_root <- c('biallelic','gap_biallelic')
+  biallelic_root_splits <- signal %>% filter(Site_Pattern %in% biallelic_root) %>% select(starts_with('Split_')) %>% unlist() %>% table()
 
-  triplus <- c('triallelic','gap_triallelic','quadallelic','gap_quadallelic','pentallelic','gap_pentallelic')
+  biallelic <- c('biallelic','gap_biallelic','non_base_biallelic','non_base_gap_biallelic')
+  biallelic_splits <- signal %>% filter(Site_Pattern %in% biallelic) %>% select(starts_with('Split_')) %>% unlist() %>% table()
+  
+  triplus <- c('non_base_pentallelic','non_base_gap_pentallelic','non_base_quadallelic','non_base_gap_quadallelic','non_base_triallelic','non_base_gap_triallelic','triallelic','gap_triallelic','quadallelic','gap_quadallelic','pentallelic','gap_pentallelic')
   triplus_splits <- signal %>% filter(Site_Pattern %in% triplus) %>% select(starts_with('Split_')) %>% unlist() %>% table()
 
   root_split <- splits %>% filter(is.na(Split_Node))
@@ -60,7 +70,7 @@ getTreeSupport <- function(tree,signal,existing_splits){
 
   non_root_clades <- non_root_splits %>% pull(Clade) %>% as.character()
 
-  root_support <- tableCount(biallelic_splits,root_clades[1])+tableCount(triplus_splits,root_clades[1])+tableCount(triplus_splits,root_clades[2])
+  root_support <- tableCount(biallelic_root_splits,root_clades[1])+tableCount(triplus_splits,root_clades[1])+tableCount(triplus_splits,root_clades[2])
 
   non_root_support <- c()
 

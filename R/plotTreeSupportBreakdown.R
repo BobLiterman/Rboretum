@@ -11,7 +11,7 @@
 #' @examples
 #' 
 #'
-plotTreeSupportBreakdown <- function(tree,tree_support,support_scales,xmax,plot_alpha){
+plotTreeSupportBreakdown <- function(tree,tree_support,support_scales,xmax,plot_alpha,plot_type){
   
   if(missing(support_scales)){
     scale_values <- FALSE
@@ -45,6 +45,22 @@ plotTreeSupportBreakdown <- function(tree,tree_support,support_scales,xmax,plot_
   
   if(missing(plot_alpha)){
     plot_alpha <- 0.6
+  }
+  
+  if(missing(plot_type)){
+    plot_pies <- TRUE
+    plot_bars <- FALSE
+  } else{
+    if(plot_type == 'pies'){
+      plot_pies <- TRUE
+      plot_bars <- FALSE 
+    } else if (plot_type == 'bars'){
+      plot_pies <- FALSE
+      plot_bars <- TRUE
+    } else{
+      plot_pies <- TRUE
+      plot_bars <- FALSE
+    }
   }
   
   # Check that tree file matches support file
@@ -83,7 +99,8 @@ plotTreeSupportBreakdown <- function(tree,tree_support,support_scales,xmax,plot_
   plot_df <- tree_support %>%
     rename(node = Split_Node) %>%
     filter(!is.na(node)) %>%
-    arrange(node)
+    arrange(node) %>%
+    filter(Support != 0)
   
   if(rescale_x){
     blank_tree <- ggtree(tree,branch.length = "none") + geom_tiplab() + xlim(0,xmax)
@@ -92,16 +109,24 @@ plotTreeSupportBreakdown <- function(tree,tree_support,support_scales,xmax,plot_
     blank_tree <- ggtree(tree,branch.length = "none") + geom_tiplab()
   }
   
-  pies <- nodepie(plot_df,cols=support_cols,alpha = plot_alpha)
-  
-  if(scale_values){
-    non_zero_support <- plot_df %>% filter(Support != 0)
-    zero_support <-  plot_df %>% filter(Support == 0)
-    plot_df <- non_zero_support %>%
-      mutate(Support = rescale(Support,to=support_scales)) %>%
-      rbind(zero_support) %>%
-      arrange(node)
+  if(plot_pies){
+    if(scale_values){
+      plot_df <- plot_df %>%
+        mutate(Support = rescale(Support,to=support_scales))
+    }
+    pies <- nodepie(plot_df,cols=support_cols,alpha = plot_alpha)
+    inset(blank_tree,pies,height=plot_df$Support,width = plot_df$Support)
+  } else{
+    
+    for(x in support_cols){
+      plot_df[x] <- plot_df[x]/plot_df$Support
+      data_median <- plot_df %>% pull(x) %>% as.numeric() %>% median()
+      plot_df[x] <- plot_df[x] - data_median
+      plot_df[x] <- plot_df[x]/data_median
+    }
+    
+    bars <- nodebar(plot_df,cols=support_cols,alpha = plot_alpha,position="dodge")
+    
+    inset(blank_tree,bars,height=3,width = 1)
   }
-  
-  inset(blank_tree,pies,height=plot_df$Support,width = plot_df$Support)
 }

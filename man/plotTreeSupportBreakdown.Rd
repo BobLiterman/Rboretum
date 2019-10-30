@@ -4,7 +4,14 @@
 \alias{plotTreeSupportBreakdown}
 \title{Plot Pie Charts for Support from Different Datasets}
 \usage{
-plotTreeSupportBreakdown(tree, tree_support, support_scales, xmax, plot_alpha)
+plotTreeSupportBreakdown(
+  tree,
+  tree_support,
+  support_scales,
+  xmax,
+  plot_alpha,
+  plot_type
+)
 }
 \arguments{
 \item{tree}{x}

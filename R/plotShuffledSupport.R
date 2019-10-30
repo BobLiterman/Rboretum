@@ -26,6 +26,7 @@ plotShuffledSupport <- function(comparison,signal,tree,support_scales,xmax,max_m
       } else{
         if(length(support_scales) == 2){
           scale_values <- TRUE
+          support_scales <- c(min(support_scales),max(support_scales))
         } else{
           stop('support_scales must be a one (fixed-size) or two (bounded limits) element numeric vector specifying minimum and maximum geom size')
       }

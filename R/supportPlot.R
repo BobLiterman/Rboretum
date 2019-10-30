@@ -19,10 +19,20 @@ supportPlot <- function(tree,tree_support,support_scales,xmax){
   if(missing(support_scales)){
     scale_values <- FALSE
   } else{
-    if(length(support_scales) == 2 & is.numeric(support_scales)){
-      scale_values <- TRUE
+    if(is.numeric(support_scales)){
+      if(length(support_scales) == 1){
+        scale_values <- TRUE
+        support_scales <- c(support_scales,support_scales)
+      } else{
+        if(length(support_scales) == 2){
+          scale_values <- TRUE
+          support_scales <- c(min(support_scales),max(support_scales))
+        } else{
+          stop('support_scales must be a one (fixed-size) or two (bounded limits) element numeric vector specifying minimum and maximum geom size')
+        }
+      } 
     } else{
-      stop('support_scales must be a two element numeric vector specifying minimum and maximum geom size')
+      stop('support_scales must be a one (fixed-size) or two (bounded limits) element numeric vector specifying minimum and maximum geom size')
     }
   }
 

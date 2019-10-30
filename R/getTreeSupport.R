@@ -96,8 +96,7 @@ getTreeSupport <- function(tree,signal,existing_splits,max_missing){
         old_clades <- pull(old_splits,Clade) %>% as.character() %>% sort()
 
         if(length(new_clades) == length(old_clades)){
-
-          if(all(new_clades == old_clades)){
+          if(all(sort(new_clades) == sort(old_clades))){
             support_df <- left_join(old_splits,support_df)
             print(paste(c("Added tree split data from",alignment_name),collapse = " "))
             return(support_df)

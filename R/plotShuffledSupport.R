@@ -111,35 +111,31 @@ plotShuffledSupport <- function(comparison,signal,tree,support_scales,xmax,max_m
 
   ggtree_df <- pruned_comparison_splits %>%
     select(Split_Node,Support,Tree_Percent,Tree_Count) %>%
-    rename(node = Split_Node)
+    rename(node = Split_Node) %>%
+    arrange(node)
 
   if(scale_values){
     non_zero_support <- ggtree_df %>% filter(Support != 0)
     zero_support <-  ggtree_df %>% filter(Support == 0)
     ggtree_df <- non_zero_support %>%
       mutate(Support = rescale(Support,to=support_scales)) %>%
-      rbind(zero_support)
+      rbind(zero_support) %>%
+      arrange(node)
   }
-
-  blank_tree <- ggtree(tree,branch.length = "none") + geom_tiplab()
 
   if(rescale_x){
-    supportTree <- blank_tree  %<+% ggtree_df +
-      geom_nodepoint(alpha=0.9,aes(color = Tree_Count,size=Support)) +
-      scale_size_identity() +
-      scale_color_viridis(name = "Trees with Split") +
-      xlim(0,xmax) +
-      theme(legend.position="right") +
-      guides(color = guide_legend())
-
-  } else{
-    supportTree <- blank_tree  %<+% ggtree_df +
-      geom_nodepoint(alpha=0.9,aes(color = Tree_Count,size=Support)) +
-      scale_size_identity() +
-      scale_color_viridis(name = "Trees with Split") +
-      theme(legend.position="right") +
-      guides(color = guide_legend())
+    blank_tree <- ggtree(tree,branch.length = "none") + geom_tiplab() + xlim(0,xmax)
   }
+  else{
+    blank_tree <- ggtree(tree,branch.length = "none") + geom_tiplab()
+  }
+  
+  supportTree <- blank_tree  %<+% ggtree_df +
+    geom_nodepoint(alpha=0.9,aes(color = Tree_Count,size=Support)) +
+    scale_size_identity() +
+    scale_color_viridis(name = "Trees with Split") +
+    theme(legend.position="right") +
+    guides(color = guide_legend())
 
   return(supportTree)
 }

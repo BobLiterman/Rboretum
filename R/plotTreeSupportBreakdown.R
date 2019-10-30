@@ -11,7 +11,7 @@
 #' @examples
 #' 
 #'
-plotTreeSupportBreakdown <- function(tree,tree_support,support_scales,xmax){
+plotTreeSupportBreakdown <- function(tree,tree_support,support_scales,xmax,plot_alpha){
   
   if(missing(support_scales)){
     scale_values <- FALSE
@@ -43,6 +43,10 @@ plotTreeSupportBreakdown <- function(tree,tree_support,support_scales,xmax){
     }
   }
   
+  if(missing(plot_alpha)){
+    plot_alpha <- 0.6
+  }
+  
   # Check that tree file matches support file
   if(any(is.na(tree_support$Split_Node))){
     tree_splits <- getAllSplits(rooted_tree = tree) %>% pull(Clade) %>% sort()
@@ -72,21 +76,14 @@ plotTreeSupportBreakdown <- function(tree,tree_support,support_scales,xmax){
   dataset_count <- length(support_cols)
   support_ids <- multi_support_cols[support_cols]
   tree_support <- tree_support %>%
-    mutate(Split_Support = rowSums(.[4:last_support]))
+    mutate(Support = rowSums(.[4:last_support]))
   
   total_col <- last_support+1
   
   plot_df <- tree_support %>%
     rename(node = Split_Node) %>%
-    filter(!is.na(node))
-  
-  if(scale_values){
-    non_zero_support <- plot_df %>% filter(Split_Support != 0)
-    zero_support <-  plot_df %>% filter(Split_Support == 0)
-    plot_df <- non_zero_support %>%
-      mutate(Split_Support = rescale(Split_Support,to=support_scales)) %>%
-      rbind(zero_support)
-  }
+    filter(!is.na(node)) %>%
+    arrange(node)
   
   if(rescale_x){
     blank_tree <- ggtree(tree,branch.length = "none") + geom_tiplab() + xlim(0,xmax)
@@ -95,6 +92,16 @@ plotTreeSupportBreakdown <- function(tree,tree_support,support_scales,xmax){
     blank_tree <- ggtree(tree,branch.length = "none") + geom_tiplab()
   }
   
-  pies <- nodepie(plot_df,cols=support_cols,alpha = 0.6)
-  inset(blank_tree,pies,height = plot_df$Split_Support, width=plot_df$Split_Support)
+  pies <- nodepie(plot_df,cols=support_cols,alpha = plot_alpha)
+  
+  if(scale_values){
+    non_zero_support <- plot_df %>% filter(Support != 0)
+    zero_support <-  plot_df %>% filter(Support == 0)
+    plot_df <- non_zero_support %>%
+      mutate(Support = rescale(Support,to=support_scales)) %>%
+      rbind(zero_support) %>%
+      arrange(node)
+  }
+  
+  inset(blank_tree,pies,height=plot_df$Support,width = plot_df$Support)
 }

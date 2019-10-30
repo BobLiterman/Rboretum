@@ -49,28 +49,28 @@ supportPlot <- function(tree,tree_support,support_scales,xmax){
   ggtree_df <- tree_support %>%
     select(-Clade,-Mirror_Clade) %>%
     `colnames<-`(c('node','Support')) %>%
-    filter(!is.na(node))
+    filter(!is.na(node)) %>%
+    arrange(node)
 
   if(scale_values){
     non_zero_support <- ggtree_df %>% filter(Support != 0)
     zero_support <-  ggtree_df %>% filter(Support == 0)
     ggtree_df <- non_zero_support %>%
       mutate(Support = rescale(Support,to=support_scales)) %>%
-      rbind(zero_support)
+      rbind(zero_support) %>%
+      arrange(node)
   }
-
-  blank_tree <- ggtree(tree,branch.length = "none") + geom_tiplab()
 
   if(rescale_x){
-    supportTree <- blank_tree  %<+% ggtree_df +
-      geom_nodepoint(color="red",alpha=0.9,aes(size=Support)) +
-      scale_size_identity() +
-      xlim(0,xmax)
-  } else{
-    supportTree <- blank_tree  %<+% ggtree_df +
-      geom_nodepoint(color="red",alpha=0.9,aes(size=Support)) +
-      scale_size_identity()
+    blank_tree <- ggtree(tree,branch.length = "none") + geom_tiplab() + xlim(0,xmax)
   }
+  else{
+    blank_tree <- ggtree(tree,branch.length = "none") + geom_tiplab()
+  }
+  
+  supportTree <- blank_tree  %<+% ggtree_df +
+    geom_nodepoint(color="red",alpha=0.9,aes(size=Support)) +
+    scale_size_identity()
 
   return(supportTree)
 }

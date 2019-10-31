@@ -118,15 +118,20 @@ plotTreeSupportBreakdown <- function(tree,tree_support,support_scales,xmax,plot_
     inset(blank_tree,pies,height=plot_df$Support,width = plot_df$Support)
   } else{
     
+    support_col <- plot_df %>% pull(Support) %>% as.numeric()
+
     for(x in support_cols){
-      plot_df[x] <- plot_df[x]/plot_df$Support
-      data_median <- plot_df %>% pull(x) %>% as.numeric() %>% median()
-      plot_df[x] <- plot_df[x] - data_median
-      plot_df[x] <- plot_df[x]/data_median
+      data_col <- plot_df %>% pull(x) %>% as.numeric()
+      data_breakdown <- data_col/support_col
+      data_median <- median(data_breakdown)
+      data_expected <- support_col*data_median
+      data_diff <- data_col-data_expected
+      data_perc <- data_diff/data_expected
+      plot_df[x] <- data_perc
     }
     
     bars <- nodebar(plot_df,cols=support_cols,alpha = plot_alpha,position="dodge")
-    
+    print(head(plot_df))
     inset(blank_tree,bars,height=3,width = 1)
   }
 }

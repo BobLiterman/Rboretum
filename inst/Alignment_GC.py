@@ -20,10 +20,10 @@ def getGC(alignment_path):
 
     pruned_alignment = AlignIO.read(alignment_path, fformat)
 
-    at_total = []
+    all_total = []
     gc_total = []
     for seq in pruned_alignment:
-        at_total.append(seq.seq.count('a')+seq.seq.count('t')+seq.seq.count('A')+seq.seq.count('T'))
+        all_total.append(seq.seq.count('a')+seq.seq.count('t')+seq.seq.count('A')+seq.seq.count('T')+seq.seq.count('g')+seq.seq.count('c')+seq.seq.count('G')+seq.seq.count('C'))
         gc_total.append(seq.seq.count('g')+seq.seq.count('c')+seq.seq.count('G')+seq.seq.count('C'))
 
-    return(sum(gc_total)/sum(at_total))
+    return(sum(gc_total)/sum(all_total))

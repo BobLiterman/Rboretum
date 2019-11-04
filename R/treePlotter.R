@@ -1,28 +1,19 @@
 #' Rboretum Tree Plotter
 #' 
-#' Given a phylo object (tree), this ggtree wrapper plots the tree with following optional arguments:
-#' - node_label: 'none' [no node labels], 'node' [print node number labels] or 'bs' [print bootstrap labels] (Default: Plot with bootstrap labels, if present)
-#' - node_size: Set ggtree node label size (Default: ggtree default)
-#' - node_nudge: Set ggtree nudge_x for node label
-#' - branch_length: TRUE or FALSE; Plot tree with or without branch lengths (Default: FALSE; Plot as cladogram) 
-#' - branch_weight: Set  ggtree branch thickness (Default: ggTree default)
-#' - taxa_size: Set ggtree tip label size (Default: ggTree default)
-#' - taxa_italic: TRUE of FALSE; Print tip labels in italic (Default: False)
-#' - taxa_align: 'left' or 'right' alignment of tip labels
-#' - taxa_offset: Set ggtree offset tip label value (Default: No offset)
-#' - xmax: numeric extension value for ggplot2::xlim(0,xmax) (e.g. if tip labels are cut-off)
-#'
+#' Given a phylo object (tree), this ggtree wrapper returns a ggtree plot object, adjusted with possible arguments
+#' @usage myPlot <- treePlotter(tree=myTree,...)
 #' @param tree Phylo object
-#' @param node_label OPTIONAL: 'none', 'node', or 'bs' [Default: bs (print bootstrap)]
-#' @param node_size OPTIONAL: Override default ggtree node label size
-#' @param node_nudge OPTIONAL: Override default ggtree node label placement 
-#' @param branch_length OPTIONAL: TRUE or FALSE [Default: FALSE (print cladogram)]
-#' @param branch_weight OPTIONAL: Override default ggtree branch thickness
-#' @param taxa_size OPTIONAL: Override default ggtree tip label size
-#' @param taxa_italic OPTIONAL: TRUE or FALSE [Default: FALSE]
+#' @param node_label OPTIONAL: 'none' [no node labels]; 'node' [print node numbers]; 'bs' [Default: print node labels from tree (e.g. bootstrap)]
+#' @param node_size OPTIONAL: Set ggtree node label size
+#' @param node_nudge OPTIONAL: Set ggtree node label nudge_x 
+#' @param branch_length OPTIONAL: TRUE [plot tree with branch lengths]; FALSE [Default: plot cladogram]
+#' @param branch_weight OPTIONAL: Set ggtree branch thickness
+#' @param taxa_size OPTIONAL: Set ggtree tip label size
+#' @param taxa_italic OPTIONAL: TRUE [italic tip labels]; FALSE [Default: non-italic tip labels]
 #' @param taxa_align OPTIONAL: 'left' or 'right' tip label alignment [Default: No alignment]
-#' @param taxa_offset OPTIONAL: Override default ggtree tip label placement
-#' @param xmax OPTIONAL: Override default ggplot xlim upper limit (e.g + xlim(0,max))
+#' @param taxa_offset OPTIONAL: Set ggtree tip label offset
+#' @param xmax OPTIONAL: Set ggplot xlim upper limit (e.g if long tip labels run off plot)
+#' @return ggtree object
 #' @export
 #' @examples
 #' # Print tree with bootstrap labels

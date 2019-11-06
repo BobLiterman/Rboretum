@@ -1,8 +1,8 @@
-#' Check for Root Split
+#' Rboretum Root Checker
 #'
 #' This function returns TRUE if  'taxa' are part of a root split
 #' @param tree Phylo object
-#' @param taxa Vector containing taxa to check
+#' @param taxa Character vector containing taxa to check
 #' @return TRUE if 'taxa' are either side of the root, else, FALSE
 #' @export
 #' @examples

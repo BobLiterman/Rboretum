@@ -1,25 +1,32 @@
-#' Get Shared Species From Two Trees
+#' Rboretum Common Taxa Fetcher
 #'
-#' Returns sorted list of species that occur in 'tree_1' and 'tree_2'
-#' @param tree_1 Phylo object
-#' @param tree_2 Phylo object
-#' @return Vector of species shared between 'tree_1' and 'tree_2
+#' This function takes a multiphylo object and returns a sorted list of taxa common to all trees
+#' @param trees Multiphylo object
+#' @return Sorted character vector of tip labels present in all trees
 #' @export
 #' @examples
-#' getSharedSpecies(tree_1,tree_2)
+#' trees <- c(tree_1,tree_2,tree_3)
+#' getSharedSpeciesMulti(trees)
 #'
-
-getSharedSpecies <- function(tree_1,tree_2){
-
-  species_1 <- sort(tree_1$tip.label)
-  species_2 <- sort(tree_2$tip.label)
-
-  shared_species <- Reduce(intersect, list(species_1,species_2))
-
-  if(length(shared_species ) > 0){
-    return(sort(shared_species))
+getSharedSpecies <- function(trees){
+  
+  # Check that input is multiphylo and has at least 2 trees
+  if(has_error(unlist(attributes(trees)$class))){ 
+    stop("'trees' argument should be a multiPhylo object")
+  } else if(!"multiPhylo" %in% unlist(attributes(trees)$class)){
+    stop("'trees' argument should be a multiPhylo object")
+  } else if(length(trees)<2){
+    stop("At least two trees are required for comparison. For a single tree, use checkTreeTaxa()")
   }
-  else{
-    stop("Trees share no species.")
+  
+  # Check that all trees contain at least three taxa
+  species_check <- c()
+  for(i in 1:length(trees)){
+    temp_tree <- trees[[i]]
+    species_check <- c(species_check,temp_tree$tip.label)
   }
+  
+  all_species <- sort(unique(species_check))
+  shared_species <- all_species[table(species_check)==length(trees)]
+  return(shared_species)
 }

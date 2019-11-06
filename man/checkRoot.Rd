@@ -2,14 +2,14 @@
 % Please edit documentation in R/checkRoot.R
 \name{checkRoot}
 \alias{checkRoot}
-\title{Check for Root Split}
+\title{Rboretum Root Checker}
 \usage{
 checkRoot(tree, taxa)
 }
 \arguments{
 \item{tree}{Phylo object}
 
-\item{taxa}{Vector containing taxa to check}
+\item{taxa}{Character vector containing taxa to check}
 }
 \value{
 TRUE if 'taxa' are either side of the root, else, FALSE

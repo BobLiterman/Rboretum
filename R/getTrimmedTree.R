@@ -15,7 +15,6 @@ getTrimmedTree <- function(tree,taxa){
 
   # If tree species match subset list, return whole tree
   if(identical(tree_species,sort(taxa))){
-    print('Taxa list matches tree taxa. Returning tree...')
     return(tree)
   }
 

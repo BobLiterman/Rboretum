@@ -2,22 +2,21 @@
 % Please edit documentation in R/getSharedSpecies.R
 \name{getSharedSpecies}
 \alias{getSharedSpecies}
-\title{Get Shared Species From Two Trees}
+\title{Rboretum Common Taxa Fetcher}
 \usage{
-getSharedSpecies(tree_1, tree_2)
+getSharedSpecies(trees)
 }
 \arguments{
-\item{tree_1}{Phylo object}
-
-\item{tree_2}{Phylo object}
+\item{trees}{Multiphylo object}
 }
 \value{
-Vector of species shared between 'tree_1' and 'tree_2
+Sorted character vector of tip labels present in all trees
 }
 \description{
-Returns sorted list of species that occur in 'tree_1' and 'tree_2'
+This function takes a multiphylo object and returns a sorted list of taxa common to all trees
 }
 \examples{
-getSharedSpecies(tree_1,tree_2)
+trees <- c(tree_1,tree_2,tree_3)
+getSharedSpeciesMulti(trees)
 
 }

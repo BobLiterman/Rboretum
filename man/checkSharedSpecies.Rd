@@ -2,22 +2,21 @@
 % Please edit documentation in R/checkSharedSpecies.R
 \name{checkSharedSpecies}
 \alias{checkSharedSpecies}
-\title{Check for Shared Species}
+\title{Rboretum Three Common Taxa Checker}
 \usage{
-checkSharedSpecies(tree_1, tree_2)
+checkSharedSpecies(trees)
 }
 \arguments{
-\item{tree_1}{Phylo object}
-
-\item{tree_2}{Phylo object}
+\item{trees}{Multiphylo object}
 }
 \value{
-TRUE if 'tree_1' and 'tree_2' have 3 or more  species in commmon; else, FALSE
+TRUE (all trees share >= 3 species) or FALSE
 }
 \description{
-This function returns TRUE if 'tree_1' and 'tree_2' have 3 or more species in commmon
+This function takes a multiphylo object and returns TRUE if all trees share at least three common taxa (e.g. enough to make a tree); otherwise, FALSE
 }
 \examples{
-checkSharedSpecies(tree_1,tree_2)
+trees <- c(tree_1,tree_2,tree_3)
+checkSharedSpeciesMulti(trees)
 
 }

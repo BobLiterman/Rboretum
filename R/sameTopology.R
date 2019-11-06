@@ -12,8 +12,7 @@
 # Returns TRUE if tree_1 and tree_2 have identical topology (after pruning if necessary)
 sameTopology <- function(tree_1,tree_2){
 
-  species_1 <- sort(tree_1$tip.label)
-  species_2 <- sort(tree_2$tip.label)
+  shared_species <- Rboretum::getSharedSpecies(c(tree_1,tree_))
 
   # If trees have identical species lists, compare topologies
   if(identical(species_1,species_2)){

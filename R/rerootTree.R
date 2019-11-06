@@ -1,12 +1,14 @@
-#' Re-Root Phylogenetic Tree
+#' Rboretum Tree Re-Rooter
 #'
-#' This function returns a rooted tree, assuming the tree contains the outgroup taxa, and they are monophyletic.
-#' @param tree Path to tree file
-#' @param root_taxa Vector containing outgroup species IDs (Must be in tree and monophyletic)
+#' This ape wrapper accepts a phylo object and a character vector of new root taxa and returns a rooted phylo object, if possible
+#' @usage newRootTaxa <- c('NewRoot_1','NewRoot_2')
+#' rerootedTree  <- rerootTree(myTree,newRootTaxa)
+#' @param tree Phylo object
+#' @param root_taxa Character vector containing outgroup species IDs (Must be in tree and monophyletic)
 #' @return A phylo object rooted at specified taxa
 #' @export
 #' @examples
-#' rerootTree(tree,taxa)
+#' rerootTree(birdTree,c('Alligator','Turtle'))
 
 rerootTree <- function(tree,root_taxa){
 
@@ -19,7 +21,7 @@ rerootTree <- function(tree,root_taxa){
   }
 
   # If root species in tree, find MRCA and root at that node
-  else if(!has_error(root.phylo(tree,outgroup = root_taxa,edgelabel = TRUE,resolve.root = TRUE))){
+  else if(!has_error(ape::root.phylo(tree,outgroup = root_taxa,edgelabel = TRUE,resolve.root = TRUE))){
     return(ape::root.phylo(tree,outgroup = root_taxa,edgelabel = TRUE,resolve.root = TRUE))
   }
   else{

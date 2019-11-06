@@ -24,7 +24,7 @@ readRootedPhylo <- function(tree_path,root_taxa){
     stop("Root taxa not found in tree.")
   }
 
-  else if(!has_error(root.phylo(raw_tree,outgroup = root_taxa,edgelabel = TRUE,resolve.root = TRUE))){
+  else if(!has_error(ape::root.phylo(raw_tree,outgroup = root_taxa,edgelabel = TRUE,resolve.root = TRUE))){
     return(ape::root.phylo(raw_tree,outgroup = root_taxa,edgelabel = TRUE,resolve.root = TRUE))
   }
   else{

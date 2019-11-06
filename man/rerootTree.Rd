@@ -2,21 +2,22 @@
 % Please edit documentation in R/rerootTree.R
 \name{rerootTree}
 \alias{rerootTree}
-\title{Re-Root Phylogenetic Tree}
+\title{Rboretum Tree Re-Rooter}
 \usage{
-rerootTree(tree, root_taxa)
+newRootTaxa <- c('NewRoot_1','NewRoot_2')
+rerootedTree  <- rerootTree(myTree,newRootTaxa)
 }
 \arguments{
-\item{tree}{Path to tree file}
+\item{tree}{Phylo object}
 
-\item{root_taxa}{Vector containing outgroup species IDs (Must be in tree and monophyletic)}
+\item{root_taxa}{Character vector containing outgroup species IDs (Must be in tree and monophyletic)}
 }
 \value{
 A phylo object rooted at specified taxa
 }
 \description{
-This function returns a rooted tree, assuming the tree contains the outgroup taxa, and they are monophyletic.
+This ape wrapper accepts a phylo object and a character vector of new root taxa and returns a rooted phylo object, if possible
 }
 \examples{
-rerootTree(tree,taxa)
+rerootTree(birdTree,c('Alligator','Turtle'))
 }

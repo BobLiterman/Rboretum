@@ -7,7 +7,7 @@
 getSplits(tree)
 }
 \arguments{
-\item{tree}{Phylo object}
+\item{tree}{Rooted phylo object}
 }
 \value{
 Four-column dataframe; 1: Semi-colon separated monophyletic clade; 2: 'Mirror Clade'; 3: Phylo Node ID; 4: Node Boostrap (if present)

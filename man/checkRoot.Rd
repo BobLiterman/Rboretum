@@ -7,7 +7,7 @@
 checkRoot(tree, taxa)
 }
 \arguments{
-\item{tree}{Phylo object}
+\item{tree}{Rooted phylo object}
 
 \item{taxa}{Character vector containing taxa to check}
 }

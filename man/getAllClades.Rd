@@ -10,10 +10,10 @@ getAllClades(tree)
 \item{tree}{Phylo object}
 }
 \value{
-Character vector of monophyletic clades
+Character vector of semicolon-separated monophyletic clades
 }
 \description{
-This function takes a tree and returns a vector containing each monophyletic group
+This function takes a tree and returns a sorted character vector containing each monophyletic group
 }
 \examples{
 getAllClades(tree)

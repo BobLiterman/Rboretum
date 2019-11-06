@@ -1,23 +1,35 @@
-#' Check if Trees Share All Species
+#' Rboretum Identical Taxon Checker
 #'
-#' This function returns TRUE if 'tree_1' and 'tree_2' have all species in commmon
-#' @param tree_1 Phylo object
-#' @param tree_2 Phylo object
-#' @return TRUE if 'tree_1' and 'tree_2' have all species in commmon; else, FALSE
+#' This function takes a multiphylo object and returns TRUE if all species are shared among all trees; otherwise, FALSE
+#' @param trees Multiphylo object
+#' @return TRUE if all trees have all species in common; else, FALSE
 #' @export
 #' @examples
-#' checkIdenticalSpecies(tree_1,tree_2)
+#' trees <- c(tree_1,tree_2,tree_3,...)
+#' checkIdenticalSpeciesMulti(trees)
 #'
+checkIdenticalSpecies <- function(trees){
 
-# Returns TRUE if tree_1 and tree_2 share at least three species
-checkIdenticalSpecies <- function(tree_1,tree_2){
+  # Check that input is multiphylo and has at least 2 trees
+  if(has_error(unlist(attributes(trees)$class))){ 
+    stop("'trees' argument should be a multiPhylo object")
+  } else if(!"multiPhylo" %in% unlist(attributes(trees)$class)){
+    stop("'trees' argument should be a multiPhylo object")
+  } else if(length(trees)<2){
+    stop("At least two trees are required for comparison. For a single tree, use checkTreeTaxa()")
+  }
 
-  species_1 <- sort(tree_1$tip.label)
-  species_2 <- sort(tree_2$tip.label)
+  # Check that all trees contain all species
+  species_lists <- c()
+  
+  for(i in 1:length(trees)){
+    species_lists <- c(species_lists,paste(sort(trees[[i]]$tip.label),collapse = "_"))
+  }
 
-  if(all(species_1 %in% species_2) & all(species_2 %in% species_1)){
+  if(length(unique(species_lists))==1){
     return(TRUE)
-  } else{
+  }
+  else{
     return(FALSE)
   }
 }

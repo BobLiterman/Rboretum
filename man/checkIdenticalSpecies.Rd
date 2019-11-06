@@ -2,22 +2,21 @@
 % Please edit documentation in R/checkIdenticalSpecies.R
 \name{checkIdenticalSpecies}
 \alias{checkIdenticalSpecies}
-\title{Check if Trees Share All Species}
+\title{Rboretum Identical Taxon Checker}
 \usage{
-checkIdenticalSpecies(tree_1, tree_2)
+checkIdenticalSpecies(trees)
 }
 \arguments{
-\item{tree_1}{Phylo object}
-
-\item{tree_2}{Phylo object}
+\item{trees}{Multiphylo object}
 }
 \value{
-TRUE if 'tree_1' and 'tree_2' have all species in commmon; else, FALSE
+TRUE if all trees have all species in common; else, FALSE
 }
 \description{
-This function returns TRUE if 'tree_1' and 'tree_2' have all species in commmon
+This function takes a multiphylo object and returns TRUE if all species are shared among all trees; otherwise, FALSE
 }
 \examples{
-checkIdenticalSpecies(tree_1,tree_2)
+trees <- c(tree_1,tree_2,tree_3,...)
+checkIdenticalSpeciesMulti(trees)
 
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/checkTreeTaxa.R
 \name{checkTreeTaxa}
 \alias{checkTreeTaxa}
-\title{Rboreturm Taxon Tree Checker}
+\title{Rboreturm Phylo Taxon Checker}
 \usage{
 checkTreeTaxa(tree, taxa)
 }

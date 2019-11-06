@@ -1,4 +1,4 @@
-#' Rboreturm Taxon Tree Checker
+#' Rboreturm Phylo Taxon Checker
 #'
 #' This function returns TRUE if all 'taxa' are present in 'tree', FALSE otherwise
 #' @param tree Phylo object

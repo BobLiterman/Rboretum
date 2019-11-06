@@ -2,23 +2,25 @@
 % Please edit documentation in R/checkTreeTaxaMulti.R
 \name{checkTreeTaxaMulti}
 \alias{checkTreeTaxaMulti}
-\title{Check Tree Taxa in Multiphylo}
+\title{Rboreturm Multiphlyo Taxon Checker}
 \usage{
 checkTreeTaxaMulti(trees, taxa)
 }
 \arguments{
 \item{trees}{Multiphylo object}
 
-\item{taxa}{Vector containing taxa to check}
+\item{taxa}{Character vector containing taxa to query}
 }
 \value{
-TRUE if 'taxa' in all trees, else, FALSE
+TRUE if all 'taxa' in all 'trees', else, FALSE
 }
 \description{
-This function returns TRUE if all 'taxa' are present in all trees in a multiphylo, FALSE otherwise
+This function returns TRUE if all 'taxa' are present in all 'trees', FALSE otherwise
 }
 \examples{
-trees <- c(tree_1,tree_2,tree_3)
-checkTreeTaxaMulti(trees,taxa)
+
+myTrees <- c(treeA,treeB,treeC)
+taxa_to_find <- c('Spp1','Spp2','Spp3')
+checkTreeTaxa(myTrees,taxa_to_find)
 
 }

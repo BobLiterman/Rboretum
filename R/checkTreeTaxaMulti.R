@@ -1,34 +1,35 @@
-#' Check Tree Taxa in Multiphylo
+#' Rboreturm Multiphlyo Taxon Checker
 #'
-#' This function returns TRUE if all 'taxa' are present in all trees in a multiphylo, FALSE otherwise
+#' This function returns TRUE if all 'taxa' are present in all 'trees', FALSE otherwise
 #' @param trees Multiphylo object
-#' @param taxa Vector containing taxa to check
-#' @return TRUE if 'taxa' in all trees, else, FALSE
+#' @param taxa Character vector containing taxa to query
+#' @return TRUE if all 'taxa' in all 'trees', else, FALSE
 #' @export
 #' @examples
-#' trees <- c(tree_1,tree_2,tree_3)
-#' checkTreeTaxaMulti(trees,taxa)
+#' 
+#' myTrees <- c(treeA,treeB,treeC)
+#' taxa_to_find <- c('Spp1','Spp2','Spp3')
+#' checkTreeTaxa(myTrees,taxa_to_find)
 #'
 
 checkTreeTaxaMulti <- function(trees,taxa){
-  # Ensure multiphylo has >= 2 trees
-  tree_count <- length(trees)
-
-  if(!tree_count>=2){
-    stop("At least two trees are required for comparison.")
+  
+  # Check that input is multiphylo and has at least 2 trees
+  if(has_error(unlist(attributes(trees)$class))){ 
+    stop("'trees' argument should be a multiPhylo object")
+  } else if(!"multiPhylo" %in% unlist(attributes(trees)$class)){
+    stop("'trees' argument should be a multiPhylo object")
+  } else if(length(trees)<2){
+    stop("At least two trees are required for comparison. For a single tree, use checkTreeTaxa()")
   }
-
+  
   # Check that all trees contain all species
   species_check <- c()
-  for(i in 1:tree_count){
-    temp_tree <- trees[[i]]
-    species_check <- c(species_check,temp_tree$tip.label)
+  for(i in 1:length(trees)){
+    species_check <- c(species_check,Rboretum::checkTreeTaxa(trees[[i]],taxa))
   }
 
-  species_check_df <- as.data.frame(table(species_check))
-  shared_species <- species_check_df %>% filter(Freq == tree_count) %>% pull(species_check) %>% unlist() %>% as.character()
-
-  if(all(taxa %in% shared_species)){
+  if(all(species_check)){
     return(TRUE)
   }
   else{

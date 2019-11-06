@@ -2,25 +2,23 @@
 % Please edit documentation in R/readRootedPhylo.R
 \name{readRootedPhylo}
 \alias{readRootedPhylo}
-\title{Read Rooted Phylogenetic Tree from Path}
+\title{Rboretum Rooted Tree Reader}
 \usage{
-readRootedPhylo(tree_path, root_taxa)
+treePath <- '/path/to/my/tree.nwk'
+rootTaxa <- c('Root_species_1','Root_species_2')
+rootedTree <- readRootedPhylo(tree_path,root_taxa)
 }
 \arguments{
-\item{tree_path}{Path to tree file}
+\item{tree_path}{Path to tree file that can be read by ape::read.tree()}
 
-\item{root_taxa}{Vector containing outgroup species IDs (Must be in tree and monophyletic)}
+\item{root_taxa}{Character vector containing outgroup species IDs (Must be in tree and monophyletic)}
 }
 \value{
-A phylo object rooted at specified taxa
+A phylo object, rooted at specified taxa
 }
 \description{
-This function returns a rooted tree, assuming the tree contains the outgroup taxa, and they are monophyletic.
+This function is an ape wrapper, and returns a tree rooted as specified by the user.
 }
 \examples{
-readRootedPhylo('/path/to/tetrapod_tree.nwk',c('Fish_1','Fish_2'))
-OR
-tree_path <- '/path/to/tetrapod_tree.nwk'
-outgroup_species <- c('Fish_1','Fish_2')
-readRootedPhylo(tree_path,outgroup_species)
+myRootedTetrapods <- readRootedPhylo('/path/to/tetrapod_tree.nwk',c('Fish_1','Fish_2'))
 }

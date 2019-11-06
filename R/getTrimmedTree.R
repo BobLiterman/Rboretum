@@ -1,30 +1,27 @@
-#' Get Trimmed Tree
+#' Rboretum Tree Trimmer
 #'
-#' Given a tree and a list of taxa, this function returns a tree pruned to include only those taxa. Note: Function will STOP if all taxa are not in tree.
-#' @param whole_tree Phylo object
-#' @param taxa Vector containing desired taxa list
+#' This ape wrapper returns a phylo object that has been pruned to include only specified taxa. Note: Function will STOP if tree is missing taxa.
+#' @param tree Phylo object
+#' @param taxa Character vector of desired tip labels to keep
 #' @return Pruned phylo object
 #' @export
 #' @examples
-#' getTrimmedTree(whole_tree,taxa)
+#' getTrimmedTree(tree,taxa)
 #'
-getTrimmedTree <- function(whole_tree,taxa){
+getTrimmedTree <- function(tree,taxa){
 
   # Get tree species
-  tree_species <- sort(whole_tree$tip.label)
+  tree_species <- sort(tree$tip.label)
 
   # If tree species match subset list, return whole tree
   if(identical(tree_species,sort(taxa))){
-    return(whole_tree)
+    print('Taxa list matches tree taxa. Returning tree...')
+    return(tree)
   }
 
   # Otherwise, check if all species from subset list are in tree. If so, return pruned tree.
-  if(checkTreeTaxa(whole_tree,taxa)){
-    pruned_tree <- ape::drop.tip(whole_tree,whole_tree$tip.label[-match(taxa, whole_tree$tip.label)])
+  if(checkTreeTaxa(tree,taxa)){
+    pruned_tree <- ape::drop.tip(tree,tree$tip.label[-match(taxa, tree$tip.label)])
     return(pruned_tree)
-  }
-
-  else{
-    stop("ERROR: Some taxa from reqested list not in tree.")
-  }
+  } else{ stop("ERROR: Some taxa from reqested list not in tree.")}
 }

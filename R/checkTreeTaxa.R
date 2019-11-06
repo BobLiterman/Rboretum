@@ -1,12 +1,14 @@
-#' Check Tree Taxa
+#' Rboreturm Taxon Tree Checker
 #'
 #' This function returns TRUE if all 'taxa' are present in 'tree', FALSE otherwise
 #' @param tree Phylo object
-#' @param taxa Vector containing taxa to check
-#' @return TRUE if 'taxa' in 'tree', else, FALSE
+#' @param taxa Character vector containing taxa to query
+#' @return TRUE if all 'taxa' in 'tree', else, FALSE
 #' @export
 #' @examples
-#' checkTreeTaxa(tree,taxa_to_find)
+#' 
+#' taxa_to_find <- c('Spp1','Spp2','Spp3')
+#' checkTreeTaxa(myTree,taxa_to_find)
 #'
 
 checkTreeTaxa <- function(tree,taxa){

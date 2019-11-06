@@ -2,22 +2,24 @@
 % Please edit documentation in R/checkTreeTaxa.R
 \name{checkTreeTaxa}
 \alias{checkTreeTaxa}
-\title{Check Tree Taxa}
+\title{Rboreturm Taxon Tree Checker}
 \usage{
 checkTreeTaxa(tree, taxa)
 }
 \arguments{
 \item{tree}{Phylo object}
 
-\item{taxa}{Vector containing taxa to check}
+\item{taxa}{Character vector containing taxa to query}
 }
 \value{
-TRUE if 'taxa' in 'tree', else, FALSE
+TRUE if all 'taxa' in 'tree', else, FALSE
 }
 \description{
 This function returns TRUE if all 'taxa' are present in 'tree', FALSE otherwise
 }
 \examples{
-checkTreeTaxa(tree,taxa_to_find)
+
+taxa_to_find <- c('Spp1','Spp2','Spp3')
+checkTreeTaxa(myTree,taxa_to_find)
 
 }

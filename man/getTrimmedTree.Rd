@@ -2,22 +2,22 @@
 % Please edit documentation in R/getTrimmedTree.R
 \name{getTrimmedTree}
 \alias{getTrimmedTree}
-\title{Get Trimmed Tree}
+\title{Rboretum Tree Trimmer}
 \usage{
-getTrimmedTree(whole_tree, taxa)
+getTrimmedTree(tree, taxa)
 }
 \arguments{
-\item{whole_tree}{Phylo object}
+\item{tree}{Phylo object}
 
-\item{taxa}{Vector containing desired taxa list}
+\item{taxa}{Character vector of desired tip labels to keep}
 }
 \value{
 Pruned phylo object
 }
 \description{
-Given a tree and a list of taxa, this function returns a tree pruned to include only those taxa. Note: Function will STOP if all taxa are not in tree.
+This ape wrapper returns a phylo object that has been pruned to include only specified taxa. Note: Function will STOP if tree is missing taxa.
 }
 \examples{
-getTrimmedTree(whole_tree,taxa)
+getTrimmedTree(tree,taxa)
 
 }

@@ -2,14 +2,14 @@
 % Please edit documentation in R/sameTopology.R
 \name{sameTopology}
 \alias{sameTopology}
-\title{Check for Identical Tree Topology}
+\title{Rboretum Topology Checker}
 \usage{
 sameTopology(tree_1, tree_2)
 }
 \arguments{
-\item{tree_1}{Rooted phylo object}
+\item{tree_1}{Phylo object}
 
-\item{tree_2}{Rooted phylo object}
+\item{tree_2}{Phylo object}
 }
 \value{
 TRUE if 'tree_1' and 'tree_2' have the same topology after pruning to identical species lists; else, FALSE

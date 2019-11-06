@@ -2,7 +2,7 @@
 % Please edit documentation in R/checkComparable.R
 \name{checkComparable}
 \alias{checkComparable}
-\title{Check if Pair of Tree Topologies Can Be Compared}
+\title{Rboretum Comparability Checker}
 \usage{
 checkComparable(tree_1, tree_2)
 }

@@ -1,4 +1,4 @@
-#' Check if Pair of Tree Topologies Can Be Compared
+#' Rboretum Comparability Checker
 #'
 #' This function returns TRUE if 'tree_1' and 'tree_2' have 3 or more species in commmon, and a unique topology
 #' @param tree_1 Phylo object

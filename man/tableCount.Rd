@@ -2,22 +2,22 @@
 % Please edit documentation in R/tableCount.R
 \name{tableCount}
 \alias{tableCount}
-\title{Search Table for Value}
+\title{Rboretum Table Search}
 \usage{
-tableCount(table_to_search, name_to_search)
+tableCount(search_table, name)
 }
 \arguments{
-\item{table_to_search}{Table (Result of 'table' call)}
+\item{search_table}{R Table (Result of 'table()' call)}
 
-\item{name_to_search}{Title of item you want the count for}
+\item{name}{Name of item you want the count for}
 }
 \value{
 Number of times that value occurs in the table
 }
 \description{
-This function returns the count of items in a table, or 0 if item does not occur in table
+This function returns the count of items in an R table, or 0 if item does not occur in table
 }
 \examples{
-tableCount(table_to_search,name_to_search)
+tableCount(table(geneDF$Count),'SOX9')
 
 }

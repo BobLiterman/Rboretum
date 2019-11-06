@@ -2,22 +2,20 @@
 % Please edit documentation in R/getAllClades.R
 \name{getAllClades}
 \alias{getAllClades}
-\title{Get All Clades}
+\title{Rboretum Clade Fetcher}
 \usage{
-getAllClades(rooted_tree, exclude_root)
+getAllClades(tree)
 }
 \arguments{
-\item{rooted_tree}{Rooted phylo object}
-
-\item{exclude_root}{OPTIONAL: If TRUE, exclude root clades from returned list. Otherwise, return all groups (Default: FALSE)}
+\item{tree}{Phylo object}
 }
 \value{
 Character vector of monophyletic clades
 }
 \description{
-This function takes a rooted tree and returns a vector containing each monophyletic group, including both root groups
+This function takes a tree and returns a vector containing each monophyletic group
 }
 \examples{
-getAllClades(rooted_tree)
+getAllClades(tree)
 
 }

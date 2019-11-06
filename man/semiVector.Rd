@@ -2,7 +2,7 @@
 % Please edit documentation in R/semiVector.R
 \name{semiVector}
 \alias{semiVector}
-\title{Create Vector from Semicolon Delimited String}
+\title{Rboretum Semicolon Vectorizer}
 \usage{
 semiVector(string_to_split)
 }
@@ -10,12 +10,14 @@ semiVector(string_to_split)
 \item{string_to_split}{Semicolon delimited string}
 }
 \value{
-Vector of items
+Character vector
 }
 \description{
 This function returns a vector of items from a string separated by semicolons (;)
 }
 \examples{
-semiVector(string_to_split)
+myString <- 'a;b;c;d'
+semiVector(myString)
+> ['a','b','c','d']
 
 }

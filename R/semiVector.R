@@ -1,11 +1,14 @@
-#' Create Vector from Semicolon Delimited String
+#' Rboretum Semicolon Vectorizer
 #'
 #' This function returns a vector of items from a string separated by semicolons (;)
+#' @usage semiVector(string_to_split)
 #' @param string_to_split Semicolon delimited string
-#' @return Vector of items
+#' @return Character vector
 #' @export
 #' @examples
-#' semiVector(string_to_split)
+#' myString <- 'a;b;c;d'
+#' semiVector(myString)
+#' > ['a','b','c','d']
 #'
 
 # Given semicolon delimeted string, return single vector

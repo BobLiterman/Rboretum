@@ -2,7 +2,7 @@
 % Please edit documentation in R/checkComparable.R
 \name{checkComparable}
 \alias{checkComparable}
-\title{Rboretum Comparability Checker}
+\title{Rboretum Two-Tree Comparability Checker}
 \usage{
 checkComparable(tree_1, tree_2)
 }

@@ -1,0 +1,116 @@
+#' Rboretum Tree Clade Comparison
+#'
+#' This function takes a multiphylo object, and queries support for all uniquely identified monophyletic clades
+#' @param trees Multiphylo object
+#' @param tree_names OPTIONAL: Vector of tree names
+#' @param return_shared_only OPTIONAL: If TRUE, returns only information about clades supported by all trees; (Default: FALSE)
+#' @return Dataframe with clade support information 
+#' @export
+#' @examples
+#' trees <- c(tree_1,tree_2,tree_3)
+#'
+#' # Return information on all possible splits
+#' compareClades(trees)
+#'
+#' # Return information on only those splits shared in all trees
+#' compareClades(trees,return_shared_only=TRUE)
+#'
+
+compareClades <- function(trees,tree_names,return_shared_only){
+  
+  if(missing(tree_names)){
+    # Check that input is multiphylo and has at least 2 trees
+    if(has_error(unlist(attributes(trees)$class))){ 
+      stop("'trees' argument should be a multiPhylo object")
+    } else if(!"multiPhylo" %in% unlist(attributes(trees)$class)){
+      stop("'trees' argument should be a multiPhylo object")
+    } else if(length(trees)<2){
+      stop("At least two trees are required for comparison. For a single tree, use checkTreeTaxa()")
+    }
+    
+    tree_count <- length(trees)
+    tree_names <- unlist(lapply(X = 1:tree_count,function(x) paste(c("Tree",x),collapse = "_")))
+    
+  } else{
+    if(has_error(unlist(attributes(trees)$class))){ 
+      stop("'trees' argument should be a multiPhylo object")
+    } else if(!"multiPhylo" %in% unlist(attributes(trees)$class)){
+      stop("'trees' argument should be a multiPhylo object")
+    } else if(length(trees)<2){
+      stop("At least two trees are required for comparison. For a single tree, use checkTreeTaxa()")
+    }
+    
+    tree_count <- length(trees)
+    
+    if(tree_count!=length(tree_names)){
+      
+      print("Multiphylo object and name vector are not the same length. Each tree must be named. Using numbers based on multiphlyo order")
+      tree_names <- unlist(lapply(X = 1:tree_count,function(x) paste(c("Tree",x),collapse = "_")))
+      
+    } else{
+      tree_names <- as.character(tree_names)
+    }
+  }
+
+  if(missing(return_shared_only)){
+    return_shared_only <- FALSE
+  } else{ 
+    if(!is.logical(return_shared_only)){
+    return_shared_only <- FALSE
+    }
+  }
+  
+  # Check if trees contain at least three common species
+ if(!Rboretum::checkSharedSpecies(trees)){
+   stop("Trees do not share at least three common species.")
+ }
+  
+  # Prune trees if necessary
+  if(!Rboretum::checkIdenticalSpecies(trees)){
+    shared_species <- getSharedSpecies(trees)
+    
+    for(i in 1:tree_count){
+      trees[[i]] <- Rboretum::getTrimmedTree(trees[[i]],shared_species)
+    }
+  }
+  
+  # Tally splits
+  all_clades <- c()
+
+  for(i in 1:tree_count){
+    all_clades <- c(all_clades,Rboretum::getAllClades(trees[[i]]))
+  }
+
+  tallied_splits <- as.data.frame(table(all_clades))
+
+  split_df <- tallied_splits %>%
+    rename(Clade = 'all_clades',Tree_Count = 'Freq') %>%
+    mutate(Clade_Size = (str_count(Clade,';')+1)) %>%
+    mutate(Clade = as.character(Clade),Tree_Count = as.integer(Tree_Count),Clade_Size = as.integer(Clade_Size))
+
+  # If return_shared_only = TRUE, just return clades shared by all trees. Otherwise, return all clades
+  if(return_shared_only){
+    split_df <- split_df %>% 
+      filter(Tree_Count == tree_count) %>%
+      select(Clade,Clade_Size) %>%
+      return()
+  } else{
+    
+    split_df <- split_df %>%
+      mutate(Tree_Percent = as.numeric(Tree_Count)/as.numeric(tree_count))
+    
+    tree_column <- c()
+
+    for(clade in split_df$Clade){
+      tree_list <- c()
+      for(i in 1:tree_count){
+        if(ape::is.monophyletic(trees[[i]],Rboretum::semiVector(as.character(clade)))){
+          tree_list <- c(tree_list,tree_names[i])
+        }
+      }
+      tree_column <- c(tree_column,paste(tree_list,collapse = ";"))
+    }
+    split_df$Trees_with_Clade <- tree_column
+    return(split_df)
+  }
+}

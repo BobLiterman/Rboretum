@@ -1,4 +1,4 @@
-#' Rboretum Comparability Checker
+#' Rboretum Two-Tree Comparability Checker
 #'
 #' This function returns TRUE if 'tree_1' and 'tree_2' have 3 or more species in commmon, and a unique topology
 #' @param tree_1 Phylo object
@@ -10,9 +10,9 @@
 #'
 
 checkComparable <- function(tree_1,tree_2){
-  if(!has_error(Rboretum::sameTopology(tree_1,tree_2)) & !Rboretum::sameTopology(tree_1,tree_2)){
-    return(TRUE)
-  } else{
+  if(!has_error(Rboretum::sameTopology(tree_1,tree_2))){
     return(FALSE)
-  }
+  } else if(!Rboretum::sameTopology(tree_1,tree_2)){
+    return(TRUE)
+  } else{ return(FALSE) }
 }

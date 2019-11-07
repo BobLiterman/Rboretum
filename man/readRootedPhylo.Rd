@@ -9,7 +9,7 @@ rootTaxa <- c('Root_species_1','Root_species_2')
 rootedTree <- readRootedPhylo(tree_path,root_taxa)
 }
 \arguments{
-\item{tree_path}{Path to tree file that can be read by ape::read.tree()}
+\item{tree_path}{Path to tree file that can be read by ape::read.tree() or ape::read.nexus()}
 
 \item{root_taxa}{Character vector containing outgroup species IDs (Must be in tree and monophyletic)}
 }

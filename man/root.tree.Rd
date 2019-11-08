@@ -2,7 +2,7 @@
 % Please edit documentation in R/root.tree.R
 \name{root.tree}
 \alias{root.tree}
-\title{Rboretum Tree Re-Rooter}
+\title{Rboretum Tree Rooter}
 \usage{
 newRootTaxa <- c('NewRoot_1','NewRoot_2')
 rerootedTree  <- root.tree(myTree,newRootTaxa)

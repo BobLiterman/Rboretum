@@ -1,4 +1,4 @@
-#' Rboretum Tree Re-Rooter
+#' Rboretum Tree Rooter
 #'
 #' This ape wrapper accepts a phylo object and a character vector of new root taxa and returns a rooted phylo object, if possible
 #' @usage newRootTaxa <- c('NewRoot_1','NewRoot_2')

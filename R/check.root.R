@@ -6,25 +6,25 @@
 #' @return TRUE if 'taxa' are either side of the root, else, FALSE
 #' @export
 #' @examples
-#' checkRoot(tree,taxa_to_check)
+#' check.root(tree,taxa_to_check)
 #'
 
-checkRoot <- function(tree,taxa){
-  
+check.root <- function(tree,taxa){
+
+  if(has_error(ape::is.rooted(tree))){
+    stop("Error in ape::is.rooted. Is 'tree' a phylo object?")
+  }
+    
   if(!ape::is.rooted(tree)){
     stop("Tree must be rooted for checkRoot")
   }
   
   if(!(all(taxa %in% tree$tip.label))){
-    stop("Taxa missing from tree.")
+    stop("Specified taxa missing from tree.")
   }
 
-  # Get tree species
-  tree_species <- sort(tree$tip.label)
-  taxa <- sort(taxa)
-
   # Get mirror clade (all species - focal group)
-  mirror_taxa <- sort(dplyr::setdiff(tree_species, taxa))
+  mirror_taxa <- sort(dplyr::setdiff(tree$tip.label, taxa))
 
   if(ape::is.monophyletic(tree,taxa) & ape::is.monophyletic(tree,mirror_taxa)){
     return(TRUE)

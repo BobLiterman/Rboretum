@@ -1,7 +1,7 @@
-#' Rboretum Multiphylo Comparability Checker
+#' Rboretum Tree Comparability Checker
 #'
-#' This function takes a multiphylo object and returns a dataframe that indicates which topologies can be compared (>= 3 species shared, with unique topologies). If so, the common species set is also returned.
-#' @param trees Multiphylo object
+#' This function takes a multiPhylo object and returns a dataframe that indicates which topologies can be compared (>= 3 species shared, with unique topologies). If so, the common species set is also returned.
+#' @param trees multiPhylo object
 #' @param tree_names OPTIONAL: Vector of tree names
 #' @param return_only_comparable OPTIONAL: If TRUE, returns only comparable trees; (Default: FALSE)
 #' @return Dataframe with information about possible comparisons
@@ -12,21 +12,22 @@
 #' names <- c('CDS_Tree','Intron_Tree','UTR_Tree')
 #'
 #' # Return all comparisons
-#' canCompare(trees,names)
+#' get.comparable(trees,names)
 #'
 #' # Return only comparable trees
-#' canCompare(trees,names,return_only_comparable=TRUE)
+#' get.comparable(trees,names,return_only_comparable=TRUE)
 #'
 
-canCompare <- function(trees,tree_names,return_only_comparable){
+get.comparable <- function(trees,tree_names,return_only_comparable){
+  
   if(missing(tree_names)){
-    # Check that input is multiphylo and has at least 2 trees
+    
     if(has_error(unlist(attributes(trees)$class))){ 
       stop("'trees' argument should be a multiPhylo object")
     } else if(!"multiPhylo" %in% unlist(attributes(trees)$class)){
       stop("'trees' argument should be a multiPhylo object")
     } else if(length(trees)<2){
-      stop("At least two trees are required for comparison. For a single tree, use checkTreeTaxa()")
+      stop("At least two trees are required for comparison.")
     }
     
     tree_count <- length(trees)
@@ -38,7 +39,7 @@ canCompare <- function(trees,tree_names,return_only_comparable){
     } else if(!"multiPhylo" %in% unlist(attributes(trees)$class)){
       stop("'trees' argument should be a multiPhylo object")
     } else if(length(trees)<2){
-      stop("At least two trees are required for comparison. For a single tree, use checkTreeTaxa()")
+      stop("At least two trees are required for comparison.")
     }
     
     tree_count <- length(trees)
@@ -73,19 +74,13 @@ canCompare <- function(trees,tree_names,return_only_comparable){
 
       tree_2 <- trees[[j]]
       names_2 <- c(names_2,tree_names[j])
-    
-      if(has_error(Rboretum::sameTopology(tree_1,tree_2))){
-        comparable <- FALSE
-      } else{
-        if(!Rboretum::sameTopology(tree_1,tree_2)){
-        comparable <- TRUE
-      } else{ comparable <- FALSE }
-      }
+      
+      comparable <- Rboretum::check.comparable(tree_1,tree_2)
       
       comparables <- c(comparables,comparable)
 
       if(comparable){
-        species_sets <- c(species_sets,paste(sort(Rboretum::getSharedSpecies(c(tree_1,tree_2))),collapse = ";"))
+        species_sets <- c(species_sets,paste(sort(Rboretum::get.shared(c(tree_1,tree_2))),collapse = ";"))
       } else{
         species_sets <- c(species_sets,NA)
       }

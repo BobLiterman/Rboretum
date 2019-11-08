@@ -19,4 +19,5 @@ This ape wrapper accepts a phylo object and a character vector of new root taxa 
 }
 \examples{
 root.tree(birdTree,c('Alligator','Turtle'))
+
 }

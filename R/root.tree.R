@@ -4,9 +4,10 @@
 #' @param tree Phylo object
 #' @param root_taxa Character vector containing outgroup species IDs (Must be in tree and monophyletic)
 #' @return A phylo object rooted at specified taxa
-#' @export
+#' @export root.tree
 #' @examples
 #' root.tree(birdTree,c('Alligator','Turtle'))
+#' 
 root.tree <- function(tree,root_taxa){
   
   if(has_error(ape::is.rooted(tree))){

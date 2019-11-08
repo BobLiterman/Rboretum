@@ -1,7 +1,7 @@
 #' Rboreturm Taxon Checker
 #'
-#' This function returns TRUE if all 'taxa' are present in 'tree' (or a multiphylo of trees); FALSE otherwise
-#' @param tree Phylo or Multiphylo object
+#' This function returns TRUE if all 'taxa' are present in 'tree' (or a multiPhylo of trees); FALSE otherwise
+#' @param tree phylo or multiPhylo object
 #' @param taxa Character vector containing taxa to query
 #' @return TRUE if all 'taxa' in 'tree'; else, FALSE
 #' @export
@@ -16,38 +16,26 @@
 
 tip.check <- function(tree,taxa){
   
-  # Check that input is multiphylo and has at least 2 trees
-  if(has_error(unlist(attributes(trees)$class))){ 
-    stop("'trees' argument should be a phylo or multiPhylo object")
-  } else if("phylo" %in% unlist(attributes(trees)$class)){
+  if(has_error(unlist(attributes(tree)$class))){ 
+    stop("'tree' argument should be a phylo or multiPhylo object")
+  } else if(!"phylo" %in% unlist(attributes(tree)$class) & !"multiPhylo" %in% unlist(attributes(tree)$class)){
+    stop("'tree' argument should be a phylo or multiPhylo object")}
+  
+  if("phylo" %in% unlist(attributes(tree)$class)){
     if(all(taxa %in% tree$tip.label)){
       return(TRUE)
     } else{ return(FALSE) }
-  } else if("multiPhylo" %in% unlist(attributes(trees)$class)){
-    if(length(tree)>=2){
-      
+  } 
+  
+  if("multiPhylo" %in% unlist(attributes(tree)$class)){
       species_check <- c()
       
-      for(i in 1:length(trees)){
+      for(i in 1:length(tree)){
         species_check <- c(species_check,all(taxa %in% tree[[i]]$tip.label))
       }
       
       if(all(species_check)){
         return(TRUE)
-      }
-      else{ return(FALSE) }
-    } else{
-      if(all(taxa %in% tree[[1]]$tip.label)){
-        return(TRUE)
       } else{ return(FALSE) }
-    }
-  } else{ stop("'tree' argument should be a phylo or multiPhylo object") }
+  }
 }
-  
-  
-  
-  
-  
-  
-  
-

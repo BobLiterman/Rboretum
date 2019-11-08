@@ -7,7 +7,7 @@
 tip.check(tree, taxa)
 }
 \arguments{
-\item{tree}{Phylo or Multiphylo object}
+\item{tree}{phylo or multiPhylo object}
 
 \item{taxa}{Character vector containing taxa to query}
 }
@@ -15,7 +15,7 @@ tip.check(tree, taxa)
 TRUE if all 'taxa' in 'tree'; else, FALSE
 }
 \description{
-This function returns TRUE if all 'taxa' are present in 'tree' (or a multiphylo of trees); FALSE otherwise
+This function returns TRUE if all 'taxa' are present in 'tree' (or a multiPhylo of trees); FALSE otherwise
 }
 \examples{
 

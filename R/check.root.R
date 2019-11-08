@@ -13,22 +13,15 @@ check.root <- function(tree,taxa){
 
   if(has_error(ape::is.rooted(tree))){
     stop("Error in ape::is.rooted. Is 'tree' a phylo object?")
-  }
-    
-  if(!ape::is.rooted(tree)){
-    stop("Tree must be rooted for checkRoot")
-  }
-  
-  if(!(all(taxa %in% tree$tip.label))){
-    stop("Specified taxa missing from tree.")
-  }
+  } else if(!ape::is.rooted(tree)){
+    stop("Tree must be rooted for check.root")
+  } else if(!(all(taxa %in% tree$tip.label))){
+    stop("Specified taxa missing from tree.")}
 
   # Get mirror clade (all species - focal group)
   mirror_taxa <- sort(dplyr::setdiff(tree$tip.label, taxa))
 
   if(ape::is.monophyletic(tree,taxa) & ape::is.monophyletic(tree,mirror_taxa)){
     return(TRUE)
-  } else{
-    return(FALSE)
-  }
+  } else{ return(FALSE) }
 }

@@ -11,20 +11,13 @@
 #' root.tree(birdTree,c('Alligator','Turtle'))
 
 root.tree <- function(tree,root_taxa){
-
-  # Read in tree and fetch species
-  tree_species <- tree$tip.label
-
-  # Ensure root species in tree
-  if(!(all(root_taxa %in% tree_species))){
+  
+  if(has_error(ape::is.rooted(tree))){
+    stop("Error in ape::is.rooted. Is 'tree' a phylo object?")
+  } else if(!(all(root_taxa %in% tree$tip.label))){
     stop("Root taxa not found in tree.")
-  }
-
-  # If root species in tree, find MRCA and root at that node
-  else if(!has_error(ape::root.phylo(tree,outgroup = root_taxa,edgelabel = TRUE,resolve.root = TRUE))){
-    return(ape::root.phylo(tree,outgroup = root_taxa,edgelabel = TRUE,resolve.root = TRUE))
-  }
-  else{
-    stop("Ape cannot root tree on these taxa.")
-  }
+  } else if(has_error(ape::root.phylo(tree,outgroup = root_taxa,edgelabel = TRUE,resolve.root = TRUE))){
+    stop("Ape cannot root tree on these taxa.")}
+  
+  return(ape::root.phylo(tree,outgroup = root_taxa,edgelabel = TRUE,resolve.root = TRUE))
 }

@@ -10,6 +10,10 @@
 
 getSplits <- function(tree){
 
+  if(has_error(ape::is.rooted(tree))){
+    stop("Error in ape::is.rooted. Is 'tree' a phylo object?")
+  }
+  
   if(!ape::is.rooted(tree)){
     stop("Tree must be rooted for getSplits")
   }

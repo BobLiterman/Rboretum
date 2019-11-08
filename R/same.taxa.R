@@ -16,7 +16,7 @@ same.taxa <- function(trees){
   } else if(!"multiPhylo" %in% unlist(attributes(trees)$class)){
     stop("'trees' argument should be a multiPhylo object")
   } else if(length(trees)<2){
-    stop("At least two trees are required for comparison. For a single tree, use checkTreeTaxa()")
+    stop("At least two trees are required for comparison.")
   }
 
   # Check that all trees contain all species

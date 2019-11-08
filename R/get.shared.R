@@ -1,6 +1,6 @@
 #' Rboretum Common Taxa Fetcher
 #'
-#' This function takes a multiPhylo object and returns a sorted list of taxa common to all trees
+#' This function takes a multiPhylo object and returns a sorted list of taxa common to all trees. Note: Function will STOP if no taxa are shared.
 #' @param trees multiPhylo object
 #' @return Sorted character vector of tip labels present in all trees
 #' @export

@@ -1,14 +1,14 @@
 #' Rboretum Identical Taxon Checker
 #'
-#' This function takes a multiphylo object and returns TRUE if all species are shared among all trees; otherwise, FALSE
-#' @param trees Multiphylo object
+#' This function takes a multiPhylo object and returns TRUE if all species are shared among all trees; otherwise, FALSE
+#' @param trees multiPhylo object
 #' @return TRUE if all trees have all species in common; else, FALSE
 #' @export
 #' @examples
 #' trees <- c(tree_1,tree_2,tree_3,...)
-#' checkIdenticalSpeciesMulti(trees)
+#' same.taxa(trees)
 #'
-checkIdenticalSpecies <- function(trees){
+same.taxa <- function(trees){
 
   # Check that input is multiphylo and has at least 2 trees
   if(has_error(unlist(attributes(trees)$class))){ 

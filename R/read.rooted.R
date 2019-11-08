@@ -3,15 +3,15 @@
 #' This function is an ape wrapper, and returns a tree rooted as specified by the user.
 #' @usage treePath <- '/path/to/my/tree.nwk'
 #' rootTaxa <- c('Root_species_1','Root_species_2')
-#' rootedTree <- readRootedPhylo(tree_path,root_taxa)
+#' rootedTree <- read.rooted(tree_path,root_taxa)
 #' @param tree_path Path to tree file that can be read by ape::read.tree() or ape::read.nexus()
 #' @param root_taxa Character vector containing outgroup species IDs (Must be in tree and monophyletic)
 #' @return A phylo object, rooted at specified taxa
 #' @export
 #' @examples
-#' myRootedTetrapods <- readRootedPhylo('/path/to/tetrapod_tree.nwk',c('Fish_1','Fish_2'))
+#' myRootedTetrapods <- read.rooted('/path/to/tetrapod_tree.nwk',c('Fish_1','Fish_2'))
 
-readRootedPhylo <- function(tree_path,root_taxa){
+read.rooted <- function(tree_path,root_taxa){
 
   # Read in tree and fetch species
   if(!has_error(ape::read.tree(tree_path))){

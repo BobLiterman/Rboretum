@@ -1,20 +1,21 @@
 #' Rboretum Clade Fetcher
 #'
 #' This function takes a tree and returns a sorted character vector containing each monophyletic group
-#' @param tree Phylo object
+#' @param tree Rooted phylo object
 #' @return Character vector of semicolon-separated monophyletic clades
 #' @export
 #' @examples
-#' getAllClades(tree)
+#' get.clades(tree)
 #'
 
-getAllClades <- function(tree){
+get.clades <- function(tree){
   
-  if(!ape::is.rooted(tree)){
-    stop("Tree must be rooted for getAllClades")
-  }
+  if(has_error(ape::is.rooted(tree))){
+    stop("Error in ape::is.rooted. Is 'tree' a phylo object?")
+  } else if(!ape::is.rooted(tree)){
+    stop("Tree must be rooted for get.clades")}
   
-  splits <- Rboretum::getSplits(tree)
+  splits <- Rboretum::get.splits(tree)
   
   root_split <- splits %>% filter(is.na(Split_Node))
   

@@ -24,7 +24,7 @@ trim.tree <- function(tree,taxa){
       return(ape::drop.tip(tree,tree$tip.label[-match(taxa, tree$tip.label)]))
     }
     
-    if("multiphylo" %in% unlist(attributes(tree)$class)){
+    if("multiPhylo" %in% unlist(attributes(tree)$class)){
       for(i in 1:length(tree)){
         tree[[i]] <- ape::drop.tip(tree[[i]],tree[[i]]$tip.label[-match(taxa, tree[[i]]$tip.label)])
       }

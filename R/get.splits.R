@@ -1,22 +1,19 @@
 #' Rboretum Tree Splitter
 #'
-#' This function takes a phylo object and returns information about each monophyletic group/split
+#' This function takes a rooted phylo object and returns information about each monophyletic group/split
 #' @param tree Rooted phylo object
 #' @return Four-column dataframe; 1: Semi-colon separated monophyletic clade; 2: 'Mirror Clade'; 3: Phylo Node ID; 4: Node Boostrap (if present)
 #' @export
 #' @examples
-#' getSplits(tree)
+#' get.splits(tree)
 #'
 
-getSplits <- function(tree){
+get.splits <- function(tree){
 
   if(has_error(ape::is.rooted(tree))){
     stop("Error in ape::is.rooted. Is 'tree' a phylo object?")
-  }
-  
-  if(!ape::is.rooted(tree)){
-    stop("Tree must be rooted for getSplits")
-  }
+  } else if(!ape::is.rooted(tree)){
+    stop("Tree must be rooted for get.splits")}
   
   # Get species
   tree_species <- sort(tree$tip.label)

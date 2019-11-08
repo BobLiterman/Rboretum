@@ -8,10 +8,10 @@
 #' @examples
 #' 
 #' taxa_to_find <- c('Spp1','Spp2','Spp3')
-#' checkTreeTaxa(myTree,taxa_to_find)
+#' tip.check(myTree,taxa_to_find)
 #'
 
-checkTreeTaxa <- function(tree,taxa){
+tip.check <- function(tree,taxa){
   tree_species  <- tree$tip.label
   if(all(taxa %in% tree_species)){
     return(TRUE)

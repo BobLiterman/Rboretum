@@ -2,24 +2,27 @@
 % Please edit documentation in R/tip.check.R
 \name{tip.check}
 \alias{tip.check}
-\title{Rboreturm Phylo Taxon Checker}
+\title{Rboreturm Taxon Checker}
 \usage{
 tip.check(tree, taxa)
 }
 \arguments{
-\item{tree}{Phylo object}
+\item{tree}{Phylo or Multiphylo object}
 
 \item{taxa}{Character vector containing taxa to query}
 }
 \value{
-TRUE if all 'taxa' in 'tree', else, FALSE
+TRUE if all 'taxa' in 'tree'; else, FALSE
 }
 \description{
-This function returns TRUE if all 'taxa' are present in 'tree', FALSE otherwise
+This function returns TRUE if all 'taxa' are present in 'tree' (or a multiphylo of trees); FALSE otherwise
 }
 \examples{
 
 taxa_to_find <- c('Spp1','Spp2','Spp3')
 tip.check(myTree,taxa_to_find)
+
+trees_to_check <- c(Tree_1,Tree_2,Tree_3)
+tip.check(trees_to_check,taxa_to_find)
 
 }

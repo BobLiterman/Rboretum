@@ -2,15 +2,15 @@
 #'
 #' This ape wrapper accepts a phylo object and a character vector of new root taxa and returns a rooted phylo object, if possible
 #' @usage newRootTaxa <- c('NewRoot_1','NewRoot_2')
-#' rerootedTree  <- rerootTree(myTree,newRootTaxa)
+#' rerootedTree  <- root.tree(myTree,newRootTaxa)
 #' @param tree Phylo object
 #' @param root_taxa Character vector containing outgroup species IDs (Must be in tree and monophyletic)
 #' @return A phylo object rooted at specified taxa
 #' @export
 #' @examples
-#' rerootTree(birdTree,c('Alligator','Turtle'))
+#' root.tree(birdTree,c('Alligator','Turtle'))
 
-rerootTree <- function(tree,root_taxa){
+root.tree <- function(tree,root_taxa){
 
   # Read in tree and fetch species
   tree_species <- tree$tip.label

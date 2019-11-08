@@ -1,4 +1,4 @@
-#' Rboretum Topology Checker
+#' Rboretum Identical Topology Checker
 #'
 #' This function returns TRUE if all trees in multiPhylo have the same topology after pruning to identical species lists
 #' @param trees multiPhylo object
@@ -8,8 +8,6 @@
 #' myTrees <- c(Tree_1,Tree_2,Tree_3)
 #' same.topology(trees)
 #'
-
-# Returns TRUE if tree_1 and tree_2 have identical topology (after pruning if necessary)
 same.topology <- function(trees){
   if(has_error(unlist(attributes(trees)$class))){ 
     stop("'trees' argument should be a multiPhylo object")

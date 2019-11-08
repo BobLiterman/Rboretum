@@ -2,7 +2,7 @@
 % Please edit documentation in R/same.topology.R
 \name{same.topology}
 \alias{same.topology}
-\title{Rboretum Topology Checker}
+\title{Rboretum Identical Topology Checker}
 \usage{
 same.topology(trees)
 }

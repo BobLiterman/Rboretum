@@ -2,9 +2,9 @@
 
 S3method(root,tree)
 export(canCompare)
+export(check.comparable)
 export(check.root)
 export(check.shared)
-export(checkComparable)
 export(compareClades)
 export(convertTipLabels)
 export(get.clades)

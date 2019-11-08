@@ -4,8 +4,7 @@
 \alias{root.tree}
 \title{Rboretum Tree Rooter}
 \usage{
-newRootTaxa <- c('NewRoot_1','NewRoot_2')
-rerootedTree  <- root.tree(myTree,newRootTaxa)
+\method{root}{tree}(tree, root_taxa)
 }
 \arguments{
 \item{tree}{Phylo object}

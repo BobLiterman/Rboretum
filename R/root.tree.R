@@ -1,15 +1,12 @@
 #' Rboretum Tree Rooter
 #'
 #' This ape wrapper accepts a phylo object and a character vector of new root taxa and returns a rooted phylo object, if possible
-#' @usage newRootTaxa <- c('NewRoot_1','NewRoot_2')
-#' rerootedTree  <- root.tree(myTree,newRootTaxa)
 #' @param tree Phylo object
 #' @param root_taxa Character vector containing outgroup species IDs (Must be in tree and monophyletic)
 #' @return A phylo object rooted at specified taxa
 #' @export
 #' @examples
 #' root.tree(birdTree,c('Alligator','Turtle'))
-
 root.tree <- function(tree,root_taxa){
   
   if(has_error(ape::is.rooted(tree))){

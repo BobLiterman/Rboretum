@@ -116,7 +116,7 @@ def create_site_dict(pos):
                 if(allele_count == 4):
                     temp_dict[pos] = "quadallelic"
 
-    return(temp_dict)
+    return temp_dict
 
 # IF GAPS ARE ENABLED:
 def create_site_dict_gap(pos):
@@ -192,7 +192,7 @@ def create_site_dict_gap(pos):
                     if(allele_count == 4):
                         temp_dict[pos] = "quadallelic"
 
-    return(temp_dict)
+    return temp_dict
 
 def process_nonbase(pos):
 
@@ -208,7 +208,7 @@ def process_nonbase(pos):
     non_base_taxa = itemgetter(*non_base_index)(sorted(spp_list))
 
     if len(non_base_index) == 1:
-        return(non_base_taxa)
+        return non_base_taxa
     if len(non_base_index) > 1:
         return(";".join(sorted(non_base_taxa)))
 
@@ -226,7 +226,7 @@ def process_nonbase_gap(pos):
     non_base_taxa = itemgetter(*non_base_index)(sorted(spp_list))
 
     if len(non_base_index) == 1:
-        return(non_base_taxa)
+        return non_base_taxa
     if len(non_base_index) > 1:
         return(";".join(sorted(non_base_taxa)))
 
@@ -389,7 +389,7 @@ def reprocess_nonbase(nonbase_df):
 
     converted_nonbase = converted_nonbase.sort_values(by=['Zeroed_Site_Position']).reindex(columns=final_columns).reset_index().drop('index',axis=1)
     
-    return(converted_nonbase)
+    return converted_nonbase
 
 def process_singletons(pos):
 
@@ -407,7 +407,7 @@ def process_singletons(pos):
     singleton_taxa = itemgetter(*singelton_index)(sorted(spp_list))
 
     if len(singelton_index) == 1:
-        return(singleton_taxa)
+        return singleton_taxa
     if len(singelton_index) > 1:
         return(";".join(sorted(singleton_taxa)))
 
@@ -524,7 +524,7 @@ def getSplitSupport(alignment_path,info_gap,spp_string):
     if all_sites_df.shape[0] == 0:
         return -1
     else:
-        return(all_sites_df)
+        return all_sites_df
 
 def splitMain(alignment_path,info_gap,spp_list):
 
@@ -557,7 +557,7 @@ def splitMain(alignment_path,info_gap,spp_list):
             pool.close()
 
         else:
-            return(empty)
+            return empty
 
         # Process site patterns
         pattern_list = []
@@ -744,7 +744,7 @@ def splitMain(alignment_path,info_gap,spp_list):
             
             all_sites_df['Non_Base_Count'].fillna(0, inplace=True)
             
-            return(all_sites_df)
+            return all_sites_df
 
         else:
             return empty

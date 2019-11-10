@@ -3,7 +3,7 @@
 export(check.comparable)
 export(check.root)
 export(check.shared)
-export(compareClades)
+export(compare.clades)
 export(convertTipLabels)
 export(get.clades)
 export(get.comparable)

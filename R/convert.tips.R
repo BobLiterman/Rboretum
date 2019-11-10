@@ -1,17 +1,17 @@
-#' Convert Tip Labels
+#' Rboretum Tip Label Swapper
 #'
 #' This function takes a tree and changes tip labels based on a supplied dataframe
-#' @param tree Phylo object
+#' @param tree phylo object
 #' @param name_df Dataframe with name equivalencies
 #' @param from Column name with current tree tip IDs
 #' @param to Column name with desired IDs
-#' @return Tree objecct with converted names
+#' @return phylo object with converted names
 #' @export
 #' @examples
-#' convertTipLabels(tree,name_df,from,to)
+#' convert.tips(tree,name_df,from,to)
 #'
 
-convertTipLabels <- function(tree,name_df,from,to){
+convert.tips <- function(tree,name_df,from,to){
   tree_taxa <- tree$tip.label
 
   to <- as.character(to)

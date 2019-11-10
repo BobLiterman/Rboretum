@@ -28,6 +28,8 @@ compare.clades <- function(trees,tree_names,return_shared_only){
       stop("At least two trees are required for comparison.")
     } else if(!Rboretum::check.shared(trees)){
       stop("Trees do not share at least three common species.")
+    } else if(Rboretum::same.topology(trees)){
+      stop("Tree topologies are identical, and thus cannot be compared.")
     }
     
     tree_count <- length(trees)
@@ -42,6 +44,8 @@ compare.clades <- function(trees,tree_names,return_shared_only){
       stop("At least two trees are required for comparison.")
     } else if(!Rboretum::check.shared(trees)){
       stop("Trees do not share at least three common species.")
+    } else if(Rboretum::same.topology(trees)){
+      stop("Tree topologies are identical, and thus cannot be compared.")
     }
     
     tree_count <- length(trees)

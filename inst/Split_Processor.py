@@ -246,7 +246,7 @@ def reprocess_nonbase(nonbase_df):
         temp_row.loc[0,'Non_Base_Count'] = int(len(non_base_taxa))
 
         # If more than max_missing are missing, replace row
-        if len(spp_list) - len(non_base_taxa) >= 4:
+        if len(spp_list) - len(non_base_taxa) >= 3:
             
             non_base_index = [j for j,x in enumerate(spp_list) if x in non_base_taxa]
 

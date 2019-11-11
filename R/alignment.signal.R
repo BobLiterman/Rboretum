@@ -15,15 +15,15 @@
 #' mySpecies <- c('Spp1','Spp2','Spp3'...)
 #'
 #' # Gaps are indels
-#' get.alignment.signal(myAlignPath,mySpecies,informative_gaps = TRUE)
+#' alignment.signal(myAlignPath,mySpecies,informative_gaps = TRUE)
 #'
 #' # Gaps are missing data
-#' get.alignment.signal(myAlignPath,mySpecies,informative_gaps = FALSE)
+#' alignment.signal(myAlignPath,mySpecies,informative_gaps = FALSE)
 #'
 #' # Add alignment name
-#' get.alignment.signal(myAlignPath,mySpecies,informative_gaps = FALSE, alignment_name = 'gene_XYZ')
+#' alignment.signal(myAlignPath,mySpecies,informative_gaps = FALSE, alignment_name = 'gene_XYZ')
 #'
-get.alignment.signal <- function(alignment_path,species_info,informative_gaps,alignment_name){
+alignment.signal <- function(alignment_path,species_info,informative_gaps,alignment_name){
 
   # Set whether gaps are treated as missing data or indels
   if(missing(informative_gaps)){

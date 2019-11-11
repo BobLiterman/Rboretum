@@ -9,10 +9,10 @@
 #' @return The same split table from getAllSplits(tree), but with a support column listing total site counts supporting each split
 #' @export
 #' @examples
-#' getTreeSupport(tree,signal)
+#' tree.support(tree,signal)
 #'
 
-getTreeSupport <- function(tree,signal,existing_splits,max_missing){
+tree.support <- function(tree,signal,existing_splits,max_missing){
 
   if(missing(existing_splits)){
     existing_splits <- FALSE

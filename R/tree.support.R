@@ -76,7 +76,7 @@ tree.support <- function(signal,tree,max_missing,existing_splits){
 
   non_root_clades <- non_root_splits %>% pull(Clade) %>% as.character()
 
-  root_support <- tableCount(biallelic_root_splits,root_clades[1])+tableCount(triplus_splits,root_clades[1])+tableCount(triplus_splits,root_clades[2])
+  root_support <- tableCount(biallelic_root_splits,root_clade)
 
   non_root_support <- c()
 

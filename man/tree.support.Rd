@@ -2,25 +2,24 @@
 % Please edit documentation in R/tree.support.R
 \name{tree.support}
 \alias{tree.support}
-\title{Get Alignment Support for Specific Topology}
+\title{Rboretum Alignment Signal Support Mapper}
 \usage{
-tree.support(tree, signal, existing_splits, max_missing)
+tree.support(signal, tree, max_missing, existing_splits)
 }
 \arguments{
-\item{tree}{Rooted phylo object}
+\item{signal}{Output table from alignment.signal()}
 
-\item{signal}{Output table from getAlignmentSignal run with same taxa as in tree}
+\item{tree}{Rooted phylo object [Note: Taxa must EXACTLY match those passed to alignment.signal()]}
 
-\item{existing_splits}{OPTIONAL: Should be output of getTreeSupport from the same tree, run with other alignments}
+\item{max_missing}{OPTIONAL: Number of missing sites allowed in alignment column [Default: 0]}
 
-\item{max_missing}{x}
+\item{existing_splits}{OPTIONAL: Output from previous tree.support() using the same tree, run with new alignment/missing combination}
 }
 \value{
-The same split table from getAllSplits(tree), but with a support column listing total site counts supporting each split
+The same split table from get.splits(tree), but with a support column for the specfied alignment/missing combination
 }
 \description{
-Given a (1) rooted tree, and
-        (2) the signal output from getAlignmentSignal from an alignment and matched set of taxa, this function calculates alignment support for each split
+This function computes the alignment support for a specified tree, processing signal from all alignment columns with <= 'max_missing' missing taxa [from output of alignment.signal()]. Signal from multiple alignments/missing combinations can be added to the same table by passing the output of tree.support() to the 'existing_splits' argument
 }
 \examples{
 tree.support(tree,signal)

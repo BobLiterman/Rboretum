@@ -91,8 +91,8 @@ compare.clades <- function(trees,tree_names,return_shared_only){
   if(return_shared_only){
     split_df <- split_df %>% 
       filter(Tree_Count == tree_count) %>%
-      select(Clade,Clade_Size) %>%
-      return()
+      select(Clade,Clade_Size)
+    return(split_df)
   } else{
     
     split_df <- split_df %>%

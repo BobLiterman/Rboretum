@@ -1,4 +1,4 @@
-#' Rboretum Tree Plotter
+#' Rboretum Basic Tree Plotter
 #' 
 #' Given a phylo object (tree), this ggtree wrapper returns a ggtree plot object, adjusted with possible arguments
 #' @usage myPlot <- treePlotter(tree=myTree,...)
@@ -17,18 +17,18 @@
 #' @export
 #' @examples
 #' # Print tree with bootstrap labels
-#' treePlotter(tree)
+#' tree.plot(tree)
 #' 
 #' # Print tree with no node labels
-#' treePlotter(tree,node_label='none')
+#' tree.plot(tree,node_label='none')
 #'
 #' # Print tree with thicker branches
-#' treePlotter(tree,branch_weight=3)
+#' tree.plot(tree,branch_weight=3)
 #' 
 #' # Print tree with buffer on right side to accomodate longer tip labels
-#' treePlotter(tree,xmax=10)
+#' tree.plot(tree,xmax=10)
 
-treePlotter <- function(tree,branch_length,branch_weight,node_label,node_size,node_nudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax){
+tree.plot <- function(tree,branch_length,branch_weight,node_label,node_size,node_nudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax){
   
   if(missing(tree)){
     stop("No tree provided.")

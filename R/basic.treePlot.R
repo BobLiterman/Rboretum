@@ -17,18 +17,18 @@
 #' @export
 #' @examples
 #' # Print tree with bootstrap labels
-#' tree.plot(tree)
+#' basic.treePlot(tree)
 #' 
 #' # Print tree with no node labels
-#' tree.plot(tree,node_label='none')
+#' basic.treePlot(tree,node_label='none')
 #'
 #' # Print tree with thicker branches
-#' tree.plot(tree,branch_weight=3)
+#' basic.treePlot(tree,branch_weight=3)
 #' 
 #' # Print tree with buffer on right side to accomodate longer tip labels
-#' tree.plot(tree,xmax=10)
+#' basic.treePlot(tree,xmax=10)
 
-tree.plot <- function(tree,branch_length,branch_weight,node_label,node_size,node_nudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax){
+basic.treePlot <- function(tree,branch_length,branch_weight,node_label,node_size,node_nudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax){
   
   if(missing(tree)){
     stop("No tree provided.")

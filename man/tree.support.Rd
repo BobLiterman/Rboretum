@@ -4,7 +4,18 @@
 \alias{tree.support}
 \title{Rboretum Alignment Signal Support Mapper}
 \usage{
-tree.support(signal, tree, max_missing, existing_splits)
+tree.support(
+  signal,
+  tree,
+  max_missing,
+  include_gap,
+  include_biallelic,
+  include_triallelic,
+  include_quadallelic,
+  include_pentallelic,
+  only_gap,
+  existing_splits
+)
 }
 \arguments{
 \item{signal}{Output table from alignment.signal()}
@@ -12,6 +23,18 @@ tree.support(signal, tree, max_missing, existing_splits)
 \item{tree}{Rooted phylo object [Note: Taxa must EXACTLY match those passed to alignment.signal()]}
 
 \item{max_missing}{OPTIONAL: Number of missing sites allowed in alignment column [Default: 0]}
+
+\item{include_gap}{OPTIONAL: TRUE or FALSE; Count sites with gap positions ('-') as part of total support [Default: TRUE]}
+
+\item{include_biallelic}{OPTIONAL: TRUE or FALSE; Count sites with biiallelic variation as part of total support [Default: TRUE]}
+
+\item{include_triallelic}{OPTIONAL: TRUE or FALSE; Count sites with triallelic variation as part of total support [Default: TRUE]}
+
+\item{include_quadallelic}{OPTIONAL: TRUE or FALSE; Count sites with quadallelic variation as part of total support [Default: TRUE]}
+
+\item{include_pentallelic}{OPTIONAL: TRUE or FALSE; Count sites with pentallelic variation as part of total support [Default: TRUE]}
+
+\item{only_gap}{OPTIONAL: TRUE or FALSE; Only count sites with gap positions ('-') as part of total support [Default: FALSE]#'}
 
 \item{existing_splits}{OPTIONAL: Output from previous tree.support() using the same tree, run with new alignment/missing combination}
 }

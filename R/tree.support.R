@@ -4,6 +4,12 @@
 #' @param signal Output table from alignment.signal()
 #' @param tree Rooted phylo object [Note: Taxa must EXACTLY match those passed to alignment.signal()]
 #' @param max_missing OPTIONAL: Number of missing sites allowed in alignment column [Default: 0]
+#' @param include_gap OPTIONAL: TRUE or FALSE; Count sites with gap positions ('-') as part of total support [Default: TRUE]
+#' @param include_biallelic OPTIONAL: TRUE or FALSE; Count sites with biiallelic variation as part of total support [Default: TRUE]
+#' @param include_triallelic OPTIONAL: TRUE or FALSE; Count sites with triallelic variation as part of total support [Default: TRUE]
+#' @param include_quadallelic OPTIONAL: TRUE or FALSE; Count sites with quadallelic variation as part of total support [Default: TRUE]
+#' @param include_pentallelic OPTIONAL: TRUE or FALSE; Count sites with pentallelic variation as part of total support [Default: TRUE]
+#' @param only_gap OPTIONAL: TRUE or FALSE; Only count sites with gap positions ('-') as part of total support [Default: FALSE]#' 
 #' @param existing_splits OPTIONAL: Output from previous tree.support() using the same tree, run with new alignment/missing combination
 #' @return The same split table from get.splits(tree), but with a support column for the specfied alignment/missing combination
 #' @export
@@ -11,10 +17,46 @@
 #' tree.support(tree,signal)
 #'
 
-tree.support <- function(signal,tree,max_missing,existing_splits){
+tree.support <- function(signal,tree,max_missing,include_gap,include_biallelic,include_triallelic,include_quadallelic,include_pentallelic,only_gap,existing_splits){
 
   if(missing(max_missing)){
     max_missing <- 0
+  }
+  
+  if(missing(include_gap)){
+    include_gap <- TRUE
+  } else if (!is.logical(include_gap)){
+    include_gap <- TRUE
+  }
+  
+  if(missing(include_biallelic)){
+    include_biallelic <- TRUE
+  } else if (!is.logical(include_biallelic)){
+    include_biallelic <- TRUE
+  }
+  
+  if(missing(include_triallelic)){
+    include_triallelic <- TRUE
+  } else if (!is.logical(include_triallelic)){
+    include_triallelic <- TRUE
+  }
+  
+  if(missing(include_quadallelic)){
+    include_quadallelic <- TRUE
+  } else if (!is.logical(include_quadallelic)){
+    include_quadallelic <- TRUE
+  }
+  
+  if(missing(include_pentallelic)){
+    include_pentallelic <- TRUE
+  } else if (!is.logical(include_pentallelic)){
+    include_pentallelic <- TRUE
+  }
+  
+  if(missing(only_gap)){
+    only_gap <- FALSE
+  } else if (!is.logical(only_gap)){
+    only_gap <- FALSE
   }
   
   if(missing(existing_splits)){
@@ -32,9 +74,6 @@ tree.support <- function(signal,tree,max_missing,existing_splits){
     stop("Error in ape::is.rooted. Is 'tree' a phylo object?")
   } else if(!ape::is.rooted(tree)){
     stop("Tree must be rooted for tree.support")}
-  
-  signal <- signal %>% 
-    filter(Non_Base_Count <= max_missing)
   
   signal_taxa <- signal %>%
     filter(!is.na(Split_1)) %>%
@@ -54,7 +93,54 @@ tree.support <- function(signal,tree,max_missing,existing_splits){
     print("Signal Taxa:")
     print(signal_taxa)
     stop("Taxa from signal analysis doesn't match that from tree.")
-    }
+  }
+  
+  informative_patterns <- c('non_base_biallelic','non_base_gap_biallelic',
+                            'non_base_triallelic','non_base_gap_triallelic',
+                            'non_base_quadallelic','non_base_gap_quadallelic',
+                            'non_base_pentallelic','non_base_gap_pentallelic',
+                            'biallelic','gap_biallelic',
+                            'triallelic','gap_triallelic',
+                            'quadallelic','gap_quadallelic',
+                            'pentallelic','gap_pentallelic')
+  signal <- signal %>% 
+    filter(Non_Base_Count <= max_missing) %>%
+    filter(Site_Pattern %in% informative_patterns)
+  
+  if(!include_gap){
+    if(only_gap){
+      stop("Cannot only use (only_gap) and exclude (include_gap) gap positions.") }
+    signal <- signal %>%
+      filter(!str_detect(Site_Pattern,'pentallelic')) %>%
+      filter(!str_detect(Site_Pattern,'gap'))
+  }
+  
+  if(!include_biallelic){
+    signal <- signal %>%
+      filter(!str_detect(Site_Pattern,'biallelic'))
+  }
+  
+  if(!include_triallelic){
+    signal <- signal %>%
+      filter(!str_detect(Site_Pattern,'triallelic'))
+  }
+  
+  if(!include_quadallelic){
+    signal <- signal %>%
+      filter(!str_detect(Site_Pattern,'quadallelic'))
+  }
+  
+  if(!include_pentallelic){
+    signal <- signal %>%
+      filter(!str_detect(Site_Pattern,'pentallelic'))
+  }
+  
+  if(only_gap){
+    if(!include_gap){
+      stop("Cannot only use (only_gap) and exclude (include_gap) gap positions.") }
+    signal <- signal %>%
+      filter(str_detect(Site_Pattern,'pentallelic') | str_detect(Site_Pattern,'gap'))
+  }
 
   splits <- Rboretum::get.splits(tree) %>% mutate(Clade = as.character(Clade),Mirror_Clade = as.character(Mirror_Clade))
   new_clades <- splits %>% pull(Clade) %>% as.character() %>% sort()
@@ -62,26 +148,19 @@ tree.support <- function(signal,tree,max_missing,existing_splits){
   biallelic_root <- c('biallelic','gap_biallelic')
   biallelic_root_splits <- signal %>% filter(Site_Pattern %in% biallelic_root) %>% select(starts_with('Split_')) %>% unlist() %>% table()
 
-  biallelic <- c('biallelic','gap_biallelic','non_base_biallelic','non_base_gap_biallelic')
-  biallelic_splits <- signal %>% filter(Site_Pattern %in% biallelic) %>% select(starts_with('Split_')) %>% unlist() %>% table()
-  
-  triplus <- c('non_base_pentallelic','non_base_gap_pentallelic','non_base_quadallelic','non_base_gap_quadallelic','non_base_triallelic','non_base_gap_triallelic','triallelic','gap_triallelic','quadallelic','gap_quadallelic','pentallelic','gap_pentallelic')
-  triplus_splits <- signal %>% filter(Site_Pattern %in% triplus) %>% select(starts_with('Split_')) %>% unlist() %>% table()
+  biplus <- c('biallelic','gap_biallelic','non_base_biallelic','non_base_gap_biallelic','non_base_pentallelic','non_base_gap_pentallelic','non_base_quadallelic','non_base_gap_quadallelic','non_base_triallelic','non_base_gap_triallelic','triallelic','gap_triallelic','quadallelic','gap_quadallelic','pentallelic','gap_pentallelic')
+  biplus_splits <- signal %>% filter(Site_Pattern %in% biplus) %>% select(starts_with('Split_')) %>% unlist() %>% table()
 
   root_split <- splits %>% filter(is.na(Split_Node))
-  non_root_splits <- splits %>% filter(!is.na(Split_Node))
-
   root_clade <- root_split$Clade %>% as.character()
-  root_clades <- sort(c(root_clade,root_split$Mirror_Clade %>% as.character()))
-
-  non_root_clades <- non_root_splits %>% pull(Clade) %>% as.character()
-
   root_support <- tableCount(biallelic_root_splits,root_clade)
-
+  
+  non_root_splits <- splits %>% filter(!is.na(Split_Node))
+  non_root_clades <- non_root_splits %>% pull(Clade) %>% as.character()
   non_root_support <- c()
 
   for(clade in non_root_clades){
-    non_root_support <- c(non_root_support,(sum(tableCount(biallelic_splits,clade),tableCount(triplus_splits,clade))))
+    non_root_support <- c(non_root_support,tableCount(biplus_splits,clade))
   }
 
   support_df <- data.frame(Clade = c(root_clade,non_root_clades),Support = c(root_support,non_root_support)) %>%

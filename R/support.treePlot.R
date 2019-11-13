@@ -9,6 +9,8 @@
 #'   \item Single numeric value: All nodepoint labels will be this size [Default: 1]
 #'   \item c(x,y): Support values will be re-scaled from numeric values x-y
 #' }
+#' @param node_alpha OPTIONAL: ggplot2 alpha value for geom_nodepoint [Default: 0.9]
+#' @param node_fill OPTIONAL: ggplot2 fill value for geom_nodepoint [Default: "red"]
 #' @param clade_support OPTIONAL: Output from compare.clades(). Will colorize nodepoint labels based on how many trees in multiPhylo contain that split
 #' @param node_label OPTIONAL: Choice of node labels include:
 #' \itemize{
@@ -32,7 +34,7 @@
 #' # Print tree with bootstrap labels
 #' basic.treePlot(tree)
 
-support.treePlot <- function(tree,tree_support,support_scales,clade_support,branch_length,branch_weight,node_label,node_size,node_nudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax){
+support.treePlot <- function(tree,tree_support,support_scales,node_alpha,node_color,clade_support,branch_length,branch_weight,node_label,node_size,node_nudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax){
   
   if(has_error(ape::is.rooted(tree))){
     stop("Error in ape::is.rooted. Is 'tree' a phylo object?")
@@ -51,7 +53,7 @@ support.treePlot <- function(tree,tree_support,support_scales,clade_support,bran
   } else{
     support_clades <- tree_support %>% pull(Clade) %>% as.character() %>% sort()
     tree_clades <- Rboretum::get.splits(tree) %>% pull(Clade) %>% as.character() %>% sort()
-    if(all(new_clades == old_clades) & all(old_clades == new_clades)){
+    if(all(support_clades == tree_clades) & all(tree_clades == support_clades)){
       support_cols <- 5:ncol(tree_support)
       dummy_col <- FALSE
     } else{
@@ -61,24 +63,52 @@ support.treePlot <- function(tree,tree_support,support_scales,clade_support,bran
   
   if(missing(support_scales)){
     support_scales <-  1
-  } else if(is.character(support_scales) & support_scales == "log"){
-    support_scales <- ifelse(dummy_col,1,support_scales)
-  } else if(is.numeric(support_scales) & length(support_scales) == 1){
-    support_scales <- support_scales
-  } else if(is.numeric(support_scales) & length(support_scales) == 2 & support_scales[1] <= support_scales[2]){
-    support_scales <- max(support_scales)
-  } else{
-    stop("Invalid argument for 'support_scales'")
+  } else if(is.character(support_scales)){
+    if(support_scales == "log"){
+      if(dummy_col){
+        support_scales <- 1
+      }
+    } else { stop("Invalid argument for 'support_scales'") }
+  } else if(is.numeric(support_scales)){
+    if(length(support_scales) == 1){
+      support_scales <- support_scales
+    } else if (length(support_scales) == 2 & (support_scales[1] <= support_scales[2])){
+      if(dummy_col){
+        support_scales <- max(support_scales)
+      }
+    } else{ stop("Invalid argument for 'support_scales'") } 
+  } else{ stop("Invalid argument for 'support_scales'") }
+  
+  if(missing(node_alpha)){
+    node_alpha <- 0.9
+  } else if(!is.numeric(node_alpha)){
+    node_alpha <- 0.9
+  }
+  
+  if(missing(node_color)){
+    node_color <- "red"
+  } else if(!node_color %in% colors()){
+    node_color <- "red"
   }
   
   if(missing(clade_support)){
-    clade_support <- FALSE
+    if(dummy_col){ 
+      stop("'tree_support' contained no signal columns and 'clade_support' missing. No data to map onto tree!") 
+    } else{
+      clade_support <- FALSE 
+      tree_support$Tree_Count <- NA
+    }
   } else{
     if(all(names(clade_support)==c('Clade','Tree_Count','Clade_Size','Tree_Percent','Trees_with_Clade'))){
       tree_clades <- Rboretum::get.clades(tree) %>% sort()
       support_clades <- clade_support$Clade %>% as.character() %>% sort()
+      
       if(all(tree_clades %in% support_clades)){
-        tree_support <- left_join(tree_support,select(clade_support,Clade,Tree_Percent),by='Clade')
+        tree_support <- tree_support %>%
+          mutate(Clade = as.character(Clade))
+        clade_support <- clade_support %>%
+          mutate(Clade = as.character(Clade))
+        tree_support <- left_join(tree_support,select(clade_support,Clade,Tree_Count),by='Clade')
         clade_support <- TRUE
       } else{ stop("Clades from tree absent from 'clade_support'.")}
     } else { stop("'clade_support' argument must be output from compare.clades(return_shared_only=FALSE)") }
@@ -98,11 +128,11 @@ support.treePlot <- function(tree,tree_support,support_scales,clade_support,bran
     if(!is.numeric(branch_weight)){
       bWeight<-FALSE
     } else{ bWeight <- TRUE }
-    }
+  }
   
   if(missing(node_label)){
     node_label <- 'none'
-  } else if(!any(node_label ==  c('bs','node','none','support'))){
+  } else if(!node_label %in%  c('bs','node','none','support')){
     node_label <- 'none'
   }
   
@@ -128,7 +158,7 @@ support.treePlot <- function(tree,tree_support,support_scales,clade_support,bran
     if(!is.numeric(taxa_size)){
       tSize<-FALSE
     } else{ tSize <- TRUE }
-    }
+  }
   
   if(missing(taxa_italic)){
     taxa_italic <- FALSE
@@ -160,54 +190,127 @@ support.treePlot <- function(tree,tree_support,support_scales,clade_support,bran
     } else{ extendX <- TRUE }
   }
   
+  # Create ggtree_df
+  
+  if(!dummy_col){
+    
+    if(length(support_cols) == 1){
+      tree_support$support <- tree_support[5]
+    } else{
+      tree_support$support <- rowSums(tree_support[,support_cols])
+    }
+    
+    if(length(support_scales)==1){
+      if(support_scales == "log"){
+        
+        non_zero_support <- tree_support %>% filter(support != 0)
+        zero_support <- tree_support %>% filter(support == 0)
+        
+        non_zero_support$scaled_support <- log(non_zero_support$support)
+        zero_support$scaled_support <- 0
+        
+        tree_support <- non_zero_support %>%
+          rbind(zero_support) %>%
+          arrange(Split_Node)
+        
+      } else if(is.numeric(support_scales)){
+        
+        non_zero_support <- tree_support %>% filter(support != 0)
+        zero_support <- tree_support %>% filter(support == 0)
+        
+        non_zero_support$scaled_support <- support_scales
+        zero_support$scaled_support <- 0
+        
+        tree_support <- non_zero_support %>%
+          rbind(zero_support) %>%
+          arrange(Split_Node)
+        
+      } else{ stop("Invalid argument for 'support_scales'") }
+    } else if(is.numeric(support_scales) & length(support_scales) == 2){
+      
+      non_zero_support <- tree_support %>% filter(support != 0)
+      zero_support <- tree_support %>% filter(support == 0)
+      
+      non_zero_support$scaled_support <- scales::rescale(non_zero_support$support,to=support_scales)
+      zero_support$scaled_support <- 0
+      
+      tree_support <- non_zero_support %>%
+        rbind(zero_support) %>%
+        arrange(Split_Node)
+    } else{ stop("Invalid argument for 'support_scales'") }
+    
+    ggtree_df <- tree_support %>%
+      select(Split_Node,Split_Bootstrap,support,scaled_support,Tree_Count) %>%
+      rename(node = 'Split_Node', bootstrap = 'Split_Bootstrap', tree_count = 'Tree_Count') %>%
+      filter(!is.na(node))
+    
+  } else{
+    ggtree_df <- tree_support %>%
+      select(Split_Node,Split_Bootstrap,Tree_Count) %>%
+      mutate(support = NA,scaled_support = support_scales) %>%
+      rename(node = 'Split_Node', bootstrap = 'Split_Bootstrap', tree_count = 'Tree_Count') %>%
+      filter(!is.na(node))
+  }
+  
   # Create base tree
   
   if(bWeight & branch_length){
-    return_tree <- ggtree(tree,size=branch_weight)
+    return_tree <- ggtree(tree,size=branch_weight) %<+% ggtree_df
   } else if(bWeight & !branch_length){
-    return_tree <- ggtree(tree,size=branch_weight,branch.length = 'none')
+    return_tree <- ggtree(tree,size=branch_weight,branch.length = 'none') %<+% ggtree_df
   } else if(!bWeight & branch_length){
-    return_tree <- ggtree(tree)
+    return_tree <- ggtree(tree) %<+% ggtree_df
   } else if(!bWeight & !branch_length){
-    return_tree <- ggtree(tree,branch.length = 'none')
+    return_tree <- ggtree(tree,branch.length = 'none') %<+% ggtree_df
   }
   
   # Process node labels
-  
   if(node_label == "none"){
     return_tree <- return_tree
-  } else{
+  } else if(node_label == "bs"){
     if(nNudge){
       if(nSize){
-        if(node_label == "node"){
-          return_tree <- return_tree + geom_nodelab(nudge_x = node_nudge,size=node_size,aes(label=node))
-        } else{
-          return_tree <- return_tree + geom_nodelab(nudge_x = node_nudge,size=node_size)
-        }
+        return_tree <- return_tree + geom_nodelab(nudge_x = node_nudge,size=node_size,aes(label=bootstrap))
       } else{
-        if(node_label == "node"){
-          return_tree <- return_tree + geom_nodelab(nudge_x = node_nudge,aes(label=node))
-          } else{
-            return_tree <- return_tree + geom_nodelab(nudge_x = node_nudge)
-          }
+        return_tree <- return_tree + geom_nodelab(nudge_x = node_nudge,aes(label=bootstrap))
       }
     } else{
       if(nSize){
-        if(node_label == "node"){
-          return_tree <- return_tree + geom_nodelab(size=node_size,aes(label=node))
-        } else{
-          return_tree <- return_tree + geom_nodelab(size=node_size)
-        }
+        return_tree <- return_tree + geom_nodelab(size=node_size,aes(label=bootstrap))
       } else{
-        if(node_label == "node"){
-          return_tree <- return_tree + geom_nodelab(aes(label=node))
-        } else{
-          return_tree <- return_tree + geom_nodelab()
-        }
+        return_tree <- return_tree + geom_nodelab(aes(label=bootstrap))
+      }
+    }
+  } else if(node_label == "node"){
+    if(nNudge){
+      if(nSize){
+        return_tree <- return_tree + geom_nodelab(nudge_x = node_nudge,size=node_size,aes(label=node))
+      } else{
+        return_tree <- return_tree + geom_nodelab(nudge_x = node_nudge,aes(label=node))
+      }
+    } else{
+      if(nSize){
+        return_tree <- return_tree + geom_nodelab(size=node_size,aes(label=node))
+      } else{
+        return_tree <- return_tree + geom_nodelab(aes(label=node))
+      }
+    }
+  } else if(node_label == "support"){
+    if(nNudge){
+      if(nSize){
+        return_tree <- return_tree + geom_nodelab(nudge_x = node_nudge,size=node_size,aes(label=support))
+      } else{
+        return_tree <- return_tree + geom_nodelab(nudge_x = node_nudge,aes(label=support))
+      }
+    } else{
+      if(nSize){
+        return_tree <- return_tree + geom_nodelab(size=node_size,aes(label=support))
+      } else{
+        return_tree <- return_tree + geom_nodelab(aes(label=support))
       }
     }
   }
-  
+
   # Process tip labels
   if(!tAlign & !tOffset){
     if(tSize & taxa_italic){
@@ -285,8 +388,8 @@ support.treePlot <- function(tree,tree_support,support_scales,clade_support,bran
         } else{
           return_tree <- return_tree + geom_tiplab(hjust=1,offset=taxa_offset)
         }
-        }
-      } else{
+      }
+    } else{
       if(tSize & taxa_italic){
         return_tree <- return_tree + geom_tiplab(size=taxa_size,fontface='italic',hjust=0,offset=taxa_offset,align = TRUE)
       } else if(tSize & !taxa_italic){
@@ -299,11 +402,25 @@ support.treePlot <- function(tree,tree_support,support_scales,clade_support,bran
     }
   }
   
-  # Return with or without extended x-axis
-  
   if(extendX){
-    return(return_tree + ggplot2::xlim(0,xmax))
+    return_tree <- return_tree + ggplot2::xlim(0,xmax)
   } else{
-    return(return_tree)
+    return_tree <- return_tree
   }
+  
+  if(!clade_support){
+    return_tree <- return_tree + 
+      geom_nodepoint(alpha=node_alpha,aes(size=scaled_support,color=node_color,fill=node_color)) + 
+      scale_size_identity()
+    
+  } else{
+    return_tree <- return_tree + 
+      geom_nodepoint(alpha=node_alpha,aes(size=scaled_support,color=as.integer(tree_count))) + 
+      scale_size_identity() +
+      scale_color_viridis(breaks = sort(unique(ggtree_df$tree_count)),name = "Trees with Split") +
+      theme(legend.position="right") +
+      guides(color = guide_legend(size=4))
+  }
+  
+  return(return_tree)
 }

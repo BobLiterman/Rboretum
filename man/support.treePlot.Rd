@@ -8,6 +8,8 @@ support.treePlot(
   tree,
   tree_support,
   support_scales,
+  node_alpha,
+  node_color,
   clade_support,
   branch_length,
   branch_weight,
@@ -32,6 +34,8 @@ support.treePlot(
   \item Single numeric value: All nodepoint labels will be this size [Default: 1]
   \item c(x,y): Support values will be re-scaled from numeric values x-y
 }}
+
+\item{node_alpha}{OPTIONAL: ggplot2 alpha value for geom_nodepoint [Default: 0.9]}
 
 \item{clade_support}{OPTIONAL: Output from compare.clades(). Will colorize nodepoint labels based on how many trees in multiPhylo contain that split}
 
@@ -60,6 +64,8 @@ support.treePlot(
 \item{taxa_offset}{OPTIONAL: Set ggtree tip label offset}
 
 \item{xmax}{OPTIONAL: Set ggplot xlim upper limit (e.g if long tip labels run off plot)}
+
+\item{node_fill}{OPTIONAL: ggplot2 fill value for geom_nodepoint [Default: "red"]}
 }
 \value{
 ggtree object

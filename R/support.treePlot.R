@@ -1,13 +1,21 @@
-#' Rboretum Basic Tree Plotter
+#' Rboretum Site and Node Support Plotter
 #' 
-#' Given a phylo object (tree), this ggtree wrapper returns a ggtree plot object, adjusted with possible arguments
-#' @usage myPlot <- treePlotter(tree=myTree,...)
-#' @param tree Phylo object
-#' @param node_label OPTIONAL: Node label choices include:
+#' Given a phylo object (tree), and the output from tree.support(), this function plots the tree [adjusted with possible arguments] along with node support information
+#' @param tree Rooted phylo object
+#' @param tree_support  OPTIONAL: Output trom tree.support() run on the same tree
+#' @param support_scales OPTIONAL: Scaling factor for nodepoint labels. Options include:
 #' \itemize{
-#'   \item "none": No node labels
+#'   \item "log" - Log-converted support values
+#'   \item Single numeric value: All nodepoint labels will be this size [Default: 1]
+#'   \item c(x,y): Support values will be re-scaled from numeric values x-y
+#' }
+#' @param clade_support OPTIONAL: Output from compare.clades(). Will colorize nodepoint labels based on how many trees in multiPhylo contain that split
+#' @param node_label OPTIONAL: Choice of node labels include:
+#' \itemize{
+#'   \item "none": No node labels [Default]
 #'   \item "node": Node number
-#'   \item "bs": Bootstrap value [Default]
+#'   \item "bs": Bootstrap value
+#'   \item "support": Raw total support count
 #' }
 #' @param node_size OPTIONAL: Set ggtree node label size
 #' @param node_nudge OPTIONAL: Set ggtree node label nudge_x 
@@ -23,20 +31,57 @@
 #' @examples
 #' # Print tree with bootstrap labels
 #' basic.treePlot(tree)
-#' 
-#' # Print tree with no node labels
-#' basic.treePlot(tree,node_label='none')
-#'
-#' # Print tree with thicker branches
-#' basic.treePlot(tree,branch_weight=3)
-#' 
-#' # Print tree with buffer on right side to accomodate longer tip labels
-#' basic.treePlot(tree,xmax=10)
 
-basic.treePlot <- function(tree,branch_length,branch_weight,node_label,node_size,node_nudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax){
+support.treePlot <- function(tree,tree_support,support_scales,clade_support,branch_length,branch_weight,node_label,node_size,node_nudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax){
   
-  if(missing(tree)){
-    stop("No tree provided.")
+  if(has_error(ape::is.rooted(tree))){
+    stop("Error in ape::is.rooted. Is 'tree' a phylo object?")
+  } else if(!ape::is.rooted(tree)){
+    stop("Tree must be rooted for support.treePlot")}
+  
+  if(missing(tree_support)){
+    tree_support <- Rboretum::get.splits(tree) %>%
+      mutate(RBORETUM_DUMMY = 1)
+    dummy_col <- TRUE
+  } else if(!all(names(tree_support)[1:4] == c('Clade','Mirror_Clade','Split_Node','Split_Bootstrap'))){
+    stop("'tree_support' argument must be output from tree.support()")
+  } else if(ncol(tree_support)==4){
+    tree_support$RBORETUM_DUMMY <- 1
+    dummy_col <- TRUE
+  } else{
+    support_clades <- tree_support %>% pull(Clade) %>% as.character() %>% sort()
+    tree_clades <- Rboretum::get.splits(tree) %>% pull(Clade) %>% as.character() %>% sort()
+    if(all(new_clades == old_clades) & all(old_clades == new_clades)){
+      support_cols <- 5:ncol(tree_support)
+      dummy_col <- FALSE
+    } else{
+      stop("'tree' and 'tree_support' arguments contain different split information.")
+    }
+  }
+  
+  if(missing(support_scales)){
+    support_scales <-  1
+  } else if(is.character(support_scales) & support_scales == "log"){
+    support_scales <- ifelse(dummy_col,1,support_scales)
+  } else if(is.numeric(support_scales) & length(support_scales) == 1){
+    support_scales <- support_scales
+  } else if(is.numeric(support_scales) & length(support_scales) == 2 & support_scales[1] <= support_scales[2]){
+    support_scales <- max(support_scales)
+  } else{
+    stop("Invalid argument for 'support_scales'")
+  }
+  
+  if(missing(clade_support)){
+    clade_support <- FALSE
+  } else{
+    if(all(names(clade_support)==c('Clade','Tree_Count','Clade_Size','Tree_Percent','Trees_with_Clade'))){
+      tree_clades <- Rboretum::get.clades(tree) %>% sort()
+      support_clades <- clade_support$Clade %>% as.character() %>% sort()
+      if(all(tree_clades %in% support_clades)){
+        tree_support <- left_join(tree_support,select(clade_support,Clade,Tree_Percent),by='Clade')
+        clade_support <- TRUE
+      } else{ stop("Clades from tree absent from 'clade_support'.")}
+    } else { stop("'clade_support' argument must be output from compare.clades(return_shared_only=FALSE)") }
   }
   
   if(missing(branch_length)){
@@ -56,9 +101,9 @@ basic.treePlot <- function(tree,branch_length,branch_weight,node_label,node_size
     }
   
   if(missing(node_label)){
-    node_label <- 'bs'
-  } else if(!any(node_label ==  c('bs','node','none'))){
-    node_label <- 'bs'
+    node_label <- 'none'
+  } else if(!any(node_label ==  c('bs','node','none','support'))){
+    node_label <- 'none'
   }
   
   if(missing(node_size)){

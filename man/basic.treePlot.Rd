@@ -13,7 +13,12 @@ myPlot <- treePlotter(tree=myTree,...)
 
 \item{branch_weight}{OPTIONAL: Set ggtree branch thickness}
 
-\item{node_label}{OPTIONAL: 'none' [no node labels]; 'node' [print node numbers]; 'bs' [Default: print node labels from tree (e.g. bootstrap)]}
+\item{node_label}{OPTIONAL: Node label choices include:
+\itemize{
+  \item "none": No node labels
+  \item "node": Node number
+  \item "bs": Bootstrap value [Default]
+}}
 
 \item{node_size}{OPTIONAL: Set ggtree node label size}
 

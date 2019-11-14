@@ -31,13 +31,14 @@
 #' @param taxa_align OPTIONAL: 'left' or 'right' tip label alignment [Default: No alignment]
 #' @param taxa_offset OPTIONAL: Set ggtree tip label offset
 #' @param xmax OPTIONAL: Set ggplot xlim upper limit (e.g if long tip labels run off plot)
+#' @param reverse_x OPTIONAL: TRUE [plot tree with tips on left]; FALSE [Default: plot tree with tips on right]
 #' @return ggtree object
 #' @export
 #' @examples
 #' # Print tree with bootstrap labels
 #' basic.treePlot(tree)
 
-support.treePlot <- function(tree,tree_support,support_scales,node_alpha,node_color,legend_shape_size,legend_font_size,legend_title_size,clade_support,branch_length,branch_weight,node_label,node_size,node_nudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax){
+support.treePlot <- function(tree,tree_support,support_scales,node_alpha,node_color,legend_shape_size,legend_font_size,legend_title_size,clade_support,branch_length,branch_weight,node_label,node_size,node_nudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax,reverse_x){
   
   if(has_error(ape::is.rooted(tree))){
     stop("Error in ape::is.rooted. Is 'tree' a phylo object?")
@@ -211,6 +212,14 @@ support.treePlot <- function(tree,tree_support,support_scales,node_alpha,node_co
     } else{ extendX <- TRUE }
   }
   
+  if(missing(reverse_x)){
+    reverseX <- FALSE
+  } else if((reverse_x != TRUE)){
+    reverseX <- FALSE
+  } else{
+    reverseX <- TRUE
+  }
+  
   # Create ggtree_df
   
   if(!dummy_col){
@@ -286,9 +295,13 @@ support.treePlot <- function(tree,tree_support,support_scales,node_alpha,node_co
   }
   
   if(extendX){
-    return_tree <- return_tree + ggplot2::xlim(0,xmax)
-  } else{
-    return_tree <- return_tree
+    if(!reverseX){
+      return_tree <- return_tree + ggplot2::xlim(0,xmax)
+    }
+  }
+  
+  if(reverseX){
+    return_tree <- return_tree + scale_x_reverse()
   }
   
   # Process tip labels

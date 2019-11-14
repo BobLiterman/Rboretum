@@ -18,6 +18,7 @@
 #' @param taxa_align OPTIONAL: 'left' or 'right' tip label alignment [Default: No alignment]
 #' @param taxa_offset OPTIONAL: Set ggtree tip label offset
 #' @param xmax OPTIONAL: Set ggplot xlim upper limit (e.g if long tip labels run off plot)
+#' @param reverse_x OPTIONAL: TRUE [plot tree with tips on left]; FALSE [Default: plot tree with tips on right]
 #' @return ggtree object
 #' @export
 #' @examples
@@ -33,7 +34,7 @@
 #' # Print tree with buffer on right side to accomodate longer tip labels
 #' basic.treePlot(tree,xmax=10)
 
-basic.treePlot <- function(tree,branch_length,branch_weight,node_label,node_size,node_nudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax){
+basic.treePlot <- function(tree,branch_length,branch_weight,node_label,node_size,node_nudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax,reverse_x){
   
   if(missing(tree)){
     stop("No tree provided.")
@@ -115,6 +116,14 @@ basic.treePlot <- function(tree,branch_length,branch_weight,node_label,node_size
     } else{ extendX <- TRUE }
   }
   
+  if(missing(reverse_x)){
+    reverseX <- FALSE
+  } else if((reverse_x != TRUE)){
+    reverseX <- FALSE
+  } else{
+    reverseX <- TRUE
+  }
+  
   # Create base tree
   
   if(bWeight & branch_length){
@@ -125,6 +134,16 @@ basic.treePlot <- function(tree,branch_length,branch_weight,node_label,node_size
     return_tree <- ggtree(tree)
   } else if(!bWeight & !branch_length){
     return_tree <- ggtree(tree,branch.length = 'none')
+  }
+  
+  if(extendX){
+    if(!reverseX){
+    return_tree <- return_tree + ggplot2::xlim(0,xmax)
+    }
+  }
+  
+  if(reverseX){
+    return_tree <- return_tree + scale_x_reverse()
   }
   
   # Process node labels
@@ -253,12 +272,6 @@ basic.treePlot <- function(tree,branch_length,branch_weight,node_label,node_size
       }
     }
   }
-  
-  # Return with or without extended x-axis
-  
-  if(extendX){
-    return(return_tree + ggplot2::xlim(0,xmax))
-  } else{
-    return(return_tree)
-  }
+
+  return(return_tree)
 }

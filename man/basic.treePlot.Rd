@@ -33,6 +33,8 @@ myPlot <- treePlotter(tree=myTree,...)
 \item{taxa_offset}{OPTIONAL: Set ggtree tip label offset}
 
 \item{xmax}{OPTIONAL: Set ggplot xlim upper limit (e.g if long tip labels run off plot)}
+
+\item{reverse_x}{OPTIONAL: TRUE [plot tree with tips on left]; FALSE [Default: plot tree with tips on right]}
 }
 \value{
 ggtree object

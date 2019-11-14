@@ -203,7 +203,7 @@ pies.treePlot <- function(tree,tree_support,support_scales,node_alpha,legend_sha
       extendX<-FALSE
     } else{ extendX <- TRUE }
   }
-  
+
   # Create ggtree_df
   
   tree_support$support <- rowSums(tree_support[,support_cols])
@@ -266,11 +266,9 @@ pies.treePlot <- function(tree,tree_support,support_scales,node_alpha,legend_sha
   }
   
   if(extendX){
-    return_tree <- return_tree + ggplot2::xlim(0,xmax)
-  } else{
-    return_tree <- return_tree
-  }
-  
+      return_tree <- return_tree + ggplot2::xlim(0,xmax)
+      }
+
   # Process tip labels
   if(!tAlign & !tOffset){
     if(tSize & taxa_italic){

@@ -6,11 +6,14 @@
 #' @param support_scales OPTIONAL: Scaling factor for nodepoint labels. Options include:
 #' \itemize{
 #'   \item "log" - Log-converted support values
-#'   \item Single numeric value: All nodepoint labels will be this size [Default: 1]
+#'   \item Single numeric value: All nodepoint labels will be this size [Default: 10]
 #'   \item c(x,y): Support values will be re-scaled from numeric values x-y
 #' }
 #' @param node_alpha OPTIONAL: ggplot2 alpha value for geom_nodepoint [Default: 0.9]
-#' @param node_fill OPTIONAL: ggplot2 fill value for geom_nodepoint [Default: "red"]
+#' @param node_color OPTIONAL: ggplot2 fill value for geom_nodepoint [Default: "red"]
+#' @param legend_shape_size OPTIONAL: ggplot2 size for legend icons [Default: 10]
+#' @param legend_font_size OPTIONAL: ggplot2 size for legend font [Default: 10]
+#' @param legend_title_size OPTIONAL: ggplot size for legend title [Default: 10]
 #' @param clade_support OPTIONAL: Output from compare.clades(). Will colorize nodepoint labels based on how many trees in multiPhylo contain that split
 #' @param node_label OPTIONAL: Choice of node labels include:
 #' \itemize{
@@ -34,7 +37,7 @@
 #' # Print tree with bootstrap labels
 #' basic.treePlot(tree)
 
-support.treePlot <- function(tree,tree_support,support_scales,node_alpha,node_color,clade_support,branch_length,branch_weight,node_label,node_size,node_nudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax){
+support.treePlot <- function(tree,tree_support,support_scales,node_alpha,node_color,legend_shape_size,legend_font_size,legend_title_size,clade_support,branch_length,branch_weight,node_label,node_size,node_nudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax){
   
   if(has_error(ape::is.rooted(tree))){
     stop("Error in ape::is.rooted. Is 'tree' a phylo object?")
@@ -62,11 +65,11 @@ support.treePlot <- function(tree,tree_support,support_scales,node_alpha,node_co
   }
   
   if(missing(support_scales)){
-    support_scales <-  1
+    support_scales <-  10
   } else if(is.character(support_scales)){
     if(support_scales == "log"){
       if(dummy_col){
-        support_scales <- 1
+        support_scales <- 10
       }
     } else { stop("Invalid argument for 'support_scales'") }
   } else if(is.numeric(support_scales)){
@@ -89,6 +92,24 @@ support.treePlot <- function(tree,tree_support,support_scales,node_alpha,node_co
     node_color <- "red"
   } else if(!node_color %in% colors()){
     node_color <- "red"
+  }
+  
+  if(missing(legend_shape_size)){
+    legend_shape_size <- 10
+  } else if(!is.numeric(legend_shape_size)){
+    legend_shape_size <- 10
+  }
+  
+  if(missing(legend_font_size)){
+    legend_font_size <- 10
+  } else if(!is.numeric(legend_font_size)){
+    legend_font_size <- 10
+  }
+  
+  if(missing(legend_title_size)){
+    legend_title_size <- 10
+  } else if(!is.numeric(legend_title_size)){
+    legend_title_size <- 10
   }
   
   if(missing(clade_support)){
@@ -264,53 +285,6 @@ support.treePlot <- function(tree,tree_support,support_scales,node_alpha,node_co
     return_tree <- ggtree(tree,branch.length = 'none') %<+% ggtree_df
   }
   
-  # Process node labels
-  if(node_label == "none"){
-    return_tree <- return_tree
-  } else if(node_label == "bs"){
-    if(nNudge){
-      if(nSize){
-        return_tree <- return_tree + geom_nodelab(nudge_x = node_nudge,size=node_size,aes(label=bootstrap))
-      } else{
-        return_tree <- return_tree + geom_nodelab(nudge_x = node_nudge,aes(label=bootstrap))
-      }
-    } else{
-      if(nSize){
-        return_tree <- return_tree + geom_nodelab(size=node_size,aes(label=bootstrap))
-      } else{
-        return_tree <- return_tree + geom_nodelab(aes(label=bootstrap))
-      }
-    }
-  } else if(node_label == "node"){
-    if(nNudge){
-      if(nSize){
-        return_tree <- return_tree + geom_nodelab(nudge_x = node_nudge,size=node_size,aes(label=node))
-      } else{
-        return_tree <- return_tree + geom_nodelab(nudge_x = node_nudge,aes(label=node))
-      }
-    } else{
-      if(nSize){
-        return_tree <- return_tree + geom_nodelab(size=node_size,aes(label=node))
-      } else{
-        return_tree <- return_tree + geom_nodelab(aes(label=node))
-      }
-    }
-  } else if(node_label == "support"){
-    if(nNudge){
-      if(nSize){
-        return_tree <- return_tree + geom_nodelab(nudge_x = node_nudge,size=node_size,aes(label=support))
-      } else{
-        return_tree <- return_tree + geom_nodelab(nudge_x = node_nudge,aes(label=support))
-      }
-    } else{
-      if(nSize){
-        return_tree <- return_tree + geom_nodelab(size=node_size,aes(label=support))
-      } else{
-        return_tree <- return_tree + geom_nodelab(aes(label=support))
-      }
-    }
-  }
-
   # Process tip labels
   if(!tAlign & !tOffset){
     if(tSize & taxa_italic){
@@ -410,7 +384,7 @@ support.treePlot <- function(tree,tree_support,support_scales,node_alpha,node_co
   
   if(!clade_support){
     return_tree <- return_tree + 
-      geom_nodepoint(alpha=node_alpha,aes(size=scaled_support,color=node_color,fill=node_color)) + 
+      geom_nodepoint(alpha=node_alpha,color=node_color,aes(size=scaled_support)) + 
       scale_size_identity()
     
   } else{
@@ -418,8 +392,57 @@ support.treePlot <- function(tree,tree_support,support_scales,node_alpha,node_co
       geom_nodepoint(alpha=node_alpha,aes(size=scaled_support,color=as.integer(tree_count))) + 
       scale_size_identity() +
       scale_color_viridis(breaks = sort(unique(ggtree_df$tree_count)),name = "Trees with Split") +
-      theme(legend.position="right") +
-      guides(color = guide_legend(size=4))
+      theme(legend.position="right",
+            legend.title=element_text(size=legend_title_size), 
+            legend.text=element_text(size=legend_font_size)) +
+      guides(color = guide_legend(override.aes = list(size = legend_shape_size)))
+  }
+  
+  # Process node labels
+  if(node_label == "none"){
+    return_tree <- return_tree
+  } else if(node_label == "bs"){
+    if(nNudge){
+      if(nSize){
+        return_tree <- return_tree + geom_nodelab(nudge_x = node_nudge,size=node_size,aes(label=bootstrap))
+      } else{
+        return_tree <- return_tree + geom_nodelab(nudge_x = node_nudge,aes(label=bootstrap))
+      }
+    } else{
+      if(nSize){
+        return_tree <- return_tree + geom_nodelab(size=node_size,aes(label=bootstrap))
+      } else{
+        return_tree <- return_tree + geom_nodelab(aes(label=bootstrap))
+      }
+    }
+  } else if(node_label == "node"){
+    if(nNudge){
+      if(nSize){
+        return_tree <- return_tree + geom_nodelab(nudge_x = node_nudge,size=node_size,aes(label=node))
+      } else{
+        return_tree <- return_tree + geom_nodelab(nudge_x = node_nudge,aes(label=node))
+      }
+    } else{
+      if(nSize){
+        return_tree <- return_tree + geom_nodelab(size=node_size,aes(label=node))
+      } else{
+        return_tree <- return_tree + geom_nodelab(aes(label=node))
+      }
+    }
+  } else if(node_label == "support"){
+    if(nNudge){
+      if(nSize){
+        return_tree <- return_tree + geom_nodelab(nudge_x = node_nudge,size=node_size,aes(label=support))
+      } else{
+        return_tree <- return_tree + geom_nodelab(nudge_x = node_nudge,aes(label=support))
+      }
+    } else{
+      if(nSize){
+        return_tree <- return_tree + geom_nodelab(size=node_size,aes(label=support))
+      } else{
+        return_tree <- return_tree + geom_nodelab(aes(label=support))
+      }
+    }
   }
   
   return(return_tree)

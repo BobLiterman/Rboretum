@@ -8,6 +8,7 @@ tree.support(
   signal,
   tree,
   max_missing,
+  alignment_name,
   include_gap,
   include_biallelic,
   include_triallelic,
@@ -23,6 +24,8 @@ tree.support(
 \item{tree}{Rooted phylo object [Note: Taxa must EXACTLY match those passed to alignment.signal()]}
 
 \item{max_missing}{OPTIONAL: Number of missing sites allowed in alignment column [Default: 0]}
+
+\item{alignment_name}{OPTIONAL: Column name for data being added [Default: Alignment name from signal dataframe]}
 
 \item{include_gap}{OPTIONAL: TRUE or FALSE; Count sites with gap positions ('-') as part of total support [Default: TRUE]}
 

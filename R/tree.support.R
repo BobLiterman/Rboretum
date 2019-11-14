@@ -4,6 +4,7 @@
 #' @param signal Output table from alignment.signal()
 #' @param tree Rooted phylo object [Note: Taxa must EXACTLY match those passed to alignment.signal()]
 #' @param max_missing OPTIONAL: Number of missing sites allowed in alignment column [Default: 0]
+#' @param alignment_name OPTIONAL: Column name for data being added [Default: Alignment name from signal dataframe]
 #' @param include_gap OPTIONAL: TRUE or FALSE; Count sites with gap positions ('-') as part of total support [Default: TRUE]
 #' @param include_biallelic OPTIONAL: TRUE or FALSE; Count sites with biiallelic variation as part of total support [Default: TRUE]
 #' @param include_triallelic OPTIONAL: TRUE or FALSE; Count sites with triallelic variation as part of total support [Default: TRUE]
@@ -17,10 +18,14 @@
 #' tree.support(tree,signal)
 #'
 
-tree.support <- function(signal,tree,max_missing,include_gap,include_biallelic,include_triallelic,include_quadallelic,include_pentallelic,only_gap,existing_splits){
+tree.support <- function(signal,tree,max_missing,alignment_name,include_gap,include_biallelic,include_triallelic,include_quadallelic,include_pentallelic,only_gap,existing_splits){
 
   if(missing(max_missing)){
     max_missing <- 0
+  }
+  
+  if(missing(alignment_name)){
+    alignment_name <-  paste(c(as.character(signal$Alignment_Name[1]),'_m',as.character(max_missing)),collapse = '')
   }
   
   if(missing(include_gap)){
@@ -83,7 +88,6 @@ tree.support <- function(signal,tree,max_missing,include_gap,include_biallelic,i
     unite(col = "Taxa",sep = ";") %>%
     pull() %>% as.character() %>% str_split(pattern = ";") %>% unlist() %>% sort()
 
-  alignment_name <-  paste(c(as.character(signal$Alignment_Name[1]),'_m',as.character(max_missing)),collapse = '')
 
   tree_taxa <- sort(tree$tip.label)
 

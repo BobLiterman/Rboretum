@@ -18,6 +18,8 @@ pies.treePlot(
   node_label,
   node_size,
   node_nudge,
+  pie_xnudge,
+  pie_ynudge,
   taxa_size,
   taxa_italic,
   taxa_align,
@@ -62,6 +64,10 @@ pies.treePlot(
 \item{node_size}{OPTIONAL: Set ggtree node label size}
 
 \item{node_nudge}{OPTIONAL: Set ggtree node label nudge_x}
+
+\item{pie_xnudge}{OPTIONAL: Set ggtree pie label hjust}
+
+\item{pie_ynudge}{OPTIONAL: Set ggtree pie label yjust}
 
 \item{taxa_size}{OPTIONAL: Set ggtree tip label size}
 

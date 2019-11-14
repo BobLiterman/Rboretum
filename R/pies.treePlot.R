@@ -23,6 +23,8 @@
 #' }
 #' @param node_size OPTIONAL: Set ggtree node label size
 #' @param node_nudge OPTIONAL: Set ggtree node label nudge_x 
+#' @param pie_xnudge OPTIONAL: Set ggtree pie label hjust
+#' @param pie_ynudge OPTIONAL: Set ggtree pie label yjust
 #' @param branch_length OPTIONAL: TRUE [plot tree with branch lengths]; FALSE [Default: plot cladogram]
 #' @param branch_weight OPTIONAL: Set ggtree branch thickness
 #' @param taxa_size OPTIONAL: Set ggtree tip label size
@@ -36,7 +38,7 @@
 #' # Print tree with bootstrap labels
 #' basic.treePlot(tree)
 
-pies.treePlot <- function(tree,tree_support,support_scales,node_alpha,legend_shape_size,legend_font_size,legend_title_size,legend_position,branch_length,branch_weight,node_label,node_size,node_nudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax){
+pies.treePlot <- function(tree,tree_support,support_scales,node_alpha,legend_shape_size,legend_font_size,legend_title_size,legend_position,branch_length,branch_weight,node_label,node_size,node_nudge,pie_xnudge,pie_ynudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax){
   
   if(has_error(ape::is.rooted(tree))){
     stop("Error in ape::is.rooted. Is 'tree' a phylo object?")
@@ -146,6 +148,22 @@ pies.treePlot <- function(tree,tree_support,support_scales,node_alpha,legend_sha
     if(!is.numeric(node_nudge)){
       nNudge<-FALSE
     } else{ nNudge <- TRUE }
+  }
+  
+  if(missing(pie_xnudge)){
+    pxNudge <- FALSE
+  } else{
+    if(!is.numeric(pie_xnudge)){
+      pxNudge<-FALSE
+    } else{ pxNudge <- TRUE }
+  }
+  
+  if(missing(pie_ynudge)){
+    pyNudge <- FALSE
+  } else{
+    if(!is.numeric(pie_ynudge)){
+      pyNudge<-FALSE
+    } else{ pyNudge <- TRUE }
   }
   
   if(missing(taxa_size)){
@@ -410,5 +428,13 @@ pies.treePlot <- function(tree,tree_support,support_scales,node_alpha,legend_sha
     return_tree <- return_tree + ggplot2::annotation_custom(grob = pie_legend,xmin = leg_xmin,xmax = leg_xmax,ymin = leg_ymin,ymax = leg_ymax) 
   }
   
-  return(inset(return_tree,pies,height=tree_support$scaled_support,width = tree_support$scaled_support))
+  if(pxNudge){
+    if(pyNudge){
+      return(inset(return_tree,pies,height=tree_support$scaled_support,width = tree_support$scaled_support,hjust=pie_xnudge,vjust=pie_ynudge))
+    } else{ return(inset(return_tree,pies,height=tree_support$scaled_support,width = tree_support$scaled_support,hjust=pie_xnudge)) }
+  } else{
+    if(pyNudge){
+      return(inset(return_tree,pies,height=tree_support$scaled_support,width = tree_support$scaled_support,vjust=pie_ynudge))
+    } else {return(inset(return_tree,pies,height=tree_support$scaled_support,width = tree_support$scaled_support)) }
+  }
 }

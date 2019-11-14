@@ -285,6 +285,12 @@ support.treePlot <- function(tree,tree_support,support_scales,node_alpha,node_co
     return_tree <- ggtree(tree,branch.length = 'none') %<+% ggtree_df
   }
   
+  if(extendX){
+    return_tree <- return_tree + ggplot2::xlim(0,xmax)
+  } else{
+    return_tree <- return_tree
+  }
+  
   # Process tip labels
   if(!tAlign & !tOffset){
     if(tSize & taxa_italic){
@@ -374,12 +380,6 @@ support.treePlot <- function(tree,tree_support,support_scales,node_alpha,node_co
         return_tree <- return_tree + geom_tiplab(hjust=0,offset=taxa_offset,align = TRUE)
       }
     }
-  }
-  
-  if(extendX){
-    return_tree <- return_tree + ggplot2::xlim(0,xmax)
-  } else{
-    return_tree <- return_tree
   }
   
   if(!clade_support){

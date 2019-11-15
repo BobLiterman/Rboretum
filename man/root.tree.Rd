@@ -4,12 +4,14 @@
 \alias{root.tree}
 \title{Rboretum Tree Rooter}
 \usage{
-\method{root}{tree}(tree, root_taxa, resolve_root)
+\method{root}{tree}(tree, root_taxa, root_node, resolve_root)
 }
 \arguments{
 \item{tree}{Phylo object}
 
 \item{root_taxa}{Character vector containing outgroup species IDs (Must be in tree and monophyletic)}
+
+\item{root_node}{Root by node value rather than root taxa. NOTE: node setting overrides root_taxa}
 
 \item{resolve_root}{OPTIONAL: Set ape::resolve.root [Default: TRUE]}
 }

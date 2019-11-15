@@ -4,12 +4,14 @@
 \alias{root.tree}
 \title{Rboretum Tree Rooter}
 \usage{
-\method{root}{tree}(tree, root_taxa)
+\method{root}{tree}(tree, root_taxa, resolve_root)
 }
 \arguments{
 \item{tree}{Phylo object}
 
 \item{root_taxa}{Character vector containing outgroup species IDs (Must be in tree and monophyletic)}
+
+\item{resolve_root}{OPTIONAL: Set ape::resolve.root [Default: TRUE]}
 }
 \value{
 A phylo object rooted at specified taxa

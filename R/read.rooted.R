@@ -6,12 +6,19 @@
 #' rootedTree <- read.rooted(tree_path,root_taxa)
 #' @param tree_path Path to tree file that can be read by ape::read.tree() or ape::read.nexus()
 #' @param root_taxa Character vector containing outgroup species IDs (Must be in tree and monophyletic)
+#' @param resolve_root OPTIONAL: Set ape::resolve.root [Default: TRUE]
 #' @return A phylo object, rooted at specified taxa
 #' @export
 #' @examples
 #' myRootedTetrapods <- read.rooted('/path/to/tetrapod_tree.nwk',c('Fish_1','Fish_2'))
 
-read.rooted <- function(tree_path,root_taxa){
+read.rooted <- function(tree_path,root_taxa,resolve_root){
+  
+  if(missing(resolve_root)){
+    resolve_root <- TRUE
+  } else if(!is.logical(resolve_root)){
+    resolve_root <- TRUE
+  }
 
   # Read in tree and fetch species
   if(!has_error(ape::read.tree(tree_path))){
@@ -27,8 +34,8 @@ read.rooted <- function(tree_path,root_taxa){
     stop("Root taxa not found in tree.")
   }
 
-  else if(!has_error(ape::root.phylo(raw_tree,outgroup = root_taxa,edgelabel = TRUE,resolve.root = TRUE))){
-    return(ape::root.phylo(raw_tree,outgroup = root_taxa,edgelabel = TRUE,resolve.root = TRUE))
+  else if(!has_error(ape::root.phylo(raw_tree,outgroup = root_taxa,edgelabel = TRUE,resolve.root = resolve_root))){
+    return(ape::root.phylo(raw_tree,outgroup = root_taxa,edgelabel = TRUE,resolve.root = resolve_root))
   }
   else{
     stop("Ape cannot root tree on these taxa.")

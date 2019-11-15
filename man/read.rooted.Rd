@@ -12,6 +12,8 @@ rootedTree <- read.rooted(tree_path,root_taxa)
 \item{tree_path}{Path to tree file that can be read by ape::read.tree() or ape::read.nexus()}
 
 \item{root_taxa}{Character vector containing outgroup species IDs (Must be in tree and monophyletic)}
+
+\item{resolve_root}{OPTIONAL: Set ape::resolve.root [Default: TRUE]}
 }
 \value{
 A phylo object, rooted at specified taxa

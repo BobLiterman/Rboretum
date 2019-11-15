@@ -22,9 +22,9 @@ root.tree <- function(tree,root_taxa,root_node,resolve_root){
     
     if(missing(root_node)){ stop("Must set either root_taxa or root_node.") } 
     
-    else if(has_error(ape::root.phylo(tree,node = node,edgelabel = TRUE,resolve.root = resolve_root))){ stop("Ape cannot root tree at the specified node.") } 
+    else if(has_error(ape::root.phylo(tree,node = root_node,edgelabel = TRUE,resolve.root = resolve_root))){ stop("Ape cannot root tree at the specified node.") } 
     
-    else{ return(ape::root.phylo(tree,node = node,edgelabel = TRUE,resolve.root = resolve_root)) }
+    else{ return(ape::root.phylo(tree,node = root_node,edgelabel = TRUE,resolve.root = resolve_root)) }
   
     } else if(missing(root_node)){
       
@@ -32,8 +32,8 @@ root.tree <- function(tree,root_taxa,root_node,resolve_root){
       
       else{ return(ape::root.phylo(tree,outgroup = root_taxa,edgelabel = TRUE,resolve.root = resolve_root)) }
     
-    } else if(has_error(ape::root.phylo(tree,node = node,edgelabel = TRUE,resolve.root = resolve_root))){ stop("Ape cannot root tree at the specified node.") } 
+    } else if(has_error(ape::root.phylo(tree,node = root_node,edgelabel = TRUE,resolve.root = resolve_root))){ stop("Ape cannot root tree at the specified node.") } 
   
-  else{ return(ape::root.phylo(tree,node = node,edgelabel = TRUE,resolve.root = resolve_root))}
+  else{ return(ape::root.phylo(tree,node = root_node,edgelabel = TRUE,resolve.root = resolve_root))}
   
 }

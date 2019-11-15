@@ -35,6 +35,8 @@ myPlot <- treePlotter(tree=myTree,...)
 \item{xmax}{OPTIONAL: Set ggplot xlim upper limit (e.g if long tip labels run off plot)}
 
 \item{reverse_x}{OPTIONAL: TRUE [plot tree with tips on left]; FALSE [Default: plot tree with tips on right]}
+
+\item{rename_tips}{OPTIONAL: Dataframe where column 1 contains tip labels for tree, and column 2 contains new, desired tip labels}
 }
 \value{
 ggtree object

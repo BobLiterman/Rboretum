@@ -19,6 +19,7 @@
 #' @param taxa_offset OPTIONAL: Set ggtree tip label offset
 #' @param xmax OPTIONAL: Set ggplot xlim upper limit (e.g if long tip labels run off plot)
 #' @param reverse_x OPTIONAL: TRUE [plot tree with tips on left]; FALSE [Default: plot tree with tips on right]
+#' @param rename_tips OPTIONAL: Dataframe where column 1 contains tip labels for tree, and column 2 contains new, desired tip labels
 #' @return ggtree object
 #' @export
 #' @examples
@@ -34,7 +35,7 @@
 #' # Print tree with buffer on right side to accomodate longer tip labels
 #' basic.treePlot(tree,xmax=10)
 
-basic.treePlot <- function(tree,branch_length,branch_weight,node_label,node_size,node_nudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax,reverse_x){
+basic.treePlot <- function(tree,branch_length,branch_weight,node_label,node_size,node_nudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax,reverse_x,rename_tips){
   
   if(missing(tree)){
     stop("No tree provided.")
@@ -124,7 +125,25 @@ basic.treePlot <- function(tree,branch_length,branch_weight,node_label,node_size
     reverseX <- TRUE
   }
   
+  if(missing(rename_tips)){
+    renameTip <- FALSE
+  } else if((is.data.frame(rename_tips) | is_tibble(rename_tips)) & length(names(rename_tips) >= 2)){
+    old_id <- names(rename_tips)[1]
+    new_id <- names(rename_tips)[2]
+    if(has_error(Rboretum::convert.tips(tree,rename_tips,old_id,new_id))){
+      renameTip <- FALSE
+    } else{
+      renameTip <- TRUE
+    }
+  } else{
+    renameTip <- FALSE
+  }
+  
   # Create base tree
+  
+  if(renameTip){
+    tree <- Rboretum::convert.tips(tree,rename_tips,old_id,new_id)
+  }
   
   if(bWeight & branch_length){
     return_tree <- ggtree(tree,size=branch_weight)

@@ -24,7 +24,8 @@ pies.treePlot(
   taxa_italic,
   taxa_align,
   taxa_offset,
-  xmax
+  xmax,
+  rename_tips
 )
 }
 \arguments{
@@ -78,6 +79,8 @@ pies.treePlot(
 \item{taxa_offset}{OPTIONAL: Set ggtree tip label offset}
 
 \item{xmax}{OPTIONAL: Set ggplot xlim upper limit (e.g if long tip labels run off plot)}
+
+\item{rename_tips}{OPTIONAL: Dataframe where column 1 contains tip labels for tree, and column 2 contains new, desired tip labels}
 }
 \value{
 ggtree object

@@ -34,6 +34,8 @@ read.rooted <- function(tree_path,root_taxa,resolve_root){
     stop("Root taxa not found in tree.")
   }
 
+  mirror_clade <- tree_species[!tree_species %in% root_taxa]
+  
   if(ape::is.rooted(raw_tree)){
     if(Rboretum::check.root(raw_tree,root_taxa)){
       return(raw_tree)
@@ -42,5 +44,7 @@ read.rooted <- function(tree_path,root_taxa,resolve_root){
     } else{ stop("Ape cannot root tree on these taxa.") }
   } else if(!has_error(ape::root.phylo(raw_tree,outgroup = root_taxa,edgelabel = TRUE,resolve.root = resolve_root))){
     return(ape::root.phylo(raw_tree,outgroup = root_taxa,edgelabel = TRUE,resolve.root = resolve_root))
-  } else{ stop("Ape cannot root tree on these taxa.") }
+  } else if(!has_error(ape::root.phylo(raw_tree,outgroup = mirror_clade,edgelabel = TRUE,resolve.root = resolve_root))){
+    return(ape::root.phylo(raw_tree,outgroup = mirror_clade,edgelabel = TRUE,resolve.root = resolve_root))
+  } else { stop("Ape cannot root tree on these taxa.") }
 }

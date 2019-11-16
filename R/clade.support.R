@@ -61,7 +61,7 @@ clade.support <- function(signal,clade,max_missing,include_gap,include_biallelic
     stop("Clade must include 2+ taxon IDs")
   }
   
-  if(all(names(signal) == c('Alignment_Name','Alignment_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5'))){
+  if(all(names(signal) == c('Alignment_Name','Alignment_Position','Site_Pattern','Gap','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5'))){
     
     signal_taxa <- signal %>%
       filter(!is.na(Split_1)) %>%
@@ -90,8 +90,7 @@ clade.support <- function(signal,clade,max_missing,include_gap,include_biallelic
           stop("Cannot only use (only_gap) and exclude (include_gap) gap positions.")
         }
         signal <- signal %>%
-          filter(!str_detect(Site_Pattern,'pentallelic')) %>%
-          filter(!str_detect(Site_Pattern,'gap'))
+          filter(Gap == FALSE)
       }
       
       if(!include_biallelic){
@@ -119,7 +118,7 @@ clade.support <- function(signal,clade,max_missing,include_gap,include_biallelic
           stop("Cannot only use (only_gap) and exclude (include_gap) gap positions.")
         }
         signal <- signal %>%
-          filter(str_detect(Site_Pattern,'pentallelic') | str_detect(Site_Pattern,'gap'))
+          filter(Gap==TRUE)
       }
       
       signal_table <- signal %>% 

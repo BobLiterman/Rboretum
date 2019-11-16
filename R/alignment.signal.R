@@ -71,7 +71,9 @@ alignment.signal <- function(alignment_path,species_info,informative_gaps,alignm
     mutate(Alignment_Name = alignment_name) %>% # Add alignment name
     rename(Alignment_Position = Zeroed_Site_Position) %>%
     mutate(Alignment_Position = as.integer(Alignment_Position) + 1) %>% # Convert position to 1-based
-    select(Alignment_Name,Alignment_Position,Site_Pattern,Non_Base_Taxa,Non_Base_Count,Singleton_Taxa,Split_1,Split_2,Split_3,Split_4,Split_5)
+    mutate(Gap = ifelse(Site_Pattern == 'pentallelic' | str_detect(Site_Pattern,'gap_'),TRUE,FALSE)) %>%
+    mutate(Site_Pattern = str_replace(Site_Pattern,'gap_','')) %>%
+    select(Alignment_Name,Alignment_Position,Site_Pattern,Gap,Non_Base_Taxa,Non_Base_Count,Singleton_Taxa,Split_1,Split_2,Split_3,Split_4,Split_5)
 
   return(split_support)
 }

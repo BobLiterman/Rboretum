@@ -80,6 +80,11 @@ tree.support <- function(signal,tree,max_missing,alignment_name,include_gap,incl
   } else if(!ape::is.rooted(tree)){
     stop("Tree must be rooted for tree.support")}
   
+  if(!all(names(signal) == c('Alignment_Name','Alignment_Position','Site_Pattern','Gap','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5'))){
+    stop("'signal' argument must be output from alignment.signal()")
+  }
+    
+  
   signal_taxa <- signal %>%
     filter(!is.na(Split_1)) %>%
     head(1) %>%
@@ -115,8 +120,7 @@ tree.support <- function(signal,tree,max_missing,alignment_name,include_gap,incl
     if(only_gap){
       stop("Cannot only use (only_gap) and exclude (include_gap) gap positions.") }
     signal <- signal %>%
-      filter(!str_detect(Site_Pattern,'pentallelic')) %>%
-      filter(!str_detect(Site_Pattern,'gap'))
+      filter(Gap==FALSE)
   }
   
   if(!include_biallelic){
@@ -143,8 +147,8 @@ tree.support <- function(signal,tree,max_missing,alignment_name,include_gap,incl
     if(!include_gap){
       stop("Cannot only use (only_gap) and exclude (include_gap) gap positions.") }
     signal <- signal %>%
-      filter(str_detect(Site_Pattern,'pentallelic') | str_detect(Site_Pattern,'gap'))
-  }
+      filter(Gap==TRUE)
+    }
 
   splits <- Rboretum::get.splits(tree) %>% mutate(Clade = as.character(Clade),Mirror_Clade = as.character(Mirror_Clade))
   new_clades <- splits %>% pull(Clade) %>% as.character() %>% sort()

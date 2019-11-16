@@ -4,22 +4,27 @@
 \alias{trim.tree}
 \title{Rboretum Tree Trimmer}
 \usage{
-trim.tree(tree, taxa)
+trim.tree(tree, taxa, remove)
 }
 \arguments{
 \item{tree}{phylo or multiPhylo object}
 
-\item{taxa}{Character vector of desired tip labels to keep}
+\item{taxa}{Character vector of desired tip labels to keep (or discard if remove=TRUE)}
+
+\item{remove}{OPTIONAL: If TRUE, tip labels specified by 'taxa' are removed from all trees rather than retained [Default: FALSE, prune 'tree' down to 'taxa']}
 }
 \value{
 Pruned phylo or multiPhylo object
 }
 \description{
-This ape wrapper returns a phylo or multiPhylo object that has been pruned to include only specified taxa. Note: Function will STOP if any tree is missing taxa.
+This ape wrapper returns a phylo or multiPhylo object that has been pruned to include only specified taxa. Note: Function will STOP if any 'tree' is missing any 'taxa'.
 }
 \examples{
 myFavoriteSpecies  <- c('Spp1','Spp2','Spp3')
 trim.tree(myBigTree,myFavoriteSpecies)
+
+myLeastFavoriteSpecies  <- c('Spp4','Spp5','Spp6')
+trim.tree(myBigTree,myLeastFavoriteSpecies,remove=TRUE)
 
 myHugeTrees <- c(BigTree_1,BigTree_2,BigTree_3)
 trim.tree(myHugeTrees,myFavoriteSpecies)

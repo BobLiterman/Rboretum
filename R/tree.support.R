@@ -145,10 +145,14 @@ tree.support <- function(signal,tree,max_missing,alignment_name,include_gap,incl
   
   if(only_gap){
     if(!include_gap){
-      stop("Cannot only use (only_gap) and exclude (include_gap) gap positions.") }
+      stop("Cannot only use (only_gap) and exclude (include_gap) gap positions.") 
+    } else if(signal %>% filter(Gap==TRUE) %>% nrow() == 0){
+        stop("Data contains no gap positions, but 'only_gap' was specified.")
+      } else{
     signal <- signal %>%
       filter(Gap==TRUE)
-    }
+      }
+  }
 
   splits <- Rboretum::get.splits(tree) %>% mutate(Clade = as.character(Clade),Mirror_Clade = as.character(Mirror_Clade))
   new_clades <- splits %>% pull(Clade) %>% as.character() %>% sort()

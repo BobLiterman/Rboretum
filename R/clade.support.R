@@ -115,10 +115,13 @@ clade.support <- function(signal,clade,max_missing,include_gap,include_biallelic
       
       if(only_gap){
         if(!include_gap){
-          stop("Cannot only use (only_gap) and exclude (include_gap) gap positions.")
+          stop("Cannot only use (only_gap) and exclude (include_gap) gap positions.") 
+        } else if(signal %>% filter(Gap==TRUE) %>% nrow() == 0){
+          stop("Data contains no gap positions, but 'only_gap' was specified.")
+        } else{
+          signal <- signal %>%
+            filter(Gap==TRUE)
         }
-        signal <- signal %>%
-          filter(Gap==TRUE)
       }
       
       signal_table <- signal %>% 

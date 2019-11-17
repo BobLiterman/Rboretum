@@ -31,29 +31,34 @@ trim.tree <- function(tree,taxa,remove){
   if(tip.check(tree,taxa)){
     
     if(!remove){
-      
-      if("phylo" %in% unlist(attributes(tree)$class)){
-        return(ape::drop.tip(tree,tree$tip.label[-match(taxa, tree$tip.label)]))
-      }
-      
-      if("multiPhylo" %in% unlist(attributes(tree)$class)){
-        for(i in 1:length(tree)){
-          tree[[i]] <- ape::drop.tip(tree[[i]],tree[[i]]$tip.label[-match(taxa, tree[[i]]$tip.label)])
+      if(length(taxa >= 3)){
+        if("phylo" %in% unlist(attributes(tree)$class)){
+          return(ape::drop.tip(tree,tree$tip.label[-match(taxa, tree$tip.label)]))
         }
-        return(tree)
-      }
+        
+        if("multiPhylo" %in% unlist(attributes(tree)$class)){
+          for(i in 1:length(tree)){
+            tree[[i]] <- ape::drop.tip(tree[[i]],tree[[i]]$tip.label[-match(taxa, tree[[i]]$tip.label)])
+          }
+          return(tree)
+        }
+      } else{ stop("Can't trim to fewer than three tips...") }
       
     } else{
       
       if("phylo" %in% unlist(attributes(tree)$class)){
         keep_taxa <- tree$tip.label[!tree$tip.label %in% taxa]
-        return(ape::drop.tip(tree,tree$tip.label[-match(keep_taxa, tree$tip.label)]))
+        if(length(keep_taxa >= 3)){
+          return(ape::drop.tip(tree,tree$tip.label[-match(keep_taxa, tree$tip.label)]))
+        } else{ stop("Can't trim to fewer than three tips...") }
       }
       
       if("multiPhylo" %in% unlist(attributes(tree)$class)){
         for(i in 1:length(tree)){
           keep_taxa <- tree[[i]]$tip.label[!tree[[i]]$tip.label %in% taxa]
-          tree[[i]] <- ape::drop.tip(tree[[i]],tree[[i]]$tip.label[-match(keep_taxa, tree[[i]]$tip.label)])
+          if(length(keep_taxa >= 3)){
+            tree[[i]] <- ape::drop.tip(tree[[i]],tree[[i]]$tip.label[-match(keep_taxa, tree[[i]]$tip.label)])
+          } else{ stop("Can't trim to fewer than three tips...") }
         }
         return(tree)
     }

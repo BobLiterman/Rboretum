@@ -1,5 +1,5 @@
 #' Rboretum Site and Node Support Plotter
-#' 
+#' ADD ZERO CHECKS FOR SUPPORT
 #' Given a phylo object (tree), and the output from tree.support(), this function plots the tree [adjusted with possible arguments] along with node support information
 #' @param tree Rooted phylo object
 #' @param tree_support  OPTIONAL: Output trom tree.support() run on the same tree
@@ -245,14 +245,21 @@ support.treePlot <- function(tree,tree_support,support_scales,node_alpha,node_co
       tree_support$support <- rowSums(tree_support[,support_cols])
     }
     
+    if(all(tree_support$support == 0)){
+      stop("All support values = 0")
+    }
+    
+    non_zero_support <- tree_support %>% filter(support != 0)
+    zero_support <- tree_support %>% filter(support == 0)
+    
     if(length(support_scales)==1){
       if(support_scales == "log"){
         
-        non_zero_support <- tree_support %>% filter(support != 0)
-        zero_support <- tree_support %>% filter(support == 0)
-        
         non_zero_support$scaled_support <- log(non_zero_support$support)
-        zero_support$scaled_support <- 0
+        
+        if(nrow(zero_support)>0){
+          zero_support$scaled_support <- 0
+        }
         
         tree_support <- non_zero_support %>%
           rbind(zero_support) %>%
@@ -260,11 +267,11 @@ support.treePlot <- function(tree,tree_support,support_scales,node_alpha,node_co
         
       } else if(is.numeric(support_scales)){
         
-        non_zero_support <- tree_support %>% filter(support != 0)
-        zero_support <- tree_support %>% filter(support == 0)
-        
         non_zero_support$scaled_support <- support_scales
-        zero_support$scaled_support <- 0
+        
+        if(nrow(zero_support)>0){
+          zero_support$scaled_support <- 0
+        }        
         
         tree_support <- non_zero_support %>%
           rbind(zero_support) %>%
@@ -273,15 +280,16 @@ support.treePlot <- function(tree,tree_support,support_scales,node_alpha,node_co
       } else{ stop("Invalid argument for 'support_scales'") }
     } else if(is.numeric(support_scales) & length(support_scales) == 2){
       
-      non_zero_support <- tree_support %>% filter(support != 0)
-      zero_support <- tree_support %>% filter(support == 0)
-      
       non_zero_support$scaled_support <- scales::rescale(non_zero_support$support,to=support_scales)
-      zero_support$scaled_support <- 0
+
+      if(nrow(zero_support)>0){
+        zero_support$scaled_support <- 0
+      }
       
       tree_support <- non_zero_support %>%
         rbind(zero_support) %>%
         arrange(Split_Node)
+      
     } else{ stop("Invalid argument for 'support_scales'") }
     
     ggtree_df <- tree_support %>%

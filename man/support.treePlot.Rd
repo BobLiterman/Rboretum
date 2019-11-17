@@ -2,7 +2,9 @@
 % Please edit documentation in R/support.treePlot.R
 \name{support.treePlot}
 \alias{support.treePlot}
-\title{Rboretum Site and Node Support Plotter}
+\title{Rboretum Site and Node Support Plotter
+ADD ZERO CHECKS FOR SUPPORT
+Given a phylo object (tree), and the output from tree.support(), this function plots the tree [adjusted with possible arguments] along with node support information}
 \usage{
 support.treePlot(
   tree,
@@ -86,6 +88,8 @@ support.treePlot(
 ggtree object
 }
 \description{
+Rboretum Site and Node Support Plotter
+ADD ZERO CHECKS FOR SUPPORT
 Given a phylo object (tree), and the output from tree.support(), this function plots the tree [adjusted with possible arguments] along with node support information
 }
 \examples{

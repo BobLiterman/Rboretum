@@ -2,7 +2,7 @@
 #' 
 #' Given a phylo object (tree), and the output from tree.support(), this function plots the tree [adjusted with possible arguments] along with node support information
 #' @param tree Rooted phylo object
-#' @param tree_support  OPTIONAL: Output trom tree.support() run on the same tree
+#' @param tree_support  Output trom tree.support() run on the same tree
 #' @param support_scales OPTIONAL: Scaling factor for nodepoint labels. Options include:
 #' \itemize{
 #'   \item "log" - Log-converted support values
@@ -223,14 +223,22 @@ pies.treePlot <- function(tree,tree_support,support_scales,node_alpha,legend_sha
   
   tree_support$support <- rowSums(tree_support[,support_cols])
   
+  if(all(tree_support$support == 0)){
+    stop("All support values = 0")
+  }
+  
+  non_zero_support <- tree_support %>% filter(support != 0)
+  zero_support <- tree_support %>% filter(support == 0)
+  
   if(length(support_scales)==1){
     
     if(support_scales == "log"){
-      non_zero_support <- tree_support %>% filter(support != 0)
-      zero_support <- tree_support %>% filter(support == 0)
-      
+
       non_zero_support$scaled_support <- log(non_zero_support$support)
-      zero_support$scaled_support <- 0
+
+      if(nrow(zero_support)>0){
+        zero_support$scaled_support <- 0
+      }
       
       tree_support <- non_zero_support %>%
         rbind(zero_support) %>%
@@ -238,11 +246,11 @@ pies.treePlot <- function(tree,tree_support,support_scales,node_alpha,legend_sha
     
     else if(is.numeric(support_scales)){
       
-      non_zero_support <- tree_support %>% filter(support != 0)
-      zero_support <- tree_support %>% filter(support == 0)
-      
       non_zero_support$scaled_support <- support_scales
-      zero_support$scaled_support <- 0
+
+      if(nrow(zero_support)>0){
+        zero_support$scaled_support <- 0
+      }
       
       tree_support <- non_zero_support %>%
         rbind(zero_support) %>%
@@ -252,11 +260,11 @@ pies.treePlot <- function(tree,tree_support,support_scales,node_alpha,legend_sha
     
   } else if(is.numeric(support_scales) & length(support_scales) == 2){
     
-    non_zero_support <- tree_support %>% filter(support != 0)
-    zero_support <- tree_support %>% filter(support == 0)
-    
     non_zero_support$scaled_support <- scales::rescale(non_zero_support$support,to=support_scales)
-    zero_support$scaled_support <- 0
+
+    if(nrow(zero_support)>0){
+      zero_support$scaled_support <- 0
+    }
     
     tree_support <- non_zero_support %>%
       rbind(zero_support) %>%

@@ -31,7 +31,7 @@ pies.treePlot(
 \arguments{
 \item{tree}{Rooted phylo object}
 
-\item{tree_support}{OPTIONAL: Output trom tree.support() run on the same tree}
+\item{tree_support}{Output trom tree.support() run on the same tree}
 
 \item{support_scales}{OPTIONAL: Scaling factor for nodepoint labels. Options include:
 \itemize{

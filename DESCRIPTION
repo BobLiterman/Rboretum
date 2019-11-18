@@ -21,4 +21,5 @@ Depends:
     tools (>= 3.6.1),
     reticulate (>= 1.13),
     scales (>= 1.0.0),
-    viridis (>= 0.5.1)
+    viridis (>= 0.5.1),
+    cowplot (>= 1.0.0)

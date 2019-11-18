@@ -1,5 +1,4 @@
 #' Rboretum Site and Node Support Plotter
-#' ADD ZERO CHECKS FOR SUPPORT
 #' Given a phylo object (tree), and the output from tree.support(), this function plots the tree [adjusted with possible arguments] along with node support information
 #' @param tree Rooted phylo object
 #' @param tree_support  OPTIONAL: Output trom tree.support() run on the same tree

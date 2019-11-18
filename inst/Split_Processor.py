@@ -739,7 +739,7 @@ def splitMain(alignment_path,info_gap,spp_list):
         # Combine dataframes
 
         if (invariant_count + non_base_count + singleton_count + biallelic_count + triallelic_count + quadallelic_count + pentallelic_count) > 1:
-            all_sites_df = pd.concat([invariant_df,non_base_df,singleton_df,biallelic_df,triallelic_df,quadallelic_df,pentallelic_df,quadallelic_df], axis=0, sort=True).sort_values(by=['Zeroed_Site_Position'])
+            all_sites_df = pd.concat([invariant_df,non_base_df,singleton_df,biallelic_df,triallelic_df,quadallelic_df,pentallelic_df], axis=0, sort=True).sort_values(by=['Zeroed_Site_Position'])
             all_sites_df = all_sites_df.reindex(columns=final_columns).reset_index()
             
             all_sites_df['Non_Base_Count'].fillna(0, inplace=True)

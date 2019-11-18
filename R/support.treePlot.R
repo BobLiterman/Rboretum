@@ -239,7 +239,7 @@ support.treePlot <- function(tree,tree_support,support_scales,node_alpha,node_co
   if(!dummy_col){
     
     if(length(support_cols) == 1){
-      tree_support$support <- tree_support[5]
+      tree_support$support <- tree_support[,5]
     } else{
       tree_support$support <- rowSums(tree_support[,support_cols])
     }

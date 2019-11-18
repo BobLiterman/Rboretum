@@ -16,11 +16,11 @@ tandem.treePlot <- function(plot1,plot2){
   plot1_class <- unlist(attributes(plot1)$class)
   plot2_class <- unlist(attributes(plot2)$class)
   
-  if(!any(c('ggtree','ggplot')) %in% plot1_class){
+  if(!any(c('ggtree','ggplot') %in% plot1_class)){
     stop("'plot1' not a plottable object (ggtree or ggplot)")
   }
   
-  if(!any(c('ggtree','ggplot')) %in% plot2_class){
+  if(!any(c('ggtree','ggplot') %in% plot2_class)){
     stop("'plot2' not a plottable object (ggtree or ggplot)")
   }
   

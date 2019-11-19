@@ -8,13 +8,13 @@
 #' @examples
 #' 
 #' taxa_to_find <- c('Spp1','Spp2','Spp3')
-#' tip.check(myTree,taxa_to_find)
+#' check.tip(myTree,taxa_to_find)
 #' 
 #' trees_to_check <- c(Tree_1,Tree_2,Tree_3)
-#' tip.check(trees_to_check,taxa_to_find)
+#' check.tip(trees_to_check,taxa_to_find)
 #'
 
-tip.check <- function(tree,taxa){
+check.tip <- function(tree,taxa){
   
   if(has_error(unlist(attributes(tree)$class))){ 
     stop("'tree' argument should be a phylo or multiPhylo object")

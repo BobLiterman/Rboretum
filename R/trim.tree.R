@@ -28,7 +28,7 @@ trim.tree <- function(tree,taxa,remove){
   } else if(!"phylo" %in% unlist(attributes(tree)$class) & !"multiPhylo" %in% unlist(attributes(tree)$class)){
     stop("'tree' argument should be a phylo or multiPhylo object")}
   
-  if(tip.check(tree,taxa)){
+  if(check.tip(tree,taxa)){
     
     if(!remove){
       if(length(taxa >= 3)){

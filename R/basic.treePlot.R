@@ -126,25 +126,21 @@ basic.treePlot <- function(tree,branch_length,branch_weight,node_label,node_size
   }
   
   if(missing(rename_tips)){
-    renameTip <- FALSE
+    tree <- tree
   } else if((is.data.frame(rename_tips) | is_tibble(rename_tips)) & length(names(rename_tips) >= 2)){
     old_id <- names(rename_tips)[1]
     new_id <- names(rename_tips)[2]
     if(has_error(Rboretum::convert.tips(tree,rename_tips,old_id,new_id))){
-      renameTip <- FALSE
+      tree <- tree
     } else{
-      renameTip <- TRUE
+      tree <- Rboretum::convert.tips(tree,rename_tips,old_id,new_id)
     }
   } else{
-    renameTip <- FALSE
+    tree <- tree
   }
   
   # Create base tree
-  
-  if(renameTip){
-    tree <- Rboretum::convert.tips(tree,rename_tips,old_id,new_id)
-  }
-  
+
   if(bWeight & branch_length){
     return_tree <- ggtree(tree,size=branch_weight)
   } else if(bWeight & !branch_length){

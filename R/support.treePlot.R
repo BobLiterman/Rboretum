@@ -38,7 +38,7 @@
 #' # Print tree with bootstrap labels
 #' basic.treePlot(tree)
 
-support.treePlot <- function(tree,tree_support,support_scales,node_alpha,node_color,legend_shape_size,legend_font_size,legend_title_size,clade_support,branch_length,branch_weight,node_label,node_size,node_nudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax,reverse_x,rename_tips){
+support.treePlot <- function(tree,tree_support,clade_support,support_scales,node_alpha,node_color,legend_shape_size,legend_font_size,legend_title_size,branch_length,branch_weight,node_label,node_size,node_nudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax,reverse_x,rename_tips){
   
   if(has_error(ape::is.rooted(tree))){
     stop("Error in ape::is.rooted. Is 'tree' a phylo object?")
@@ -63,6 +63,29 @@ support.treePlot <- function(tree,tree_support,support_scales,node_alpha,node_co
     } else{
       stop("'tree' and 'tree_support' arguments contain different split information.")
     }
+  }
+  
+  if(missing(clade_support)){
+    if(dummy_col){ 
+      stop("'tree_support' contained no signal columns and 'clade_support' missing. No data to map onto tree!") 
+    } else{
+      clade_support <- FALSE 
+      tree_support$Tree_Count <- NA
+    }
+  } else{
+    if(all(names(clade_support)==c('Clade','Tree_Count','Clade_Size','Tree_Percent','Trees_with_Clade'))){
+      tree_clades <- Rboretum::get.clades(tree) %>% sort()
+      support_clades <- clade_support$Clade %>% as.character() %>% sort()
+      
+      if(all(tree_clades %in% support_clades)){
+        tree_support <- tree_support %>%
+          mutate(Clade = as.character(Clade))
+        clade_support <- clade_support %>%
+          mutate(Clade = as.character(Clade))
+        tree_support <- left_join(tree_support,select(clade_support,Clade,Tree_Count),by='Clade')
+        clade_support <- TRUE
+      } else{ stop("Clades from tree absent from 'clade_support'.")}
+    } else { stop("'clade_support' argument must be output from compare.clades(return_shared_only=FALSE)") }
   }
   
   if(missing(support_scales)){
@@ -111,29 +134,6 @@ support.treePlot <- function(tree,tree_support,support_scales,node_alpha,node_co
     legend_title_size <- 10
   } else if(!is.numeric(legend_title_size)){
     legend_title_size <- 10
-  }
-  
-  if(missing(clade_support)){
-    if(dummy_col){ 
-      stop("'tree_support' contained no signal columns and 'clade_support' missing. No data to map onto tree!") 
-    } else{
-      clade_support <- FALSE 
-      tree_support$Tree_Count <- NA
-    }
-  } else{
-    if(all(names(clade_support)==c('Clade','Tree_Count','Clade_Size','Tree_Percent','Trees_with_Clade'))){
-      tree_clades <- Rboretum::get.clades(tree) %>% sort()
-      support_clades <- clade_support$Clade %>% as.character() %>% sort()
-      
-      if(all(tree_clades %in% support_clades)){
-        tree_support <- tree_support %>%
-          mutate(Clade = as.character(Clade))
-        clade_support <- clade_support %>%
-          mutate(Clade = as.character(Clade))
-        tree_support <- left_join(tree_support,select(clade_support,Clade,Tree_Count),by='Clade')
-        clade_support <- TRUE
-      } else{ stop("Clades from tree absent from 'clade_support'.")}
-    } else { stop("'clade_support' argument must be output from compare.clades(return_shared_only=FALSE)") }
   }
   
   if(missing(branch_length)){

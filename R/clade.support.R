@@ -10,12 +10,13 @@
 #' @param include_quadallelic OPTIONAL: TRUE or FALSE; Count sites with quadallelic variation as part of total support [Default: TRUE]
 #' @param include_pentallelic OPTIONAL: TRUE or FALSE; Count sites with pentallelic variation as part of total support [Default: TRUE]
 #' @param only_gap OPTIONAL: TRUE or FALSE; Only count sites with gap positions ('-') as part of total support [Default: FALSE]
+#' @param as_root OPTIONAL: Process signal as if it were a root split (biallelic only + no missing taxa allowed) [Default: FALSE]
 #' @return integer count of total sites of support for clade in available signal
 #' @export
 #' @examples
 #' clade.support <- (signal,clade)
 #' 
-clade.support <- function(signal,clade,max_missing,include_gap,include_biallelic,include_triallelic,include_quadallelic,include_pentallelic,only_gap){
+clade.support <- function(signal,clade,max_missing,include_gap,include_biallelic,include_triallelic,include_quadallelic,include_pentallelic,only_gap,as_root){
   
   if(missing(max_missing)){
     max_missing <- 0
@@ -57,6 +58,12 @@ clade.support <- function(signal,clade,max_missing,include_gap,include_biallelic
     only_gap <- FALSE
   }
   
+  if(missing(as_root)){
+    as_root <- FALSE
+  } else if(!is.logical(as_root)){
+    as_root <- FALSE
+  }
+  
   if(length(clade)<2){
     stop("Clade must include 2+ taxon IDs")
   }
@@ -73,14 +80,16 @@ clade.support <- function(signal,clade,max_missing,include_gap,include_biallelic
     
     if(all(clade %in% signal_taxa)){
       
-      informative_patterns <- c('non_base_biallelic','non_base_gap_biallelic',
-                                'non_base_triallelic','non_base_gap_triallelic',
-                                'non_base_quadallelic','non_base_gap_quadallelic',
-                                'non_base_pentallelic','non_base_gap_pentallelic',
-                                'biallelic','gap_biallelic',
+      informative_patterns <- c('biallelic','gap_biallelic',
                                 'triallelic','gap_triallelic',
                                 'quadallelic','gap_quadallelic',
                                 'pentallelic','gap_pentallelic')
+      
+      if(as_root){
+        max_missing <- 0
+        informative_patterns <- c('biallelic','gap_biallelic')
+      }
+      
       signal <- signal %>% 
         filter(Non_Base_Count <= max_missing) %>%
         filter(Site_Pattern %in% informative_patterns)
@@ -94,8 +103,12 @@ clade.support <- function(signal,clade,max_missing,include_gap,include_biallelic
       }
       
       if(!include_biallelic){
+        if(as_root){
+          stop("Can't run 'as_root' and exclude biallelic sites.")
+        } else{
         signal <- signal %>%
           filter(!str_detect(Site_Pattern,'biallelic'))
+        }
       }
       
       if(!include_triallelic){

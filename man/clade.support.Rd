@@ -13,7 +13,8 @@ clade.support(
   include_triallelic,
   include_quadallelic,
   include_pentallelic,
-  only_gap
+  only_gap,
+  as_root
 )
 }
 \arguments{
@@ -34,6 +35,8 @@ clade.support(
 \item{include_pentallelic}{OPTIONAL: TRUE or FALSE; Count sites with pentallelic variation as part of total support [Default: TRUE]}
 
 \item{only_gap}{OPTIONAL: TRUE or FALSE; Only count sites with gap positions ('-') as part of total support [Default: FALSE]}
+
+\item{as_root}{OPTIONAL: Process signal as if it were a root split (biallelic only + no missing taxa allowed) [Default: FALSE]}
 }
 \value{
 integer count of total sites of support for clade in available signal

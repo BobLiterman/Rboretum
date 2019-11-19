@@ -104,11 +104,7 @@ tree.support <- function(signal,tree,max_missing,alignment_name,include_gap,incl
     stop("Taxa from signal analysis doesn't match that from tree.")
   }
   
-  informative_patterns <- c('non_base_biallelic','non_base_gap_biallelic',
-                            'non_base_triallelic','non_base_gap_triallelic',
-                            'non_base_quadallelic','non_base_gap_quadallelic',
-                            'non_base_pentallelic','non_base_gap_pentallelic',
-                            'biallelic','gap_biallelic',
+  informative_patterns <- c('biallelic','gap_biallelic',
                             'triallelic','gap_triallelic',
                             'quadallelic','gap_quadallelic',
                             'pentallelic','gap_pentallelic')
@@ -157,11 +153,9 @@ tree.support <- function(signal,tree,max_missing,alignment_name,include_gap,incl
   splits <- Rboretum::get.splits(tree) %>% mutate(Clade = as.character(Clade),Mirror_Clade = as.character(Mirror_Clade))
   new_clades <- splits %>% pull(Clade) %>% as.character() %>% sort()
 
-  biallelic_root <- c('biallelic','gap_biallelic')
-  biallelic_root_splits <- signal %>% filter(Site_Pattern %in% biallelic_root) %>% select(starts_with('Split_')) %>% unlist() %>% table()
+  biallelic_root_splits <- signal %>% filter(str_detect(Site_Pattern,'biallelic') & Non_Base_Count == 0) %>% select(starts_with('Split_')) %>% unlist() %>% table()
 
-  biplus <- c('biallelic','gap_biallelic','non_base_biallelic','non_base_gap_biallelic','non_base_pentallelic','non_base_gap_pentallelic','non_base_quadallelic','non_base_gap_quadallelic','non_base_triallelic','non_base_gap_triallelic','triallelic','gap_triallelic','quadallelic','gap_quadallelic','pentallelic','gap_pentallelic')
-  biplus_splits <- signal %>% filter(Site_Pattern %in% biplus) %>% select(starts_with('Split_')) %>% unlist() %>% table()
+  biplus_splits <- signal %>% select(starts_with('Split_')) %>% unlist() %>% table()
 
   root_split <- splits %>% filter(is.na(Split_Node))
   root_clade <- root_split$Clade %>% as.character()

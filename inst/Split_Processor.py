@@ -30,7 +30,7 @@ def subset_alignment(alignment_path, spp_list):
     global pruned_alignment
 
     formats = {'nex': 'nexus', 'nexus': 'nexus',
-               'phy': 'phylip-relaxed', 'phylip-relaxed': 'phylip-relaxed', 'phylip': 'phylip-relaxed',
+               'phy': 'phylip', 'phylip-relaxed': 'phylip-relaxed', 'phylip': 'phylip',
                'fa': 'fasta', 'fasta': 'fasta'}
     fformat = formats[alignment_path.split('.')[-1]]
 

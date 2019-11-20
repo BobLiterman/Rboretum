@@ -6,6 +6,9 @@ University of Rhode Island
 v.1.0 (11/16/2019)  
 
 ### DEPENDENCIES
+
+R version >= 3.6.1
+
 - ggtree
 - ape (>= 5.3)
 - phytools (>= 0.6.99)
@@ -21,16 +24,9 @@ v.1.0 (11/16/2019)
 - Biopython
 
 ### INSTALLATION  
-1) Clone repo  
 
 ```
-git clone https://github.com/BobLiterman/Rboretum.git
-```
-2) In R:  
-
-```
-library(devtools)
-devtools::install(/path/to/git/clone)
+devtools::install_github("BobLiterman/Rboretum")
 ```
 
 ### RBORETUM FUNCTIONS  

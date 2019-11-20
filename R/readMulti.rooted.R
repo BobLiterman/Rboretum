@@ -15,18 +15,18 @@ readMulti.rooted <- function(tree_paths,root_taxa){
     stop("'tree_paths' contains fewer than 2 items, use read.rooted()")
   } else{ 
     tree_count <- length(tree_paths)
-    }
-
+  }
+  
   trees <- c(ape::rtree(10),ape::rtree(10))
 
   for(i in 1:tree_count){
-    if(has_error(read.rooted(tree_paths[[i]],root_taxa))){
+    if(has_error(read.rooted(tree_paths[i],root_taxa))){
       print(tree_paths[[i]])
       stop("The above file above cannot be read or rooted using read.rooted()")
     } else{
-      trees <- c(trees,read.rooted(tree_paths[[i]],root_taxa))
+      trees <- c(trees,read.rooted(tree_paths[i],root_taxa))
     }
   }
   
-  trees <- trees[3:2+tree_count]
+  trees <- trees[3:(2+tree_count)]
 }

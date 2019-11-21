@@ -15,7 +15,6 @@ R version >= 3.6.1
 - phangorn (>= 2.5.5)
 - testit (>= 0.9)
 - tidyverse (>= 1.2.1)
-- purrr
 - tools (>= 3.6.1)
 - reticulate (>= 1.13)
 - scales (>= 1.0.0)

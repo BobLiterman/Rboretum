@@ -651,17 +651,9 @@ def splitMain():
 
         for i in range(0, len(site_dict)):
             pattern_list.append([i, site_dict[i][i]])
-        
-        if (len(alignment_positions)/(pool_cpu*4)) > 250:
-            chunk = len(alignment_positions)/(pool_cpu*4)
-        else:
-            chunk = 250
-        
-        print('Alignment has '+ str(len(alignment_positions)) + ' sites, and analysis is running with ' + str(pool_cpu) + ' processors.' )
-        print('Running analysis with a chunk size of ' + str(chunk) + '...')
-        
+
         with mp.Pool(pool_cpu) as pool:
-            results = pool.map(sitePasser,pattern_list,chunk)
+            results = pool.map(sitePasser,pattern_list,1000)
         
         print("Signal processed...compiling final dataframe...")
         results = pd.concat(results).sort_values(by=['Zeroed_Site_Position']).reset_index()

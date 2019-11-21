@@ -652,7 +652,7 @@ def splitMain():
         for i in range(0, len(site_dict)):
             pattern_list.append([i, site_dict[i][i]])
         
-        chunk = max([1000,len(pattern_list)/(cpu_count*4)])
+        chunk = max([1000,len(pattern_list)/(pool_cpu*4)])
         
         with mp.Pool(pool_cpu) as pool:
             results = pool.map(sitePasser,pattern_list,chunk)

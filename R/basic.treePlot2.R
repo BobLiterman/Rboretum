@@ -180,13 +180,13 @@ basic.treePlot2 <- function(tree,branch_length,branch_weight,node_label,node_siz
     
     if(is.character(to_color)){
       if(bWeight & branch_length){
-        return_tree <- ggtree(tree,size=branch_weight,aes(color=group))
+        return_tree <- ggtree(tree,size=branch_weight,aes(color=group)) + scale_color_manual(values = c('black','red'))
       } else if(bWeight & !branch_length){
-        return_tree <- ggtree(tree,size=branch_weight,branch.length = 'none',aes(color=group))
+        return_tree <- ggtree(tree,size=branch_weight,branch.length = 'none',aes(color=group)) + scale_color_manual(values = c('black','red'))
       } else if(!bWeight & branch_length){
-        return_tree <- ggtree(tree,aes(color=group))
+        return_tree <- ggtree(tree,aes(color=group)) + scale_color_manual(values = c('black','red'))
       } else if(!bWeight & !branch_length){
-        return_tree <- ggtree(tree,branch.length = 'none',aes(color=group))
+        return_tree <- ggtree(tree,branch.length = 'none',aes(color=group)) + scale_color_manual(values = c('black','red'))
       }
     } else{
       if(bWeight & branch_length){

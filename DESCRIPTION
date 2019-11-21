@@ -24,4 +24,4 @@ Depends:
     scales (>= 1.0.0),
     viridis (>= 0.5.1),
     cowplot (>= 1.0.0),
-    ggtree (>= 1.16.6)
+    ggtree

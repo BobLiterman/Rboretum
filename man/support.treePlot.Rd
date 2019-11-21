@@ -8,13 +8,13 @@ Given a phylo object (tree), and the output from tree.support(), this function p
 support.treePlot(
   tree,
   tree_support,
+  clade_support,
   support_scales,
   node_alpha,
   node_color,
   legend_shape_size,
   legend_font_size,
   legend_title_size,
-  clade_support,
   branch_length,
   branch_weight,
   node_label,
@@ -34,6 +34,8 @@ support.treePlot(
 
 \item{tree_support}{OPTIONAL: Output trom tree.support() run on the same tree}
 
+\item{clade_support}{OPTIONAL: Output from compare.clades(). Will colorize nodepoint labels based on how many trees in multiPhylo contain that split}
+
 \item{support_scales}{OPTIONAL: Scaling factor for nodepoint labels. Options include:
 \itemize{
   \item "log" - Log-converted support values
@@ -50,8 +52,6 @@ support.treePlot(
 \item{legend_font_size}{OPTIONAL: ggplot2 size for legend font [Default: 10]}
 
 \item{legend_title_size}{OPTIONAL: ggplot size for legend title [Default: 10]}
-
-\item{clade_support}{OPTIONAL: Output from compare.clades(). Will colorize nodepoint labels based on how many trees in multiPhylo contain that split}
 
 \item{branch_length}{OPTIONAL: TRUE [plot tree with branch lengths]; FALSE [Default: plot cladogram]}
 

@@ -25,7 +25,7 @@ def findOccurrences(s, ch):
 # (1) All species in tree are in alignment
 # (2) Three or more species are present.
 # If True,sets global pruned_alignment is pruned and alphabetized match tree species
-def subset_alignment(alignment_path, spp_list):
+def subset_alignment():
 
     global pruned_alignment
 
@@ -570,33 +570,63 @@ def process_pentallelic(pos):
 
     return(pd.DataFrame([[pos,'pentallelic',np.nan,0,np.nan,base_1_taxa,base_2_taxa,base_3_taxa,base_4_taxa,base_5_taxa]], columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
 
-def getSplitSupport(alignment_path,info_gap,spp_string):
+def sitePasser(pos_pattern):
+    pos = pos_pattern[0]
+    pattern = pos_pattern[1]
+    
+    if pattern in ['invariant','gap_invariant']:
+        return process_invariant(pos)
 
-    alignment_path = str(alignment_path)
-    info_gap = str(info_gap)
+    elif pattern == 'non_base':
+        if info_gap == "0":
+            return process_nonbase(pos)
+        elif info_gap == "1":
+            return process_nonbase_gap(pos)
+    
+    elif pattern in ['singleton','gap_singleton']:
+        return process_singletons(pos)
+        
+    elif pattern in ['biallelic','gap_biallelic']:
+        return process_biallelic(pos)
 
+    elif pattern in ['triallelic','gap_triallelic']:
+        return process_triallelic(pos)
+
+    elif pattern in ['quadallelic','gap_quadallelic']:
+        return process_quadallelic(pos)
+
+    elif pattern == 'pentallelic':
+        return process_pentallelic(pos)
+      
+
+def getSplitSupport(alignment_path1,info_gap1,spp_string):
+
+    global alignment_path
+    global info_gap
     global spp_list
+
+    alignment_path = str(alignment_path1)
+    info_gap = str(info_gap1)
     spp_list = sorted(str(spp_string).split(";"))
     
     # Get site split info, or False if alignment cannot be processed for given species set
-    all_sites_df = splitMain(alignment_path,info_gap,spp_list)
+    all_sites_df = splitMain()
 
     if all_sites_df.shape[0] == 0:
         return -1
     else:
         return all_sites_df
 
-def splitMain(alignment_path,info_gap,spp_list):
+def splitMain():
 
     # Create dummy return for errors
     empty = pd.DataFrame()
 
     # If alignment_filename contains all species from spp_list (>= 3 species), continue
-    if subset_alignment(alignment_path, spp_list):
+    if subset_alignment():
 
         # Define each position in the alignment by its 0-based position
         alignment_positions = range(0, pruned_alignment.get_alignment_length())
-
         # Detect CPUs and create a pool of workers
         if mp.cpu_count() == 1:
             pool_cpu = 1
@@ -609,99 +639,25 @@ def splitMain(alignment_path,info_gap,spp_list):
         if info_gap == "0":
             with mp.Pool(pool_cpu) as pool:
                 site_dict = pool.map(create_site_dict, alignment_positions)
+                print("Processed site patterns with gaps interpreted as missing data...assessing signal...")
 
         elif info_gap == "1":
             with mp.Pool(pool_cpu) as pool:
                 site_dict = pool.map(create_site_dict_gap, alignment_positions)
-        
-        print("Processed site patterns...assessing splits...")
-        else:
-            return empty
+                print("Processed site patterns with gaps interpreted as informative indels...assessing signal...")
 
         # Process site patterns
         pattern_list = []
 
         for i in range(0, len(site_dict)):
-            pattern_list.append(
-                [i, site_dict[i][i]])
+            pattern_list.append([i, site_dict[i][i]])
 
-        # Create dataframe of each position (0-based) and it's variation pattern
-        site_df = pd.DataFrame(pattern_list, columns=['Zeroed_Site_Position', 'Site_Pattern'])
-        site_count = pruned_alignment.get_alignment_length()
-        final_columns = ['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']
-
-        invariant_df = site_df[site_df['Site_Pattern'].isin(['invariant', 'gap_invariant'])].reset_index(drop=True)
-        non_base_df = site_df[site_df['Site_Pattern'].isin(['non_base'])].reset_index(drop=True)
-        singleton_df = site_df[site_df['Site_Pattern'].isin(['singleton','gap_singleton'])].reset_index(drop=True)
-        biallelic_df = site_df[site_df['Site_Pattern'].isin(['biallelic','gap_biallelic'])].reset_index(drop=True)
-        triallelic_df = site_df[site_df['Site_Pattern'].isin(['triallelic','gap_triallelic'])].reset_index(drop=True)
-        quadallelic_df = site_df[site_df['Site_Pattern'].isin(['quadallelic','gap_quadallelic'])].reset_index(drop=True)
-        pentallelic_df = site_df[site_df['Site_Pattern'].isin(['pentallelic','gap_pentallelic'])].reset_index(drop=True)
+        with mp.Pool(pool_cpu) as pool:
+            results = pool.map(sitePasser,pattern_list)
         
-        invariant_count = invariant_df.shape[0]
-        non_base_count = non_base_df.shape[0]
-        singleton_count = singleton_df.shape[0]
-        biallelic_count = biallelic_df.shape[0]
-        triallelic_count = triallelic_df.shape[0]
-        quadallelic_count = quadallelic_df.shape[0]
-        pentallelic_count = pentallelic_df.shape[0]
+        print("Signal processed...compiling final dataframe...")
+        results = pd.concat(results).sort_values(by=['Zeroed_Site_Position']).reset_index()
 
-        # Process columns with invariant sites
-        if invariant_count > 0:
-            with mp.Pool(pool_cpu) as pool:
-                results = pool.map(process_invariant,invariant_df['Zeroed_Site_Position'])
-        print("Processed invariant sites...")
-
-        # Process columns for singleton sites
-        if singleton_count > 0:
-            with mp.Pool(pool_cpu) as pool:
-                results.append(pool.map(process_singletons,singleton_df['Zeroed_Site_Position']))
-        print("Processed singleton sites...")
-
-        # Process columns for biallelic sites
-        if biallelic_count > 0:
-            with mp.Pool(pool_cpu) as pool:
-                results.append(pool.map(process_biallelic,biallelic_df['Zeroed_Site_Position']))
-        print("Processed biallelic sites...")
-
-        # Process columns for triallelic sites
-        if triallelic_count > 0:
-            with mp.Pool(pool_cpu) as pool:
-                results.append(pool.map(process_triallelic,triallelic_df['Zeroed_Site_Position']))
-        print("Processed triallelic sites...")
-
-        # Process columns for quadallelic sites
-        if quadallelic_count > 0:
-            with mp.Pool(pool_cpu) as pool:
-                results.append(pool.map(process_quadallelic,quadallelic_df['Zeroed_Site_Position']))
-        print("Processed quadallelic sites...")
-
-        # Process columns for pentallelic sites
-        if pentallelic_count > 0:
-            with mp.Pool(pool_cpu) as pool:
-                results.append(pool.map(process_pentallelic,pentallelic_df['Zeroed_Site_Position']))
-        print("Processed pentallelic sites...")
-
-        # Process columns for non-base sites
-
-        if non_base_count > 0:
-
-            if info_gap == "0":
-                with mp.Pool(pool_cpu) as pool:
-                    results.append(pool.map(process_nonbase,non_base_df['Zeroed_Site_Position']))
-
-            if info_gap == "1":
-                with mp.Pool(pool_cpu) as pool:
-                    results.append(pool.map(process_nonbase_gap,non_base_df['Zeroed_Site_Position']))
-        print("Processed sites with non-bases...")
-
-        # Combine dataframes
-
-        if (invariant_count + non_base_count + singleton_count + biallelic_count + triallelic_count + quadallelic_count + pentallelic_count) > 1:
-            results = pd.concat(results).sort_values(by=['Zeroed_Site_Position']).reindex(columns=final_columns).reset_index()
-            return results
-
-        else:
-            return empty
+        return results
     else:
         return empty

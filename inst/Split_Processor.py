@@ -613,6 +613,8 @@ def splitMain(alignment_path,info_gap,spp_list):
         elif info_gap == "1":
             with mp.Pool(pool_cpu) as pool:
                 site_dict = pool.map(create_site_dict_gap, alignment_positions)
+        
+        print("Processed site patterns...assessing splits...")
         else:
             return empty
 
@@ -648,55 +650,37 @@ def splitMain(alignment_path,info_gap,spp_list):
         if invariant_count > 0:
             with mp.Pool(pool_cpu) as pool:
                 results = pool.map(process_invariant,invariant_df['Zeroed_Site_Position'])
-            invariant_df = pd.concat(results)
-
-        else:
-            invariant_df = pd.DataFrame(columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5'])
+        print("Processed invariant sites...")
 
         # Process columns for singleton sites
         if singleton_count > 0:
             with mp.Pool(pool_cpu) as pool:
-                results = pool.map(process_singletons,singleton_df['Zeroed_Site_Position'])
-            singleton_df = pd.concat(results)
-
-        else:
-            singleton_df = pd.DataFrame(columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5'])
+                results.append(pool.map(process_singletons,singleton_df['Zeroed_Site_Position']))
+        print("Processed singleton sites...")
 
         # Process columns for biallelic sites
         if biallelic_count > 0:
             with mp.Pool(pool_cpu) as pool:
-                results = pool.map(process_biallelic,biallelic_df['Zeroed_Site_Position'])
-            biallelic_df = pd.concat(results)
-
-        else:
-            biallelic_df = pd.DataFrame(columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5'])
+                results.append(pool.map(process_biallelic,biallelic_df['Zeroed_Site_Position']))
+        print("Processed biallelic sites...")
 
         # Process columns for triallelic sites
         if triallelic_count > 0:
             with mp.Pool(pool_cpu) as pool:
-                results = pool.map(process_triallelic,triallelic_df['Zeroed_Site_Position'])
-            triallelic_df = pd.concat(results)
-
-        else:
-            triallelic_df = pd.DataFrame(columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5'])
+                results.append(pool.map(process_triallelic,triallelic_df['Zeroed_Site_Position']))
+        print("Processed triallelic sites...")
 
         # Process columns for quadallelic sites
         if quadallelic_count > 0:
             with mp.Pool(pool_cpu) as pool:
-                results = pool.map(process_quadallelic,quadallelic_df['Zeroed_Site_Position'])
-            quadallelic_df = pd.concat(results)
-       
-        else:
-            quadallelic_df = pd.DataFrame(columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5'])
+                results.append(pool.map(process_quadallelic,quadallelic_df['Zeroed_Site_Position']))
+        print("Processed quadallelic sites...")
 
         # Process columns for pentallelic sites
         if pentallelic_count > 0:
             with mp.Pool(pool_cpu) as pool:
-                results = pool.map(process_pentallelic,pentallelic_df['Zeroed_Site_Position'])
-            pentallelic_df = pd.concat(results)
-
-        else:
-            pentallelic_df = pd.DataFrame(columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5'])
+                results.append(pool.map(process_pentallelic,pentallelic_df['Zeroed_Site_Position']))
+        print("Processed pentallelic sites...")
 
         # Process columns for non-base sites
 
@@ -704,24 +688,18 @@ def splitMain(alignment_path,info_gap,spp_list):
 
             if info_gap == "0":
                 with mp.Pool(pool_cpu) as pool:
-                    results = pool.map(process_nonbase,non_base_df['Zeroed_Site_Position'])
-                non_base_df = pd.concat(results)
-            
+                    results.append(pool.map(process_nonbase,non_base_df['Zeroed_Site_Position']))
+
             if info_gap == "1":
                 with mp.Pool(pool_cpu) as pool:
-                    results = pool.map(process_nonbase_gap,non_base_df['Zeroed_Site_Position'])
-                non_base_df = pd.concat(results)
-
-        else:
-            non_base_df = pd.DataFrame(columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5'])
+                    results.append(pool.map(process_nonbase_gap,non_base_df['Zeroed_Site_Position']))
+        print("Processed sites with non-bases...")
 
         # Combine dataframes
 
         if (invariant_count + non_base_count + singleton_count + biallelic_count + triallelic_count + quadallelic_count + pentallelic_count) > 1:
-            all_sites_df = pd.concat([invariant_df,non_base_df,singleton_df,biallelic_df,triallelic_df,quadallelic_df,pentallelic_df], axis=0, sort=True).sort_values(by=['Zeroed_Site_Position'])
-            all_sites_df = all_sites_df.reindex(columns=final_columns).reset_index()
-            
-            return all_sites_df
+            results = pd.concat(results).sort_values(by=['Zeroed_Site_Position']).reindex(columns=final_columns).reset_index()
+            return results
 
         else:
             return empty

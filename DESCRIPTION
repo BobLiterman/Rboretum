@@ -11,6 +11,7 @@ License: CC0
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.1.99.9000
+biocViews:
 Depends:
     R (>= 3.6.1),
     ape (>= 5.3),
@@ -22,7 +23,5 @@ Depends:
     reticulate (>= 1.13),
     scales (>= 1.0.0),
     viridis (>= 0.5.1),
-    cowplot (>= 1.0.0)
-biocViews:
-Imports:
-    ggtree
+    cowplot (>= 1.0.0),
+    ggtree (>= 1.16.6)

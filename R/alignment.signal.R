@@ -53,13 +53,11 @@ alignment.signal <- function(alignment_path,species_info,informative_gaps,alignm
   } else{ info_gap <- '0'}
 
   # Get list of species from tree or from character vector
-  if(typeof(species_info)=="character" && length(species_info) > 3){
+  if(Rboretum::is.phylo(species_info)){
+    spp_list = paste(sort(species_info$tip.label),collapse = ";")
+  } else if(typeof(species_info)=="character" && length(species_info) > 3){
     spp_list = paste(sort(species_info),collapse = ";")
-  } else if(!has_error(attributes(species_info)$class)){
-      if(attributes(species_info)$class == "phylo"){
-        spp_list = paste(sort(species_info$tip.label),collapse = ";")
-      } else{ stop("Argument 3 (Species information) is neither a phylo object, nor a character vector of species longer than 3.")}
-      } else{ stop("Argument 3 (Species information) is neither a phylo object, nor a character vector of species longer than 3.")} 
+  } else { stop("Argument 3 (Species information) is neither a phylo object, nor a character vector of species longer than 3.") }
 
   split_support <- getSplitSupport(alignment_path,info_gap,spp_list)
 

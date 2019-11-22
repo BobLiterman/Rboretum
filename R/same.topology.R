@@ -9,12 +9,8 @@
 #' same.topology(trees)
 #'
 same.topology <- function(trees){
-  if(has_error(unlist(attributes(trees)$class))){ 
-    stop("'trees' argument should be a multiPhylo object")
-  } else if(!"multiPhylo" %in% unlist(attributes(trees)$class)){
-    stop("'trees' argument should be a multiPhylo object")
-  } else if(length(trees)<2){
-    stop("At least two trees are required for comparison.")
+  if(!Rboretum::is.multiPhylo(trees)){
+    stop("'trees' does not appear to be a valid multiPhylo object with 2+ trees")
   } else if(has_error(Rboretum::check.shared(trees))){
     stop("Trees do not appear to share three species in common.")
   } else if(!Rboretum::check.shared(trees)){

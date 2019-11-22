@@ -22,24 +22,16 @@ get.comparable <- function(trees,tree_names,return_only_comparable){
   
   if(missing(tree_names)){
     
-    if(has_error(unlist(attributes(trees)$class))){ 
-      stop("'trees' argument should be a multiPhylo object")
-    } else if(!"multiPhylo" %in% unlist(attributes(trees)$class)){
-      stop("'trees' argument should be a multiPhylo object")
-    } else if(length(trees)<2){
-      stop("At least two trees are required for comparison.")
+    if(!Rboretum::is.multiPhylo(trees)){
+      stop("'trees' does not appear to be a valid multiPhylo object with 2+ trees")
     }
     
     tree_count <- length(trees)
     tree_names <- unlist(lapply(X = 1:tree_count,function(x) paste(c("Tree",x),collapse = "_")))
     
   } else{
-    if(has_error(unlist(attributes(trees)$class))){ 
-      stop("'trees' argument should be a multiPhylo object")
-    } else if(!"multiPhylo" %in% unlist(attributes(trees)$class)){
-      stop("'trees' argument should be a multiPhylo object")
-    } else if(length(trees)<2){
-      stop("At least two trees are required for comparison.")
+    if(!Rboretum::is.multiPhylo(trees)){
+      stop("'trees' does not appear to be a valid multiPhylo object with 2+ trees")
     }
     
     tree_count <- length(trees)

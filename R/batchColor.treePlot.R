@@ -43,10 +43,9 @@
 
 batchColor.treePlot <- function(trees,to_color,branch_length,branch_weight,node_label,node_size,node_nudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax,reverse_x,colors,color_legend){
   
-  if(has_error(unlist(attributes(trees)$class))){ 
-    stop("'tree' argument should be a multiPhylo object")
-  } else if(!"multiPhylo" %in% unlist(attributes(trees)$class)){
-    stop("'tree' argument should be a multiPhylo object")} 
+  if(!Rboretum::is.multiPhylo(trees)){
+    stop("'trees' does not appear to be a multiPhylo object. Use basic.treePlot() for single trees.")
+  }
   
   if(missing(to_color)){
     stop("'to_color' argument required for batchColor.treePlot") 

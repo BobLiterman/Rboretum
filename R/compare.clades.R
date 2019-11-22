@@ -19,13 +19,8 @@
 compare.clades <- function(trees,tree_names,return_shared_only){
   
   if(missing(tree_names)){
-    
-    if(has_error(unlist(attributes(trees)$class))){ 
-      stop("'trees' argument should be a multiPhylo object")
-    } else if(!"multiPhylo" %in% unlist(attributes(trees)$class)){
-      stop("'trees' argument should be a multiPhylo object")
-    } else if(length(trees)<2){
-      stop("At least two trees are required for comparison.")
+    if(!Rboretum::is.multiPhylo(trees)){
+      stop("'trees' does not appear to be a valid multiPhylo object with 2+ trees")
     } else if(!Rboretum::check.shared(trees)){
       stop("Trees do not share at least three common species.")
     } else if(Rboretum::same.topology(trees)){
@@ -36,12 +31,8 @@ compare.clades <- function(trees,tree_names,return_shared_only){
     tree_names <- unlist(lapply(X = 1:tree_count,function(x) paste(c("Tree",x),collapse = "_")))
     
   } else{
-    if(has_error(unlist(attributes(trees)$class))){ 
-      stop("'trees' argument should be a multiPhylo object")
-    } else if(!"multiPhylo" %in% unlist(attributes(trees)$class)){
-      stop("'trees' argument should be a multiPhylo object")
-    } else if(length(trees)<2){
-      stop("At least two trees are required for comparison.")
+    if(!Rboretum::is.multiPhylo(trees)){
+      stop("'trees' does not appear to be a valid multiPhylo object with 2+ trees")
     } else if(!Rboretum::check.shared(trees)){
       stop("Trees do not share at least three common species.")
     } else if(Rboretum::same.topology(trees)){

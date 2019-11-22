@@ -12,13 +12,29 @@
 #'
 
 convert.tips <- function(tree,name_df,from,to){
-  tree_taxa <- tree$tip.label
-
-  to <- as.character(to)
-  from <- as.character(from)
-
-  current_ids <- as.character(pull(name_df,from))
-  new_ids <- as.character(pull(name_df,to))
+  
+  if(!Rboretum::is.phylo(tree)){
+    stop("'tree' does not appear to be a valid phylo object.")
+  } else{ tree_taxa <- tree$tip.label }
+  
+  if(missing(name_df)){
+    stop("No name table provided to name_df")
+  }
+  
+  if(missing(from)){
+    stop("Must specify column header with current tree IDs with 'from' ")
+  } else{ from <- as.character(from) }
+  
+  if(missing(to)){
+    stop("Must specify column header with desired tree IDs with 'to' ")
+  } else{ from <- as.character(to) }  
+  
+  if(!all(c(to,from) %in% names(name_df))){
+    stop("Either 'to' or 'from' column not found in 'name_df'")
+  } else{
+    current_ids <- as.character(pull(name_df,from))
+    new_ids <- as.character(pull(name_df,to)) 
+  }
 
   if(!all(tree_taxa %in% current_ids)){
     stop("Specified 'from' column does not contain all IDs from tree")

@@ -16,26 +16,22 @@
 
 check.tip <- function(tree,taxa){
   
-  if(has_error(unlist(attributes(tree)$class))){ 
-    stop("'tree' argument should be a phylo or multiPhylo object")
-  } else if(!"phylo" %in% unlist(attributes(tree)$class) & !"multiPhylo" %in% unlist(attributes(tree)$class)){
-    stop("'tree' argument should be a phylo or multiPhylo object")}
-  
-  if("phylo" %in% unlist(attributes(tree)$class)){
+  if(Rboretum::is.phylo(tree)){
     if(all(taxa %in% tree$tip.label)){
       return(TRUE)
     } else{ return(FALSE) }
-  } 
-  
-  if("multiPhylo" %in% unlist(attributes(tree)$class)){
-      species_check <- c()
+  } else if(Rboretum::is.multiPhylo(tree)){
+    species_check <- c()
       
-      for(i in 1:length(tree)){
-        species_check <- c(species_check,all(taxa %in% tree[[i]]$tip.label))
-      }
+    for(i in 1:length(tree)){
+      species_check <- c(species_check,all(taxa %in% tree[[i]]$tip.label))
+    }
       
-      if(all(species_check)){
-        return(TRUE)
-      } else{ return(FALSE) }
+    if(all(species_check)){
+      return(TRUE)
+    } else{ return(FALSE) }
+  }
+  else{
+    stop("'tree' does not appear to be a valid phylo or multiPhylo object")
   }
 }

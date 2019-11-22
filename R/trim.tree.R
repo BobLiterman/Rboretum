@@ -23,20 +23,17 @@ trim.tree <- function(tree,taxa,remove){
     remove <- FALSE
   }
   
-  if(has_error(unlist(attributes(tree)$class))){ 
-    stop("'tree' argument should be a phylo or multiPhylo object")
-  } else if(!"phylo" %in% unlist(attributes(tree)$class) & !"multiPhylo" %in% unlist(attributes(tree)$class)){
-    stop("'tree' argument should be a phylo or multiPhylo object")}
+  if(!Rboretum::is.multiPhylo(tree) & !Rboretum::is.phylo(tree)){
+    stop("'tree' does not appear to be a valid phylo or multiPhylo object")
+  }
   
   if(check.tip(tree,taxa)){
     
     if(!remove){
       if(length(taxa >= 3)){
-        if("phylo" %in% unlist(attributes(tree)$class)){
+        if(Rboretum::is.phylo(tree)){
           return(ape::drop.tip(tree,tree$tip.label[-match(taxa, tree$tip.label)]))
-        }
-        
-        if("multiPhylo" %in% unlist(attributes(tree)$class)){
+        } else if(Rboretum::is.multiPhylo(tree)){
           for(i in 1:length(tree)){
             tree[[i]] <- ape::drop.tip(tree[[i]],tree[[i]]$tip.label[-match(taxa, tree[[i]]$tip.label)])
           }
@@ -46,15 +43,13 @@ trim.tree <- function(tree,taxa,remove){
       
     } else{
       
-      if("phylo" %in% unlist(attributes(tree)$class)){
+      if(Rboretum::is.phylo(tree)){
         keep_taxa <- tree$tip.label[!tree$tip.label %in% taxa]
         if(length(keep_taxa >= 3)){
           return(ape::drop.tip(tree,tree$tip.label[-match(keep_taxa, tree$tip.label)]))
         } else{ stop("Can't trim to fewer than three tips...") }
-      }
-      
-      if("multiPhylo" %in% unlist(attributes(tree)$class)){
-        for(i in 1:length(tree)){
+      } else if(Rboretum::is.multiPhylo(tree)){
+      for(i in 1:length(tree)){
           keep_taxa <- tree[[i]]$tip.label[!tree[[i]]$tip.label %in% taxa]
           if(length(keep_taxa >= 3)){
             tree[[i]] <- ape::drop.tip(tree[[i]],tree[[i]]$tip.label[-match(keep_taxa, tree[[i]]$tip.label)])

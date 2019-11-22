@@ -45,6 +45,8 @@ basic.treePlot <- function(tree,branch_length,branch_weight,node_label,node_size
   
   if(missing(tree)){
     stop("No tree provided.")
+  } else if(!Rboretum::is.phylo(tree)){
+    stop("'tree' does not appear to be a phylo object")
   }
   
   if(missing(branch_length)){

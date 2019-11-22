@@ -7,11 +7,14 @@
 
 tandem.treePlot <- function(...){
   
-  if(has_error(is.list(...))){
+  if(has_error(is.list(...),silent = TRUE)){
     plotList <- list(...)
   } else{
     if(!is.list(...)){
       stop("Argument(s) must either be multiple plots, or a single list of plots.")
+    }
+    else{
+      plotList <- ...
     }
   }
 

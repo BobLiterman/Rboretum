@@ -6,6 +6,7 @@
 #' @param max_missing OPTIONAL: Number of missing sites allowed in alignment column [Default: 0]
 #' @param alignment_name OPTIONAL: Column name for data being added [Default: Alignment name from signal dataframe]
 #' @param include_gap OPTIONAL: TRUE or FALSE; Count sites with gap positions ('-') as part of total support [Default: TRUE]
+#' @param include_singleton OPTIONAL: TRUE or FALSE; Count sites with singletons as part of total support [Default: TRUE]
 #' @param include_biallelic OPTIONAL: TRUE or FALSE; Count sites with biiallelic variation as part of total support [Default: TRUE]
 #' @param include_triallelic OPTIONAL: TRUE or FALSE; Count sites with triallelic variation as part of total support [Default: TRUE]
 #' @param include_quadallelic OPTIONAL: TRUE or FALSE; Count sites with quadallelic variation as part of total support [Default: TRUE]
@@ -18,7 +19,7 @@
 #' tree.support(tree,signal)
 #'
 
-tree.support <- function(signal,tree,max_missing,alignment_name,include_gap,include_biallelic,include_triallelic,include_quadallelic,include_pentallelic,only_gap,existing_splits){
+tree.support <- function(signal,tree,max_missing,alignment_name,include_gap,include_singleton,include_biallelic,include_triallelic,include_quadallelic,include_pentallelic,only_gap,existing_splits){
 
   if(missing(max_missing)){
     max_missing <- 0
@@ -32,6 +33,12 @@ tree.support <- function(signal,tree,max_missing,alignment_name,include_gap,incl
     include_gap <- TRUE
   } else if (!is.logical(include_gap)){
     include_gap <- TRUE
+  }
+  
+  if(missing(include_singleton)){
+    include_singleton <- TRUE
+  } else if (!is.logical(include_singleton)){
+    include_singleton <- TRUE
   }
   
   if(missing(include_biallelic)){
@@ -80,7 +87,8 @@ tree.support <- function(signal,tree,max_missing,alignment_name,include_gap,incl
   } else if(!ape::is.rooted(tree)){
     stop("Tree must be rooted for tree.support")}
   
-  if(!all(names(signal) == c('Alignment_Name','Alignment_Position','Site_Pattern','Gap','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5'))){
+  if(!all(names(signal) == c('Alignment_Name','Alignment_Position','Site_Pattern','Gap','Singleton','Singleton_Taxa','Non_Base_Taxa','Non_Base_Count','Split_1','Split_2','Split_3','Split_4','Split_5')
+)){
     stop("'signal' argument must be output from alignment.signal()")
   }
     
@@ -104,10 +112,8 @@ tree.support <- function(signal,tree,max_missing,alignment_name,include_gap,incl
     stop("Taxa from signal analysis doesn't match that from tree.")
   }
   
-  informative_patterns <- c('biallelic','gap_biallelic',
-                            'triallelic','gap_triallelic',
-                            'quadallelic','gap_quadallelic',
-                            'pentallelic','gap_pentallelic')
+  informative_patterns <- c('biallelic','triallelic','quadallelic','pentallelic')
+  
   signal <- signal %>% 
     filter(Non_Base_Count <= max_missing) %>%
     filter(Site_Pattern %in% informative_patterns)
@@ -117,6 +123,11 @@ tree.support <- function(signal,tree,max_missing,alignment_name,include_gap,incl
       stop("Cannot only use (only_gap) and exclude (include_gap) gap positions.") }
     signal <- signal %>%
       filter(Gap==FALSE)
+  }
+  
+  if(!include_singleton){
+    signal <- signal %>%
+      filter(Singleton==FALSE)
   }
   
   if(!include_biallelic){

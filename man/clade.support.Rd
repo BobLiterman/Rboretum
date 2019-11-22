@@ -9,6 +9,7 @@ clade.support(
   clade,
   max_missing,
   include_gap,
+  include_singleton,
   include_biallelic,
   include_triallelic,
   include_quadallelic,
@@ -25,6 +26,8 @@ clade.support(
 \item{max_missing}{OPTIONAL: Number of missing sites allowed in alignment column [Default: 0]}
 
 \item{include_gap}{OPTIONAL: TRUE or FALSE; Count sites with gap positions ('-') as part of total support [Default: TRUE]}
+
+\item{include_singleton}{OPTIONAL: TRUE or FALSE; Count sites with singletons as part of total support [Default: TRUE]}
 
 \item{include_biallelic}{OPTIONAL: TRUE or FALSE; Count sites with biiallelic variation as part of total support [Default: TRUE]}
 

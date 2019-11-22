@@ -163,9 +163,7 @@ basic.treePlot <- function(tree,branch_length,branch_weight,node_label,node_size
       colorTips <- TRUE
       group_count <- length(to_color)
       if(group_count > 8){
-        print("Can't reliably color more than 8 groups. Highlighting the first 8 groups from list.")
-        to_color <- to_color[1:8]
-        group_count <- 8
+        print("More than 8 groups to highlight. If enough colors were not provided, will use color_scale_viridis().")
       }
     } else{
       colorTips <- FALSE
@@ -183,9 +181,11 @@ basic.treePlot <- function(tree,branch_length,branch_weight,node_label,node_size
       if(group_count == 1){
         colors <- c('black','red')
       }
-      else if(group_count > 1){
+      else if(group_count <= 8){
         all_colors <- c('#800000','#4363d8','#f58231','#e6beff','#000075','#a9a9a9','#fabebe','#ffe119') 
         colors <- c('black',all_colors[1:group_count])
+      } else{
+        colors <- c('black',viridisLite::viridis(group_count))
       }
     } else{
       if(group_count == 1){
@@ -198,8 +198,13 @@ basic.treePlot <- function(tree,branch_length,branch_weight,node_label,node_size
       } else{
         if(length(colors) != group_count | any(has_error(grDevices::col2rgb(colors)))){
           print("Invalid color choice. Using defaults.")
-          all_colors <- c('#800000','#4363d8','#f58231','#e6beff','#000075','#a9a9a9','#fabebe','#ffe119') 
-          colors <- c('black',all_colors[1:group_count])
+          
+          if(group_count <= 8){
+            all_colors <- c('#800000','#4363d8','#f58231','#e6beff','#000075','#a9a9a9','#fabebe','#ffe119') 
+            colors <- c('black',all_colors[1:group_count])
+          } else{
+            colors <- c('black',viridisLite::viridis(group_count))
+          }
         } else{colors <- c('black',colors)}
       }
     }

@@ -210,6 +210,8 @@ basic.treePlot <- function(tree,branch_length,branch_weight,node_label,node_size
   
   if(missing(color_legend)){
     color_legend <- FALSE
+  } else if(is.na(color_legend)){
+    color_legend <- FALSE
   } else if(!is.logical(color_legend)){
     color_legend <- FALSE
   }

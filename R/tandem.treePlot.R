@@ -13,7 +13,9 @@ tandem.treePlot <- function(...){
     stop("Two or more plots needed for tandem.treePlot.")
   }
   
-  if(any(map(plotList,Rboretum::is.plot))){
+  plotCheck <- purrr::map(plotList,Rboretum::is.plot) %>% unlist()
+  
+  if(!all(plotCheck)){
     stop("One argument passed is not of class ggplot or ggtree")
   }
   

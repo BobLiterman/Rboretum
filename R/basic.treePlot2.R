@@ -235,6 +235,10 @@ basic.treePlot2 <- function(tree,branch_length,branch_weight,node_label,node_siz
       } else if(!bWeight & !branch_length){
         return_tree <- ggtree(tree,branch.length = 'none',aes(color=group)) + scale_color_manual(breaks = names(to_color),values = colors)
       }
+      
+      if(color_legend){
+        return_tree <- return_tree + labs(color = "Focal Clades") + theme(legend.position = 'right')
+      }
     }
   } else{
     if(bWeight & branch_length){

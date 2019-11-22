@@ -25,4 +25,5 @@ Depends:
     viridis (>= 0.5.1),
     cowplot (>= 1.0.0),
     ggtree (>= 1.16.6),
-    grDevices (>= 3.6.1)
+    grDevices (>= 3.6.1),
+    viridisLite (>= 0.3.0)

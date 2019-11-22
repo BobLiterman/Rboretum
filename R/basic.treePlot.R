@@ -20,6 +20,13 @@
 #' @param xmax OPTIONAL: Set ggplot xlim upper limit (e.g if long tip labels run off plot)
 #' @param reverse_x OPTIONAL: TRUE [plot tree with tips on left]; FALSE [Default: plot tree with tips on right]
 #' @param rename_tips OPTIONAL: Dataframe where column 1 contains tip labels for tree, and column 2 contains new, desired tip labels
+#' @param to_color OPTIONAL: Color tips or clades via:
+#' \itemize{
+#'   \item Character vector of taxa, all to be colored the same color
+#'   \item List of groups of taxa, each of which will have their own color. List can be named for use with a legend (set color_legend == TRUE)
+#' }
+#' @param colors OPTIONAL: Colors for clade highlighting. Must be hex or valid R colors. Provide a color for each group (1 if character vector, 1 for each group if named list) or default colors will be used.
+#' @param color_legend TRUE [Include a legend for colored taxa/clades]; False [Default: No legend]
 #' @return ggtree object
 #' @export
 #' @examples
@@ -35,7 +42,7 @@
 #' # Print tree with buffer on right side to accomodate longer tip labels
 #' basic.treePlot(tree,xmax=10)
 
-basic.treePlot <- function(tree,branch_length,branch_weight,node_label,node_size,node_nudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax,reverse_x,rename_tips){
+basic.treePlot <- function(tree,branch_length,branch_weight,node_label,node_size,node_nudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax,reverse_x,rename_tips,to_color,colors,color_legend){
   
   if(missing(tree)){
     stop("No tree provided.")
@@ -134,23 +141,116 @@ basic.treePlot <- function(tree,branch_length,branch_weight,node_label,node_size
       tree <- tree
     } else{
       tree <- Rboretum::convert.tips(tree,rename_tips,old_id,new_id)
+      name_dict <- list(new_id)
+      names(name_dict) <- old_id
     }
   } else{
     tree <- tree
   }
   
-  # Create base tree
-
-  if(bWeight & branch_length){
-    return_tree <- ggtree(tree,size=branch_weight)
-  } else if(bWeight & !branch_length){
-    return_tree <- ggtree(tree,size=branch_weight,branch.length = 'none')
-  } else if(!bWeight & branch_length){
-    return_tree <- ggtree(tree)
-  } else if(!bWeight & !branch_length){
-    return_tree <- ggtree(tree,branch.length = 'none')
+  if(missing(to_color)){
+    colorTips <- FALSE
+  } else if(is.character(to_color)){
+    if(check.tip(tree,to_color)){
+      colorTips <- TRUE
+      group_count <- 1
+    } else{
+      print("Some taxa in 'to_color' not found in tree.")
+      colorTips <- FALSE
+    }
+  } else if(is.list(to_color)){
+    if(check.tip(tree,unlist(to_color))){
+      colorTips <- TRUE
+      group_count <- length(to_color)
+      if(group_count > 8){
+        print("Can't reliably color more than 8 groups. Highlighting the first 8 groups from list.")
+        to_color <- to_color[1:8]
+        group_count <- 8
+      }
+    } else{
+      colorTips <- FALSE
+      print("Some taxa in 'to_color' not found in tree.")
+    }
+  } else{
+    print("'to_color' must be a character vector of taxa, or a list of taxa/clades")
+    colorTips <- FALSE
   }
   
+  if(!colorTips){
+    colors <- NA
+  } else{
+    if(missing(colors)){
+      if(group_count == 1){
+        colors <- c('black','red')
+      }
+      else if(group_count > 1){
+        all_colors <- c('#800000','#4363d8','#f58231','#e6beff','#000075','#a9a9a9','#fabebe','#ffe119') 
+        colors <- c('black',all_colors[1:group_count])
+      }
+    } else{
+      if(group_count == 1){
+        if(length(colors)>1){
+          colors <- colors[1]
+        }
+        if(has_error(grDevices::col2rgb(colors))){
+          colors <- c('black','red')
+        } else{colors <- c('black',colors)}
+      } else{
+        if(length(colors) != group_count | any(has_error(grDevices::col2rgb(colors)))){
+          print("Invalid color choice. Using defaults.")
+          all_colors <- c('#800000','#4363d8','#f58231','#e6beff','#000075','#a9a9a9','#fabebe','#ffe119') 
+          colors <- c('black',all_colors[1:group_count])
+        } else{colors <- c('black',colors)}
+      }
+    }
+  }
+  
+  if(missing(color_legend)){
+    color_legend <- FALSE
+  } else if(!is.logical(color_legend)){
+    color_legend <- FALSE
+  }
+  
+  # Create base tree
+  if(colorTips){
+    tree <- ggtree::groupOTU(tree,to_color)
+    
+    if(is.character(to_color)){
+      if(bWeight & branch_length){
+        return_tree <- ggtree(tree,size=branch_weight,aes(color=group)) + scale_color_manual(values = colors)
+      } else if(bWeight & !branch_length){
+        return_tree <- ggtree(tree,size=branch_weight,branch.length = 'none',aes(color=group)) + scale_color_manual(values = colors)
+      } else if(!bWeight & branch_length){
+        return_tree <- ggtree(tree,aes(color=group)) + scale_color_manual(values = colors)
+      } else if(!bWeight & !branch_length){
+        return_tree <- ggtree(tree,branch.length = 'none',aes(color=group)) + scale_color_manual(values = colors)
+      }
+    } else{
+      if(bWeight & branch_length){
+        return_tree <- ggtree(tree,size=branch_weight,aes(color=group)) + scale_color_manual(breaks = names(to_color),values = colors)
+      } else if(bWeight & !branch_length){
+        return_tree <- ggtree(tree,size=branch_weight,branch.length = 'none',aes(color=group)) + scale_color_manual(breaks = names(to_color),values = colors)
+      } else if(!bWeight & branch_length){
+        return_tree <- ggtree(tree,aes(color=group)) + scale_color_manual(breaks = names(to_color),values = colors)
+      } else if(!bWeight & !branch_length){
+        return_tree <- ggtree(tree,branch.length = 'none',aes(color=group)) + scale_color_manual(breaks = names(to_color),values = colors)
+      }
+      
+      if(color_legend){
+        return_tree <- return_tree + labs(color = "Focal Clades") + theme(legend.position = 'right')
+      }
+    }
+  } else{
+    if(bWeight & branch_length){
+      return_tree <- ggtree(tree,size=branch_weight)
+    } else if(bWeight & !branch_length){
+      return_tree <- ggtree(tree,size=branch_weight,branch.length = 'none')
+    } else if(!bWeight & branch_length){
+      return_tree <- ggtree(tree)
+    } else if(!bWeight & !branch_length){
+      return_tree <- ggtree(tree,branch.length = 'none')
+    }
+  }
   if(extendX){
     if(!reverseX){
     return_tree <- return_tree + ggplot2::xlim(0,xmax)

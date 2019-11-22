@@ -56,8 +56,7 @@ get.splits <- function(tree){
             bootstrap_list <- c(bootstrap_list,as.numeric(node_bs))
           } else{ bootstrap_list <- c(bootstrap_list,NA) }
         }
-      }
-      if(mono_B && !(mono_A)){
+      } else if(mono_B && !(mono_A)){
         non_root_clades <- c(non_root_clades,sort(mirror_clade) %>% paste(collapse = ";"))
         non_root_mirror <- c(non_root_mirror,sort(temp_clade) %>% paste(collapse = ";"))
         node_list <- c(node_list,ape::getMRCA(tree,mirror_clade))
@@ -69,11 +68,25 @@ get.splits <- function(tree){
             bootstrap_list <- c(bootstrap_list,as.numeric(node_bs))
           } else{ bootstrap_list <- c(bootstrap_list,NA) }
         }
-      }
-      # If root...
-      if(mono_A && mono_B){
-        non_root_clades <- c(non_root_clades,sort(temp_clade) %>% paste(collapse = ";"))
-        non_root_mirror <- c(non_root_mirror,sort(mirror_clade) %>% paste(collapse = ";"))
+      } else{
+        
+        # Single taxon outgroups
+        if(length(temp_clade)==1){
+          non_root_clades <- c(non_root_clades,temp_clade)
+          non_root_mirror <- c(non_root_mirror,sort(mirror_clade) %>% paste(collapse = ";"))
+        } 
+        
+        else if(length(mirror_clade ==1)){
+          non_root_clades <- c(non_root_clades,sort(temp_clade) %>% paste(collapse = ";"))
+          non_root_mirror <- c(non_root_mirror,mirror_clade)
+        } 
+        
+        # Multi-taxon outgroups
+        else{
+          non_root_clades <- c(non_root_clades,sort(temp_clade) %>% paste(collapse = ";"))
+          non_root_mirror <- c(non_root_mirror,sort(mirror_clade) %>% paste(collapse = ";"))
+        }
+        
         node_list <- c(node_list,NA)
         
         if(hasBS){

@@ -228,9 +228,73 @@ def process_nonbase(pos):
                 taxa =  singleton_taxa
             elif len(singelton_index) > 1:
                 taxa = ";".join(sorted(singleton_taxa))
+
+            if len(new_spp) - len(singleton_taxa) >= 3:
+                    
+                # Get species list and sequence data from taxa with appropriate bases
+                new_seq2 = [v for k,v in enumerate(new_seq) if k not in singelton_index]
+                new_spp2 = [v for k,v in enumerate(new_spp) if k not in singelton_index]
+        
+                # Get different alleles as list
+                site_set2 = Counter(new_seq2)
+                allele_list2 = list(site_set2)
+                allele_count2 = len(allele_list2)
+                site_counts2 = list(site_set2.values())
             
-            return(pd.DataFrame([[pos,'singleton',non_base_taxa_string,non_base_count,taxa,np.nan,np.nan,np.nan,np.nan,np.nan]], columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
-          
+                if len(site_counts2)==1:
+                    return(pd.DataFrame([[pos,'invariant',non_base_taxa_string,non_base_count,taxa,np.nan,np.nan,np.nan,np.nan,np.nan]], columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
+        
+                elif len(site_counts)==2:
+                    
+                    split_1_base = sorted(list(set(new_seq2)))[0]
+                    base_1_index = findOccurrences(new_seq2, split_1_base)
+                    base_1_taxa = ";".join(itemgetter(*base_1_index)(sorted(new_spp2)))
+                    
+                    split_2_base = sorted(list(set(new_seq2)))[1]
+                    base_2_index = findOccurrences(new_seq2, split_2_base)
+                    base_2_taxa = ";".join(itemgetter(*base_2_index)(sorted(new_spp2)))
+        
+                    return(pd.DataFrame([[pos,'biallelic',non_base_taxa_string,non_base_count,taxa,base_1_taxa,base_2_taxa,np.nan,np.nan,np.nan]], columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
+        
+                elif len(site_counts)==3:
+        
+                    split_1_base = sorted(list(set(new_seq2)))[0]
+                    base_1_index = findOccurrences(new_seq2, split_1_base)
+                    base_1_taxa = ";".join(itemgetter(*base_1_index)(sorted(new_spp2)))
+                    
+                    split_2_base = sorted(list(set(new_seq2)))[1]
+                    base_2_index = findOccurrences(new_seq2, split_2_base)
+                    base_2_taxa = ";".join(itemgetter(*base_2_index)(sorted(new_spp2)))
+        
+                    split_3_base = sorted(list(set(new_seq2)))[2]
+                    base_3_index = findOccurrences(new_seq2, split_3_base)
+                    base_3_taxa = ";".join(itemgetter(*base_3_index)(sorted(new_spp2)))          
+        
+                    return(pd.DataFrame([[pos,'triallelic',non_base_taxa_string,non_base_count,taxa,base_1_taxa,base_2_taxa,base_3_taxa,np.nan,np.nan]], columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
+        
+                elif len(site_counts)==4:
+        
+                    split_1_base = sorted(list(set(new_seq2)))[0]
+                    base_1_index = findOccurrences(new_seq2, split_1_base)
+                    base_1_taxa = ";".join(itemgetter(*base_1_index)(sorted(new_spp2)))
+                    
+                    split_2_base = sorted(list(set(new_seq2)))[1]
+                    base_2_index = findOccurrences(new_seq2, split_2_base)
+                    base_2_taxa = ";".join(itemgetter(*base_2_index)(sorted(new_spp2)))
+        
+                    split_3_base = sorted(list(set(new_seq2)))[2]
+                    base_3_index = findOccurrences(new_seq2, split_3_base)
+                    base_3_taxa = ";".join(itemgetter(*base_3_index)(sorted(new_spp2)))
+                    
+                    split_4_base = sorted(list(set(new_seq2)))[3]
+                    base_4_index = findOccurrences(new_seq2, split_4_base)
+                    base_4_taxa = ";".join(itemgetter(*base_4_index)(sorted(new_spp2)))  
+
+                    return(pd.DataFrame([[pos,'quadallelic',non_base_taxa_string,non_base_count,taxa,base_1_taxa,base_2_taxa,base_3_taxa,base_4_taxa,np.nan]], columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
+        
+            else:
+                return(pd.DataFrame([[pos,'singleton',non_base_taxa_string,non_base_count,taxa,np.nan,np.nan,np.nan,np.nan,np.nan]], columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
+            
         elif len(site_counts)==2:
             
             split_1_base = sorted(list(set(new_seq)))[0]
@@ -278,31 +342,7 @@ def process_nonbase(pos):
             base_4_taxa = ";".join(itemgetter(*base_4_index)(sorted(new_spp)))  
             
             return(pd.DataFrame([[pos,'quadallelic',non_base_taxa_string,non_base_count,np.nan,base_1_taxa,base_2_taxa,base_3_taxa,base_4_taxa,np.nan]], columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
-        
-        elif len(site_counts)==5:
 
-            split_1_base = sorted(list(set(new_seq)))[0]
-            base_1_index = findOccurrences(new_seq, split_1_base)
-            base_1_taxa = ";".join(itemgetter(*base_1_index)(sorted(new_spp)))
-            
-            split_2_base = sorted(list(set(new_seq)))[1]
-            base_2_index = findOccurrences(new_seq, split_2_base)
-            base_2_taxa = ";".join(itemgetter(*base_2_index)(sorted(new_spp)))
-
-            split_3_base = sorted(list(set(new_seq)))[2]
-            base_3_index = findOccurrences(new_seq, split_3_base)
-            base_3_taxa = ";".join(itemgetter(*base_3_index)(sorted(new_spp)))
-            
-            split_4_base = sorted(list(set(new_seq)))[3]
-            base_4_index = findOccurrences(new_seq, split_4_base)
-            base_4_taxa = ";".join(itemgetter(*base_4_index)(sorted(new_spp)))  
-
-            split_5_base = sorted(list(set(new_seq)))[4]
-            base_5_index = findOccurrences(new_seq, split_5_base)
-            base_5_taxa = ";".join(itemgetter(*base_5_index)(sorted(new_spp)))  
-            
-            return(pd.DataFrame([[pos,'pentallelic',non_base_taxa_string,non_base_count,np.nan,base_1_taxa,base_2_taxa,base_3_taxa,base_4_taxa,base_5_taxa]], columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
-        
     else:
         return(pd.DataFrame([[pos,'non_base',non_base_taxa_string,non_base_count,np.nan,np.nan,np.nan,np.nan,np.nan,np.nan]], columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
 
@@ -351,10 +391,110 @@ def process_nonbase_gap(pos):
             elif len(singelton_index) > 1:
                 taxa = ";".join(sorted(singleton_taxa))
 
-            if '-' in new_seq:
-                return(pd.DataFrame([[pos,'gap_singleton',non_base_taxa_string,non_base_count,taxa,np.nan,np.nan,np.nan,np.nan,np.nan]], columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
+            if len(new_spp) - len(singleton_taxa) >= 3:
+                    
+                # Get species list and sequence data from taxa with appropriate bases
+                new_seq2 = [v for k,v in enumerate(new_seq) if k not in singelton_index]
+                new_spp2 = [v for k,v in enumerate(new_spp) if k not in singelton_index]
+        
+                # Get different alleles as list
+                site_set2 = Counter(new_seq2)
+                allele_list2 = list(site_set2)
+                allele_count2 = len(allele_list2)
+                site_counts2 = list(site_set2.values())
+            
+                if len(site_counts2)==1:
+                    if '-' in new_seq:
+                        return(pd.DataFrame([[pos,'gap_invariant',non_base_taxa_string,non_base_count,taxa,np.nan,np.nan,np.nan,np.nan,np.nan]], columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
+                    else:
+                        return(pd.DataFrame([[pos,'invariant',non_base_taxa_string,non_base_count,taxa,np.nan,np.nan,np.nan,np.nan,np.nan]], columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
+        
+                elif len(site_counts)==2:
+                    
+                    split_1_base = sorted(list(set(new_seq2)))[0]
+                    base_1_index = findOccurrences(new_seq2, split_1_base)
+                    base_1_taxa = ";".join(itemgetter(*base_1_index)(sorted(new_spp2)))
+                    
+                    split_2_base = sorted(list(set(new_seq2)))[1]
+                    base_2_index = findOccurrences(new_seq2, split_2_base)
+                    base_2_taxa = ";".join(itemgetter(*base_2_index)(sorted(new_spp2)))
+        
+                    if '-' in new_seq:
+                        return(pd.DataFrame([[pos,'gap_biallelic',non_base_taxa_string,non_base_count,taxa,base_1_taxa,base_2_taxa,np.nan,np.nan,np.nan]], columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
+                    else:
+                        return(pd.DataFrame([[pos,'biallelic',non_base_taxa_string,non_base_count,taxa,base_1_taxa,base_2_taxa,np.nan,np.nan,np.nan]], columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
+        
+                elif len(site_counts)==3:
+        
+                    split_1_base = sorted(list(set(new_seq2)))[0]
+                    base_1_index = findOccurrences(new_seq2, split_1_base)
+                    base_1_taxa = ";".join(itemgetter(*base_1_index)(sorted(new_spp2)))
+                    
+                    split_2_base = sorted(list(set(new_seq2)))[1]
+                    base_2_index = findOccurrences(new_seq2, split_2_base)
+                    base_2_taxa = ";".join(itemgetter(*base_2_index)(sorted(new_spp2)))
+        
+                    split_3_base = sorted(list(set(new_seq2)))[2]
+                    base_3_index = findOccurrences(new_seq2, split_3_base)
+                    base_3_taxa = ";".join(itemgetter(*base_3_index)(sorted(new_spp2)))          
+        
+                    if '-' in new_seq:
+                        return(pd.DataFrame([[pos,'gap_triallelic',non_base_taxa_string,non_base_count,taxa,base_1_taxa,base_2_taxa,base_3_taxa,np.nan,np.nan]], columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
+                    else:
+                        return(pd.DataFrame([[pos,'triallelic',non_base_taxa_string,non_base_count,taxa,base_1_taxa,base_2_taxa,base_3_taxa,np.nan,np.nan]], columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
+        
+                elif len(site_counts)==4:
+        
+                    split_1_base = sorted(list(set(new_seq2)))[0]
+                    base_1_index = findOccurrences(new_seq2, split_1_base)
+                    base_1_taxa = ";".join(itemgetter(*base_1_index)(sorted(new_spp2)))
+                    
+                    split_2_base = sorted(list(set(new_seq2)))[1]
+                    base_2_index = findOccurrences(new_seq2, split_2_base)
+                    base_2_taxa = ";".join(itemgetter(*base_2_index)(sorted(new_spp2)))
+        
+                    split_3_base = sorted(list(set(new_seq2)))[2]
+                    base_3_index = findOccurrences(new_seq2, split_3_base)
+                    base_3_taxa = ";".join(itemgetter(*base_3_index)(sorted(new_spp2)))
+                    
+                    split_4_base = sorted(list(set(new_seq2)))[3]
+                    base_4_index = findOccurrences(new_seq2, split_4_base)
+                    base_4_taxa = ";".join(itemgetter(*base_4_index)(sorted(new_spp2)))  
+        
+                    if '-' in new_seq:
+                        return(pd.DataFrame([[pos,'gap_quadallelic',non_base_taxa_string,non_base_count,taxa,base_1_taxa,base_2_taxa,base_3_taxa,base_4_taxa,np.nan]], columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
+                    else:
+                        return(pd.DataFrame([[pos,'quadallelic',non_base_taxa_string,non_base_count,taxa,base_1_taxa,base_2_taxa,base_3_taxa,base_4_taxa,np.nan]], columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
+        
+                elif len(site_counts)==5:
+        
+                    split_1_base = sorted(list(set(new_seq2)))[0]
+                    base_1_index = findOccurrences(new_seq2, split_1_base)
+                    base_1_taxa = ";".join(itemgetter(*base_1_index)(sorted(new_spp2)))
+                    
+                    split_2_base = sorted(list(set(new_seq2)))[1]
+                    base_2_index = findOccurrences(new_seq2, split_2_base)
+                    base_2_taxa = ";".join(itemgetter(*base_2_index)(sorted(new_spp2)))
+        
+                    split_3_base = sorted(list(set(new_seq2)))[2]
+                    base_3_index = findOccurrences(new_seq2, split_3_base)
+                    base_3_taxa = ";".join(itemgetter(*base_3_index)(sorted(new_spp2)))
+                    
+                    split_4_base = sorted(list(set(new_seq2)))[3]
+                    base_4_index = findOccurrences(new_seq2, split_4_base)
+                    base_4_taxa = ";".join(itemgetter(*base_4_index)(sorted(new_spp2)))  
+        
+                    split_5_base = sorted(list(set(new_seq2)))[4]
+                    base_5_index = findOccurrences(new_seq2, split_5_base)
+                    base_5_taxa = ";".join(itemgetter(*base_5_index)(sorted(new_spp2)))  
+        
+                    return(pd.DataFrame([[pos,'pentallelic',non_base_taxa_string,non_base_count,taxa,base_1_taxa,base_2_taxa,base_3_taxa,base_4_taxa,base_5_taxa]], columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
+        
             else:
-                return(pd.DataFrame([[pos,'singleton',non_base_taxa_string,non_base_count,taxa,np.nan,np.nan,np.nan,np.nan,np.nan]], columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
+                if '-' in new_seq:
+                    return(pd.DataFrame([[pos,'gap_singleton',non_base_taxa_string,non_base_count,taxa,np.nan,np.nan,np.nan,np.nan,np.nan]], columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
+                else:
+                    return(pd.DataFrame([[pos,'singleton',non_base_taxa_string,non_base_count,taxa,np.nan,np.nan,np.nan,np.nan,np.nan]], columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
 
         elif len(site_counts)==2:
             
@@ -435,10 +575,7 @@ def process_nonbase_gap(pos):
             base_5_index = findOccurrences(new_seq, split_5_base)
             base_5_taxa = ";".join(itemgetter(*base_5_index)(sorted(new_spp)))  
 
-            if '-' in new_seq:
-                return(pd.DataFrame([[pos,'gap_pentallelic',non_base_taxa_string,non_base_count,np.nan,base_1_taxa,base_2_taxa,base_3_taxa,base_4_taxa,base_5_taxa]], columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
-            else:
-                return(pd.DataFrame([[pos,'pentallelic',non_base_taxa_string,non_base_count,np.nan,base_1_taxa,base_2_taxa,base_3_taxa,base_4_taxa,base_5_taxa]], columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
+            return(pd.DataFrame([[pos,'pentallelic',non_base_taxa_string,non_base_count,np.nan,base_1_taxa,base_2_taxa,base_3_taxa,base_4_taxa,base_5_taxa]], columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
 
     else:
         return(pd.DataFrame([[pos,'non_base',non_base_taxa_string,non_base_count,np.nan,np.nan,np.nan,np.nan,np.nan,np.nan]], columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
@@ -565,10 +702,7 @@ def process_singletons(pos):
             base_5_index = findOccurrences(new_seq, split_5_base)
             base_5_taxa = ";".join(itemgetter(*base_5_index)(sorted(new_spp)))  
 
-            if '-' in new_seq:
-                return(pd.DataFrame([[pos,'gap_quadallelic',np.nan,0,taxa,base_1_taxa,base_2_taxa,base_3_taxa,base_4_taxa,base_5_taxa]], columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
-            else:
-                return(pd.DataFrame([[pos,'quadallelic',np.nan,0,taxa,base_1_taxa,base_2_taxa,base_3_taxa,base_4_taxa,base_5_taxa]], columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
+            return(pd.DataFrame([[pos,'pentallelic',np.nan,0,taxa,base_1_taxa,base_2_taxa,base_3_taxa,base_4_taxa,base_5_taxa]], columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
 
     else:
         return(pd.DataFrame([[pos,'singleton',np.nan,0,taxa,np.nan,np.nan,np.nan,np.nan,np.nan]], columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))

@@ -244,7 +244,7 @@ def process_nonbase(pos):
                 if len(site_counts2)==1:
                     return(pd.DataFrame([[pos,'invariant',non_base_taxa_string,non_base_count,taxa,np.nan,np.nan,np.nan,np.nan,np.nan]], columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
         
-                elif len(site_counts)==2:
+                elif len(site_counts2)==2:
                     
                     split_1_base = sorted(list(set(new_seq2)))[0]
                     base_1_index = findOccurrences(new_seq2, split_1_base)
@@ -256,7 +256,7 @@ def process_nonbase(pos):
         
                     return(pd.DataFrame([[pos,'biallelic',non_base_taxa_string,non_base_count,taxa,base_1_taxa,base_2_taxa,np.nan,np.nan,np.nan]], columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
         
-                elif len(site_counts)==3:
+                elif len(site_counts2)==3:
         
                     split_1_base = sorted(list(set(new_seq2)))[0]
                     base_1_index = findOccurrences(new_seq2, split_1_base)
@@ -272,7 +272,7 @@ def process_nonbase(pos):
         
                     return(pd.DataFrame([[pos,'triallelic',non_base_taxa_string,non_base_count,taxa,base_1_taxa,base_2_taxa,base_3_taxa,np.nan,np.nan]], columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
         
-                elif len(site_counts)==4:
+                elif len(site_counts2)==4:
         
                     split_1_base = sorted(list(set(new_seq2)))[0]
                     base_1_index = findOccurrences(new_seq2, split_1_base)
@@ -409,7 +409,7 @@ def process_nonbase_gap(pos):
                     else:
                         return(pd.DataFrame([[pos,'invariant',non_base_taxa_string,non_base_count,taxa,np.nan,np.nan,np.nan,np.nan,np.nan]], columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
         
-                elif len(site_counts)==2:
+                elif len(site_counts2)==2:
                     
                     split_1_base = sorted(list(set(new_seq2)))[0]
                     base_1_index = findOccurrences(new_seq2, split_1_base)
@@ -424,7 +424,7 @@ def process_nonbase_gap(pos):
                     else:
                         return(pd.DataFrame([[pos,'biallelic',non_base_taxa_string,non_base_count,taxa,base_1_taxa,base_2_taxa,np.nan,np.nan,np.nan]], columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
         
-                elif len(site_counts)==3:
+                elif len(site_counts2)==3:
         
                     split_1_base = sorted(list(set(new_seq2)))[0]
                     base_1_index = findOccurrences(new_seq2, split_1_base)
@@ -443,7 +443,7 @@ def process_nonbase_gap(pos):
                     else:
                         return(pd.DataFrame([[pos,'triallelic',non_base_taxa_string,non_base_count,taxa,base_1_taxa,base_2_taxa,base_3_taxa,np.nan,np.nan]], columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
         
-                elif len(site_counts)==4:
+                elif len(site_counts2)==4:
         
                     split_1_base = sorted(list(set(new_seq2)))[0]
                     base_1_index = findOccurrences(new_seq2, split_1_base)
@@ -466,7 +466,7 @@ def process_nonbase_gap(pos):
                     else:
                         return(pd.DataFrame([[pos,'quadallelic',non_base_taxa_string,non_base_count,taxa,base_1_taxa,base_2_taxa,base_3_taxa,base_4_taxa,np.nan]], columns=['Zeroed_Site_Position','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
         
-                elif len(site_counts)==5:
+                elif len(site_counts2)==5:
         
                     split_1_base = sorted(list(set(new_seq2)))[0]
                     base_1_index = findOccurrences(new_seq2, split_1_base)

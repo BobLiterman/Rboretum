@@ -103,11 +103,6 @@ get.splits <- function(tree){
       mutate("Split_Bootstrap" = NA) %>%
       filter((!duplicated(Split_Node))) # Two entries for root reduced to one
   }
-  
-  # Remove splits if one side is a singleton
-  
-  clade_node_df <- clade_node_df %>%
-    filter(str_detect(Clade,';') || str_detect(Mirror_Clade,";"))
-  
+
   return(clade_node_df)
 }

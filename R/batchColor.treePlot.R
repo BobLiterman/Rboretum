@@ -50,7 +50,7 @@ batchColor.treePlot <- function(trees,to_color,branch_length,branch_weight,node_
   if(missing(to_color)){
     stop("'to_color' argument required for batchColor.treePlot") 
   }
-  else if(!is.character(to_color) & !is.list(to_color)){
+  else if(!is.character(to_color) && !is.list(to_color)){
     stop("'to_color' must be a character vector of taxa, or a list of taxa/clades")
   }
    

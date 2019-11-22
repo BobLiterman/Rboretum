@@ -37,14 +37,14 @@ get.splits <- function(tree){
     mirror_length <- length(mirror_clade)
 
     # Remove subtree that is whole tree
-    if(temp_length != species_count & mirror_length != species_count){
+    if(temp_length != species_count && mirror_length != species_count){
 
       # Find monophyletic group
       mono_A <- ape::is.monophyletic(tree,temp_clade)
       mono_B <- ape::is.monophyletic(tree,mirror_clade)
       
       # Note actual monophyletic clades and add bootrap values if appropriate
-      if(mono_A & !(mono_B)){
+      if(mono_A && !(mono_B)){
         non_root_clades <- c(non_root_clades,sort(temp_clade) %>% paste(collapse = ";"))
         non_root_mirror <- c(non_root_mirror,sort(mirror_clade) %>% paste(collapse = ";"))
         node_list <- c(node_list,ape::getMRCA(tree,temp_clade))
@@ -57,7 +57,7 @@ get.splits <- function(tree){
           } else{ bootstrap_list <- c(bootstrap_list,NA) }
         }
       }
-      if(mono_B & !(mono_A)){
+      if(mono_B && !(mono_A)){
         non_root_clades <- c(non_root_clades,sort(mirror_clade) %>% paste(collapse = ";"))
         non_root_mirror <- c(non_root_mirror,sort(temp_clade) %>% paste(collapse = ";"))
         node_list <- c(node_list,ape::getMRCA(tree,mirror_clade))
@@ -71,7 +71,7 @@ get.splits <- function(tree){
         }
       }
       # If root...
-      if(mono_A & mono_B){
+      if(mono_A && mono_B){
         non_root_clades <- c(non_root_clades,sort(temp_clade) %>% paste(collapse = ";"))
         non_root_mirror <- c(non_root_mirror,sort(mirror_clade) %>% paste(collapse = ";"))
         node_list <- c(node_list,NA)

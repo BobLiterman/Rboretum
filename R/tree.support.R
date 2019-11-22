@@ -73,7 +73,7 @@ tree.support <- function(signal,tree,max_missing,alignment_name,include_gap,incl
   
   if(missing(existing_splits)){
     existing_splits <- FALSE
-  } else if(is.data.frame(existing_splits) & all(names(existing_splits)[1:4] == c('Clade','Mirror_Clade','Split_Node','Split_Bootstrap'))){
+  } else if(is.data.frame(existing_splits) && all(names(existing_splits)[1:4] == c('Clade','Mirror_Clade','Split_Node','Split_Bootstrap'))){
     old_splits <- existing_splits
     old_clades <- old_splits %>% pull(Clade) %>% as.character() %>% sort()
     existing_splits <- TRUE
@@ -104,7 +104,7 @@ tree.support <- function(signal,tree,max_missing,alignment_name,include_gap,incl
 
   tree_taxa <- sort(tree$tip.label)
 
-  if(!(all(tree_taxa %in% signal_taxa) & all(signal_taxa %in% tree_taxa))){
+  if(!(all(tree_taxa %in% signal_taxa) && all(signal_taxa %in% tree_taxa))){
     print("Tree Taxa:")
     print(tree_taxa)
     print("Signal Taxa:")
@@ -187,7 +187,7 @@ tree.support <- function(signal,tree,max_missing,alignment_name,include_gap,incl
     rename(!!alignment_name := Support)
 
   if(existing_splits){
-    if(all(new_clades == old_clades) & all(old_clades == new_clades)){
+    if(all(new_clades == old_clades) && all(old_clades == new_clades)){
       if(alignment_name %in% names(old_splits)){
         print("Column exists in 'existing_splits' with that alignment/missing combination. Returning results for tree and alignment/missing combo specified.")
         return(support_df)

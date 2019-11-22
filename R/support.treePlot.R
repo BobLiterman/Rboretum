@@ -114,7 +114,7 @@ support.treePlot <- function(tree,tree_support,clade_support,support_scales,node
   
   if(missing(node_color)){
     node_color <- "red"
-  } else if(!node_color %in% colors()){
+  } else if(has_error(grDevices::col2rgb(node_color))){
     node_color <- "red"
   }
   

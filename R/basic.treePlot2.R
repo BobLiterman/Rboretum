@@ -25,6 +25,7 @@
 #'   \item Character vector of taxa, all to be colored the same color
 #'   \item List of groups of taxa, each of which will have their own color. List can be named for use with a legend (set color_legend == TRUE)
 #' }
+#' @param colors OPTIONAL: Colors for clade highlighting. Must be hex or valid R colors. Provide a color for each group (1 if character vector, 1 for each group if named list) or default colors will be used.
 #' @param color_legend TRUE [Include a legend for colored taxa/clades]; False [Default: No legend]
 #' @return ggtree object
 #' @export
@@ -41,7 +42,7 @@
 #' # Print tree with buffer on right side to accomodate longer tip labels
 #' basic.treePlot(tree,xmax=10)
 
-basic.treePlot2 <- function(tree,branch_length,branch_weight,node_label,node_size,node_nudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax,reverse_x,rename_tips,to_color,color_legend){
+basic.treePlot2 <- function(tree,branch_length,branch_weight,node_label,node_size,node_nudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax,reverse_x,rename_tips,to_color,colors,color_legend){
   
   if(missing(tree)){
     stop("No tree provided.")
@@ -152,6 +153,7 @@ basic.treePlot2 <- function(tree,branch_length,branch_weight,node_label,node_siz
   } else if(is.character(to_color)){
     if(check.tip(tree,to_color)){
       colorTips <- TRUE
+      group_count <- 1
     } else{
       print("Some taxa in 'to_color' not found in tree.")
       colorTips <- FALSE
@@ -159,6 +161,12 @@ basic.treePlot2 <- function(tree,branch_length,branch_weight,node_label,node_siz
   } else if(is.list(to_color)){
     if(check.tip(tree,unlist(to_color))){
       colorTips <- TRUE
+      group_count <- length(to_color)
+      if(group_count > 8){
+        print("Can't reliably color more than 8 groups. Highlighting the first 8 groups from list.")
+        to_color <- to_color[1:8]
+        group_count <- 8
+      }
     } else{
       colorTips <- FALSE
       print("Some taxa in 'to_color' not found in tree.")
@@ -166,6 +174,35 @@ basic.treePlot2 <- function(tree,branch_length,branch_weight,node_label,node_siz
   } else{
     print("'to_color' must be a character vector of taxa, or a list of taxa/clades")
     colorTips <- FALSE
+  }
+  
+  if(!colorTips){
+    colors <- NA
+  } else{
+    if(missing(colors)){
+      if(group_count == 1){
+        colors <- c('black','red')
+      }
+      else if(group_count > 1){
+        all_colors <- c('#800000','#4363d8','#f58231','#e6beff','#000075','#a9a9a9','#fabebe','#ffe119') 
+        colors <- c('black',all_colors[1:group_count])
+      }
+    } else{
+      if(group_count == 1){
+        if(length(colors)>1){
+          colors <- colors[1]
+        }
+        if(has_error(grDevices::col2rgb(colors))){
+          colors <- 'red'
+        }
+      } else{
+        if(length(colors) != group_count | any(has_error(grDevices::col2rgb(colors)))){
+          print("Invalid color choice. Using defaults.")
+          all_colors <- c('#800000','#4363d8','#f58231','#e6beff','#000075','#a9a9a9','#fabebe','#ffe119') 
+          colors <- c('black',all_colors[1:group_count])
+        } else{colors <- c('black',colors)}
+      }
+    }
   }
   
   if(missing(color_legend)){
@@ -180,23 +217,23 @@ basic.treePlot2 <- function(tree,branch_length,branch_weight,node_label,node_siz
     
     if(is.character(to_color)){
       if(bWeight & branch_length){
-        return_tree <- ggtree(tree,size=branch_weight,aes(color=group)) + scale_color_manual(values = c('black','red'))
+        return_tree <- ggtree(tree,size=branch_weight,aes(color=group)) + scale_color_manual(values = colors)
       } else if(bWeight & !branch_length){
-        return_tree <- ggtree(tree,size=branch_weight,branch.length = 'none',aes(color=group)) + scale_color_manual(values = c('black','red'))
+        return_tree <- ggtree(tree,size=branch_weight,branch.length = 'none',aes(color=group)) + scale_color_manual(values = colors)
       } else if(!bWeight & branch_length){
-        return_tree <- ggtree(tree,aes(color=group)) + scale_color_manual(values = c('black','red'))
+        return_tree <- ggtree(tree,aes(color=group)) + scale_color_manual(values = colors)
       } else if(!bWeight & !branch_length){
-        return_tree <- ggtree(tree,branch.length = 'none',aes(color=group)) + scale_color_manual(values = c('black','red'))
+        return_tree <- ggtree(tree,branch.length = 'none',aes(color=group)) + scale_color_manual(values = colors)
       }
     } else{
       if(bWeight & branch_length){
-        return_tree <- ggtree(tree,size=branch_weight)
+        return_tree <- ggtree(tree,size=branch_weight,aes(color=group)) + scale_color_manual(breaks = names(to_color),values = colors)
       } else if(bWeight & !branch_length){
-        return_tree <- ggtree(tree,size=branch_weight,branch.length = 'none')
+        return_tree <- ggtree(tree,size=branch_weight,branch.length = 'none',aes(color=group)) + scale_color_manual(breaks = names(to_color),values = colors)
       } else if(!bWeight & branch_length){
-        return_tree <- ggtree(tree)
+        return_tree <- ggtree(tree,aes(color=group)) + scale_color_manual(breaks = names(to_color),values = colors)
       } else if(!bWeight & !branch_length){
-        return_tree <- ggtree(tree,branch.length = 'none')
+        return_tree <- ggtree(tree,branch.length = 'none',aes(color=group)) + scale_color_manual(breaks = names(to_color),values = colors)
       }
     }
   } else{

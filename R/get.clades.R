@@ -26,5 +26,9 @@ get.clades <- function(tree){
   
   clades <- c(clades,as.character(root_split$Clade),as.character(root_split$Mirror_Clade)) %>%
     sort()
+  
+  # Don't return single taxon clades
+  clades <- clades[str_detect(clades,";")]
+  
   return(clades)
 }

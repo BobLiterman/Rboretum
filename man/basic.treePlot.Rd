@@ -36,8 +36,6 @@ myPlot <- treePlotter(tree=myTree,...)
 
 \item{reverse_x}{OPTIONAL: TRUE [plot tree with tips on left]; FALSE [Default: plot tree with tips on right]}
 
-\item{rename_tips}{OPTIONAL: Dataframe where column 1 contains tip labels for tree, and column 2 contains new, desired tip labels}
-
 \item{to_color}{OPTIONAL: Color tips or clades via:
 \itemize{
   \item Character vector of taxa, all to be colored the same color

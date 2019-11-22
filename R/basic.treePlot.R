@@ -19,7 +19,6 @@
 #' @param taxa_offset OPTIONAL: Set ggtree tip label offset
 #' @param xmax OPTIONAL: Set ggplot xlim upper limit (e.g if long tip labels run off plot)
 #' @param reverse_x OPTIONAL: TRUE [plot tree with tips on left]; FALSE [Default: plot tree with tips on right]
-#' @param rename_tips OPTIONAL: Dataframe where column 1 contains tip labels for tree, and column 2 contains new, desired tip labels
 #' @param to_color OPTIONAL: Color tips or clades via:
 #' \itemize{
 #'   \item Character vector of taxa, all to be colored the same color
@@ -42,7 +41,7 @@
 #' # Print tree with buffer on right side to accomodate longer tip labels
 #' basic.treePlot(tree,xmax=10)
 
-basic.treePlot <- function(tree,branch_length,branch_weight,node_label,node_size,node_nudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax,reverse_x,rename_tips,to_color,colors,color_legend){
+basic.treePlot <- function(tree,branch_length,branch_weight,node_label,node_size,node_nudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax,reverse_x,to_color,colors,color_legend){
   
   if(missing(tree)){
     stop("No tree provided.")
@@ -131,23 +130,7 @@ basic.treePlot <- function(tree,branch_length,branch_weight,node_label,node_size
   } else{
     reverseX <- TRUE
   }
-  
-  if(missing(rename_tips)){
-    tree <- tree
-  } else if((is.data.frame(rename_tips) | is_tibble(rename_tips)) & length(names(rename_tips) >= 2)){
-    old_id <- names(rename_tips)[1]
-    new_id <- names(rename_tips)[2]
-    if(has_error(Rboretum::convert.tips(tree,rename_tips,old_id,new_id))){
-      tree <- tree
-    } else{
-      tree <- Rboretum::convert.tips(tree,rename_tips,old_id,new_id)
-      name_dict <- list(new_id)
-      names(name_dict) <- old_id
-    }
-  } else{
-    tree <- tree
-  }
-  
+
   if(missing(to_color)){
     colorTips <- FALSE
   } else if(is.character(to_color)){
@@ -163,7 +146,7 @@ basic.treePlot <- function(tree,branch_length,branch_weight,node_label,node_size
       colorTips <- TRUE
       group_count <- length(to_color)
       if(group_count > 8){
-        print("More than 8 groups to highlight. If enough colors were not provided, will use color_scale_viridis().")
+        print("More than 8 groups to highlight. If not enough colors were provided, will use color_scale_viridis().")
       }
     } else{
       colorTips <- FALSE

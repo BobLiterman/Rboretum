@@ -10,8 +10,8 @@ is.multiPhylo(test_object)
 \item{test_object}{R object to check}
 }
 \value{
-TRUE if multiPhylo, otherwise FALSE
+TRUE if multiPhylo with 2+ trees, otherwise FALSE
 }
 \description{
-This function returns TRUE if the passed object is of class multiPhylo; Otherwise, FALSE
+This function returns TRUE if the passed object is of class multiPhylo and has 2+ trees; Otherwise, FALSE
 }

@@ -1,8 +1,8 @@
 #' Rboretum MultiPhylo Checker
 #'
-#' This function returns TRUE if the passed object is of class multiPhylo; Otherwise, FALSE
+#' This function returns TRUE if the passed object is of class multiPhylo and has 2+ trees; Otherwise, FALSE
 #' @param test_object R object to check
-#' @return TRUE if multiPhylo, otherwise FALSE
+#' @return TRUE if multiPhylo with 2+ trees, otherwise FALSE
 #' @export
 #'
 is.multiPhylo <- function(test_object){
@@ -11,7 +11,7 @@ is.multiPhylo <- function(test_object){
   } else{
     test_object_class <- unlist(attributes(test_object)$class)
 
-    if('multiPhylo' %in% test_object_class){
+    if('multiPhylo' %in% test_object_class & length(test_object)>=2){
       return(TRUE)
     } else{
       return(FALSE)

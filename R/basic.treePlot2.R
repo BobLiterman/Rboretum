@@ -193,8 +193,8 @@ basic.treePlot2 <- function(tree,branch_length,branch_weight,node_label,node_siz
           colors <- colors[1]
         }
         if(has_error(grDevices::col2rgb(colors))){
-          colors <- 'red'
-        }
+          colors <- c('black','red')
+        } else{colors <- c('black',colors)}
       } else{
         if(length(colors) != group_count | any(has_error(grDevices::col2rgb(colors)))){
           print("Invalid color choice. Using defaults.")

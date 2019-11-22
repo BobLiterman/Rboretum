@@ -12,10 +12,10 @@ check.comparable(tree_1, tree_2)
 \item{tree_2}{phylo object}
 }
 \value{
-TRUE if 'tree_1' and 'tree_2' have 3 or more species in commmon and a unique topology; else, FALSE
+TRUE if 'tree_1' and 'tree_2' have 3 or more species in common and a unique topology; else, FALSE
 }
 \description{
-This function returns TRUE if 'tree_1' and 'tree_2' have 3 or more species in commmon, and a unique topology
+This function returns TRUE if 'tree_1' and 'tree_2' have 3 or more species in common, and a unique topology
 }
 \examples{
 check.comparable(tree_1,tree_2)

@@ -139,7 +139,7 @@ support.treePlot <- function(tree,tree_support,clade_support,support_scales,node
   if(missing(branch_length)){
     branch_length <- FALSE
   } else{
-    if(branch_length != TRUE){
+    if(!is.logical(branch_length)){
       branch_length <- FALSE
     }
   }
@@ -185,7 +185,7 @@ support.treePlot <- function(tree,tree_support,clade_support,support_scales,node
   if(missing(taxa_italic)){
     taxa_italic <- FALSE
   } else{
-    if(taxa_italic != TRUE){
+    if(!is.logical(taxa_italic)){
       taxa_italic <- FALSE
     }
   }
@@ -214,7 +214,7 @@ support.treePlot <- function(tree,tree_support,clade_support,support_scales,node
   
   if(missing(reverse_x)){
     reverseX <- FALSE
-  } else if((reverse_x != TRUE)){
+  } else if(!is.logical(reverse_x)){
     reverseX <- FALSE
   } else{
     reverseX <- TRUE

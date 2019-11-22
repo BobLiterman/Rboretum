@@ -116,7 +116,7 @@ pies.treePlot <- function(tree,tree_support,support_scales,node_alpha,legend_sha
   if(missing(branch_length)){
     branch_length <- FALSE
   } else{
-    if(branch_length != TRUE){
+    if(!is.logical(branch_length)){
       branch_length <- FALSE
     }
   }
@@ -178,7 +178,7 @@ pies.treePlot <- function(tree,tree_support,support_scales,node_alpha,legend_sha
   if(missing(taxa_italic)){
     taxa_italic <- FALSE
   } else{
-    if(taxa_italic != TRUE){
+    if(!is.logical(taxa_italic)){
       taxa_italic <- FALSE
     }
   }

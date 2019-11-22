@@ -49,19 +49,19 @@ basic.treePlot <- function(tree,branch_length,branch_weight,node_label,node_size
   
   if(missing(branch_length)){
     branch_length <- FALSE
-  } else{
-    if(branch_length != TRUE){
+  } else if(is.na(branch_length)){
+      branch_length <- FALSE
+    } else if(!is.logical(branch_length)){
       branch_length <- FALSE
     }
-  }
   
   if(missing(branch_weight)){
     bWeight <- FALSE
-  } else{
-    if(!is.numeric(branch_weight)){
+  } else if(is.na(branch_weight)){
+    bWeight <- FALSE
+  } else if(!is.numeric(branch_weight)){
       bWeight<-FALSE
     } else{ bWeight <- TRUE }
-    }
   
   if(missing(node_label)){
     node_label <- 'bs'
@@ -71,37 +71,39 @@ basic.treePlot <- function(tree,branch_length,branch_weight,node_label,node_size
   
   if(missing(node_size)){
     nSize <- FALSE
-  } else{
-    if(!is.numeric(node_size) | node_label == "none"){
+  } else if(is.na(node_size)){
+    nSize <- FALSE
+  } else if(!is.numeric(node_size) | node_label == "none"){
       nSize<-FALSE
     } else{ nSize <- TRUE }
-  }
   
   if(missing(node_nudge)){
     nNudge <- FALSE
-  } else{
-    if(!is.numeric(node_nudge)){
+  } else if(is.na(node_nudge)){
+    nNudge <- FALSE
+  } else if(!is.numeric(node_nudge)){
       nNudge<-FALSE
     } else{ nNudge <- TRUE }
-  }
   
   if(missing(taxa_size)){
     tSize <- FALSE
-  } else{
-    if(!is.numeric(taxa_size)){
+  } else if(is.na(taxa_size)){
+    tSize <- FALSE
+  } else if(!is.numeric(taxa_size)){
       tSize<-FALSE
     } else{ tSize <- TRUE }
-    }
   
   if(missing(taxa_italic)){
     taxa_italic <- FALSE
-  } else{
-    if(taxa_italic != TRUE){
+  } else if(is.na(taxa_italic)){
+    taxa_italic <- FALSE
+  } else if(!is.logical(taxa_italic)){
       taxa_italic <- FALSE
     }
-  }
   
   if(missing(taxa_align)){
+    tAlign <- FALSE
+  } else if(is.na(taxa_align)){
     tAlign <- FALSE
   } else if(!any(taxa_align ==  c('left','right'))){
     tAlign <- FALSE
@@ -109,23 +111,25 @@ basic.treePlot <- function(tree,branch_length,branch_weight,node_label,node_size
   
   if(missing(taxa_offset)){
     tOffset <- FALSE
-  } else{
-    if(!is.numeric(taxa_offset)){
+  } else if(is.na(taxa_offset)){
+    tOffset <- FALSE
+  } else if(!is.numeric(taxa_offset)){
       tOffset<-FALSE
     } else{ tOffset <- TRUE }
-  }
   
   if(missing(xmax)){
     extendX <- FALSE
-  } else{
-    if(!is.numeric(xmax)){
+  } else if(is.na(xmax)){
+    extendX <- FALSE
+  } else if(!is.numeric(xmax)){
       extendX<-FALSE
     } else{ extendX <- TRUE }
-  }
   
   if(missing(reverse_x)){
     reverseX <- FALSE
-  } else if((reverse_x != TRUE)){
+  } else if(is.na(reverse_x)){
+    reverseX <- FALSE
+  } else if(!is.logical(reverse_x)){
     reverseX <- FALSE
   } else{
     reverseX <- TRUE
@@ -170,6 +174,17 @@ basic.treePlot <- function(tree,branch_length,branch_weight,node_label,node_size
       } else{
         colors <- c('black',viridisLite::viridis(group_count))
       }
+    } else if(is.na(colors)){
+      if(group_count == 1){
+          colors <- c('black','red')
+        } else{
+          if(group_count <= 8){
+            all_colors <- c('#800000','#4363d8','#f58231','#e6beff','#000075','#a9a9a9','#fabebe','#ffe119') 
+            colors <- c('black',all_colors[1:group_count])
+          } else{
+            colors <- c('black',viridisLite::viridis(group_count))
+          }
+        }
     } else{
       if(group_count == 1){
         if(length(colors)>1){

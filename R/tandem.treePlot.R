@@ -1,30 +1,33 @@
 #' Rboretum Simple Tandem Plotter
-#' Simple cowplot wrapper to plot two ggtree/ggplot objects side by side
-#' @param plot1 ggtree/ggplot object to be plotted on the left
-#' @param plot2  ggtree/ggplot object to be plotted on the right
+#' Simple cowplot wrapper to plot two or more ggtree/ggplot objects side by side
 #' @return Side-by-side ggplot object
 #' @export
 #' @examples
 #' tandem.treePlot(ggtree1,ggtree2)
 
-tandem.treePlot <- function(plot1,plot2){
+tandem.treePlot <- function(...){
   
-  if(has_error(unlist(attributes(plot1)$class)) | has_error(unlist(attributes(plot2)$class))){ 
-    stop("'plot1' and 'plot2' should be plottable objects (e.g. ggtree, ggplot, etc.")
+  plotList <- list(...)
+  
+  if(length(plotList)<2){
+    stop("Two or more plots needed for tandem.treePlot.")
   }
   
-  plot1_class <- unlist(attributes(plot1)$class)
-  plot2_class <- unlist(attributes(plot2)$class)
-  
-  if(!any(c('ggtree','ggplot') %in% plot1_class)){
-    stop("'plot1' not a plottable object (ggtree or ggplot)")
+  if(any(map(plotList,Rboretum::is.plot))){
+    stop("One argument passed is not of class ggplot or ggtree")
   }
   
-  if(!any(c('ggtree','ggplot') %in% plot2_class)){
-    stop("'plot2' not a plottable object (ggtree or ggplot)")
-  }
+  plot_count <- length(plotList)
+  plot_step <- 1/plot_count
   
-  return_plot <- ggdraw() + draw_plot(plot1, x = 0, y = 0, width = .5) + draw_plot(plot2, x = .5, y = 0, width = .5)
+  return_plot <- ggdraw()
+  
+  start_x <- 0
+  
+  for(i in 1:plot_count){
+    return_plot <- return_plot + draw_plot(plotList[[i]],x=start_x,y=0,width = plot_step)
+    start_x <- start_x + plot_step
+  }
   
   return(return_plot)
 }

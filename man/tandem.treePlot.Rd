@@ -3,21 +3,16 @@
 \name{tandem.treePlot}
 \alias{tandem.treePlot}
 \title{Rboretum Simple Tandem Plotter
-Simple cowplot wrapper to plot two ggtree/ggplot objects side by side}
+Simple cowplot wrapper to plot two or more ggtree/ggplot objects side by side}
 \usage{
-tandem.treePlot(plot1, plot2)
-}
-\arguments{
-\item{plot1}{ggtree/ggplot object to be plotted on the left}
-
-\item{plot2}{ggtree/ggplot object to be plotted on the right}
+tandem.treePlot(...)
 }
 \value{
 Side-by-side ggplot object
 }
 \description{
 Rboretum Simple Tandem Plotter
-Simple cowplot wrapper to plot two ggtree/ggplot objects side by side
+Simple cowplot wrapper to plot two or more ggtree/ggplot objects side by side
 }
 \examples{
 tandem.treePlot(ggtree1,ggtree2)

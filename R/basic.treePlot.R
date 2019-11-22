@@ -75,7 +75,7 @@ basic.treePlot <- function(tree,branch_length,branch_weight,node_label,node_size
     nSize <- FALSE
   } else if(is.na(node_size)){
     nSize <- FALSE
-  } else if(!is.numeric(node_size) | node_label == "none"){
+  } else if(!is.numeric(node_size) || node_label == "none"){
       nSize<-FALSE
     } else{ nSize <- TRUE }
   
@@ -196,7 +196,7 @@ basic.treePlot <- function(tree,branch_length,branch_weight,node_label,node_size
           colors <- c('black','red')
         } else{colors <- c('black',colors)}
       } else{
-        if(length(colors) != group_count | any(has_error(grDevices::col2rgb(colors)))){
+        if(length(colors) != group_count || any(has_error(grDevices::col2rgb(colors)))){
           print("Invalid color choice. Using defaults.")
           
           if(group_count <= 8){

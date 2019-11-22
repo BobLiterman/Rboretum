@@ -4,12 +4,10 @@
 \alias{get.comparable}
 \title{Rboretum Tree Comparability Checker}
 \usage{
-get.comparable(trees, tree_names, return_only_comparable)
+get.comparable(trees, return_only_comparable)
 }
 \arguments{
-\item{trees}{multiPhylo object}
-
-\item{tree_names}{OPTIONAL: Vector of tree names}
+\item{trees}{multiPhylo object (If named, names will be used in analysis)}
 
 \item{return_only_comparable}{OPTIONAL: If TRUE, returns only comparable trees; (Default: FALSE)}
 }

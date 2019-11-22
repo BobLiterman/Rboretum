@@ -4,12 +4,10 @@
 \alias{compare.clades}
 \title{Rboretum Tree Clade Comparison}
 \usage{
-compare.clades(trees, tree_names, return_shared_only)
+compare.clades(trees, return_shared_only)
 }
 \arguments{
-\item{trees}{multiPhylo object}
-
-\item{tree_names}{OPTIONAL: Vector of tree names}
+\item{trees}{multiPhylo object (If named, names will be used in analysis)}
 
 \item{return_shared_only}{OPTIONAL: If TRUE, returns only information about clades supported by all trees; (Default: FALSE)}
 }

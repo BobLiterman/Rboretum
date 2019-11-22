@@ -1,8 +1,7 @@
 #' Rboretum Tree Comparability Checker
 #'
 #' This function takes a multiPhylo object and returns a dataframe that indicates which topologies can be compared (>= 3 species shared, with unique topologies). If so, the common species set is also returned.
-#' @param trees multiPhylo object
-#' @param tree_names OPTIONAL: Vector of tree names
+#' @param trees multiPhylo object (If named, names will be used in analysis)
 #' @param return_only_comparable OPTIONAL: If TRUE, returns only comparable trees; (Default: FALSE)
 #' @return Dataframe with information about possible comparisons
 #' @export
@@ -18,41 +17,26 @@
 #' get.comparable(trees,names,return_only_comparable=TRUE)
 #'
 
-get.comparable <- function(trees,tree_names,return_only_comparable){
+get.comparable <- function(trees,return_only_comparable){
   
-  if(missing(tree_names)){
+
+  if(!Rboretum::is.multiPhylo(trees)){
+    stop("'trees' does not appear to be a valid multiPhylo object with 2+ trees")
+  }
     
-    if(!Rboretum::is.multiPhylo(trees)){
-      stop("'trees' does not appear to be a valid multiPhylo object with 2+ trees")
-    }
-    
-    tree_count <- length(trees)
+  tree_count <- length(trees)
+  
+  if(is.null(names(trees))){
     tree_names <- unlist(lapply(X = 1:tree_count,function(x) paste(c("Tree",x),collapse = "_")))
-    
   } else{
-    if(!Rboretum::is.multiPhylo(trees)){
-      stop("'trees' does not appear to be a valid multiPhylo object with 2+ trees")
-    }
-    
-    tree_count <- length(trees)
-    
-    if(tree_count!=length(tree_names)){
-      
-      print("Multiphylo object and name vector are not the same length. Each tree must be named. Using numbers based on multiphlyo order")
-      tree_names <- unlist(lapply(X = 1:tree_count,function(x) paste(c("Tree",x),collapse = "_")))
-      
-    } else{
-      tree_names <- as.character(tree_names)
-    }
+    tree_names <- names(trees)
   }
   
   if(missing(return_only_comparable)){
     return_only_comparable <- FALSE
-  } else{ 
-    if(!is.logical(return_only_comparable)){
+  } else if(!is.logical(return_only_comparable)){
       return_only_comparable <- FALSE
     }
-  }
   
   names_1 <- c()
   names_2 <- c()
@@ -74,7 +58,7 @@ get.comparable <- function(trees,tree_names,return_only_comparable){
       if(comparable){
         species_sets <- c(species_sets,paste(sort(Rboretum::get.shared(c(tree_1,tree_2))),collapse = ";"))
       } else{
-        species_sets <- c(species_sets,NA)
+        species_sets <- c(species_sets,NA) 
       }
     }
   }
@@ -83,13 +67,10 @@ get.comparable <- function(trees,tree_names,return_only_comparable){
 
   if(return_only_comparable==FALSE){
     return(compareTable)
-  }
-  else{
+  } else{
       compareTable <- compareTable %>% filter(Comparable == TRUE)
       if(nrow(compareTable )>0){
         return(compareTable)
-      } else{
-          stop("No trees are comparable")
-      }
+      } else{ stop("No trees are comparable") }
     }
 }

@@ -56,7 +56,8 @@ compare.clades <- function(trees,return_shared_only){
   split_df <- tallied_splits %>%
     rename(Clade = 'all_clades',Tree_Count = 'Freq') %>%
     mutate(Clade_Size = (str_count(Clade,';')+1)) %>%
-    mutate(Clade = as.character(Clade),Tree_Count = as.integer(Tree_Count),Clade_Size = as.integer(Clade_Size))
+    mutate(Clade = as.character(Clade),Tree_Count = as.integer(Tree_Count),Clade_Size = as.integer(Clade_Size)) %>%
+    filter(Clade_Size > 1)
 
   # If return_shared_only = TRUE, just return clades shared by all trees. Otherwise, return all clades
   if(return_shared_only){

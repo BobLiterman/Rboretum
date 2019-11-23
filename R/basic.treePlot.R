@@ -406,7 +406,11 @@ basic.treePlot <- function(tree,branch_length,branch_weight,node_label,node_size
   }
   
   if(titlePlot){
-    return_tree <- return_tree + ggplot2::ggtitle(plot_title)
+    if(colorTips && color_legend){
+    return_tree <- return_tree + ggplot2::ggtitle(plot_title) + theme(legend.position = 'right',plot.title = element_text(hjust = 0.5))
+    } else{
+      return_tree <- return_tree + ggplot2::ggtitle(plot_title) + theme(plot.title = element_text(hjust = 0.5))
+    }
   }
     
   return(return_tree)

@@ -495,7 +495,14 @@ support.treePlot <- function(tree,tree_support,clade_support,support_scales,node
   }
   
   if(titlePlot){
-    return_tree <- return_tree + ggplot2::ggtitle(plot_title)
+    if(clade_support){
+      return_tree <- return_tree + ggplot2::ggtitle(plot_title) + theme(legend.position="right",
+                                                                        legend.title=element_text(size=legend_title_size),
+                                                                        legend.text=element_text(size=legend_font_size),
+                                                                        plot.title = element_text(hjust = 0.5))
+    } else{
+      return_tree <- return_tree + ggplot2::ggtitle(plot_title) + theme(plot.title = element_text(hjust = 0.5))
+    }
   }
   
   return(return_tree)

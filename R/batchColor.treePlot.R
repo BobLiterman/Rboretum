@@ -97,7 +97,7 @@ batchColor.treePlot <- function(trees,to_color,branch_length,branch_weight,node_
   
   if(missing(plot_titles)){
     plot_titles <- rep(NA,length(trees))
-  } else if(length(plot_titles != length(trees))){
+  } else if(length(plot_titles) != length(trees)){
     print("Not enought plot titles for each tree, no titles passed.")
     plot_titles <- rep(NA,length(trees))
   }

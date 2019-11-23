@@ -3,6 +3,8 @@
 #' Given a phylo object (tree), this ggtree wrapper returns a ggtree plot object, adjusted with possible arguments
 #' @usage myPlot <- treePlotter(tree=myTree,...)
 #' @param tree Phylo object
+#' @param branch_length OPTIONAL: TRUE [plot tree with branch lengths]; FALSE [Default: plot cladogram]
+#' @param branch_weight OPTIONAL: Set ggtree branch thickness
 #' @param node_label OPTIONAL: Node label choices include:
 #' \itemize{
 #'   \item "none": No node labels
@@ -11,8 +13,6 @@
 #' }
 #' @param node_size OPTIONAL: Set ggtree node label size
 #' @param node_nudge OPTIONAL: Set ggtree node label nudge_x 
-#' @param branch_length OPTIONAL: TRUE [plot tree with branch lengths]; FALSE [Default: plot cladogram]
-#' @param branch_weight OPTIONAL: Set ggtree branch thickness
 #' @param taxa_size OPTIONAL: Set ggtree tip label size
 #' @param taxa_italic OPTIONAL: TRUE [italic tip labels]; FALSE [Default: non-italic tip labels]
 #' @param taxa_align OPTIONAL: 'left' or 'right' tip label alignment [Default: No alignment]
@@ -26,22 +26,11 @@
 #' }
 #' @param colors OPTIONAL: Colors for clade highlighting. Must be hex or valid R colors. Provide a color for each group (1 if character vector, 1 for each group if named list) or default colors will be used.
 #' @param color_legend TRUE [Include a legend for colored taxa/clades]; False [Default: No legend]
+#' @param plot_titles OPTIONAL: Character vector of titles for plots
 #' @return ggtree object
 #' @export
-#' @examples
-#' # Print tree with bootstrap labels
-#' basic.treePlot(tree)
-#' 
-#' # Print tree with no node labels
-#' basic.treePlot(tree,node_label='none')
-#'
-#' # Print tree with thicker branches
-#' basic.treePlot(tree,branch_weight=3)
-#' 
-#' # Print tree with buffer on right side to accomodate longer tip labels
-#' basic.treePlot(tree,xmax=10)
 
-batchColor.treePlot <- function(trees,to_color,branch_length,branch_weight,node_label,node_size,node_nudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax,reverse_x,colors,color_legend){
+batchColor.treePlot <- function(trees,to_color,branch_length,branch_weight,node_label,node_size,node_nudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax,reverse_x,colors,color_legend,plot_titles){
   
   if(!Rboretum::is.multiPhylo(trees)){
     stop("'trees' does not appear to be a multiPhylo object. Use basic.treePlot() for single trees.")
@@ -106,10 +95,17 @@ batchColor.treePlot <- function(trees,to_color,branch_length,branch_weight,node_
     color_legend <- NA
   }
   
+  if(missing(plot_titles)){
+    plot_titles <- rep(NA,length(trees))
+  } else if(length(plot_titles != length(trees))){
+    print("Not enought plot titles for each tree, no titles passed.")
+    plot_titles <- rep(NA,length(trees))
+  }
+  
   plotList <- list()
   
   for(i in 1:length(trees)){
-    plotList[[i]] <- basic.treePlot(tree = trees[[i]],branch_length,branch_weight,node_label,node_size,node_nudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax,reverse_x,to_color,colors,color_legend)
+    plotList[[i]] <- basic.treePlot(tree = trees[[i]],branch_length,branch_weight,node_label,node_size,node_nudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax,reverse_x,to_color,colors,color_legend,plot_title=plot_titles[[i]])
   }
   
   tandem.treePlot(plotList)

@@ -26,7 +26,8 @@ support.treePlot(
   taxa_offset,
   xmax,
   reverse_x,
-  rename_tips
+  rename_tips,
+  plot_title
 )
 }
 \arguments{
@@ -82,6 +83,8 @@ support.treePlot(
 \item{reverse_x}{OPTIONAL: TRUE [plot tree with tips on left]; FALSE [Default: plot tree with tips on right]}
 
 \item{rename_tips}{OPTIONAL: Dataframe where column 1 contains tip labels for tree, and column 2 contains new, desired tip labels}
+
+\item{plot_title}{OPTIONAL: Title for plot}
 }
 \value{
 ggtree object

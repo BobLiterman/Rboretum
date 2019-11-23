@@ -3,6 +3,8 @@
 #' Given a phylo object (tree), this ggtree wrapper returns a ggtree plot object, adjusted with possible arguments
 #' @usage myPlot <- treePlotter(tree=myTree,...)
 #' @param tree Phylo object
+#' @param branch_length OPTIONAL: TRUE [plot tree with branch lengths]; FALSE [Default: plot cladogram]
+#' @param branch_weight OPTIONAL: Set ggtree branch thickness
 #' @param node_label OPTIONAL: Node label choices include:
 #' \itemize{
 #'   \item "none": No node labels
@@ -11,8 +13,6 @@
 #' }
 #' @param node_size OPTIONAL: Set ggtree node label size
 #' @param node_nudge OPTIONAL: Set ggtree node label nudge_x 
-#' @param branch_length OPTIONAL: TRUE [plot tree with branch lengths]; FALSE [Default: plot cladogram]
-#' @param branch_weight OPTIONAL: Set ggtree branch thickness
 #' @param taxa_size OPTIONAL: Set ggtree tip label size
 #' @param taxa_italic OPTIONAL: TRUE [italic tip labels]; FALSE [Default: non-italic tip labels]
 #' @param taxa_align OPTIONAL: 'left' or 'right' tip label alignment [Default: No alignment]
@@ -25,7 +25,8 @@
 #'   \item List of groups of taxa, each of which will have their own color. List can be named for use with a legend (set color_legend == TRUE)
 #' }
 #' @param colors OPTIONAL: Colors for clade highlighting. Must be hex or valid R colors. Provide a color for each group (1 if character vector, 1 for each group if named list) or default colors will be used.
-#' @param color_legend TRUE [Include a legend for colored taxa/clades]; False [Default: No legend]
+#' @param color_legend OPTIONAL: TRUE [Include a legend for colored taxa/clades]; False [Default: No legend]
+#' @param plot_title OPTIONAL: Title for plot
 #' @return ggtree object
 #' @export
 #' @examples
@@ -41,7 +42,7 @@
 #' # Print tree with buffer on right side to accomodate longer tip labels
 #' basic.treePlot(tree,xmax=10)
 
-basic.treePlot <- function(tree,branch_length,branch_weight,node_label,node_size,node_nudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax,reverse_x,to_color,colors,color_legend){
+basic.treePlot <- function(tree,branch_length,branch_weight,node_label,node_size,node_nudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax,reverse_x,to_color,colors,color_legend,plot_title){
   
   if(missing(tree)){
     stop("No tree provided.")
@@ -216,6 +217,15 @@ basic.treePlot <- function(tree,branch_length,branch_weight,node_label,node_size
     color_legend <- FALSE
   } else if(!is.logical(color_legend)){
     color_legend <- FALSE
+  }
+  
+  if(missing(plot_title)){
+    titlePlot <- FALSE
+  } else if(is.na(plot_title)){
+    titlePlot <- FALSE
+  } else{
+    plot_title <- as.character(plot_title)
+    titlePlot <- TRUE
   }
   
   # Create base tree
@@ -394,6 +404,10 @@ basic.treePlot <- function(tree,branch_length,branch_weight,node_label,node_size
       }
     }
   }
-
+  
+  if(titlePlot){
+    return_tree <- return_tree + ggplot2::ggtitle(plot_title)
+  }
+    
   return(return_tree)
 }

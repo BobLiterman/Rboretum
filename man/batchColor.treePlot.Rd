@@ -44,6 +44,8 @@ myPlot <- treePlotter(tree=myTree,...)
 
 \item{color_legend}{TRUE [Include a legend for colored taxa/clades]; False [Default: No legend]}
 
+\item{plot_titles}{OPTIONAL: Character vector of titles for plots}
+
 \item{tree}{Phylo object}
 }
 \value{
@@ -51,17 +53,4 @@ ggtree object
 }
 \description{
 Given a phylo object (tree), this ggtree wrapper returns a ggtree plot object, adjusted with possible arguments
-}
-\examples{
-# Print tree with bootstrap labels
-basic.treePlot(tree)
-
-# Print tree with no node labels
-basic.treePlot(tree,node_label='none')
-
-# Print tree with thicker branches
-basic.treePlot(tree,branch_weight=3)
-
-# Print tree with buffer on right side to accomodate longer tip labels
-basic.treePlot(tree,xmax=10)
 }

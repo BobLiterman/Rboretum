@@ -44,7 +44,9 @@ myPlot <- treePlotter(tree=myTree,...)
 
 \item{colors}{OPTIONAL: Colors for clade highlighting. Must be hex or valid R colors. Provide a color for each group (1 if character vector, 1 for each group if named list) or default colors will be used.}
 
-\item{color_legend}{TRUE [Include a legend for colored taxa/clades]; False [Default: No legend]}
+\item{color_legend}{OPTIONAL: TRUE [Include a legend for colored taxa/clades]; False [Default: No legend]}
+
+\item{plot_title}{OPTIONAL: Title for plot}
 }
 \value{
 ggtree object

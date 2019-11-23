@@ -2,6 +2,7 @@
 #' Given a phylo object (tree), and the output from tree.support(), this function plots the tree [adjusted with possible arguments] along with node support information
 #' @param tree Rooted phylo object
 #' @param tree_support  OPTIONAL: Output trom tree.support() run on the same tree
+#' @param clade_support OPTIONAL: Output from compare.clades(). Will colorize nodepoint labels based on how many trees in multiPhylo contain that split
 #' @param support_scales OPTIONAL: Scaling factor for nodepoint labels. Options include:
 #' \itemize{
 #'   \item "log" - Log-converted support values
@@ -13,7 +14,8 @@
 #' @param legend_shape_size OPTIONAL: ggplot2 size for legend icons [Default: 10]
 #' @param legend_font_size OPTIONAL: ggplot2 size for legend font [Default: 10]
 #' @param legend_title_size OPTIONAL: ggplot size for legend title [Default: 10]
-#' @param clade_support OPTIONAL: Output from compare.clades(). Will colorize nodepoint labels based on how many trees in multiPhylo contain that split
+#' @param branch_length OPTIONAL: TRUE [plot tree with branch lengths]; FALSE [Default: plot cladogram]
+#' @param branch_weight OPTIONAL: Set ggtree branch thickness
 #' @param node_label OPTIONAL: Choice of node labels include:
 #' \itemize{
 #'   \item "none": No node labels [Default]
@@ -23,8 +25,6 @@
 #' }
 #' @param node_size OPTIONAL: Set ggtree node label size
 #' @param node_nudge OPTIONAL: Set ggtree node label nudge_x 
-#' @param branch_length OPTIONAL: TRUE [plot tree with branch lengths]; FALSE [Default: plot cladogram]
-#' @param branch_weight OPTIONAL: Set ggtree branch thickness
 #' @param taxa_size OPTIONAL: Set ggtree tip label size
 #' @param taxa_italic OPTIONAL: TRUE [italic tip labels]; FALSE [Default: non-italic tip labels]
 #' @param taxa_align OPTIONAL: 'left' or 'right' tip label alignment [Default: No alignment]
@@ -32,13 +32,14 @@
 #' @param xmax OPTIONAL: Set ggplot xlim upper limit (e.g if long tip labels run off plot)
 #' @param reverse_x OPTIONAL: TRUE [plot tree with tips on left]; FALSE [Default: plot tree with tips on right]
 #' @param rename_tips OPTIONAL: Dataframe where column 1 contains tip labels for tree, and column 2 contains new, desired tip labels
+#' @param plot_title OPTIONAL: Title for plot
 #' @return ggtree object
 #' @export
 #' @examples
 #' # Print tree with bootstrap labels
 #' basic.treePlot(tree)
 
-support.treePlot <- function(tree,tree_support,clade_support,support_scales,node_alpha,node_color,legend_shape_size,legend_font_size,legend_title_size,branch_length,branch_weight,node_label,node_size,node_nudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax,reverse_x,rename_tips){
+support.treePlot <- function(tree,tree_support,clade_support,support_scales,node_alpha,node_color,legend_shape_size,legend_font_size,legend_title_size,branch_length,branch_weight,node_label,node_size,node_nudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax,reverse_x,rename_tips,plot_title){
   
   if(has_error(ape::is.rooted(tree))){
     stop("Error in ape::is.rooted. Is 'tree' a phylo object?")
@@ -232,6 +233,15 @@ support.treePlot <- function(tree,tree_support,clade_support,support_scales,node
     }
   } else{
     renameTip <- FALSE
+  }
+  
+  if(missing(plot_title)){
+    titlePlot <- FALSE
+  } else if(is.na(plot_title)){
+    titlePlot <- FALSE
+  } else{
+    plot_title <- as.character(plot_title)
+    titlePlot <- TRUE
   }
   
   # Create ggtree_df
@@ -482,6 +492,10 @@ support.treePlot <- function(tree,tree_support,clade_support,support_scales,node
         return_tree <- return_tree + geom_nodelab(aes(label=support))
       }
     }
+  }
+  
+  if(titlePlot){
+    return_tree <- return_tree + ggplot2::ggtitle(plot_title)
   }
   
   return(return_tree)

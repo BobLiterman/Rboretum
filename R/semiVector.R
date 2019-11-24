@@ -13,5 +13,9 @@
 
 # Given semicolon delimeted string, return single vector
 semiVector <- function(string_to_split){
+  if(!str_detect(string_to_split,";")){
+    return(string_to_split) # Return strings with no semicolon
+  } else{
   return(stringr::str_split(string_to_split,pattern = ';') %>% unlist())
+  }
 }

@@ -8,8 +8,8 @@
 
 # Given semicolon delimeted string, return sorted
 semiSorter <- function(string_to_sort){
-  if(!str_detect(string_to_split,";")){
-    return(string_to_split) # Return strings with no semicolon
+  if(!str_detect(string_to_sort,";")){
+    return(string_to_sort) # Return strings with no semicolon
   } else{
     return(paste(sort(semiVector(string_to_sort)),collapse = ";"))
   }

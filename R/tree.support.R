@@ -93,7 +93,8 @@ tree.support <- function(signal,tree,max_missing,alignment_name,include_gap,incl
   }
     
   
-  signal_taxa <- filter(!is.na(Split_1)) %>% 
+  signal_taxa <- signal %>%
+    filter(!is.na(Split_1)) %>% 
     head(1) %>% 
     select(Singleton_Taxa,Non_Base_Taxa,Split_1,Split_2,Split_3,Split_4,Split_5) %>% 
     select_if(~ !any(is.na(.))) %>% 

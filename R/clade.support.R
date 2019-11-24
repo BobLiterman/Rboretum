@@ -80,7 +80,8 @@ clade.support <- function(signal,clade,max_missing,include_gap,include_singleton
     stop("'signal' argument must be output from alignment.signal()")
   }
   
-  signal_taxa <- filter(!is.na(Split_1)) %>% 
+  signal_taxa <- signal %>%
+    filter(!is.na(Split_1)) %>% 
     head(1) %>% 
     select(Singleton_Taxa,Non_Base_Taxa,Split_1,Split_2,Split_3,Split_4,Split_5) %>% 
     select_if(~ !any(is.na(.))) %>% 

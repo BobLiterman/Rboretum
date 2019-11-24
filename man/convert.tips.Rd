@@ -11,9 +11,9 @@ convert.tips(tree, name_df, from, to)
 
 \item{name_df}{Dataframe with name equivalencies}
 
-\item{from}{Column name with current tree tip IDs}
+\item{from}{Column name with current tree tip IDs (if missing, first column of name_df used as default)}
 
-\item{to}{Column name with desired IDs}
+\item{to}{Column name with desired IDs (if missing, second column of name_df used as default)}
 }
 \value{
 phylo object with converted names

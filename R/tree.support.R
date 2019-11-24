@@ -11,7 +11,7 @@
 #' @param include_triallelic OPTIONAL: TRUE or FALSE; Count sites with triallelic variation as part of total support [Default: TRUE]
 #' @param include_quadallelic OPTIONAL: TRUE or FALSE; Count sites with quadallelic variation as part of total support [Default: TRUE]
 #' @param include_pentallelic OPTIONAL: TRUE or FALSE; Count sites with pentallelic variation as part of total support [Default: TRUE]
-#' @param only_gap OPTIONAL: TRUE or FALSE; Only count sites with gap positions ('-') as part of total support [Default: FALSE]#' 
+#' @param only_gap OPTIONAL: TRUE or FALSE; Only count sites with gap positions ('-') as part of total support [Default: FALSE]
 #' @param existing_splits OPTIONAL: Output from previous tree.support() using the same tree, run with new alignment/missing combination
 #' @return The same split table from get.splits(tree), but with a support column for the specfied alignment/missing combination
 #' @export
@@ -93,18 +93,18 @@ tree.support <- function(signal,tree,max_missing,alignment_name,include_gap,incl
   }
     
   
-  signal_taxa <- signal %>%
-    filter(!is.na(Split_1)) %>%
-    head(1) %>%
-    select(Non_Base_Taxa,starts_with('Split_')) %>%
-    select_if(~ !any(is.na(.))) %>%
-    unite(col = "Taxa",sep = ";") %>%
-    pull() %>% as.character() %>% str_split(pattern = ";") %>% unlist() %>% sort()
+  signal_taxa <- filter(!is.na(Split_1)) %>% 
+    head(1) %>% 
+    select(Singleton_Taxa,Non_Base_Taxa,Split_1,Split_2,Split_3,Split_4,Split_5) %>% 
+    select_if(~ !any(is.na(.))) %>% 
+    unite(col = "Taxa",sep = ";") %>% 
+    semiVector() %>% 
+    sort()
 
 
   tree_taxa <- sort(tree$tip.label)
 
-  if(!(all(tree_taxa %in% signal_taxa) && all(signal_taxa %in% tree_taxa))){
+  if(!all(tree_taxa == signal_taxa)){
     print("Tree Taxa:")
     print(tree_taxa)
     print("Signal Taxa:")

@@ -40,7 +40,7 @@ tree.support(
 
 \item{include_pentallelic}{OPTIONAL: TRUE or FALSE; Count sites with pentallelic variation as part of total support [Default: TRUE]}
 
-\item{only_gap}{OPTIONAL: TRUE or FALSE; Only count sites with gap positions ('-') as part of total support [Default: FALSE]#'}
+\item{only_gap}{OPTIONAL: TRUE or FALSE; Only count sites with gap positions ('-') as part of total support [Default: FALSE]}
 
 \item{existing_splits}{OPTIONAL: Output from previous tree.support() using the same tree, run with new alignment/missing combination}
 }

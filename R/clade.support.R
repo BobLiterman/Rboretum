@@ -80,13 +80,13 @@ clade.support <- function(signal,clade,max_missing,include_gap,include_singleton
     stop("'signal' argument must be output from alignment.signal()")
   }
   
-  signal_taxa <- signal %>%
-    filter(!is.na(Split_1)) %>%
-    head(1) %>%
-    select(Non_Base_Taxa,starts_with('Split_')) %>%
-    select_if(~ !any(is.na(.))) %>%
-    unite(col = "Taxa",sep = ";") %>%
-    pull() %>% as.character() %>% str_split(pattern = ";") %>% unlist() %>% sort()
+  signal_taxa <- filter(!is.na(Split_1)) %>% 
+    head(1) %>% 
+    select(Singleton_Taxa,Non_Base_Taxa,Split_1,Split_2,Split_3,Split_4,Split_5) %>% 
+    select_if(~ !any(is.na(.))) %>% 
+    unite(col = "Taxa",sep = ";") %>% 
+    semiVector() %>% 
+    sort()
   
   if(all(clade %in% signal_taxa)){
 

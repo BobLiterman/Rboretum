@@ -142,7 +142,7 @@ basic.treePlot <- function(tree,branch_length,branch_weight,node_label,node_size
     colorTips <- FALSE
   } else if(is.na(to_color)){
     colorTips <- FALSE
-  } else if(!check.tip(unlist(to_color))){
+  } else if(!check.tip(tree,unlist(to_color))){
     print("Some taxa in 'to_color' not found in tree.")
     colorTips <- FALSE
   } else if(is.character(to_color)){

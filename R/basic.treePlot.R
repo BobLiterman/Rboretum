@@ -140,25 +140,17 @@ basic.treePlot <- function(tree,branch_length,branch_weight,node_label,node_size
 
   if(missing(to_color)){
     colorTips <- FALSE
+  } else if(is.na(to_color)){
+    colorTips <- FALSE
+  } else if(!check.tip(unlist(to_color))){
+    print("Some taxa in 'to_color' not found in tree.")
+    colorTips <- FALSE
   } else if(is.character(to_color)){
-    if(check.tip(tree,to_color)){
-      colorTips <- TRUE
-      group_count <- 1
-    } else{
-      print("Some taxa in 'to_color' not found in tree.")
-      colorTips <- FALSE
-    }
+    colorTips <- TRUE
+    group_count <- 1
   } else if(is.list(to_color)){
-    if(check.tip(tree,unlist(to_color))){
-      colorTips <- TRUE
-      group_count <- length(to_color)
-      if(group_count > 8){
-        print("More than 8 groups to highlight. If not enough colors were provided, will use color_scale_viridis().")
-      }
-    } else{
-      colorTips <- FALSE
-      print("Some taxa in 'to_color' not found in tree.")
-    }
+    colorTips <- TRUE
+    group_count <- length(to_color)
   } else{
     print("'to_color' must be a character vector of taxa, or a list of taxa/clades")
     colorTips <- FALSE

@@ -195,7 +195,7 @@ def process_nonbase(pos):
     non_base_list = list(set(seq_string) - set(bases))
     non_base_index = findOccurrences(seq_string, non_base_list)
     non_base_taxa = itemgetter(*non_base_index)(sorted(spp_list))
-    non_base_count = int(len(non_base_taxa))
+    non_base_count = int(len(non_base_index))
 
     if len(non_base_index) == 1:
         non_base_taxa_string = non_base_taxa
@@ -355,7 +355,7 @@ def process_nonbase_gap(pos):
     non_base_list = list(set(seq_string) - set(bases))
     non_base_index = findOccurrences(seq_string, non_base_list)
     non_base_taxa = itemgetter(*non_base_index)(sorted(spp_list))
-    non_base_count = int(len(non_base_taxa))
+    non_base_count = int(len(non_base_index))
 
     if len(non_base_index) == 1:
         non_base_taxa_string = non_base_taxa

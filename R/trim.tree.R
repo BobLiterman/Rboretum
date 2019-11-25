@@ -23,7 +23,7 @@ trim.tree <- function(tree,taxa,remove){
     remove <- FALSE
   }
   
-  if(!Rboretum::is.multiPhylo(tree) && !Rboretum::is.phylo(tree)){
+  if(!Rboretum::is.multiPhylo(tree) & !Rboretum::is.phylo(tree)){
     stop("'tree' does not appear to be a valid phylo or multiPhylo object")
   }
   

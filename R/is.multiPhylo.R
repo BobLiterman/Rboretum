@@ -11,7 +11,7 @@ is.multiPhylo <- function(test_object){
   } else{
     test_object_class <- unlist(attributes(test_object)$class)
 
-    if('multiPhylo' %in% test_object_class && length(test_object)>=2){
+    if('multiPhylo' %in% test_object_class & length(test_object)>=2){
       return(TRUE)
     } else{
       return(FALSE)

@@ -138,7 +138,7 @@ pies.treePlot <- function(tree,tree_support,support_scales,node_alpha,legend_sha
   if(missing(node_size)){
     nSize <- FALSE
   } else{
-    if(!is.numeric(node_size) || node_label == "none"){
+    if(!is.numeric(node_size) | node_label == "none"){
       nSize<-FALSE
     } else{ nSize <- TRUE }
   }
@@ -207,7 +207,7 @@ pies.treePlot <- function(tree,tree_support,support_scales,node_alpha,legend_sha
   
   if(missing(rename_tips)){
     renameTip <- FALSE
-  } else if((is.data.frame(rename_tips) || is_tibble(rename_tips)) & length(names(rename_tips) >= 2)){
+  } else if((is.data.frame(rename_tips) | is_tibble(rename_tips)) & length(names(rename_tips) >= 2)){
     old_id <- names(rename_tips)[1]
     new_id <- names(rename_tips)[2]
     if(has_error(Rboretum::convert.tips(tree,rename_tips,old_id,new_id))){

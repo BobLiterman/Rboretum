@@ -21,7 +21,7 @@ check.root <- function(tree,taxa){
   # Get mirror clade (all species - focal group)
   mirror_taxa <- sort(dplyr::setdiff(tree$tip.label, taxa))
 
-  if(ape::is.monophyletic(tree,taxa) && ape::is.monophyletic(tree,mirror_taxa)){
+  if(ape::is.monophyletic(tree,taxa) & ape::is.monophyletic(tree,mirror_taxa)){
     return(TRUE)
   } else{ return(FALSE) }
 }

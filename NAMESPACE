@@ -3,7 +3,6 @@
 export(alignment.signal)
 export(basic.treePlot)
 export(batch.treePlot)
-export(batchColor.treePlot)
 export(check.comparable)
 export(check.root)
 export(check.shared)

@@ -441,7 +441,7 @@ support.treePlot <- function(tree,tree_support,clade_support,support_scales,node
     return_tree <- return_tree + 
       geom_nodepoint(alpha=node_alpha,aes(size=scaled_support,color=as.integer(tree_count))) + 
       scale_size_identity() +
-      scale_color_viridis(breaks = 1:max(ggtree_df$tree_count),name = "Trees with Split") +
+      scale_color_viridis(breaks = 1:max(ggtree_df$tree_count),name = "Trees with Split",drop=FALSE) +
       theme(legend.position="right",
             legend.title=element_text(size=legend_title_size), 
             legend.text=element_text(size=legend_font_size)) +

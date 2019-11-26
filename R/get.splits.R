@@ -19,8 +19,8 @@ get.splits <- function(tree){
   tree_species <- sort(tree$tip.label)
   species_count <- length(tree_species)
   
-  non_root_clades <- c()
-  non_root_mirror <- c()
+  mono_clades <- c()
+  mirror_clades <- c()
   node_list <- c()
   bootstrap_list <- c()
   
@@ -45,8 +45,8 @@ get.splits <- function(tree){
       
       # Note actual monophyletic clades and add bootrap values if appropriate
       if(mono_A & !(mono_B)){
-        non_root_clades <- c(non_root_clades,sort(temp_clade) %>% paste(collapse = ";"))
-        non_root_mirror <- c(non_root_mirror,sort(mirror_clade) %>% paste(collapse = ";"))
+        mono_clades <- c(mono_clades,sort(temp_clade) %>% paste(collapse = ";"))
+        mirror_clades <- c(mirror_clades,sort(mirror_clade) %>% paste(collapse = ";"))
         node_list <- c(node_list,ape::getMRCA(tree,temp_clade))
         
         if(hasBS){
@@ -56,10 +56,9 @@ get.splits <- function(tree){
             bootstrap_list <- c(bootstrap_list,as.numeric(node_bs))
           } else{ bootstrap_list <- c(bootstrap_list,NA) }
         }
-      }
-      if(mono_B & !(mono_A)){
-        non_root_clades <- c(non_root_clades,sort(mirror_clade) %>% paste(collapse = ";"))
-        non_root_mirror <- c(non_root_mirror,sort(temp_clade) %>% paste(collapse = ";"))
+      } else if(mono_B & !(mono_A)){
+        mono_clades <- c(mono_clades,sort(mirror_clade) %>% paste(collapse = ";"))
+        mirror_clades <- c(mirror_clades,sort(temp_clade) %>% paste(collapse = ";"))
         node_list <- c(node_list,ape::getMRCA(tree,mirror_clade))
         
         if(hasBS){
@@ -69,37 +68,44 @@ get.splits <- function(tree){
             bootstrap_list <- c(bootstrap_list,as.numeric(node_bs))
           } else{ bootstrap_list <- c(bootstrap_list,NA) }
         }
-      }
-      # If root...
-      if(mono_A & mono_B){
-        non_root_clades <- c(non_root_clades,sort(temp_clade) %>% paste(collapse = ";"))
-        non_root_mirror <- c(non_root_mirror,sort(mirror_clade) %>% paste(collapse = ";"))
+      } else if(mono_A & mono_B){
+        
+        mono_clades <- c(mono_clades,sort(temp_clade) %>% paste(collapse = ";"))
+        mirror_clades <- c(mirror_clades,sort(mirror_clade) %>% paste(collapse = ";"))
         node_list <- c(node_list,NA)
         
-        if(hasBS){
-          root_1 <- sort(temp_clade)
-          root_tree_1 <- Rboretum::trim.tree(tree,root_1)
-          root_1_BS <- root_tree_1$node.label[1]
+        if(temp_length > 1 & mirror_length > 1){
+        
+            if(hasBS){
+            root_1 <- sort(temp_clade)
+            root_tree_1 <- Rboretum::trim.tree(tree,root_1)
+            root_1_BS <- root_tree_1$node.label[1]
+            
+            root_2 <- sort(mirror_clade)
+            root_tree_2 <- Rboretum::trim.tree(tree,root_2)
+            root_2_BS <- root_tree_2$node.label[1]
+            
+            if(!is.na(as.numeric(root_1_BS))){
+              bootstrap_list <- c(bootstrap_list,as.numeric(root_1_BS))
+            } else if(!is.na(as.numeric(root_2_BS))){
+              bootstrap_list <- c(bootstrap_list,as.numeric(root_2_BS))
+            } else{ bootstrap_list <- c(bootstrap_list,NA) }
+          }
+        } else{
           
-          root_2 <- sort(mirror_clade)
-          root_tree_2 <- Rboretum::trim.tree(tree,root_2)
-          root_2_BS <- root_tree_2$node.label[1]
-          
-          if(!is.na(as.numeric(root_1_BS))){
-            bootstrap_list <- c(bootstrap_list,as.numeric(root_1_BS))
-          } else if(!is.na(as.numeric(root_2_BS))){
-            bootstrap_list <- c(bootstrap_list,as.numeric(root_2_BS))
-          } else{ bootstrap_list <- c(bootstrap_list,NA) }
+          if(hasBS){
+            bootstrap_list <- c(bootstrap_list,NA)
+          }
         }
       }
     }
   }
   
   if(hasBS){
-    clade_node_df <- data.frame("Clade"=as.character(non_root_clades),"Mirror_Clade"=as.character(non_root_mirror),"Split_Node"=as.integer(node_list),"Split_Bootstrap"=as.numeric(bootstrap_list)) %>%
+    clade_node_df <- data.frame("Clade"=as.character(mono_clades),"Mirror_Clade"=as.character(mirror_clades),"Split_Node"=as.integer(node_list),"Split_Bootstrap"=as.numeric(bootstrap_list)) %>%
       filter((!duplicated(Split_Node))) # Two entries for root reduced to one
   } else{
-    clade_node_df <- data.frame("Clade"=as.character(non_root_clades),"Mirror_Clade"=as.character(non_root_mirror),"Split_Node"=as.integer(node_list)) %>%
+    clade_node_df <- data.frame("Clade"=as.character(mono_clades),"Mirror_Clade"=as.character(mirror_clades),"Split_Node"=as.integer(node_list)) %>%
       mutate("Split_Bootstrap" = NA) %>%
       filter((!duplicated(Split_Node))) # Two entries for root reduced to one
   }

@@ -13,7 +13,7 @@ get.clades(tree)
 Character vector of semicolon-separated monophyletic clades
 }
 \description{
-This function takes a tree and returns a sorted character vector containing each monophyletic group
+This function takes a tree and returns a sorted character vector containing each monophyletic group (not including the root clades)
 }
 \examples{
 get.clades(tree)

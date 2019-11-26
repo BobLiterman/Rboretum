@@ -48,6 +48,7 @@ support.treePlot <- function(tree,tree_support,clade_support,support_scales,node
   
   if(missing(tree_support)){
     tree_support <- Rboretum::get.splits(tree) %>%
+      filter(!is.na(Split_Node)) %>%
       mutate(RBORETUM_DUMMY = 1)
     dummy_col <- TRUE
   } else if(!all(names(tree_support)[1:4] == c('Clade','Mirror_Clade','Split_Node','Split_Bootstrap'))){
@@ -57,8 +58,8 @@ support.treePlot <- function(tree,tree_support,clade_support,support_scales,node
     dummy_col <- TRUE
   } else{
     support_clades <- tree_support %>% pull(Clade) %>% as.character() %>% sort()
-    tree_clades <- Rboretum::get.splits(tree) %>% pull(Clade) %>% as.character() %>% sort()
-    if(all(support_clades == tree_clades) & all(tree_clades == support_clades)){
+    tree_clades <- Rboretum::get.clades(tree)
+    if(all(support_clades == tree_clades)){
       support_cols <- 5:ncol(tree_support)
       dummy_col <- FALSE
     } else{
@@ -75,7 +76,7 @@ support.treePlot <- function(tree,tree_support,clade_support,support_scales,node
     }
   } else{
     if(all(names(clade_support)==c('Clade','Tree_Count','Clade_Size','Tree_Percent','Trees_with_Clade'))){
-      tree_clades <- Rboretum::get.clades(tree) %>% sort()
+      tree_clades <- Rboretum::get.clades(tree)
       support_clades <- clade_support$Clade %>% as.character() %>% sort()
       
       if(all(tree_clades %in% support_clades)){

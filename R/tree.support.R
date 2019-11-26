@@ -176,7 +176,7 @@ tree.support <- function(signal,tree,max_missing,alignment_name,include_gap,incl
     clade_support <- c(clade_support,tableCount(all_signal_splits,clade))
   }
   
-  support_df <- data.frame(Clade = as.character(clades),Support = as.integer(clade_support)) %>%
+  support_df <- data.frame(Clade = character(clades),Support = integer(clade_support)) %>%
     left_join(splits,by='Clade') %>%
     select(Clade,Mirror_Clade,Split_Node,Split_Bootstrap,Support) %>%
     rename(!!alignment_name := Support)

@@ -21,6 +21,15 @@
 
 tree.support <- function(signal,tree,max_missing,alignment_name,include_gap,include_singleton,include_biallelic,include_triallelic,include_quadallelic,include_pentallelic,only_gap,existing_splits){
 
+  if(!all(names(signal) == c('Alignment_Name','Alignment_Position','Site_Pattern','Gap','Singleton','Singleton_Taxa','Non_Base_Taxa','Non_Base_Count','Split_1','Split_2','Split_3','Split_4','Split_5'))){
+    stop("'signal' argument must be output from alignment.signal()")
+  }
+  
+  if(has_error(ape::is.rooted(tree))){
+    stop("Error in ape::is.rooted. Is 'tree' a phylo object?")
+  } else if(!ape::is.rooted(tree)){
+    stop("Tree must be rooted for tree.support")}
+  
   if(missing(max_missing)){
     max_missing <- 0
   }
@@ -74,24 +83,16 @@ tree.support <- function(signal,tree,max_missing,alignment_name,include_gap,incl
   if(missing(existing_splits)){
     existing_splits <- FALSE
   } else if(is.data.frame(existing_splits) & all(names(existing_splits)[1:4] == c('Clade','Mirror_Clade','Split_Node','Split_Bootstrap'))){
+    
     old_splits <- existing_splits
     old_clades <- old_splits %>% pull(Clade) %>% as.character() %>% sort()
+    old_mirror_clades <- old_splits %>% pull(Mirror_Clade) %>% as.character() %>% sort()
     existing_splits <- TRUE
-  } else{
+  
+    } else{
     print("Argument passed to 'existing_splits' should be output from tree.support(). Returning results for tree and alignment/missing combo specified.")
     existing_splits <- FALSE
   }
-  
-  if(has_error(ape::is.rooted(tree))){
-    stop("Error in ape::is.rooted. Is 'tree' a phylo object?")
-  } else if(!ape::is.rooted(tree)){
-    stop("Tree must be rooted for tree.support")}
-  
-  if(!all(names(signal) == c('Alignment_Name','Alignment_Position','Site_Pattern','Gap','Singleton','Singleton_Taxa','Non_Base_Taxa','Non_Base_Count','Split_1','Split_2','Split_3','Split_4','Split_5')
-)){
-    stop("'signal' argument must be output from alignment.signal()")
-  }
-    
   
   signal_taxa <- signal %>%
     filter(!is.na(Split_1)) %>% 
@@ -101,7 +102,6 @@ tree.support <- function(signal,tree,max_missing,alignment_name,include_gap,incl
     unite(col = "Taxa",sep = ";") %>% 
     semiVector() %>% 
     sort()
-
 
   tree_taxa <- sort(tree$tip.label)
 
@@ -162,33 +162,27 @@ tree.support <- function(signal,tree,max_missing,alignment_name,include_gap,incl
       }
   }
 
-  splits <- Rboretum::get.splits(tree) %>% mutate(Clade = as.character(Clade),Mirror_Clade = as.character(Mirror_Clade))
-  new_clades <- splits %>% pull(Clade) %>% as.character() %>% sort()
+  splits <- Rboretum::get.splits(tree) %>%
+    filter(!is.na(Split_Node))%>% 
+    mutate(Clade = as.character(Clade),Mirror_Clade = as.character(Mirror_Clade))
 
-  biallelic_root_splits <- signal %>% filter(str_detect(Site_Pattern,'biallelic') & Non_Base_Count == 0) %>% select(starts_with('Split_')) %>% unlist() %>% table()
-
-  biplus_splits <- signal %>% select(starts_with('Split_')) %>% unlist() %>% table()
-
-  root_split <- splits %>% filter(is.na(Split_Node))
-  root_clade <- root_split$Clade %>% as.character()
-  root_support <- tableCount(biallelic_root_splits,root_clade)
+  clades <- splits %>% pull(Clade) %>% as.character() %>% sort()
+  mirror_clades <- splits %>% pull(Mirror_Clade) %>% as.character() %>% sort()
   
-  non_root_splits <- splits %>% filter(!is.na(Split_Node))
-  non_root_clades <- non_root_splits %>% pull(Clade) %>% as.character()
-  non_root_support <- c()
+  all_signal_splits <- signal %>% select(starts_with('Split_')) %>% unlist() %>% table()
 
-  for(clade in non_root_clades){
-    non_root_support <- c(non_root_support,tableCount(biplus_splits,clade))
+  clade_support <- c()
+  for(clade in clades){
+    clade_support <- c(clade_support,tableCount(all_signal_splits,clade))
   }
-
-  support_df <- data.frame(Clade = c(root_clade,non_root_clades),Support = c(root_support,non_root_support)) %>%
-    mutate(Clade = as.character(Clade),Support=as.integer(Support)) %>%
+  
+  support_df <- data.frame(Clade = as.character(clades),Support = as.integer(clade_support)) %>%
     left_join(splits,by='Clade') %>%
     select(Clade,Mirror_Clade,Split_Node,Split_Bootstrap,Support) %>%
     rename(!!alignment_name := Support)
 
   if(existing_splits){
-    if(all(new_clades == old_clades) & all(old_clades == new_clades)){
+    if(all(clades == old_clades) & all(mirror_clades == old_mirror_clades)){
       if(alignment_name %in% names(old_splits)){
         print("Column exists in 'existing_splits' with that alignment/missing combination. Returning results for tree and alignment/missing combo specified.")
         return(support_df)

@@ -5,7 +5,7 @@
 #' @return TRUE if all trees have the same topology after pruning to identical species lists; else, FALSE
 #' @export
 
-sameTopology <- function(trees){
+checkSameTopology <- function(trees){
   if(!Rboretum::isMultiPhylo(trees)){
     stop("'trees' does not appear to be a valid multiPhylo object with 2+ trees")
   } else if(has_error(Rboretum::checkSharedTaxa(trees))){

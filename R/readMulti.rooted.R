@@ -13,10 +13,10 @@
 readMulti.rooted <- function(tree_paths,root_taxa){
   
   if(length(tree_paths)<2){
-    stop("'tree_paths' contains fewer than 2 items, use read.rooted()")
+    stop("'tree_paths' contains fewer than 2 items, use readRootedTree()")
   }
   
-  trees <- purrr::map(.x = tree_paths,root_taxa=root_taxa, .f = read.rooted)
+  trees <- purrr::map(.x = tree_paths,root_taxa=root_taxa, .f = readRootedTree)
   class(trees) <- "multiPhylo"
   return(trees)
 }

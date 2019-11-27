@@ -5,10 +5,8 @@
 #' @param root_taxa Character vector containing outgroup species IDs (Must be in tree and monophyletic)
 #' @return A phylo object, rooted at specified taxa
 #' @export
-#' @examples
-#' myRootedTetrapods <- read.rooted('/path/to/tetrapod_tree.nwk',c('Fish_1','Fish_2'))
 
-read.rooted <- function(tree_path,root_taxa){
+readRootedTree <- function(tree_path,root_taxa){
   
   # Read in tree and fetch species
   if(!has_error(ape::read.tree(tree_path))){

@@ -1,42 +1,20 @@
 #' Rboretum Tree Comparability Checker
 #'
 #' This function takes a multiPhylo object and returns a dataframe that indicates which topologies can be compared (>= 3 species shared, with unique topologies). If so, the common species set is also returned.
-#' @param trees multiPhylo object (If named, names will be used in analysis)
-#' @param return_only_comparable OPTIONAL: If TRUE, returns only comparable trees; (Default: FALSE)
+#' @param trees Named multiPhylo object [Set tree names by using names(trees) <- c('Tree1_Name','Tree2_Name',etc.)]
 #' @return Dataframe with information about possible comparisons
 #' @export
-#' @examples
-#'
-#' trees <- c(tree_1,tree_2,tree_3)
-#' names <- c('CDS_Tree','Intron_Tree','UTR_Tree')
-#'
-#' # Return all comparisons
-#' get.comparable(trees,names)
-#'
-#' # Return only comparable trees
-#' get.comparable(trees,names,return_only_comparable=TRUE)
-#'
 
-get.comparable <- function(trees,return_only_comparable){
+compareTrees <- function(trees){
   
-
   if(!Rboretum::isMultiPhylo(trees)){
     stop("'trees' does not appear to be a valid multiPhylo object with 2+ trees")
+  } else if(is.null(names(trees))){
+    stop("Trees in multiPhylo must be named for compareTrees. Name trees via names(trees) <- c('Tree1_Name','Tree2_Name',etc.)")
   }
-    
+  
+  tree_names <- names(trees)
   tree_count <- length(trees)
-  
-  if(is.null(names(trees))){
-    tree_names <- unlist(lapply(X = 1:tree_count,function(x) paste(c("Tree",x),collapse = "_")))
-  } else{
-    tree_names <- names(trees)
-  }
-  
-  if(missing(return_only_comparable)){
-    return_only_comparable <- FALSE
-  } else if(!is.logical(return_only_comparable)){
-      return_only_comparable <- FALSE
-    }
   
   names_1 <- c()
   names_2 <- c()
@@ -64,13 +42,5 @@ get.comparable <- function(trees,return_only_comparable){
   }
 
   compareTable <- data.frame("Tree_1"=as.character(names_1),"Tree_2"=as.character(names_2),'Comparable'=as.logical(comparables),'Species'=as.character(species_sets))
-
-  if(return_only_comparable==FALSE){
-    return(compareTable)
-  } else{
-      compareTable <- compareTable %>% filter(Comparable == TRUE)
-      if(nrow(compareTable )>0){
-        return(compareTable)
-      } else{ stop("No trees are comparable") }
-    }
+  return(compareTable)
 }

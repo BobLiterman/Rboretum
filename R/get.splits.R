@@ -50,7 +50,7 @@ get.splits <- function(tree){
         node_list <- c(node_list,ape::getMRCA(tree,temp_clade))
         
         if(hasBS){
-          bs_tree <- Rboretum::trim.tree(tree,temp_clade)
+          bs_tree <- Rboretum::treeTrimmer(tree,temp_clade)
           node_bs <- bs_tree$node.label[1]
           if(!is.na(as.numeric(node_bs))){
             bootstrap_list <- c(bootstrap_list,as.numeric(node_bs))
@@ -62,7 +62,7 @@ get.splits <- function(tree){
         node_list <- c(node_list,ape::getMRCA(tree,mirror_clade))
         
         if(hasBS){
-          bs_tree <- Rboretum::trim.tree(tree,temp_clade)
+          bs_tree <- Rboretum::treeTrimmer(tree,temp_clade)
           node_bs <- bs_tree$node.label[1]
           if(!is.na(as.numeric(node_bs))){
             bootstrap_list <- c(bootstrap_list,as.numeric(node_bs))
@@ -78,11 +78,11 @@ get.splits <- function(tree){
         
             if(hasBS){
             root_1 <- sort(temp_clade)
-            root_tree_1 <- Rboretum::trim.tree(tree,root_1)
+            root_tree_1 <- Rboretum::treeTrimmer(tree,root_1)
             root_1_BS <- root_tree_1$node.label[1]
             
             root_2 <- sort(mirror_clade)
-            root_tree_2 <- Rboretum::trim.tree(tree,root_2)
+            root_tree_2 <- Rboretum::treeTrimmer(tree,root_2)
             root_2_BS <- root_tree_2$node.label[1]
             
             if(!is.na(as.numeric(root_1_BS))){

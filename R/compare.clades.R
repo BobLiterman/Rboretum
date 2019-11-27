@@ -41,7 +41,7 @@ compare.clades <- function(trees,return_shared_only){
   
   if(!Rboretum::same.taxa(trees)){
     shared_speces <- Rboretum::get.shared(trees)
-    trees <- Rboretum::trim.tree(trees,shared_speces)
+    trees <- Rboretum::treeTrimmer(trees,shared_speces)
   }
 
   # Tally splits

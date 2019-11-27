@@ -6,16 +6,8 @@
 #' @param remove OPTIONAL: If TRUE, tip labels specified by 'taxa' are removed from all trees rather than retained [Default: FALSE, prune 'tree' down to 'taxa']
 #' @return Pruned phylo or multiPhylo object
 #' @export
-#' @examples
-#' myFavoriteSpecies  <- c('Spp1','Spp2','Spp3')
-#' trim.tree(myBigTree,myFavoriteSpecies)
-#' 
-#' myLeastFavoriteSpecies  <- c('Spp4','Spp5','Spp6')
-#' trim.tree(myBigTree,myLeastFavoriteSpecies,remove=TRUE)
-#' 
-#' myHugeTrees <- c(BigTree_1,BigTree_2,BigTree_3)
-#' trim.tree(myHugeTrees,myFavoriteSpecies)
-trim.tree <- function(tree,taxa,remove){
+
+treeTrimmer <- function(tree,taxa,remove){
   
   if(missing(remove)){
     remove <- FALSE

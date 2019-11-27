@@ -19,7 +19,7 @@ same.topology <- function(trees){
   
   if(!Rboretum::same.taxa(trees)){
     shared_speces <- Rboretum::get.shared(trees)
-    trees <- Rboretum::trim.tree(trees,shared_speces)
+    trees <- Rboretum::treeTrimmer(trees,shared_speces)
   }
   
   tree_count <- length(trees)

@@ -47,12 +47,12 @@ concordance.counter <- function(signal,tree){
   unique_taxa_sets <- unique(signal$Signal_Taxa)
   
   if(length(unique_taxa_sets) == 1){
-    tree <- Rboretum::trim.tree(tree,semiVector(unique_taxa_sets[1]))
+    tree <- Rboretum::treeTrimmer(tree,semiVector(unique_taxa_sets[1]))
     oneTree <- TRUE
   } else{
     trees <- c(rtree(10),rtree(10))
     for(i in 1:length(unique_taxa_sets)){
-      trees[[i]] <-Rboretum::trim.tree(tree,semiVector(unique_taxa_sets[i]))
+      trees[[i]] <-Rboretum::treeTrimmer(tree,semiVector(unique_taxa_sets[i]))
     }
     names(trees) <- unique_taxa_sets
     oneTree <- FALSE

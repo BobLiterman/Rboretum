@@ -287,16 +287,19 @@ supportTreePlotter <- function(tree,tree_support,clade_support,support_scales,no
     ggtree_df <- tree_support %>%
       select(Split_Node,Split_Bootstrap,support,scaled_support,Tree_Count) %>%
       rename(node = 'Split_Node', bootstrap = 'Split_Bootstrap', tree_count = 'Tree_Count') %>%
-      filter(!is.na(node)) %>%
-      mutate(tree_count = factor(tree_count))
-    
+      filter(!is.na(node))
   } else{
     ggtree_df <- tree_support %>%
       select(Split_Node,Split_Bootstrap,Tree_Count) %>%
       mutate(support = NA,scaled_support = support_scales) %>%
       rename(node = 'Split_Node', bootstrap = 'Split_Bootstrap', tree_count = 'Tree_Count') %>%
-      filter(!is.na(node)) %>%
-      mutate(tree_count = factor(tree_count))
+      filter(!is.na(node))
+  }
+  
+  if(clade_support){
+    max_tree <- max(ggtree_df$tree_count)
+    color_range <- 1:max_tree
+    ggtree_df$tree_count <- factor(ggtree_df$tree_count)
   }
   
   # Create base tree
@@ -421,7 +424,7 @@ supportTreePlotter <- function(tree,tree_support,clade_support,support_scales,no
     return_tree <- return_tree + 
       geom_nodepoint(alpha=node_alpha,aes(size=scaled_support,color=tree_count)) + 
       scale_size_identity() +
-      scale_color_manual(breaks = 1:max(as.integer(ggtree_df$tree_count)),values = viridisLite::viridis(length(1:max(as.integer(ggtree_df$tree_count)))),name = "Trees with Split",drop = FALSE) +
+      scale_color_manual(breaks = color_range,values = viridisLite::viridis(length(color_range)),name = "Trees with Split",drop = FALSE) +
       theme(legend.position="right",
             legend.title=element_text(size=legend_title_size), 
             legend.text=element_text(size=legend_font_size)) +

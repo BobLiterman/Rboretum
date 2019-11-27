@@ -29,7 +29,7 @@
 #' @return ggtree object
 #' @export
 
-basicTreePlot <- function(tree,branch_length,branch_weight,node_label,node_size,node_nudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax,reverse_x,to_color,colors,color_legend,plot_title){
+basicTreePlotter <- function(tree,branch_length,branch_weight,node_label,node_size,node_nudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax,reverse_x,to_color,colors,color_legend,plot_title){
   
   if(missing(tree)){
     stop("No tree provided.")

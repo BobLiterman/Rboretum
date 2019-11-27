@@ -35,7 +35,7 @@
 #' @return ggtree object
 #' @export
 
-pieTreePlot <- function(tree,tree_support,support_scales,node_alpha,legend_shape_size,legend_font_size,legend_title_size,legend_position,branch_length,branch_weight,node_label,node_size,node_nudge,pie_xnudge,pie_ynudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax){
+pieTreePlotter <- function(tree,tree_support,support_scales,node_alpha,legend_shape_size,legend_font_size,legend_title_size,legend_position,branch_length,branch_weight,node_label,node_size,node_nudge,pie_xnudge,pie_ynudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax){
   
   if(has_error(ape::is.rooted(tree))){
     stop("Error in ape::is.rooted. Is 'tree' a phylo object?")

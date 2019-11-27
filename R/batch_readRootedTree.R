@@ -6,10 +6,6 @@
 #' @param tree_names OPTIONAL: Character vector of names to assign to trees. Length must equal the number of trees.
 #' @return A multiPhylo object, with each tree rooted at specified taxa
 #' @export
-#' @examples
-#' myTrees <- c('/path/to/tree1','/path/to/tree2')
-#' myRootTaxa <- c('Spp1','Spp2')
-#' myMulti <- readMulti.rooted(myTrees,myRootTaxa)
 
 batch_readRootedTree <- function(tree_paths,root_taxa,tree_names){
   

@@ -19,8 +19,3 @@ A multiPhylo object, with each tree rooted at specified taxa
 \description{
 This function is an ape wrapper, and returns a multiPhylo object, with each tree rooted as specified by the user.
 }
-\examples{
-myTrees <- c('/path/to/tree1','/path/to/tree2')
-myRootTaxa <- c('Spp1','Spp2')
-myMulti <- readMulti.rooted(myTrees,myRootTaxa)
-}

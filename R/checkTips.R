@@ -6,7 +6,7 @@
 #' @return TRUE if all 'taxa' in 'tree'; else, FALSE
 #' @export
 
-tipCheck <- function(tree,taxa){
+checkTips <- function(tree,taxa){
   
   if(Rboretum::isPhylo(tree)){
     if(all(taxa %in% tree$tip.label)){

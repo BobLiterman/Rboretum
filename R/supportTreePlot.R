@@ -34,11 +34,8 @@
 #' @param plot_title OPTIONAL: Title for plot
 #' @return ggtree object
 #' @export
-#' @examples
-#' # Print tree with bootstrap labels
-#' basic.treePlot(tree)
 
-support.treePlot <- function(tree,tree_support,clade_support,support_scales,node_alpha,node_color,legend_shape_size,legend_font_size,legend_title_size,branch_length,branch_weight,node_label,node_size,node_nudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax,reverse_x,plot_title){
+supportTreePlot <- function(tree,tree_support,clade_support,support_scales,node_alpha,node_color,legend_shape_size,legend_font_size,legend_title_size,branch_length,branch_weight,node_label,node_size,node_nudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax,reverse_x,plot_title){
   
   if(has_error(ape::is.rooted(tree))){
     stop("Error in ape::is.rooted. Is 'tree' a phylo object?")

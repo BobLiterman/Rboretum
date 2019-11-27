@@ -29,7 +29,7 @@
 #' @return ggtree object
 #' @export
 
-batchBasic.treePlot <- function(trees,branch_length,branch_weight,node_label,node_size,node_nudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax,reverse_x,to_color,colors,color_legend,plot_titles){
+batch.basicTreePlot <- function(trees,branch_length,branch_weight,node_label,node_size,node_nudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax,reverse_x,to_color,colors,color_legend,plot_titles){
   
   if(!Rboretum::is.multiPhylo(trees)){
     stop("'trees' does not appear to be a multiPhylo object. Use basic.treePlot() for single trees.")
@@ -102,8 +102,8 @@ batchBasic.treePlot <- function(trees,branch_length,branch_weight,node_label,nod
   plotList <- list()
   
   for(i in 1:length(trees)){
-    plotList[[i]] <- basic.treePlot(tree = trees[[i]],branch_length,branch_weight,node_label,node_size,node_nudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax,reverse_x,to_color,colors,color_legend,plot_title=plot_titles[[i]])
+    plotList[[i]] <- basicTreePlot(tree = trees[[i]],branch_length,branch_weight,node_label,node_size,node_nudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax,reverse_x,to_color,colors,color_legend,plot_title=plot_titles[[i]])
   }
   
-  tandem.treePlot(plotList)
+  tandemPlotter(plotList)
 }

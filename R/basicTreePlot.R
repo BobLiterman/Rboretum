@@ -28,20 +28,8 @@
 #' @param plot_title OPTIONAL: Title for plot
 #' @return ggtree object
 #' @export
-#' @examples
-#' # Print tree with bootstrap labels
-#' basic.treePlot(tree)
-#' 
-#' # Print tree with no node labels
-#' basic.treePlot(tree,node_label='none')
-#'
-#' # Print tree with thicker branches
-#' basic.treePlot(tree,branch_weight=3)
-#' 
-#' # Print tree with buffer on right side to accomodate longer tip labels
-#' basic.treePlot(tree,xmax=10)
 
-basic.treePlot <- function(tree,branch_length,branch_weight,node_label,node_size,node_nudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax,reverse_x,to_color,colors,color_legend,plot_title){
+basicTreePlot <- function(tree,branch_length,branch_weight,node_label,node_size,node_nudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax,reverse_x,to_color,colors,color_legend,plot_title){
   
   if(missing(tree)){
     stop("No tree provided.")

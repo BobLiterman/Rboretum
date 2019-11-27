@@ -15,11 +15,8 @@
 #' @param existing_splits OPTIONAL: Output from previous tree.support() using the same tree, run with new alignment/missing combination
 #' @return The same split table from get.splits(tree), but with a support column for the specfied alignment/missing combination
 #' @export
-#' @examples
-#' tree.support(tree,signal)
-#'
 
-tree.support <- function(signal,tree,max_missing,alignment_name,include_gap,include_singleton,include_biallelic,include_triallelic,include_quadallelic,include_pentallelic,only_gap,existing_splits){
+treeSupport <- function(signal,tree,max_missing,alignment_name,include_gap,include_singleton,include_biallelic,include_triallelic,include_quadallelic,include_pentallelic,only_gap,existing_splits){
 
   if(!all(names(signal) == c('Alignment_Name','Alignment_Position','Site_Pattern','Gap','Singleton','Singleton_Taxa','Non_Base_Taxa','Non_Base_Count','Split_1','Split_2','Split_3','Split_4','Split_5'))){
     stop("'signal' argument must be output from alignment.signal()")

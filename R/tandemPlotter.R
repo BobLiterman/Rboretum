@@ -1,11 +1,9 @@
-#' Rboretum Simple Tandem Plotter
+#' Rboretum Tandem Plotter
 #' Simple cowplot wrapper to plot two or more ggtree/ggplot objects side by side. Plots can be passed individually, or as a list
 #' @return Side-by-side ggplot object
 #' @export
-#' @examples
-#' tandem.treePlot(ggtree1,ggtree2)
 
-tandem.treePlot <- function(...){
+tandemPlotter <- function(...){
   
   if(has_error(is.list(...),silent = TRUE)){
     plotList <- list(...)

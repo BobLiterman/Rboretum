@@ -5,16 +5,13 @@
 #' @param taxa Character vector containing taxa to check
 #' @return TRUE if 'taxa' are either side of the root, else, FALSE
 #' @export
-#' @examples
-#' rootCheck(tree,taxa_to_check)
-#'
 
-rootCheck <- function(tree,taxa){
+checkRoot <- function(tree,taxa){
 
   if(has_error(ape::is.rooted(tree))){
     stop("Error in ape::is.rooted. Is 'tree' a phylo object?")
   } else if(!ape::is.rooted(tree)){
-    stop("Tree must be rooted for rootCheck")
+    stop("Tree must be rooted for checkRoot")
   } else if(!(all(taxa %in% tree$tip.label))){
     stop("Specified taxa missing from tree.")}
 

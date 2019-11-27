@@ -29,7 +29,7 @@
 #' @return ggtree object
 #' @export
 
-batch.basicTreePlot <- function(trees,branch_length,branch_weight,node_label,node_size,node_nudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax,reverse_x,to_color,colors,color_legend,plot_titles){
+batch_basicTreePlot <- function(trees,branch_length,branch_weight,node_label,node_size,node_nudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax,reverse_x,to_color,colors,color_legend,plot_titles){
   
   if(!Rboretum::isMultiPhylo(trees)){
     stop("'trees' does not appear to be a multiPhylo object. Use basic.treePlot() for single trees.")

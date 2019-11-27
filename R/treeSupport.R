@@ -1,8 +1,8 @@
 #' Rboretum Alignment Signal Support Mapper
 #'
-#' This function computes the alignment support for a specified tree, processing signal from all alignment columns with <= 'max_missing' missing taxa [from output of alignment.signal()]. Signal from multiple alignments/missing combinations can be added to the same table by passing the output of tree.support() to the 'existing_splits' argument
-#' @param signal Output table from alignment.signal()
-#' @param tree Rooted phylo object [Note: Taxa must EXACTLY match those passed to alignment.signal()]
+#' This function computes the alignment support for a specified tree, processing signal from all alignment columns with <= 'max_missing' missing taxa [from output of getAlignmentSignal()]. Signal from multiple alignments/missing combinations can be added to the same table by passing the output of tree.support() to the 'existing_splits' argument
+#' @param signal Output table from getAlignmentSignal()
+#' @param tree Rooted phylo object [Note: Taxa must EXACTLY match those passed to getAlignmentSignal()]
 #' @param max_missing OPTIONAL: Number of missing sites allowed in alignment column [Default: 0]
 #' @param alignment_name OPTIONAL: Column name for data being added [Default: Alignment name from signal dataframe]
 #' @param include_gap OPTIONAL: TRUE or FALSE; Count sites with gap positions ('-') as part of total support [Default: TRUE]
@@ -19,7 +19,7 @@
 treeSupport <- function(signal,tree,max_missing,alignment_name,include_gap,include_singleton,include_biallelic,include_triallelic,include_quadallelic,include_pentallelic,only_gap,existing_splits){
 
   if(!all(names(signal) == c('Alignment_Name','Alignment_Position','Site_Pattern','Gap','Singleton','Singleton_Taxa','Non_Base_Taxa','Non_Base_Count','Split_1','Split_2','Split_3','Split_4','Split_5'))){
-    stop("'signal' argument must be output from alignment.signal()")
+    stop("'signal' argument must be output from getAlignmentSignal()")
   }
   
   if(has_error(ape::is.rooted(tree))){

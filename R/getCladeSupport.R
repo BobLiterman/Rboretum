@@ -1,8 +1,8 @@
 #' Rboretum Clade Support Fetcher
 #'
-#' This function takes a character vector argument of taxon, and returns the total site support count for that clade from an alignment [output from alignment.signal()]
-#' @param signal Output table from alignment.signal()
-#' @param clade Character vector containing all taxa in clade of interest [Note: All requested taxa must appear in alignment signal data]
+#' This function takes a character vector argument of taxon, and returns the total site support count for that clade from an alignment [output from getAlignmentSignal()]
+#' @param signal Output table from getAlignmentSignal()
+#' @param clade Character vector containing all taxa in clade of interest [Note: All requested taxa must appear in getAlignmentSignal data]
 #' @param max_missing OPTIONAL: Number of missing sites allowed in alignment column [Default: 0]
 #' @param include_gap OPTIONAL: TRUE or FALSE; Count sites with gap positions ('-') as part of total support [Default: TRUE]
 #' @param include_singleton OPTIONAL: TRUE or FALSE; Count sites with singletons as part of total support [Default: TRUE]
@@ -75,7 +75,7 @@ getCladeSupport <- function(signal,clade,max_missing,include_gap,include_singlet
   
   if(!all(names(signal) == c('Alignment_Name','Alignment_Position','Site_Pattern','Gap','Singleton','Singleton_Taxa','Non_Base_Taxa','Non_Base_Count','Split_1','Split_2','Split_3','Split_4','Split_5')
   )){
-    stop("'signal' argument must be output from alignment.signal()")
+    stop("'signal' argument must be output from getAlignmentSignal()")
   }
   
   signal_taxa <- signal %>%
@@ -157,5 +157,5 @@ getCladeSupport <- function(signal,clade,max_missing,include_gap,include_singlet
     
     return(as.integer(Rboretum::tableCount(signal_table,clade_semi)))
     
-    } else{ stop("Some taxa from 'clade' not present in alignment signal data.") }
+    } else{ stop("Some taxa from 'clade' not present in getAlignmentSignal() data.") }
 }

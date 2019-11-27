@@ -1,7 +1,7 @@
 #' Rboretum Concordance Counter
 #'
-#' This function takes the signal from an alignment file [via alignment.signal()] and counts the number of splits that provide concordant signal, relative to a given tree
-#' @param signal Output table from alignment.signal()
+#' This function takes the signal from an alignment file [via getAlignmentSignal()] and counts the number of splits that provide concordant signal, relative to a given tree
+#' @param signal Output table from getAlignmentSignal()
 #' @param tree Rooted phylo object
 #' @return Dataframe containing the subset of 'signal' that has split information, and the count of concordant splits for each site
 #' @export
@@ -10,7 +10,7 @@
 concordance.counter <- function(signal,tree){
   
   if(!all(names(signal)==c('Alignment_Name','Alignment_Position','Site_Pattern','Gap','Singleton','Singleton_Taxa','Non_Base_Taxa','Non_Base_Count','Split_1','Split_2','Split_3','Split_4','Split_5'))){
-    stop("'signal' must be output from alignment.signal()")
+    stop("'signal' must be output from getAlignmentSignal()")
   } else{
     signal_taxa <- signal %>%
       filter(!is.na(Split_1)) %>% 

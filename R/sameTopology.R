@@ -8,9 +8,9 @@
 sameTopology <- function(trees){
   if(!Rboretum::isMultiPhylo(trees)){
     stop("'trees' does not appear to be a valid multiPhylo object with 2+ trees")
-  } else if(has_error(Rboretum::check.shared(trees))){
+  } else if(has_error(Rboretum::checkSharedTaxa(trees))){
     stop("Trees do not appear to share three species in common.")
-  } else if(!Rboretum::check.shared(trees)){
+  } else if(!Rboretum::checkSharedTaxa(trees)){
     stop("Trees do no share three species in common.")
   }
   

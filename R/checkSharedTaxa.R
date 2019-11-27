@@ -4,11 +4,8 @@
 #' @param trees multiPhylo object
 #' @return TRUE (all trees share >= 3 species) or FALSE
 #' @export
-#' @examples
-#' trees <- c(tree_1,tree_2,tree_3)
-#' check.shared(trees)
-#'
-check.shared <- function(trees){
+
+checkSharedTaxa <- function(trees){
 
   # Check that input is multiphylo and has at least 2 trees
   if(!Rboretum::isMultiPhylo(trees)){

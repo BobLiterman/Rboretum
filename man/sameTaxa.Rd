@@ -17,6 +17,6 @@ This function takes a multiPhylo object and returns TRUE if all species are shar
 }
 \examples{
 trees <- c(tree_1,tree_2,tree_3,...)
-same.taxa(trees)
+sameTaxa(trees)
 
 }

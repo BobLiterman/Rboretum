@@ -30,7 +30,7 @@ compareClades <- function(trees){
   all_clades <- c()
 
   for(i in 1:tree_count){
-    all_clades <- c(all_clades,Rboretum::get.clades(trees[[i]]))
+    all_clades <- c(all_clades,Rboretum::getTreeClades(trees[[i]]))
   }
 
   tallied_splits <- as.data.frame(table(all_clades))

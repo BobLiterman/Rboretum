@@ -7,7 +7,7 @@
 concordance.counter(signal, tree)
 }
 \arguments{
-\item{signal}{Output table from alignment.signal()}
+\item{signal}{Output table from getAlignmentSignal()}
 
 \item{tree}{Rooted phylo object}
 }
@@ -15,5 +15,5 @@ concordance.counter(signal, tree)
 Dataframe containing the subset of 'signal' that has split information, and the count of concordant splits for each site
 }
 \description{
-This function takes the signal from an alignment file [via alignment.signal()] and counts the number of splits that provide concordant signal, relative to a given tree
+This function takes the signal from an alignment file [via getAlignmentSignal()] and counts the number of splits that provide concordant signal, relative to a given tree
 }

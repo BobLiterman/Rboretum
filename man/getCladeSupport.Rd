@@ -19,9 +19,9 @@ getCladeSupport(
 )
 }
 \arguments{
-\item{signal}{Output table from alignment.signal()}
+\item{signal}{Output table from getAlignmentSignal()}
 
-\item{clade}{Character vector containing all taxa in clade of interest [Note: All requested taxa must appear in alignment signal data]}
+\item{clade}{Character vector containing all taxa in clade of interest [Note: All requested taxa must appear in getAlignmentSignal data]}
 
 \item{max_missing}{OPTIONAL: Number of missing sites allowed in alignment column [Default: 0]}
 
@@ -45,5 +45,5 @@ getCladeSupport(
 integer count of total sites of support for clade in available signal
 }
 \description{
-This function takes a character vector argument of taxon, and returns the total site support count for that clade from an alignment [output from alignment.signal()]
+This function takes a character vector argument of taxon, and returns the total site support count for that clade from an alignment [output from getAlignmentSignal()]
 }

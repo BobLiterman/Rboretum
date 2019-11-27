@@ -34,12 +34,12 @@ OR
 mySpecies <- c('Spp1','Spp2','Spp3'...)
 
 # Gaps are indels
-alignment.signal(myAlignPath,mySpecies,informative_gaps = TRUE)
+getAlignmentSignal(myAlignPath,mySpecies,informative_gaps = TRUE)
 
 # Gaps are missing data
-alignment.signal(myAlignPath,mySpecies,informative_gaps = FALSE)
+getAlignmentSignal(myAlignPath,mySpecies,informative_gaps = FALSE)
 
 # Add alignment name
-alignment.signal(myAlignPath,mySpecies,informative_gaps = FALSE, alignment_name = 'gene_XYZ')
+getAlignmentSignal(myAlignPath,mySpecies,informative_gaps = FALSE, alignment_name = 'gene_XYZ')
 
 }

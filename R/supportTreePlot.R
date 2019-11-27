@@ -54,7 +54,7 @@ supportTreePlot <- function(tree,tree_support,clade_support,support_scales,node_
     dummy_col <- TRUE
   } else{
     support_clades <- tree_support %>% pull(Clade) %>% as.character() %>% sort()
-    tree_clades <- Rboretum::get.clades(tree)
+    tree_clades <- Rboretum::getTreeClades(tree)
     if(all(support_clades == tree_clades)){
       support_cols <- 5:ncol(tree_support)
       dummy_col <- FALSE
@@ -72,7 +72,7 @@ supportTreePlot <- function(tree,tree_support,clade_support,support_scales,node_
     }
   } else{
     if(all(names(clade_support)==c('Clade','Tree_Count','Clade_Size','Tree_Percent','Trees_with_Clade'))){
-      tree_clades <- Rboretum::get.clades(tree)
+      tree_clades <- Rboretum::getTreeClades(tree)
       support_clades <- clade_support$Clade %>% as.character() %>% sort()
       
       if(all(tree_clades %in% support_clades)){

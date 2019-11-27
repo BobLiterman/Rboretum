@@ -20,9 +20,9 @@ treeSupport(
 )
 }
 \arguments{
-\item{signal}{Output table from alignment.signal()}
+\item{signal}{Output table from getAlignmentSignal()}
 
-\item{tree}{Rooted phylo object [Note: Taxa must EXACTLY match those passed to alignment.signal()]}
+\item{tree}{Rooted phylo object [Note: Taxa must EXACTLY match those passed to getAlignmentSignal()]}
 
 \item{max_missing}{OPTIONAL: Number of missing sites allowed in alignment column [Default: 0]}
 
@@ -48,5 +48,5 @@ treeSupport(
 The same split table from getTreeSplits(tree), but with a support column for the specfied alignment/missing combination
 }
 \description{
-This function computes the alignment support for a specified tree, processing signal from all alignment columns with <= 'max_missing' missing taxa [from output of alignment.signal()]. Signal from multiple alignments/missing combinations can be added to the same table by passing the output of tree.support() to the 'existing_splits' argument
+This function computes the alignment support for a specified tree, processing signal from all alignment columns with <= 'max_missing' missing taxa [from output of getAlignmentSignal()]. Signal from multiple alignments/missing combinations can be added to the same table by passing the output of tree.support() to the 'existing_splits' argument
 }

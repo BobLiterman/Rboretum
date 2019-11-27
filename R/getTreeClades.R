@@ -4,16 +4,14 @@
 #' @param tree Rooted phylo object
 #' @return Character vector of semicolon-separated monophyletic clades
 #' @export
-#' @examples
-#' get.clades(tree)
 #'
 
-get.clades <- function(tree){
+getTreeClades <- function(tree){
   
   if(has_error(ape::is.rooted(tree))){
     stop("Error in ape::is.rooted. Is 'tree' a phylo object?")
   } else if(!ape::is.rooted(tree)){
-    stop("Tree must be rooted for get.clades")}
+    stop("Tree must be rooted for getTreeClades")}
   
   clades <- Rboretum::getTreeSplits(tree) %>%
     filter(!is.na(Split_Node)) %>%

@@ -56,7 +56,7 @@ treeTrimmer <- function(tree,taxa,remove){
       
       keep_taxa <- tree$tip.label[!tree$tip.label %in% taxa]
       
-      if(length(keep_taxa < 3)){
+      if(length(keep_taxa) < 3){
         stop("Can't trim to fewer than three tips.")
       } else{
           return(ape::drop.tip(tree,tree$tip.label[-match(keep_taxa, tree$tip.label)]))
@@ -74,7 +74,7 @@ treeTrimmer <- function(tree,taxa,remove){
         
         keep_taxa <- tree[[i]]$tip.label[!tree[[i]]$tip.label %in% taxa]
 
-        if(length(keep_taxa < 3)){
+        if(length(keep_taxa) < 3){
           stop("Can't trim to fewer than three tips.")
         } else{
           tree[[i]] <- ape::drop.tip(tree[[i]],tree[[i]]$tip.label[-match(keep_taxa, tree[[i]]$tip.label)])

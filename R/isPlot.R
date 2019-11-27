@@ -5,7 +5,7 @@
 #' @return TRUE if plot, otherwise FALSE
 #' @export
 #'
-is.plot <- function(test_object){
+isPlot <- function(test_object){
   if(has_error(unlist(attributes(test_object)))){
     return(FALSE)
   } else{

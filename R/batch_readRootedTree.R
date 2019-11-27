@@ -10,7 +10,7 @@
 #' myRootTaxa <- c('Spp1','Spp2')
 #' myMulti <- readMulti.rooted(myTrees,myRootTaxa)
 
-readMulti.rooted <- function(tree_paths,root_taxa){
+batch_readRootedTree <- function(tree_paths,root_taxa){
   
   if(length(tree_paths)<2){
     stop("'tree_paths' contains fewer than 2 items, use readRootedTree()")

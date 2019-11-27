@@ -54,7 +54,7 @@ pies.treePlot <- function(tree,tree_support,support_scales,node_alpha,legend_sha
     stop("tree_support required for 2+ alignments to make a pie chart")
   } else{
     support_clades <- tree_support %>% pull(Clade) %>% as.character() %>% sort()
-    tree_clades <- Rboretum::get.splits(tree) %>% pull(Clade) %>% as.character() %>% sort()
+    tree_clades <- Rboretum::getTreeSplits(tree) %>% pull(Clade) %>% as.character() %>% sort()
     if(all(support_clades == tree_clades) & all(tree_clades == support_clades)){
       support_cols <- 5:ncol(tree_support)
     } else{

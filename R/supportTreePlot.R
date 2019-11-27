@@ -43,7 +43,7 @@ supportTreePlot <- function(tree,tree_support,clade_support,support_scales,node_
     stop("Tree must be rooted for support.treePlot")}
   
   if(missing(tree_support)){
-    tree_support <- Rboretum::get.splits(tree) %>%
+    tree_support <- Rboretum::getTreeSplits(tree) %>%
       filter(!is.na(Split_Node)) %>%
       mutate(RBORETUM_DUMMY = 1)
     dummy_col <- TRUE

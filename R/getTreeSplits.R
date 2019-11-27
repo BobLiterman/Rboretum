@@ -4,16 +4,13 @@
 #' @param tree Rooted phylo object
 #' @return Four-column dataframe; 1: Semi-colon separated monophyletic clade; 2: 'Mirror Clade'; 3: Phylo Node ID; 4: Node Boostrap (if present)
 #' @export
-#' @examples
-#' get.splits(tree)
-#'
 
-get.splits <- function(tree){
+getTreeSplits <- function(tree){
   
   if(has_error(ape::is.rooted(tree))){
     stop("Error in ape::is.rooted. Is 'tree' a phylo object?")
   } else if(!ape::is.rooted(tree)){
-    stop("Tree must be rooted for get.splits")}
+    stop("Tree must be rooted for getTreeSplits")}
   
   # Get species
   tree_species <- sort(tree$tip.label)

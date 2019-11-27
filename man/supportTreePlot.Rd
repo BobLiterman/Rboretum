@@ -34,7 +34,7 @@ supportTreePlot(
 
 \item{tree_support}{OPTIONAL: Output trom tree.support() run on the same tree}
 
-\item{clade_support}{OPTIONAL: Output from compare.clades(). Will colorize nodepoint labels based on how many trees in multiPhylo contain that split}
+\item{clade_support}{OPTIONAL: Output from compareClades(). Will colorize nodepoint labels based on how many trees in multiPhylo contain that split}
 
 \item{support_scales}{OPTIONAL: Scaling factor for nodepoint labels. Options include:
 \itemize{

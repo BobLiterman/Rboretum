@@ -13,7 +13,7 @@
 #' @param include_pentallelic OPTIONAL: TRUE or FALSE; Count sites with pentallelic variation as part of total support [Default: TRUE]
 #' @param only_gap OPTIONAL: TRUE or FALSE; Only count sites with gap positions ('-') as part of total support [Default: FALSE]
 #' @param existing_splits OPTIONAL: Output from previous tree.support() using the same tree, run with new alignment/missing combination
-#' @return The same split table from get.splits(tree), but with a support column for the specfied alignment/missing combination
+#' @return The same split table from getTreeSplits(tree), but with a support column for the specfied alignment/missing combination
 #' @export
 
 treeSupport <- function(signal,tree,max_missing,alignment_name,include_gap,include_singleton,include_biallelic,include_triallelic,include_quadallelic,include_pentallelic,only_gap,existing_splits){
@@ -159,7 +159,7 @@ treeSupport <- function(signal,tree,max_missing,alignment_name,include_gap,inclu
       }
   }
 
-  splits <- Rboretum::get.splits(tree) %>%
+  splits <- Rboretum::getTreeSplits(tree) %>%
     filter(!is.na(Split_Node))%>% 
     mutate(Clade = as.character(Clade),Mirror_Clade = as.character(Mirror_Clade))
 

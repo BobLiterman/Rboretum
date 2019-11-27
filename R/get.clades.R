@@ -15,7 +15,7 @@ get.clades <- function(tree){
   } else if(!ape::is.rooted(tree)){
     stop("Tree must be rooted for get.clades")}
   
-  clades <- Rboretum::get.splits(tree) %>%
+  clades <- Rboretum::getTreeSplits(tree) %>%
     filter(!is.na(Split_Node)) %>%
     pull(Clade) %>%
     as.character() %>%

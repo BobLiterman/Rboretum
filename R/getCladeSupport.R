@@ -14,10 +14,8 @@
 #' @param as_root OPTIONAL: Process signal as if it were a root split (biallelic only + no missing taxa allowed) [Default: FALSE]
 #' @return integer count of total sites of support for clade in available signal
 #' @export
-#' @examples
-#' clade.support <- (signal,clade)
-#' 
-clade.support <- function(signal,clade,max_missing,include_gap,include_singleton,include_biallelic,include_triallelic,include_quadallelic,include_pentallelic,only_gap,as_root){
+
+getCladeSupport <- function(signal,clade,max_missing,include_gap,include_singleton,include_biallelic,include_triallelic,include_quadallelic,include_pentallelic,only_gap,as_root){
   
   if(missing(max_missing)){
     max_missing <- 0

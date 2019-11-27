@@ -1,20 +1,12 @@
-#' Rboreturm Taxon Checker
+#' Rboreturm Tip Checker
 #'
 #' This function returns TRUE if all 'taxa' are present in 'tree' (or a multiPhylo of trees); FALSE otherwise
 #' @param tree phylo or multiPhylo object
 #' @param taxa Character vector containing taxa to query
 #' @return TRUE if all 'taxa' in 'tree'; else, FALSE
 #' @export
-#' @examples
-#' 
-#' taxa_to_find <- c('Spp1','Spp2','Spp3')
-#' check.tip(myTree,taxa_to_find)
-#' 
-#' trees_to_check <- c(Tree_1,Tree_2,Tree_3)
-#' check.tip(trees_to_check,taxa_to_find)
-#'
 
-check.tip <- function(tree,taxa){
+tipCheck <- function(tree,taxa){
   
   if(Rboretum::is.phylo(tree)){
     if(all(taxa %in% tree$tip.label)){

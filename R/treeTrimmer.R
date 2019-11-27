@@ -19,7 +19,7 @@ treeTrimmer <- function(tree,taxa,remove){
     stop("'tree' does not appear to be a valid phylo or multiPhylo object")
   }
   
-  if(check.tip(tree,taxa)){
+  if(tipCheck(tree,taxa)){
     
     if(!remove){
       if(length(taxa >= 3)){

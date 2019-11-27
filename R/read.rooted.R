@@ -27,7 +27,7 @@ read.rooted <- function(tree_path,root_taxa){
   mirror_clade <- tree_species[!tree_species %in% root_taxa]
   
   if(ape::is.rooted(raw_tree)){
-    if(Rboretum::check.root(raw_tree,root_taxa)){
+    if(Rboretum::rootCheck(raw_tree,root_taxa)){
       return(raw_tree)
     } else if(!has_error(ape::root.phylo(raw_tree,outgroup = root_taxa,edgelabel = TRUE,resolve.root = TRUE))){
       return(ape::root.phylo(raw_tree,outgroup = root_taxa,edgelabel = TRUE,resolve.root = TRUE))

@@ -25,8 +25,8 @@ treeTrimmer <- function(tree,taxa,remove){
       stop("Specified 'taxa' are missing from at least one tree.")
     }
     
-    if(length(taxa) < 3){
-      stop("Can't trim to fewer than three tips.")
+    if(length(taxa) < 2){
+      stop("Can't trim to fewer than two tips.")
     }
     
     if(Rboretum::isPhylo(tree)){
@@ -56,8 +56,8 @@ treeTrimmer <- function(tree,taxa,remove){
       
       keep_taxa <- tree$tip.label[!tree$tip.label %in% taxa]
       
-      if(length(keep_taxa) < 3){
-        stop("Can't trim to fewer than three tips.")
+      if(length(keep_taxa) < 2){
+        stop("Can't trim to fewer than two tips.")
       } else{
           return(ape::drop.tip(tree,tree$tip.label[-match(keep_taxa, tree$tip.label)]))
       }
@@ -74,8 +74,8 @@ treeTrimmer <- function(tree,taxa,remove){
         
         keep_taxa <- tree[[i]]$tip.label[!tree[[i]]$tip.label %in% taxa]
 
-        if(length(keep_taxa) < 3){
-          stop("Can't trim to fewer than three tips.")
+        if(length(keep_taxa) < 2){
+          stop("Can't trim to fewer than two tips.")
         } else{
           tree[[i]] <- ape::drop.tip(tree[[i]],tree[[i]]$tip.label[-match(keep_taxa, tree[[i]]$tip.label)])
         } 

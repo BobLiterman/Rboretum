@@ -22,7 +22,7 @@ concordance.counter <- function(signal,tree){
       sort()
   }
   
-  if(!Rboretum::is.phylo(tree)){
+  if(!Rboretum::isPhylo(tree)){
     stop("'tree' does not appear to be a valid phylo object")
   } else if(!ape::is.rooted(tree)){
     stop("'tree' must be rooted for concordance.counter()")

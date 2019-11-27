@@ -15,7 +15,7 @@ convert.tips <- function(tree,name_df,from,to){
   
   if(missing(tree)){
     stop("No 'tree' provided")
-  } else if(!Rboretum::is.phylo(tree)){
+  } else if(!Rboretum::isPhylo(tree)){
     stop("'tree' does not appear to be a valid phylo object.")
   } else{ tree_taxa <- tree$tip.label }
   

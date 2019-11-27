@@ -20,7 +20,7 @@
 get.comparable <- function(trees,return_only_comparable){
   
 
-  if(!Rboretum::is.multiPhylo(trees)){
+  if(!Rboretum::isMultiPhylo(trees)){
     stop("'trees' does not appear to be a valid multiPhylo object with 2+ trees")
   }
     

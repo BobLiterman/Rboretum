@@ -9,7 +9,7 @@
 
 get.uniqueClades <- function(trees,focal_tree){
   
-  if(!Rboretum::is.multiPhylo(trees)){
+  if(!Rboretum::isMultiPhylo(trees)){
     stop("'trees' does not appear to be a valid multiPhlyo object with 2+ trees")
   } else if(!Rboretum::check.shared(trees)){
     stop("'trees' don't appear to share at least 3 taxa in common.")

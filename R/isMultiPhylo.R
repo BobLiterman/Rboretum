@@ -5,7 +5,7 @@
 #' @return TRUE if multiPhylo with 2+ trees, otherwise FALSE
 #' @export
 #'
-is.multiPhylo <- function(test_object){
+isMultiPhylo <- function(test_object){
   if(has_error(unlist(attributes(test_object)))){
     return(FALSE)
   } else{

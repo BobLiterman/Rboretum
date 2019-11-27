@@ -5,7 +5,7 @@
 #' @return TRUE if phylo, otherwise FALSE
 #' @export
 #'
-is.phylo <- function(test_object){
+isPhylo <- function(test_object){
   if(has_error(unlist(attributes(test_object)))){
     return(FALSE)
   } else{

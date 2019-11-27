@@ -53,7 +53,7 @@ alignment.signal <- function(alignment_path,species_info,informative_gaps,alignm
   } else{ info_gap <- '0'}
 
   # Get list of species from tree or from character vector
-  if(Rboretum::is.phylo(species_info)){
+  if(Rboretum::isPhylo(species_info)){
     spp_list = paste(sort(species_info$tip.label),collapse = ";")
   } else if(typeof(species_info)=="character" && length(species_info) > 3){
     spp_list = paste(sort(species_info),collapse = ";")

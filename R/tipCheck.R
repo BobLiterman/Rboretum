@@ -8,11 +8,11 @@
 
 tipCheck <- function(tree,taxa){
   
-  if(Rboretum::is.phylo(tree)){
+  if(Rboretum::isPhylo(tree)){
     if(all(taxa %in% tree$tip.label)){
       return(TRUE)
     } else{ return(FALSE) }
-  } else if(Rboretum::is.multiPhylo(tree)){
+  } else if(Rboretum::isMultiPhylo(tree)){
     species_check <- c()
       
     for(i in 1:length(tree)){

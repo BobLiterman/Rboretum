@@ -17,7 +17,7 @@
 
 compare.clades <- function(trees,return_shared_only){
   
-  if(!Rboretum::is.multiPhylo(trees)){
+  if(!Rboretum::isMultiPhylo(trees)){
     stop("'trees' does not appear to be a valid multiPhylo object with 2+ trees")
   } else if(!Rboretum::check.shared(trees)){
     stop("Trees do not share at least three common species.")

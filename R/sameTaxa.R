@@ -6,9 +6,9 @@
 #' @export
 #' @examples
 #' trees <- c(tree_1,tree_2,tree_3,...)
-#' same.taxa(trees)
+#' sameTaxa(trees)
 #'
-same.taxa <- function(trees){
+sameTaxa <- function(trees){
 
   # Check that input is multiphylo and has at least 2 trees
   if(!Rboretum::isMultiPhylo(trees)){

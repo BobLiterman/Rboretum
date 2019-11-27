@@ -4,11 +4,8 @@
 #' @param trees multiPhylo object
 #' @return Sorted character vector of tip labels present in all trees
 #' @export
-#' @examples
-#' trees <- c(tree_1,tree_2,tree_3)
-#' get.shared(trees)
-#'
-get.shared <- function(trees){
+
+getSharedTaxa <- function(trees){
   
   # Check that input is multiphylo and has at least 2 trees
   if(!Rboretum::isMultiPhylo(trees)){

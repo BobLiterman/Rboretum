@@ -34,7 +34,7 @@ compareTrees <- function(trees){
       comparables <- c(comparables,comparable)
 
       if(comparable){
-        species_sets <- c(species_sets,paste(sort(Rboretum::get.shared(c(tree_1,tree_2))),collapse = ";"))
+        species_sets <- c(species_sets,paste(sort(Rboretum::getSharedTaxa(c(tree_1,tree_2))),collapse = ";"))
       } else{
         species_sets <- c(species_sets,NA) 
       }

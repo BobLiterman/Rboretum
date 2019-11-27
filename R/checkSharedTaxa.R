@@ -12,11 +12,11 @@ checkSharedTaxa <- function(trees){
     stop("'trees' does not appear to be a multiPhylo object with 2+ trees.")
   } 
   
-  if(has_error(Rboretum::get.shared(trees))){
+  if(has_error(Rboretum::getSharedTaxa(trees))){
     return(FALSE)
-  } else if(length(Rboretum::get.shared(trees))<3){
+  } else if(length(Rboretum::getSharedTaxa(trees))<3){
     return(FALSE)
-  } else if(length(Rboretum::get.shared(trees))>=3){
+  } else if(length(Rboretum::getSharedTaxa(trees))>=3){
     return(TRUE)
   } else { stop("Something unexpected happened...")} 
 }

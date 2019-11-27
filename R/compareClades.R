@@ -21,7 +21,7 @@ compareClades <- function(trees){
   tree_names <- names(trees)
 
   if(!Rboretum::checkSameTaxa(trees)){
-    shared_species <- Rboretum::get.shared(trees)
+    shared_species <- Rboretum::getSharedTaxa(trees)
     trees <- Rboretum::treeTrimmer(trees,shared_species)
     names(trees) <- tree_names
   }

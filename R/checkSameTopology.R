@@ -15,7 +15,7 @@ checkSameTopology <- function(trees){
   }
   
   if(!Rboretum::checkSameTaxa(trees)){
-    shared_speces <- Rboretum::get.shared(trees)
+    shared_speces <- Rboretum::getSharedTaxa(trees)
     trees <- Rboretum::treeTrimmer(trees,shared_speces)
   }
   

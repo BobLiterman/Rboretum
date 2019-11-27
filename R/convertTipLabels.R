@@ -24,7 +24,7 @@ convertTipLabels <- function(tree,name_df,from,to){
   } else{ 
     if(!as.character(from) %in% names(name_df)){
       stop("'from' column not found in name_df")
-    } else{ current_ids <- as.character(name_df$from) }
+    } else{ current_ids <- as.character(pull(name_df,from)) }
   }
   
   if(!all(tree_taxa %in% current_ids)){
@@ -39,7 +39,7 @@ convertTipLabels <- function(tree,name_df,from,to){
   } else{ 
     if(!as.character(to) %in% names(name_df)){
       stop("'to' column not found in name_df")
-    } else{ new_ids <- as.character(name_df$to) }
+    } else{ new_ids <- as.character(pull(name_df,to)) }
   }
 
   new_id_list <- c()

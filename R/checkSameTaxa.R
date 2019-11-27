@@ -4,11 +4,8 @@
 #' @param trees multiPhylo object
 #' @return TRUE if all trees have all species in common; else, FALSE
 #' @export
-#' @examples
-#' trees <- c(tree_1,tree_2,tree_3,...)
-#' sameTaxa(trees)
-#'
-sameTaxa <- function(trees){
+
+checkSameTaxa <- function(trees){
 
   # Check that input is multiphylo and has at least 2 trees
   if(!Rboretum::isMultiPhylo(trees)){

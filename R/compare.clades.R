@@ -39,7 +39,7 @@ compare.clades <- function(trees,return_shared_only){
     return_shared_only <- FALSE
     }
   
-  if(!Rboretum::sameTaxa(trees)){
+  if(!Rboretum::checkSameTaxa(trees)){
     shared_speces <- Rboretum::get.shared(trees)
     trees <- Rboretum::treeTrimmer(trees,shared_speces)
   }

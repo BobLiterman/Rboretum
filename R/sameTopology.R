@@ -14,7 +14,7 @@ sameTopology <- function(trees){
     stop("Trees do no share three species in common.")
   }
   
-  if(!Rboretum::sameTaxa(trees)){
+  if(!Rboretum::checkSameTaxa(trees)){
     shared_speces <- Rboretum::get.shared(trees)
     trees <- Rboretum::treeTrimmer(trees,shared_speces)
   }

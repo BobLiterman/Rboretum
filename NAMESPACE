@@ -3,7 +3,7 @@
 export(alignment.signal)
 export(basicTreePlot)
 export(batch.basicTreePlot)
-export(check.comparable)
+export(checkComparable)
 export(checkRoot)
 export(checkSameTaxa)
 export(checkSameTopology)

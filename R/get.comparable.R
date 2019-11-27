@@ -51,7 +51,7 @@ get.comparable <- function(trees,return_only_comparable){
       tree_2 <- trees[[j]]
       names_2 <- c(names_2,tree_names[j])
       
-      comparable <- Rboretum::check.comparable(tree_1,tree_2)
+      comparable <- Rboretum::checkComparable(tree_1,tree_2)
       
       comparables <- c(comparables,comparable)
 

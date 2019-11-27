@@ -4,11 +4,8 @@
 #' @param trees multiPhylo object
 #' @return TRUE if all trees have the same topology after pruning to identical species lists; else, FALSE
 #' @export
-#' @examples
-#' myTrees <- c(Tree_1,Tree_2,Tree_3)
-#' same.topology(trees)
-#'
-same.topology <- function(trees){
+
+sameTopology <- function(trees){
   if(!Rboretum::is.multiPhylo(trees)){
     stop("'trees' does not appear to be a valid multiPhylo object with 2+ trees")
   } else if(has_error(Rboretum::check.shared(trees))){

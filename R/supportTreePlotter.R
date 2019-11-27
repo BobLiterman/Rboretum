@@ -424,7 +424,7 @@ supportTreePlotter <- function(tree,tree_support,clade_support,support_scales,no
     return_tree <- return_tree + 
       geom_nodepoint(alpha=node_alpha,aes(size=scaled_support,color=tree_count)) + 
       scale_size_identity() +
-      scale_color_manual(breaks = color_range,values = viridisLite::viridis(length(color_range)),name = "Trees with Split",drop = FALSE) +
+      scale_color_discrete(limits = color_range,values = viridisLite::viridis(length(color_range)),name = "Trees with Split") +
       theme(legend.position="right",
             legend.title=element_text(size=legend_title_size), 
             legend.text=element_text(size=legend_font_size)) +

@@ -45,7 +45,7 @@ treeSupport(
 \item{existing_splits}{OPTIONAL: Output from previous tree.support() using the same tree, run with new alignment/missing combination}
 }
 \value{
-The same split table from get.splits(tree), but with a support column for the specfied alignment/missing combination
+The same split table from getTreeSplits(tree), but with a support column for the specfied alignment/missing combination
 }
 \description{
 This function computes the alignment support for a specified tree, processing signal from all alignment columns with <= 'max_missing' missing taxa [from output of alignment.signal()]. Signal from multiple alignments/missing combinations can be added to the same table by passing the output of tree.support() to the 'existing_splits' argument

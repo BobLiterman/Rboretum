@@ -9,53 +9,80 @@
 
 treeTrimmer <- function(tree,taxa,remove){
   
+  if(!Rboretum::isMultiPhylo(tree) & !Rboretum::isPhylo(tree)){
+    stop("'tree' does not appear to be a valid phylo or multiPhylo object")
+  }
+  
   if(missing(remove)){
     remove <- FALSE
   } else if(!is.logical(remove)){
     remove <- FALSE
   }
   
-  if(!Rboretum::isMultiPhylo(tree) & !Rboretum::isPhylo(tree)){
-    stop("'tree' does not appear to be a valid phylo or multiPhylo object")
+  if(!remove){
+    
+    if(!checkTips(tree,taxa)){
+      stop("Specified 'taxa' are missing from at least one tree.")
+    }
+    
+    if(length(taxa) < 3){
+      stop("Can't trim to fewer than three tips.")
+    }
+    
+    if(Rboretum::isPhylo(tree)){
+      return(ape::drop.tip(tree,tree$tip.label[-match(taxa, tree$tip.label)]))
+    } 
+    
+    if(Rboretum::isMultiPhylo(tree)){
+      
+      if(!is.null(names(trees))){
+        tree_names <- names(trees)
+        namedTrees <- TRUE
+      } else{ namedTrees <- FALSE }
+      
+      for(i in 1:length(tree)){
+        tree[[i]] <- ape::drop.tip(tree[[i]],tree[[i]]$tip.label[-match(taxa, tree[[i]]$tip.label)])
+      }
+      
+      if(namedTrees){ names(tree)  <- tree_names }
+      
+      return(tree)
+    }
   }
   
-  if(checkTips(tree,taxa)){
+  if(remove){
     
-    if(!remove){
-      if(length(taxa >= 3)){
-        if(Rboretum::isPhylo(tree)){
-          return(ape::drop.tip(tree,tree$tip.label[-match(taxa, tree$tip.label)]))
-        } else if(Rboretum::isMultiPhylo(tree)){
-          for(i in 1:length(tree)){
-            tree[[i]] <- ape::drop.tip(tree[[i]],tree[[i]]$tip.label[-match(taxa, tree[[i]]$tip.label)])
-          }
-          return(tree)
-        }
-      } else{ stop("Can't trim to fewer than three tips...") }
+    if(Rboretum::isPhylo(tree)){
       
-    } else{
+      keep_taxa <- tree$tip.label[!tree$tip.label %in% taxa]
       
-      if(Rboretum::isPhylo(tree)){
-        keep_taxa <- tree$tip.label[!tree$tip.label %in% taxa]
-        if(length(keep_taxa >= 3)){
+      if(length(keep_taxa < 3)){
+        stop("Can't trim to fewer than three tips.")
+      } else{
           return(ape::drop.tip(tree,tree$tip.label[-match(keep_taxa, tree$tip.label)]))
-        } else{ stop("Can't trim to fewer than three tips...") }
-      } else if(Rboretum::isMultiPhylo(tree)){
+      }
+    }
+    
+    if(Rboretum::isMultiPhylo(tree)){
+      
+      if(!is.null(names(trees))){
+        tree_names <- names(trees)
+        namedTrees <- TRUE
+      } else{namedTrees <- FALSE }
+        
       for(i in 1:length(tree)){
-          keep_taxa <- tree[[i]]$tip.label[!tree[[i]]$tip.label %in% taxa]
-          if(length(keep_taxa >= 3)){
-            tree[[i]] <- ape::drop.tip(tree[[i]],tree[[i]]$tip.label[-match(keep_taxa, tree[[i]]$tip.label)])
-          } else{ stop("Can't trim to fewer than three tips...") }
-        }
+        
+        keep_taxa <- tree[[i]]$tip.label[!tree[[i]]$tip.label %in% taxa]
+
+        if(length(keep_taxa < 3)){
+          stop("Can't trim to fewer than three tips.")
+        } else{
+          tree[[i]] <- ape::drop.tip(tree[[i]],tree[[i]]$tip.label[-match(keep_taxa, tree[[i]]$tip.label)])
+        } 
+      }
+        if(namedTrees){ names(tree)  <- tree_names }
+        
         return(tree)
     }
   } 
-  } else{ stop("ERROR: One or more trees missing one or more taxa.") }
 }
-
-  
-  
-  
-  
-  
-  

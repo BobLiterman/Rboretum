@@ -1,6 +1,6 @@
-#' Rboretum Multiphylo Rooted Tree Reader
+#' Rboretum MultiPhylo Rooted Tree Reader
 #'
-#' This function is an ape wrapper, and returns a multiPhylo object, with each tree rooted as specified by the user.
+#' This function is an ape wrapper, and returns a multiPhylo object, with each tree rooted at the same set of tqxa, as specified by the user.
 #' @param tree_paths Vector of paths to tree files that can be read by ape::read.tree() or ape::read.nexus()
 #' @param root_taxa Character vector containing outgroup species IDs (Must be in all trees and always monophyletic)
 #' @param tree_names OPTIONAL: Character vector of names to assign to trees. Length must equal the number of trees.

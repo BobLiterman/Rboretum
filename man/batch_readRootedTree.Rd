@@ -2,7 +2,7 @@
 % Please edit documentation in R/batch_readRootedTree.R
 \name{batch_readRootedTree}
 \alias{batch_readRootedTree}
-\title{Rboretum Multiphylo Rooted Tree Reader}
+\title{Rboretum MultiPhylo Rooted Tree Reader}
 \usage{
 batch_readRootedTree(tree_paths, root_taxa, tree_names)
 }
@@ -17,5 +17,5 @@ batch_readRootedTree(tree_paths, root_taxa, tree_names)
 A multiPhylo object, with each tree rooted at specified taxa
 }
 \description{
-This function is an ape wrapper, and returns a multiPhylo object, with each tree rooted as specified by the user.
+This function is an ape wrapper, and returns a multiPhylo object, with each tree rooted at the same set of tqxa, as specified by the user.
 }

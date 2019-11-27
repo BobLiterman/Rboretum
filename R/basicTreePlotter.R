@@ -127,7 +127,7 @@ basicTreePlotter <- function(tree,branch_length,branch_weight,node_label,node_si
 
   if(missing(to_color)){
     colorTips <- FALSE
-  } else if(all(is.na(to_color))){
+  } else if(any(is.na(to_color))){
     colorTips <- FALSE
   } else if(!checkTips(tree,unlist(to_color))){
     print("Some taxa in 'to_color' not found in tree.")
@@ -156,7 +156,7 @@ basicTreePlotter <- function(tree,branch_length,branch_weight,node_label,node_si
       } else{
         colors <- c('black',viridisLite::viridis(group_count))
       }
-    } else if(is.na(colors)){
+    } else if(any(is.na(colors))){
       if(group_count == 1){
           colors <- c('black','red')
         } else{

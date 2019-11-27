@@ -127,7 +127,7 @@ basicTreePlotter <- function(tree,branch_length,branch_weight,node_label,node_si
 
   if(missing(to_color)){
     colorTips <- FALSE
-  } else if(is.na(to_color)){
+  } else if(all(is.na(to_color))){
     colorTips <- FALSE
   } else if(!checkTips(tree,unlist(to_color))){
     print("Some taxa in 'to_color' not found in tree.")

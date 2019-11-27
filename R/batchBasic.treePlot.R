@@ -24,7 +24,7 @@
 #'   \item List of groups of taxa, each of which will have their own color. List can be named for use with a legend (set color_legend == TRUE)
 #' }
 #' @param colors OPTIONAL: Colors for clade highlighting. Must be hex or valid R colors. Provide a color for each group (1 if character vector, 1 for each group if named list) or default colors will be used.
-#' @param color_legend TRUE [Include a legend for colored taxa/clades]; False [Default: No legend]
+#' @param color_legend OPTIONAL: TRUE [Include a legend for colored taxa/clades]; False [Default: No legend]
 #' @param plot_titles OPTIONAL: Character vector of titles for plots
 #' @return ggtree object
 #' @export

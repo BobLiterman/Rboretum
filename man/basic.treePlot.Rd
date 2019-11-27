@@ -4,7 +4,24 @@
 \alias{basic.treePlot}
 \title{Rboretum Basic Tree Plotter}
 \usage{
-myPlot <- treePlotter(tree=myTree,...)
+basic.treePlot(
+  tree,
+  branch_length,
+  branch_weight,
+  node_label,
+  node_size,
+  node_nudge,
+  taxa_size,
+  taxa_italic,
+  taxa_align,
+  taxa_offset,
+  xmax,
+  reverse_x,
+  to_color,
+  colors,
+  color_legend,
+  plot_title
+)
 }
 \arguments{
 \item{tree}{Phylo object}

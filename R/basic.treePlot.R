@@ -1,7 +1,6 @@
 #' Rboretum Basic Tree Plotter
 #' 
 #' Given a phylo object (tree), this ggtree wrapper returns a ggtree plot object, adjusted with possible arguments
-#' @usage myPlot <- treePlotter(tree=myTree,...)
 #' @param tree Phylo object
 #' @param branch_length OPTIONAL: TRUE [plot tree with branch lengths]; FALSE [Default: plot cladogram]
 #' @param branch_weight OPTIONAL: Set ggtree branch thickness

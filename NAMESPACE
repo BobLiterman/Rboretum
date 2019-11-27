@@ -2,7 +2,7 @@
 
 export(alignment.signal)
 export(basic.treePlot)
-export(batch.treePlot)
+export(batchBasic.treePlot)
 export(check.comparable)
 export(check.root)
 export(check.shared)

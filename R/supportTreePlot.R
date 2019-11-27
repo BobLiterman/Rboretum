@@ -2,7 +2,7 @@
 #' Given a phylo object (tree), and the output from tree.support(), this function plots the tree [adjusted with possible arguments] along with node support information
 #' @param tree Rooted phylo object
 #' @param tree_support  OPTIONAL: Output trom tree.support() run on the same tree
-#' @param clade_support OPTIONAL: Output from compare.clades(). Will colorize nodepoint labels based on how many trees in multiPhylo contain that split
+#' @param clade_support OPTIONAL: Output from compareClades(). Will colorize nodepoint labels based on how many trees in multiPhylo contain that split
 #' @param support_scales OPTIONAL: Scaling factor for nodepoint labels. Options include:
 #' \itemize{
 #'   \item "log" - Log-converted support values
@@ -83,7 +83,7 @@ supportTreePlot <- function(tree,tree_support,clade_support,support_scales,node_
         tree_support <- left_join(tree_support,select(clade_support,Clade,Tree_Count),by='Clade')
         clade_support <- TRUE
       } else{ stop("Clades from tree absent from 'clade_support'.")}
-    } else { stop("'clade_support' argument must be output from compare.clades(return_shared_only=FALSE)") }
+    } else { stop("'clade_support' argument must be output from compareClades(return_shared_only=FALSE)") }
   }
   
   if(missing(support_scales)){

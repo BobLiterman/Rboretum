@@ -30,7 +30,7 @@ get.uniqueClades <- function(trees,focal_tree){
     stop("'focal_tree' must be the name of a tree in the multiPhylo. Check names(trees).")
   }
   
-  clade_compare <- Rboretum::compare.clades(trees) %>%
+  clade_compare <- Rboretum::compareClades(trees) %>%
     filter(Tree_Percent < 100)
   
   clades <- c()

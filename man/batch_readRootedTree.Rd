@@ -4,12 +4,14 @@
 \alias{batch_readRootedTree}
 \title{Rboretum Multiphylo Rooted Tree Reader}
 \usage{
-batch_readRootedTree(tree_paths, root_taxa)
+batch_readRootedTree(tree_paths, root_taxa, tree_names)
 }
 \arguments{
 \item{tree_paths}{Vector of paths to tree files that can be read by ape::read.tree() or ape::read.nexus()}
 
 \item{root_taxa}{Character vector containing outgroup species IDs (Must be in all trees and always monophyletic)}
+
+\item{tree_names}{OPTIONAL: Character vector of names to assign to trees. Length must equal the number of trees.}
 }
 \value{
 A multiPhylo object, with each tree rooted at specified taxa

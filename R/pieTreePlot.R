@@ -32,14 +32,10 @@
 #' @param taxa_align OPTIONAL: 'left' or 'right' tip label alignment [Default: No alignment]
 #' @param taxa_offset OPTIONAL: Set ggtree tip label offset
 #' @param xmax OPTIONAL: Set ggplot xlim upper limit (e.g if long tip labels run off plot)
-#' @param rename_tips OPTIONAL: Dataframe where column 1 contains tip labels for tree, and column 2 contains new, desired tip labels
 #' @return ggtree object
 #' @export
-#' @examples
-#' # Print tree with bootstrap labels
-#' basic.treePlot(tree)
 
-pies.treePlot <- function(tree,tree_support,support_scales,node_alpha,legend_shape_size,legend_font_size,legend_title_size,legend_position,branch_length,branch_weight,node_label,node_size,node_nudge,pie_xnudge,pie_ynudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax,rename_tips){
+pieTreePlot <- function(tree,tree_support,support_scales,node_alpha,legend_shape_size,legend_font_size,legend_title_size,legend_position,branch_length,branch_weight,node_label,node_size,node_nudge,pie_xnudge,pie_ynudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax){
   
   if(has_error(ape::is.rooted(tree))){
     stop("Error in ape::is.rooted. Is 'tree' a phylo object?")
@@ -205,20 +201,6 @@ pies.treePlot <- function(tree,tree_support,support_scales,node_alpha,legend_sha
     } else{ extendX <- TRUE }
   }
   
-  if(missing(rename_tips)){
-    renameTip <- FALSE
-  } else if((is.data.frame(rename_tips) | is_tibble(rename_tips)) & length(names(rename_tips) >= 2)){
-    old_id <- names(rename_tips)[1]
-    new_id <- names(rename_tips)[2]
-    if(has_error(Rboretum::convert.tips(tree,rename_tips,old_id,new_id))){
-      renameTip <- FALSE
-    } else{
-      renameTip <- TRUE
-    }
-  } else{
-    renameTip <- FALSE
-  }
-
   # Create ggtree_df
   
   tree_support$support <- rowSums(tree_support[,support_cols])
@@ -277,10 +259,7 @@ pies.treePlot <- function(tree,tree_support,support_scales,node_alpha,legend_sha
     filter(!is.na(node))
   
   # Create base tree
-  if(renameTip){
-    tree <- Rboretum::convert.tips(tree,rename_tips,old_id,new_id)
-  }
-  
+
   if(bWeight & branch_length){
     return_tree <- ggtree(tree,size=branch_weight) %<+% ggtree_df
   } else if(bWeight & !branch_length){

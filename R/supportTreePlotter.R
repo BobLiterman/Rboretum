@@ -297,8 +297,9 @@ supportTreePlotter <- function(tree,tree_support,clade_support,support_scales,no
   }
   
   if(clade_support){
+    min_tree <- min(ggtree_df$tree_count)
     max_tree <- max(ggtree_df$tree_count)
-    color_range <- 1:max_tree
+    color_range <- min_tree:max_tree
     ggtree_df$tree_count <- factor(ggtree_df$tree_count)
   }
   

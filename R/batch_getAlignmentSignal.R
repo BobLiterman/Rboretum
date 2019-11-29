@@ -80,7 +80,7 @@ batch_getAlignmentSignal <- function(alignment_paths,species_info,use_gaps,align
     stop("'alignment_names' contains duplicated values. All names must be unique.")
   }
   
-  return_table < tibble(Alignment_Name=character(),Alignment_Position=integer(),Site_Pattern=character(),Gap=logical(),Singleton=logical(),Singleton_Taxa=character(),Non_Base_Taxa=character(),Non_Base_Count=integer(),Split_1=character(),Split_2=character(),Split_3=character(),Split_4=character(),Split_5=character())
+  return_table <- tibble(Alignment_Name=character(),Alignment_Position=integer(),Site_Pattern=character(),Gap=logical(),Singleton=logical(),Singleton_Taxa=character(),Non_Base_Taxa=character(),Non_Base_Count=integer(),Split_1=character(),Split_2=character(),Split_3=character(),Split_4=character(),Split_5=character())
   
   for(i in 1:alignment_count){
     new_df <- Rboretum::getAlignmentSignal(alignment_paths[i],spp_list[i],gap_list[i],alignment_names[i])

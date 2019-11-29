@@ -2,6 +2,7 @@
 
 export(basicTreePlotter)
 export(batch_basicTreePlotter)
+export(batch_getAlignmentSignal)
 export(batch_readRootedTree)
 export(checkComparable)
 export(checkRoot)

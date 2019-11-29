@@ -4,19 +4,21 @@
 \alias{getAlignmentSignal}
 \title{Rboretum Alignment Signal Fetcher}
 \usage{
-getAlignmentSignal(
-  alignment_path,
-  species_info,
-  informative_gaps,
-  alignment_name
-)
+getAlignmentSignal(alignment_path, species_info, use_gaps, alignment_name)
 }
 \arguments{
 \item{alignment_path}{Path to alignment file (absolute or relative)}
 
-\item{species_info}{Can be EITHER (1) A phylo object from which species will be extracted; or (2) a character vector of desired taxa (> 3 species required)}
+\item{species_info}{Set of 3+ species that can be passed as either:
+\itemize{
+  \item phylo object from which species will be extracted; or
+  \item Character vector of desired taxa
+}}
 
-\item{informative_gaps}{If TRUE, gaps in the alignment (-) are treated as potentially informative indels. If FALSE, gaps are considered missing data and not used (Default: FALSE)}
+\item{use_gaps}{\itemize{
+  \item FALSE (Default: Treat all gaps (-) in alignment as missing data)
+  \item TRUE (Treat all gaps in alignment as potentially informative signal)
+}}
 
 \item{alignment_name}{Name for alignment. If missing, the base filename is used}
 }
@@ -25,21 +27,4 @@ Dataframe containing split pattern for each site in the alignment, relative to t
 }
 \description{
 Given the path to an alignment and list of taxa, this script returns site patterns for each site in the alignment (after pruning if needed)
-}
-\examples{
-myAlignPath <- '/path/to/align.phy'
-
-mySpecies <- treeToCheck # Phylo object with species of interest
-OR
-mySpecies <- c('Spp1','Spp2','Spp3'...)
-
-# Gaps are indels
-getAlignmentSignal(myAlignPath,mySpecies,informative_gaps = TRUE)
-
-# Gaps are missing data
-getAlignmentSignal(myAlignPath,mySpecies,informative_gaps = FALSE)
-
-# Add alignment name
-getAlignmentSignal(myAlignPath,mySpecies,informative_gaps = FALSE, alignment_name = 'gene_XYZ')
-
 }

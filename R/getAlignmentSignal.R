@@ -2,34 +2,31 @@
 #'
 #' Given the path to an alignment and list of taxa, this script returns site patterns for each site in the alignment (after pruning if needed)
 #' @param alignment_path Path to alignment file (absolute or relative)
-#' @param species_info Can be EITHER (1) A phylo object from which species will be extracted; or (2) a character vector of desired taxa (> 3 species required)
-#' @param informative_gaps If TRUE, gaps in the alignment (-) are treated as potentially informative indels. If FALSE, gaps are considered missing data and not used (Default: FALSE)
+#' @param species_info Set of 3+ species that can be passed as either:
+#' \itemize{
+#'   \item phylo object from which species will be extracted; or
+#'   \item Character vector of desired taxa
+#' }
+#' @param use_gaps
+#' \itemize{
+#'   \item FALSE (Default: Treat all gaps (-) in alignment as missing data)
+#'   \item TRUE (Treat all gaps in alignment as potentially informative signal)
+#' }
 #' @param alignment_name Name for alignment. If missing, the base filename is used
 #' @return Dataframe containing split pattern for each site in the alignment, relative to the given set of taxa
 #' @export
-#' @examples
-#' myAlignPath <- '/path/to/align.phy'
-#'
-#' mySpecies <- treeToCheck # Phylo object with species of interest
-#' OR
-#' mySpecies <- c('Spp1','Spp2','Spp3'...)
-#'
-#' # Gaps are indels
-#' getAlignmentSignal(myAlignPath,mySpecies,informative_gaps = TRUE)
-#'
-#' # Gaps are missing data
-#' getAlignmentSignal(myAlignPath,mySpecies,informative_gaps = FALSE)
-#'
-#' # Add alignment name
-#' getAlignmentSignal(myAlignPath,mySpecies,informative_gaps = FALSE, alignment_name = 'gene_XYZ')
-#'
-getAlignmentSignal <- function(alignment_path,species_info,informative_gaps,alignment_name){
+
+getAlignmentSignal <- function(alignment_path,species_info,use_gaps,alignment_name){
 
   # Set whether gaps are treated as missing data or indels
-  if(missing(informative_gaps)){
-    informative_gaps <- FALSE
-  } else if(!is.logical(informative_gaps)){
-    informative_gaps <- FALSE
+  if(missing(use_gaps)){
+    use_gaps <- FALSE
+  } else if(!is.logical(use_gaps)){
+    use_gaps <- FALSE
+  }
+  
+  if(has_error(file_path_as_absolute(alignment_path))){
+    stop("'alignment_path' does not point to a valid file.")
   }
 
   if(missing(alignment_name)){
@@ -48,7 +45,7 @@ getAlignmentSignal <- function(alignment_path,species_info,informative_gaps,alig
     }
 
   # For Python passing...
-  if(informative_gaps){
+  if(use_gaps){
     info_gap <- '1'
   } else{ info_gap <- '0'}
 
@@ -57,12 +54,14 @@ getAlignmentSignal <- function(alignment_path,species_info,informative_gaps,alig
     spp_list = paste(sort(species_info$tip.label),collapse = ";")
   } else if(typeof(species_info)=="character" && length(species_info) > 3){
     spp_list = paste(sort(species_info),collapse = ";")
-  } else { stop("Argument 3 (Species information) is neither a phylo object, nor a character vector of species longer than 3.") }
+  } else { stop("'species_info' is not a phylo object or character vector 3+ species IDs") }
 
   split_support <- getSplitSupport(alignment_path,info_gap,spp_list)
 
   if(!is.data.frame(split_support)){
-    stop("Error in parsing alingment. Check alignment to ensure chosen taxa are present and identically named.")
+    print(alignment_path)
+    print("Error in parsing alignment above, returning empty dataframe. Check alignment to ensure chosen taxa are present and identically named.")
+    return(tibble(Alignment_Name=character(),Alignment_Position=integer(),Site_Pattern=character(),Gap=logical(),Singleton=logical(),Singleton_Taxa=character(),Non_Base_Taxa=character(),Non_Base_Count=integer(),Split_1=character(),Split_2=character(),Split_3=character(),Split_4=character(),Split_5=character()))
   }
 
   split_support <- split_support %>%

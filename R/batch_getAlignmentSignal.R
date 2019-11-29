@@ -33,15 +33,6 @@ batch_getAlignmentSignal <- function(alignment_paths,species_info,use_gaps,align
     }
   }
   
-  # Get species
-  if(Rboretum::isPhylo(species_info)){
-    spp_list = paste(sort(species_info$tip.label),collapse = ";")
-  } else if(typeof(species_info)=="character" && length(species_info) > 3){
-    spp_list = paste(sort(species_info),collapse = ";")
-  } else { stop("'species_info' is not a phylo object or character vector 3+ species IDs") }
-  
-  spp_list <- rep(spp_list,alignment_count)
-  
   # Get gap data
   if(missing(use_gaps)){
     gap_list <- rep(FALSE,alignment_count)
@@ -83,7 +74,7 @@ batch_getAlignmentSignal <- function(alignment_paths,species_info,use_gaps,align
   return_table <- tibble(Alignment_Name=character(),Alignment_Position=integer(),Site_Pattern=character(),Gap=logical(),Singleton=logical(),Singleton_Taxa=character(),Non_Base_Taxa=character(),Non_Base_Count=integer(),Split_1=character(),Split_2=character(),Split_3=character(),Split_4=character(),Split_5=character())
   
   for(i in 1:alignment_count){
-    new_df <- Rboretum::getAlignmentSignal(alignment_paths[i],spp_list[i],gap_list[i],alignment_names[i])
+    new_df <- Rboretum::getAlignmentSignal(alignment_paths[i],species_info,gap_list[i],alignment_names[i])
     if(nrow(new_df)==0){
       print(alignment_paths[i])
       print("The above alignment returned an error.")

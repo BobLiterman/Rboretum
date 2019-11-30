@@ -37,7 +37,7 @@
 
 supportTreePlotter <- function(tree,tree_support,clade_support,support_scales,node_alpha,node_color,legend_shape_size,legend_font_size,legend_title_size,branch_length,branch_weight,node_label,node_size,node_nudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax,reverse_x,plot_title){
   
-  if(has_error(ape::is.rooted(tree))){
+  if(has_error(silent=TRUE,expr=ape::is.rooted(tree))){
     stop("Error in ape::is.rooted. Is 'tree' a phylo object?")
   } else if(!ape::is.rooted(tree)){
     stop("Tree must be rooted for support.treePlot")}
@@ -112,7 +112,7 @@ supportTreePlotter <- function(tree,tree_support,clade_support,support_scales,no
   
   if(missing(node_color)){
     node_color <- "red"
-  } else if(has_error(grDevices::col2rgb(node_color))){
+  } else if(has_error(silent=TRUE,expr=grDevices::col2rgb(node_color))){
     node_color <- "red"
   }
   

@@ -172,11 +172,11 @@ basicTreePlotter <- function(tree,branch_length,branch_weight,node_label,node_si
         if(length(colors)>1){
           colors <- colors[1]
         }
-        if(has_error(grDevices::col2rgb(colors))){
+        if(has_error(silent=TRUE,expr=grDevices::col2rgb(colors))){
           colors <- c('black','red')
         } else{colors <- c('black',colors)}
       } else{
-        if(length(colors) != group_count | any(has_error(grDevices::col2rgb(colors)))){
+        if(length(colors) != group_count | any(has_error(silent=TRUE,expr=grDevices::col2rgb(colors)))){
           print("Invalid color choice. Using defaults.")
           
           if(group_count <= 8){

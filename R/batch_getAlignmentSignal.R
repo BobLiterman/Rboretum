@@ -27,7 +27,7 @@ batch_getAlignmentSignal <- function(alignment_paths,species_info,use_gaps,align
   
   # Check paths
   for(i in 1:alignment_count){
-    if(has_error(file_path_as_absolute(alignment_paths[i]))){
+    if(has_error(silent=TRUE,expr=file_path_as_absolute(alignment_paths[i]))){
       print(alignment_paths[i])
       stop("The above path does not point to a valid file.")
     }

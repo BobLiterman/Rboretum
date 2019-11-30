@@ -6,7 +6,7 @@
 #' @export
 #'
 isMultiPhylo <- function(test_object){
-  if(has_error(unlist(attributes(test_object)))){
+  if(has_error(silent=TRUE,expr=unlist(attributes(test_object)))){
     return(FALSE)
   } else{
     test_object_class <- unlist(attributes(test_object)$class)

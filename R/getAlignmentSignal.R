@@ -25,7 +25,7 @@ getAlignmentSignal <- function(alignment_path,species_info,use_gaps,alignment_na
     use_gaps <- FALSE
   }
   
-  if(has_error(file_path_as_absolute(alignment_path))){
+  if(has_error(silent=TRUE,expr=file_path_as_absolute(alignment_path))){
     stop("'alignment_path' does not point to a valid file.")
   }
 

@@ -7,7 +7,7 @@
 #' @export
 
 checkComparable <- function(tree_1,tree_2){
-  if(has_error(Rboretum::checkSameTopology(c(tree_1,tree_2)))){
+  if(has_error(silent=TRUE,expr=Rboretum::checkSameTopology(c(tree_1,tree_2)))){
     return(FALSE)
   } else if(!Rboretum::checkSameTopology(c(tree_1,tree_2))){
     return(TRUE)

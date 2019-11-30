@@ -1,10 +1,10 @@
 #' Rboretum Alignment Signal Support Mapper
 #'
-#' This function computes the alignment support for a specified tree, processing signal from all alignment columns with <= 'max_missing' missing taxa [from output of getAlignmentSignal()]. Signal from multiple alignments/missing combinations can be added to the same table by passing the output of tree.support() to the 'existing_splits' argument
-#' @param signal Output table from getAlignmentSignal()
-#' @param tree phylo object where taxa EXACTLY match those from signal
+#' This function computes the alignment support for a specified tree
+#' @param tree phylo object onto which alignment signal will be mapped
+#' @param signal Output table from getAlignmentSignal() run with taxa from 'tree'
 #' @param max_missing OPTIONAL: Number of missing sites allowed in alignment column [Default: 0]
-#' @param alignment_name OPTIONAL: Column name for data being added [Default: Alignment name from signal dataframe]
+#' @param alignment_name OPTIONAL: Column name for data being added [Default: Alignment name from signal dataframe + 'm_<MISSING>']
 #' @param include_gap OPTIONAL: TRUE or FALSE; Count sites with gap positions ('-') as part of total support [Default: TRUE]
 #' @param include_singleton OPTIONAL: TRUE or FALSE; Count sites with singletons as part of total support [Default: TRUE]
 #' @param include_biallelic OPTIONAL: TRUE or FALSE; Count sites with biiallelic variation as part of total support [Default: TRUE]
@@ -12,27 +12,27 @@
 #' @param include_quadallelic OPTIONAL: TRUE or FALSE; Count sites with quadallelic variation as part of total support [Default: TRUE]
 #' @param include_pentallelic OPTIONAL: TRUE or FALSE; Count sites with pentallelic variation as part of total support [Default: TRUE]
 #' @param only_gap OPTIONAL: TRUE or FALSE; Only count sites with gap positions ('-') as part of total support [Default: FALSE]
-#' @param existing_splits OPTIONAL: Output from previous tree.support() using the same tree, run with new alignment/missing combination
-#' @return The same split table from getTreeSplits(tree), but with a support column for the specfied alignment/missing combination
+#' @param existing_support OPTIONAL: Output from previous getTreeSupport() using the same tree, run with new alignment/missing combination
+#' @return The same split table from getTreeSplits(tree), but with (1) no root row, and (2) a support column for the specfied alignment/missing combination
 #' @export
 
-getTreeSupport <- function(signal,tree,max_missing,alignment_name,include_gap,include_singleton,include_biallelic,include_triallelic,include_quadallelic,include_pentallelic,only_gap,existing_splits){
+getTreeSupport <- function(tree,signal,max_missing,alignment_name,include_gap,include_singleton,include_biallelic,include_triallelic,include_quadallelic,include_pentallelic,only_gap,existing_support){
 
-  if(!all(names(signal) == c('Alignment_Name','Alignment_Position','Site_Pattern','Gap','Singleton','Singleton_Taxa','Non_Base_Taxa','Non_Base_Count','Split_1','Split_2','Split_3','Split_4','Split_5'))){
-    stop("'signal' argument must be output from getAlignmentSignal()")
-  }
-  
   if(has_error(silent=TRUE,expr=ape::is.rooted(tree))){
     stop("Error in ape::is.rooted. Is 'tree' a phylo object?")
   } else if(!ape::is.rooted(tree)){
     stop("Tree must be rooted for tree.support")}
+  
+  if(!Rboretum::isAlignmentSignal(signal,tree)){
+    stop("'signal' is either not the output from getAlignmentSignal(), or does not contain the same taxa as 'tree'")
+  }
   
   if(missing(max_missing)){
     max_missing <- 0
   }
   
   if(missing(alignment_name)){
-    alignment_name <-  paste(c(as.character(signal$Alignment_Name[1]),'_m',as.character(max_missing)),collapse = '')
+    alignment_name <- paste(c(as.character(signal$Alignment_Name[1]),'_m',as.character(max_missing)),collapse = '')
   }
   
   if(missing(include_gap)){
@@ -77,37 +77,12 @@ getTreeSupport <- function(signal,tree,max_missing,alignment_name,include_gap,in
     only_gap <- FALSE
   }
   
-  if(missing(existing_splits)){
-    existing_splits <- FALSE
-  } else if(is.data.frame(existing_splits) & all(names(existing_splits)[1:4] == c('Clade','Mirror_Clade','Split_Node','Split_Bootstrap'))){
-    
-    old_splits <- existing_splits
-    old_clades <- old_splits %>% pull(Clade) %>% as.character() %>% sort()
-    old_mirror_clades <- old_splits %>% pull(Mirror_Clade) %>% as.character() %>% sort()
-    existing_splits <- TRUE
-  
-    } else{
-    print("Argument passed to 'existing_splits' should be output from tree.support(). Returning results for tree and alignment/missing combo specified.")
-    existing_splits <- FALSE
-  }
-  
-  signal_taxa <- signal %>%
-    filter(!is.na(Split_1)) %>% 
-    head(1) %>% 
-    select(Singleton_Taxa,Non_Base_Taxa,Split_1,Split_2,Split_3,Split_4,Split_5) %>% 
-    select_if(~ !any(is.na(.))) %>% 
-    unite(col = "Taxa",sep = ";") %>% 
-    semiVector() %>% 
-    sort()
-
-  tree_taxa <- sort(tree$tip.label)
-
-  if(!all(tree_taxa == signal_taxa)){
-    print("Tree Taxa:")
-    print(tree_taxa)
-    print("Signal Taxa:")
-    print(signal_taxa)
-    stop("Taxa from signal analysis doesn't match that from tree.")
+  if(missing(existing_support)){
+    add_support <- FALSE
+  } else if(!Rboretum::isTreeSupport(existing_support,tree)){
+    stop("'existing_support' is either not the output from getTreeSupport(), or does not contain split information from 'tree'")
+  } else{
+    add_support <- TRUE
   }
   
   informative_patterns <- c('biallelic','triallelic','quadallelic','pentallelic')
@@ -170,7 +145,7 @@ getTreeSupport <- function(signal,tree,max_missing,alignment_name,include_gap,in
 
   clade_support <- c()
   for(clade in clades){
-    clade_support <- c(clade_support,tableCount(all_signal_splits,clade))
+    clade_support <- c(clade_support,Rboretum::tableCount(all_signal_splits,clade))
   }
   
   support_df <- data.frame(Clade = clades,Support = clade_support) %>%
@@ -179,18 +154,14 @@ getTreeSupport <- function(signal,tree,max_missing,alignment_name,include_gap,in
     select(Clade,Mirror_Clade,Split_Node,Split_Bootstrap,Support) %>%
     rename(!!alignment_name := Support)
 
-  if(existing_splits){
-    if(all(clades == old_clades) & all(mirror_clades == old_mirror_clades)){
-      if(alignment_name %in% names(old_splits)){
-        print("Column exists in 'existing_splits' with that alignment/missing combination. Returning results for tree and alignment/missing combo specified.")
+  if(add_support){
+    if(alignment_name %in% names(existing_support)){
+        print("Column exists in 'existing_support' with that alignment/missing combination. Returning results for tree and alignment/missing combo specified.")
         return(support_df)
       } else{
-        support_df <- left_join(old_splits,support_df,by=c("Clade", "Mirror_Clade", "Split_Node", "Split_Bootstrap"))
+        support_df <- left_join(existing_support,support_df,by=c("Clade", "Mirror_Clade", "Split_Node", "Split_Bootstrap"))
         print(paste(c("Added tree split data from",alignment_name),collapse = " "))
         return(support_df)
       }
-    } else{
-      print("Clades don't match between pre-existing splits and tree provided. Returning results for tree and alignment provided.")
-      return(support_df)}
-    } else{ return(support_df)}
+  } else{ return(support_df) }
 }

@@ -5,8 +5,8 @@
 \title{Rboretum Alignment Signal Support Mapper}
 \usage{
 getTreeSupport(
-  signal,
   tree,
+  signal,
   max_missing,
   alignment_name,
   include_gap,
@@ -16,17 +16,17 @@ getTreeSupport(
   include_quadallelic,
   include_pentallelic,
   only_gap,
-  existing_splits
+  existing_support
 )
 }
 \arguments{
-\item{signal}{Output table from getAlignmentSignal()}
+\item{tree}{phylo object onto which alignment signal will be mapped}
 
-\item{tree}{phylo object where taxa EXACTLY match those from signal}
+\item{signal}{Output table from getAlignmentSignal() run with taxa from 'tree'}
 
 \item{max_missing}{OPTIONAL: Number of missing sites allowed in alignment column [Default: 0]}
 
-\item{alignment_name}{OPTIONAL: Column name for data being added [Default: Alignment name from signal dataframe]}
+\item{alignment_name}{OPTIONAL: Column name for data being added [Default: Alignment name from signal dataframe + 'm_<MISSING>']}
 
 \item{include_gap}{OPTIONAL: TRUE or FALSE; Count sites with gap positions ('-') as part of total support [Default: TRUE]}
 
@@ -42,11 +42,11 @@ getTreeSupport(
 
 \item{only_gap}{OPTIONAL: TRUE or FALSE; Only count sites with gap positions ('-') as part of total support [Default: FALSE]}
 
-\item{existing_splits}{OPTIONAL: Output from previous tree.support() using the same tree, run with new alignment/missing combination}
+\item{existing_support}{OPTIONAL: Output from previous getTreeSupport() using the same tree, run with new alignment/missing combination}
 }
 \value{
-The same split table from getTreeSplits(tree), but with a support column for the specfied alignment/missing combination
+The same split table from getTreeSplits(tree), but with (1) no root row, and (2) a support column for the specfied alignment/missing combination
 }
 \description{
-This function computes the alignment support for a specified tree, processing signal from all alignment columns with <= 'max_missing' missing taxa [from output of getAlignmentSignal()]. Signal from multiple alignments/missing combinations can be added to the same table by passing the output of tree.support() to the 'existing_splits' argument
+This function computes the alignment support for a specified tree
 }

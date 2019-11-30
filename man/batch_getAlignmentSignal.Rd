@@ -20,7 +20,8 @@ batch_getAlignmentSignal(
   \item Character vector of desired taxa
 }}
 
-\item{use_gaps}{\itemize{
+\item{use_gaps}{OPTIONAL: Options include:
+\itemize{
   \item FALSE (Default: Treat all gaps (-) in all alignments as missing data)
   \item TRUE (Treat all gaps in all alignments as potentially informative signal)
   \item Logical vecor indicating TRUE or FALSE for each alignment

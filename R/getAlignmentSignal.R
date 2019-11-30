@@ -7,12 +7,12 @@
 #'   \item phylo object from which species will be extracted; or
 #'   \item Character vector of desired taxa
 #' }
-#' @param use_gaps
+#' @param use_gaps OPTIONAL: Options include:
 #' \itemize{
 #'   \item FALSE (Default: Treat all gaps (-) in alignment as missing data)
 #'   \item TRUE (Treat all gaps in alignment as potentially informative signal)
 #' }
-#' @param alignment_name Name for alignment. If missing, the base filename is used
+#' @param alignment_name OPTIONAL: Name for alignment. If missing, the base filename is used
 #' @return Dataframe containing split pattern for each site in the alignment, relative to the given set of taxa
 #' @export
 

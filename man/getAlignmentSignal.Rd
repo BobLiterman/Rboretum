@@ -15,12 +15,13 @@ getAlignmentSignal(alignment_path, species_info, use_gaps, alignment_name)
   \item Character vector of desired taxa
 }}
 
-\item{use_gaps}{\itemize{
+\item{use_gaps}{OPTIONAL: Options include:
+\itemize{
   \item FALSE (Default: Treat all gaps (-) in alignment as missing data)
   \item TRUE (Treat all gaps in alignment as potentially informative signal)
 }}
 
-\item{alignment_name}{Name for alignment. If missing, the base filename is used}
+\item{alignment_name}{OPTIONAL: Name for alignment. If missing, the base filename is used}
 }
 \value{
 Dataframe containing split pattern for each site in the alignment, relative to the given set of taxa

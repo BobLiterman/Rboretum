@@ -7,7 +7,7 @@
 #'   \item phylo object from which species will be extracted; or
 #'   \item Character vector of desired taxa
 #' }
-#' @param use_gaps
+#' @param use_gaps OPTIONAL: Options include:
 #' \itemize{
 #'   \item FALSE (Default: Treat all gaps (-) in all alignments as missing data)
 #'   \item TRUE (Treat all gaps in all alignments as potentially informative signal)

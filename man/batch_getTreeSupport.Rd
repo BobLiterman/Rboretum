@@ -23,12 +23,12 @@ batch_getTreeSupport(
 \item{signal}{\itemize{
   \item Output table from getAlignmentSignal(); or, 
   \item Output table from batch_getAlignmentSignal(); or, 
-  \item A list of individual outputs
 }}
 
-\item{tree}{\itemize{
-  \item phylo object where taxa EXACTLY match those from signal; or, 
-  \item multiPhylo object where all trees have identical taxa that EXACTLY match those from signal
+\item{tree}{Tree(s) on which to map alignment support. Options include:
+\itemize{
+  \item A single phylo object where taxa EXACTLY match those from signal [Returns results as a single dataframe with multiple support columns]; or, 
+  \item A named multiPhylo object, where all trees have (1) taxa that EXACTLY match those from signal and (2) a unique topology [Returns results as a named list of dataframes]
 }}
 
 \item{max_missing}{OPTIONAL: Number of missing sites allowed in alignment column [Default: 0]}
@@ -55,5 +55,5 @@ batch_getTreeSupport(
 The same split table from getTreeSplits(tree), but with a support column for the specfied alignment/missing combination
 }
 \description{
-This function computes the alignment support for a specified tree, processing signal from all alignment columns with <= 'max_missing' missing taxa [from output of getAlignmentSignal()]. Signal from multiple alignments/missing combinations can be added to the same table by passing the output of tree.support() to the 'existing_splits' argument
+This function computes the support for a specified tree or a set of trees from an alignment or set of alignments
 }

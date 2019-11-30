@@ -17,6 +17,10 @@
 
 getCladeSupport <- function(signal,clade,max_missing,include_gap,include_singleton,include_biallelic,include_triallelic,include_quadallelic,include_pentallelic,only_gap,as_root){
   
+  if(!Rboretum::isAlignmentSignal(signal)){
+    stop("'signal' does not appear to be the output from getAlignmentSignal()")
+  }
+  
   if(missing(max_missing)){
     max_missing <- 0
   }
@@ -71,11 +75,6 @@ getCladeSupport <- function(signal,clade,max_missing,include_gap,include_singlet
   
   if(length(clade)<2){
     stop("Clade must include 2+ taxon IDs")
-  }
-  
-  if(!all(names(signal) == c('Alignment_Name','Alignment_Position','Site_Pattern','Gap','Singleton','Singleton_Taxa','Non_Base_Taxa','Non_Base_Count','Split_1','Split_2','Split_3','Split_4','Split_5')
-  )){
-    stop("'signal' argument must be output from getAlignmentSignal()")
   }
   
   signal_taxa <- signal %>%

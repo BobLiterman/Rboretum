@@ -5,7 +5,7 @@
 
 tandemPlotter <- function(...){
   
-  if(has_error(is.list(...),silent = TRUE)){
+  if(has_error(is.list(...))){
     plotList <- list(...)
   } else{
     if(!is.list(...)){

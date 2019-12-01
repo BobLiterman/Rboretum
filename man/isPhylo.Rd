@@ -4,10 +4,12 @@
 \alias{isPhylo}
 \title{Rboretum Phylo Checker}
 \usage{
-isPhylo(test_object)
+isPhylo(test_object, check_rooted)
 }
 \arguments{
 \item{test_object}{R object to check}
+
+\item{check_rooted}{OPTIONAL: If TRUE, also check if tree is rooted. Default: FALSE, don't check rootedness}
 }
 \value{
 TRUE if phylo, otherwise FALSE

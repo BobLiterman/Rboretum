@@ -27,6 +27,10 @@ getTreeSupport <- function(tree,signal,max_missing,alignment_name,include_gap,in
     stop("'signal' is either not the output from getAlignmentSignal(), or does not contain the same taxa as 'tree'")
   }
   
+  if(any(duplicated(signal$Alignment_Position))){
+    stop("'signal' contains duplicated position IDs. Use batch_getTreeSupport if processing multiple alignments.")
+  }
+  
   if(missing(max_missing)){
     max_missing <- 0
   }

@@ -36,6 +36,52 @@ devtools::install_github("BobLiterman/Rboretum")
 
 ### RBORETUM FUNCTIONS  
 
+## NOTE:  
+As of this moment when you're reading this, these function names and arguments are slightly out-dated. As part of the development of this package, function names and calls are in a state of flux. However, nearly all functions are operational and you can use ?function to get a basic set of instructions. Clean docs are coming!  
+
+**Functions that work (for me) at the moment:**  
+
+**Tree Functions:**  
+- readRootedTree.R
+- batch_readRootedTree.R
+- treeTrimmer.R
+- checkRoot.R
+- checkSameTopology.R
+- checkSameTaxa.R
+- checkSharedTaxa.R
+- checkComparable.R  
+- checkTips.R
+- getTreeClades.R
+- getTreeSplits.R
+- compareTrees.R
+- convertTipLabels.R
+- getCladeSupport.R
+- compareClades.R
+- getSharedTaxa.R
+
+**Plotting Functions:**  
+- basicTreePlotter.R
+- supportTreePlotter.R
+- batch_basicTreePlotter.R
+- tandemPlotter.R
+
+**Alignment Functions:**
+- getAlignmentSignal.R
+- getTreeSupport.R
+- batch_getAlignmentSignal.R
+
+**Utility Functions:**  
+- isPlot.R
+- isMultiPhylo.R
+- isAlignmentSignal.R
+- isPhylo.R
+- isTreeSupport.R
+- semiVector.R
+- semiSorter.R
+- tableCount.R
+
+
+
 #### read.rooted()  
 - **Function Description:**  
 Reads an unrooted or rooted tree into R as a phylo object, rooted at a specified outgroup  

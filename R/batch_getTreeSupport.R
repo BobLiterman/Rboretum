@@ -43,6 +43,10 @@ batch_getTreeSupport <- function(tree,signal,max_missing,alignment_name,include_
         } else{
           tree_taxa <- getSharedTaxa(tree)
           tree_count <- length(tree)
+          tree_names <- names(tree)
+          if(any(duplicated(tree_names))){
+            stop("'tree' multiPhlyo contains trees with identical names.")
+          }
         }
       }
     }
@@ -268,6 +272,7 @@ batch_getTreeSupport <- function(tree,signal,max_missing,alignment_name,include_
         support_list[[i]] <- support_df
       }
     }
+    names(support_list) <- tree_names
     return(support_list)
   }
 }

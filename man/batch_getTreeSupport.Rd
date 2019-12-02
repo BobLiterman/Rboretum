@@ -5,8 +5,8 @@
 \title{Rboretum Batch Alignment Signal Support Mapper}
 \usage{
 batch_getTreeSupport(
-  signal,
   tree,
+  signal,
   max_missing,
   alignment_name,
   include_gap,
@@ -20,20 +20,17 @@ batch_getTreeSupport(
 )
 }
 \arguments{
-\item{signal}{\itemize{
-  \item Output table from getAlignmentSignal(); or, 
-  \item Output table from batch_getAlignmentSignal(); or, 
-}}
-
 \item{tree}{Tree(s) on which to map alignment support. Options include:
 \itemize{
   \item A single phylo object where taxa EXACTLY match those from signal [Returns results as a single dataframe with multiple support columns]; or, 
   \item A named multiPhylo object, where all trees have (1) taxa that EXACTLY match those from signal and (2) a unique topology [Returns results as a named list of dataframes]
 }}
 
+\item{signal}{Output table from getAlignmentSignal() or batch_getAlignmentSignal()}
+
 \item{max_missing}{OPTIONAL: Number of missing sites allowed in alignment column [Default: 0]}
 
-\item{alignment_name}{OPTIONAL: Column name for data being added [Default: Alignment name from signal dataframe]}
+\item{alignment_name}{OPTIONAL: Character vector of alignment names for each 'signal' passed [Default: Alignment name from signal dataframe]}
 
 \item{include_gap}{OPTIONAL: TRUE or FALSE; Count sites with gap positions ('-') as part of total support [Default: TRUE]}
 
@@ -48,12 +45,10 @@ batch_getTreeSupport(
 \item{include_pentallelic}{OPTIONAL: TRUE or FALSE; Count sites with pentallelic variation as part of total support [Default: TRUE]}
 
 \item{only_gap}{OPTIONAL: TRUE or FALSE; Only count sites with gap positions ('-') as part of total support [Default: FALSE]}
-
-\item{existing_splits}{OPTIONAL: Output from previous tree.support() using the same tree, run with new alignment/missing combination}
 }
 \value{
 The same split table from getTreeSplits(tree), but with a support column for the specfied alignment/missing combination
 }
 \description{
-This function computes the support for a specified tree or a set of trees from an alignment or set of alignments
+This function computes the support for a specified tree or a set of trees from an alignment or set of alignments. To use this function, you must supply either multiple trees or multiple alignment signals.
 }

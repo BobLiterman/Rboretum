@@ -214,7 +214,6 @@ batch_getTreeSupport <- function(tree,signal,max_missing,alignment_name,include_
       mutate(Clade = as.character(Clade),Mirror_Clade = as.character(Mirror_Clade))
 
     clades <- support_df %>% pull(Clade) %>% as.character() %>% sort()
-    mirror_clades <- support_df %>% pull(Mirror_Clade) %>% as.character() %>% sort()
 
     for(i in 1:alignment_count){
       
@@ -237,6 +236,38 @@ batch_getTreeSupport <- function(tree,signal,max_missing,alignment_name,include_
     
     return(support_df)
   } else{
-   print('multitree') 
+    
+    support_list <- list()
+    
+    for(i in 1:tree_count){
+    
+      support_df <- Rboretum::getTreeSplits(tree[[i]]) %>%
+        filter(!is.na(Split_Node))%>%
+        mutate(Clade = as.character(Clade),Mirror_Clade = as.character(Mirror_Clade))
+      
+      clades <- support_df %>% pull(Clade) %>% as.character() %>% sort()
+
+      for(j in 1:alignment_count){
+        
+        temp_name <- alignment_name[j]
+        
+        all_signal_splits <- signal %>% filter(Alignment_Name == raw_names[j]) %>% select(starts_with('Split_')) %>% unlist() %>% table()
+        
+        clade_support <- c()
+        for(clade in clades){
+          clade_support <- c(clade_support,tableCount(all_signal_splits,clade))
+        }
+        
+        temp_df <- data.frame(Clade = clades,Support = clade_support) %>%
+          mutate(Clade = as.character(Clade),Support = as.integer(Support)) %>%
+          rename(!!temp_name := Support)
+        
+        support_df <- support_df %>%
+          left_join(temp_df,by='Clade')
+        
+        support_list[[i]] <- support_df
+      }
+    }
+    return(support_list)
   }
 }

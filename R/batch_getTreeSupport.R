@@ -232,7 +232,7 @@ batch_getTreeSupport <- function(tree,signal,max_missing,alignment_name,include_
         rename(!!temp_name := Support)
       
       support_df <- support_df %>%
-        left_join(temp_df,by=c('Clade','Mirror_Clade','Split_Node','Split_Bootstrap'))
+        left_join(temp_df,by='Clade')
     }
     
     return(support_df)

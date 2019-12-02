@@ -4,12 +4,13 @@
 #' @param test_object R object to check
 #' @param check_rooted OPTIONAL: If TRUE, also check if all trees are rooted. Default: FALSE, don't check rootedness
 #' @param check_named OPTIONAL: If TRUE, also check if trees are named. Default: FALSE, don't check names
-#' @param check_taxa OPTIONAL: If TRUE, also check if trees share identical taxa. Default: FALSE, don't check taxa
+#' @param check_three_taxa OPTIONAL: If TRUE, also check if all trees share at least three taxa. Default: FALSE, don't check taxa
+#' @param check_all_taxa OPTIONAL: If TRUE, also check if trees share identical taxa. Default: FALSE, don't check taxa
 #' @param check_unique OPTIONAL: If TRUE, also check if trees all have a unique topology. Default: FALSE, don't check topology
 #' @return TRUE if all flagged conditions match, otherwise FALSE
 #' @export
 
-isMultiPhylo <- function(test_object,check_rooted,check_names,check_taxa,check_unique){
+isMultiPhylo <- function(test_object,check_rooted,check_names,check_three_taxa,check_all_taxa,check_unique){
   
   if(missing(check_rooted)){
     check_rooted <- FALSE
@@ -22,11 +23,17 @@ isMultiPhylo <- function(test_object,check_rooted,check_names,check_taxa,check_u
   } else if(!is.logical(check_names)){
     check_names <- FALSE
   }
-  
-  if(missing(check_taxa)){
-    check_taxa <- FALSE
-  } else if(!is.logical(check_taxa)){
-    check_taxa <- FALSE
+
+  if(missing(check_three_taxa)){
+    check_three_taxa <- FALSE
+  } else if(!is.logical(check_three_taxa)){
+    check_three_taxa <- FALSE
+  }
+    
+  if(missing(check_all_taxa)){
+    check_all_taxa <- FALSE
+  } else if(!is.logical(check_all_taxa)){
+    check_all_taxa <- FALSE
   }
   
   if(missing(check_unique)){
@@ -49,7 +56,8 @@ isMultiPhylo <- function(test_object,check_rooted,check_names,check_taxa,check_u
       
       root_check <- all(root_check)
       name_check <- !is.null(names(test_object))
-      taxa_check <- Rboretum::checkSameTaxa(test_object)
+      three_taxa_check <- Rboretum::checkSharedTaxa(test_object)
+      all_taxa_check <- Rboretum::checkSameTaxa(test_object)
       
       if(has_error(silent = TRUE,Rboretum::compareTrees(test_object))){
         unique_check <- FALSE
@@ -70,13 +78,16 @@ isMultiPhylo <- function(test_object,check_rooted,check_names,check_taxa,check_u
       if(!check_names){
         name_check <- TRUE
       }
-      if(!check_taxa){
-        taxa_check <- TRUE
+      if(!check_three_taxa){
+        three_taxa_check <- TRUE
+      }
+      if(!check_all_taxa){
+        all_taxa_check <- TRUE
       }
       if(!check_unique){
         unique_check  <- TRUE
       }
-      if(all(c(root_check,name_check,taxa_check,unique_check))){
+      if(all(c(root_check,name_check,three_taxa_check,all_taxa_check,unique_check))){
         return(TRUE)
       } else{
         return(FALSE)

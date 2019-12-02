@@ -4,14 +4,23 @@
 \alias{isMultiPhylo}
 \title{Rboretum MultiPhylo Checker}
 \usage{
-isMultiPhylo(test_object, check_rooted, check_names, check_taxa, check_unique)
+isMultiPhylo(
+  test_object,
+  check_rooted,
+  check_names,
+  check_three_taxa,
+  check_all_taxa,
+  check_unique
+)
 }
 \arguments{
 \item{test_object}{R object to check}
 
 \item{check_rooted}{OPTIONAL: If TRUE, also check if all trees are rooted. Default: FALSE, don't check rootedness}
 
-\item{check_taxa}{OPTIONAL: If TRUE, also check if trees share identical taxa. Default: FALSE, don't check taxa}
+\item{check_three_taxa}{OPTIONAL: If TRUE, also check if all trees share at least three taxa. Default: FALSE, don't check taxa}
+
+\item{check_all_taxa}{OPTIONAL: If TRUE, also check if trees share identical taxa. Default: FALSE, don't check taxa}
 
 \item{check_unique}{OPTIONAL: If TRUE, also check if trees all have a unique topology. Default: FALSE, don't check topology}
 

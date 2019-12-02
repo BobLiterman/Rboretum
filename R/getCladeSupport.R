@@ -20,11 +20,7 @@ getCladeSupport <- function(signal,clade,max_missing,include_gap,include_singlet
   if(!Rboretum::isAlignmentSignal(signal)){
     stop("'signal' does not appear to be the output from getAlignmentSignal()")
   }
-  
-  if(missing(max_missing)){
-    max_missing <- 0
-  }
-  
+
   if(missing(include_gap)){
     include_gap <- TRUE
   } else if (!is.logical(include_gap)){
@@ -85,6 +81,18 @@ getCladeSupport <- function(signal,clade,max_missing,include_gap,include_singlet
     unite(col = "Taxa",sep = ";") %>% 
     semiVector() %>% 
     sort()
+  
+  if(missing(max_missing)){
+    max_missing <- as.integer(0)
+  } else if(has_error(silent=TRUE,as.integer(max_missing))){
+    print("Invalid 'max_missing', allowing 0 missing taxa...")
+    max_missing <- as.integer(0)
+  } else if(length(signal_taxa) - as.integer(max_missing) < 3){
+    print("'max_missing' value too high, fewer than 3 taxa required. Using largest possible value...")
+    max_missing <- as.integer(length(signal_taxa) - 3)
+  } else{
+    max_missing <- as.integer(max_missing)
+  }
   
   if(all(clade %in% signal_taxa)){
 

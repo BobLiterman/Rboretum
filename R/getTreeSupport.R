@@ -25,6 +25,15 @@ getTreeSupport <- function(tree,signal,max_missing,alignment_name,include_gap,in
   
   if(!Rboretum::isAlignmentSignal(signal,tree)){
     stop("'signal' is either not the output from getAlignmentSignal(), or does not contain the same taxa as 'tree'")
+  } else{
+    signal_taxa <- signal %>%
+      filter(!is.na(Split_1)) %>% 
+      head(1) %>% 
+      select(Singleton_Taxa,Non_Base_Taxa,Split_1,Split_2,Split_3,Split_4,Split_5) %>% 
+      select_if(~ !any(is.na(.))) %>% 
+      unite(col = "Taxa",sep = ";") %>% 
+      semiVector() %>% 
+      sort()
   }
   
   if(any(duplicated(signal$Alignment_Position))){
@@ -32,7 +41,15 @@ getTreeSupport <- function(tree,signal,max_missing,alignment_name,include_gap,in
   }
   
   if(missing(max_missing)){
-    max_missing <- 0
+    max_missing <- as.integer(0)
+  } else if(has_error(silent=TRUE,as.integer(max_missing))){
+    print("Invalid 'max_missing', allowing 0 missing taxa...")
+    max_missing <- as.integer(0)
+  } else if(length(signal_taxa) - as.integer(max_missing) < 3){
+    print("'max_missing' value too high, fewer than 3 taxa required. Using largest possible value...")
+    max_missing <- as.integer(length(signal_taxa) - 3)
+  } else{
+    max_missing <- as.integer(max_missing)
   }
   
   if(missing(alignment_name)){

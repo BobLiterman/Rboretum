@@ -21,8 +21,8 @@
 
 batch_getTreeSupport <- function(tree,signal,max_missing,alignment_name,include_gap,include_singleton,include_biallelic,include_triallelic,include_quadallelic,include_pentallelic,only_gap,existing_splits){
 
-  if(!Rboretum::isMultiPhylo(tree,check_rooted = TRUE) & !Rboretum::isPhylo(tree,check_rooted = TRUE)){
-    stop("'tree' does not appear to be a valid + rooted phylo or multiPhylo object")
+  if(!Rboretum::isMultiPhylo(tree,check_rooted = TRUE,check_names = TRUE) & !Rboretum::isPhylo(tree,check_rooted = TRUE)){
+    stop("'tree' does not appear to be a valid + rooted phylo or named multiPhylo object")
   }
   
   if(Rboretum::isPhylo(tree)){
@@ -31,23 +31,24 @@ batch_getTreeSupport <- function(tree,signal,max_missing,alignment_name,include_
   }
   
   if(Rboretum::isMultiPhylo(tree)){
-    if(is.null(names(tree))){
-      stop("'tree' multiPhlyo must have names assigned via names(tree) <- c('Name1','Name2',etc.)")
-    } else if(!checkSameTaxa(tree)){
+     if(!checkSameTaxa(tree)){
         stop("All trees in 'tree' must contain identical taxa.")
       } else{
+        
+        tree_taxa <- getSharedTaxa(tree)
+        tree_count <- length(tree)
+        tree_names <- names(tree)
+        
+        if(any(duplicated(tree_names))){
+          stop("'tree' multiPhlyo contains trees with identical names.")
+        }
+        
         compare_vector <- Rboretum::compareTrees(tree) %>% pull(Comparable)
+        
         if(!all(compare_vector)){
           Rboretum::compareTrees(tree) %>% select(Tree_1,Tree_2,Comparable)
           stop("'Some trees aren't comparable, meaning they have different taxa or the same topology.")
-        } else{
-          tree_taxa <- getSharedTaxa(tree)
-          tree_count <- length(tree)
-          tree_names <- names(tree)
-          if(any(duplicated(tree_names))){
-            stop("'tree' multiPhlyo contains trees with identical names.")
-          }
-        }
+        } 
       }
     }
   

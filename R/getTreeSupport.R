@@ -18,10 +18,8 @@
 
 getTreeSupport <- function(tree,signal,max_missing,alignment_name,include_gap,include_singleton,include_biallelic,include_triallelic,include_quadallelic,include_pentallelic,only_gap,existing_support){
 
-  if(has_error(silent=TRUE,expr=ape::is.rooted(tree))){
-    stop("Error in ape::is.rooted. Is 'tree' a phylo object?")
-  } else if(!ape::is.rooted(tree)){
-    stop("Tree must be rooted for tree.support")}
+  if(!Rboretum::isPhylo(tree,check_rooted = TRUE)){
+    stop("'tree' must be a rooted phylo object for getTreeSupport")}
   
   if(!Rboretum::isAlignmentSignal(signal,tree)){
     stop("'signal' is either not the output from getAlignmentSignal(), or does not contain the same taxa as 'tree'")

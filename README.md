@@ -42,43 +42,43 @@ As of this moment when you're reading this, these function names and arguments a
 **Functions that work (for me) at the moment:**  
 
 **Tree Functions:**  
-- readRootedTree.R
-- batch_readRootedTree.R
-- treeTrimmer.R
-- checkRoot.R
-- checkSameTopology.R
-- checkSameTaxa.R
-- checkSharedTaxa.R
-- checkComparable.R  
-- checkTips.R
-- getTreeClades.R
-- getTreeSplits.R
-- compareTrees.R
-- convertTipLabels.R
-- getCladeSupport.R
-- compareClades.R
-- getSharedTaxa.R
+- readRootedTree
+- batch_readRootedTree
+- treeTrimmer
+- checkRoot
+- checkSameTopology
+- checkSameTaxa
+- checkSharedTaxa
+- checkComparable  
+- checkTips
+- getTreeClades
+- getTreeSplits
+- compareTrees
+- convertTipLabels
+- getCladeSupport
+- compareClades
+- getSharedTaxa
 
 **Plotting Functions:**  
-- basicTreePlotter.R
-- supportTreePlotter.R
-- batch_basicTreePlotter.R
-- tandemPlotter.R
+- basicTreePlotter
+- supportTreePlotter
+- batch_basicTreePlotter
+- tandemPlotter
 
 **Alignment Functions:**
-- getAlignmentSignal.R
-- getTreeSupport.R
-- batch_getAlignmentSignal.R
+- getAlignmentSignal
+- getTreeSupport
+- batch_getAlignmentSignal
 
 **Utility Functions:**  
-- isPlot.R
-- isMultiPhylo.R
-- isAlignmentSignal.R
-- isPhylo.R
-- isTreeSupport.R
-- semiVector.R
-- semiSorter.R
-- tableCount.R
+- isPlot
+- isMultiPhylo
+- isAlignmentSignal
+- isPhylo
+- isTreeSupport
+- semiVector
+- semiSorter
+- tableCount
 
 
 

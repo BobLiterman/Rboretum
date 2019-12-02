@@ -4,15 +4,17 @@
 \alias{isMultiPhylo}
 \title{Rboretum MultiPhylo Checker}
 \usage{
-isMultiPhylo(test_object, check_rooted)
+isMultiPhylo(test_object, check_rooted, check_names)
 }
 \arguments{
 \item{test_object}{R object to check}
 
-\item{check_rooted}{OPTIONAL: If TRUE, also check if tree is rooted. Default: FALSE, don't check rootedness}
+\item{check_rooted}{OPTIONAL: If TRUE, also check if all trees are rooted. Default: FALSE, don't check rootedness}
+
+\item{check_named}{OPTIONAL: If TRUE, also check if trees are named. Default: FALSE, don't check names}
 }
 \value{
-TRUE if multiPhylo with 2+ trees, otherwise FALSE
+TRUE if all flagged conditions match, otherwise FALSE
 }
 \description{
 This function returns TRUE if the passed object is of class multiPhylo and has 2+ trees; Otherwise, FALSE

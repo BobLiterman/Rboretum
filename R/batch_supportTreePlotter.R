@@ -42,7 +42,7 @@ batch_supportTreePlotter <- function(tree,tree_support,support_scales,node_alpha
   
   if(Rboretum::isPhylo(tree,check_rooted = TRUE)){
     tree_count <- 1  
-  } else if(Rboretum::isMultiPhylo(tree,check_rooted = TRUE,check_names = TRUE, check_taxa = TRUE)){
+  } else if(Rboretum::isMultiPhylo(tree,check_rooted = TRUE,check_names = TRUE, check_all_taxa = TRUE)){
     tree_count <- length(trees)
     tree_names <- names(trees)
   } else{

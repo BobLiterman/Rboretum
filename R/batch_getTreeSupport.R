@@ -21,7 +21,7 @@
 
 batch_getTreeSupport <- function(tree,signal,max_missing,alignment_name,include_gap,include_singleton,include_biallelic,include_triallelic,include_quadallelic,include_pentallelic,only_gap,existing_splits){
 
-  if(!Rboretum::isMultiPhylo(tree,check_rooted = TRUE,check_names = TRUE,check_taxa=TRUE,check_unique=TRUE) & !Rboretum::isPhylo(tree,check_rooted = TRUE)){
+  if(!Rboretum::isMultiPhylo(tree,check_rooted = TRUE,check_names = TRUE,check_all_taxa=TRUE,check_unique=TRUE) & !Rboretum::isPhylo(tree,check_rooted = TRUE)){
     stop("'tree' must be either a rooted phylo object or a named, rooted, mulitPhlyo object with identical taxa and unique topologies for batch_getTreeSupport")
   }
   
@@ -32,7 +32,7 @@ batch_getTreeSupport <- function(tree,signal,max_missing,alignment_name,include_
   
   if(Rboretum::isMultiPhylo(tree)){
 
-        tree_taxa <- getSharedTaxa(tree)
+        tree_taxa <- Rboretum::getSharedTaxa(tree)
         tree_count <- length(tree)
         tree_names <- names(tree)
         

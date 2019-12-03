@@ -16,7 +16,16 @@ isTreeSupport <- function(test_object,tree){
     return(FALSE)
   } else if(!all(names(test_object)[1:4] == c('Clade','Mirror_Clade','Split_Node','Split_Bootstrap'))){    
     return(FALSE)
-  } 
+  } else if(ncol(test_object) == 4){
+    return(FALSE)
+  } else{
+    support_cols <- 5:ncol(tree_support)
+    for(i in support_cols){
+      if(has_error(silent = TRUE,as.integer(test_object[i]))){
+        return(FALSE)
+      }
+    }
+  }
   
   if(missing(tree)){
     return(TRUE)

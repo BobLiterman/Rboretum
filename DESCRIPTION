@@ -26,4 +26,5 @@ Depends:
     cowplot (>= 1.0.0),
     ggtree (>= 1.16.6),
     grDevices (>= 3.6.1),
-    viridisLite (>= 0.3.0)
+    viridisLite (>= 0.3.0),
+    rlist (>= 0.4.6.1)

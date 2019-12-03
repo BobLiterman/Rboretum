@@ -21,8 +21,8 @@
 
 batch_getTreeSupport <- function(tree,signal,max_missing,alignment_name,include_gap,include_singleton,include_biallelic,include_triallelic,include_quadallelic,include_pentallelic,only_gap,existing_splits){
 
-  if(!Rboretum::isMultiPhylo(tree,check_rooted = TRUE,check_names = TRUE,check_all_taxa=TRUE,check_unique=TRUE) & !Rboretum::isPhylo(tree,check_rooted = TRUE)){
-    stop("'tree' must be either a rooted phylo object or a named, rooted, mulitPhlyo object with identical taxa and unique topologies for batch_getTreeSupport")
+  if(!Rboretum::isMultiPhylo(tree,check_rooted = TRUE,check_names = TRUE,check_all_taxa=TRUE) & !Rboretum::isPhylo(tree,check_rooted = TRUE)){
+    stop("'tree' must be either a rooted phylo object or a named, rooted, mulitPhlyo object with identical taxa for batch_getTreeSupport")
   }
   
   if(Rboretum::isPhylo(tree)){
@@ -31,15 +31,40 @@ batch_getTreeSupport <- function(tree,signal,max_missing,alignment_name,include_
   }
   
   if(Rboretum::isMultiPhylo(tree)){
+    
+    if(Rboretum::checkSameTopology(tree)){
+      print("'tree' contains trees that all have the same topology. Processing first single tree...")
+      
+      tree <- as.phylo(tree[[1]])
+      
+      tree_taxa <- sort(tree$tip.label)
+      tree_count <- 1
 
+    } else{
+      
+      if(!Rboretum::isMultiPhylo(tree,check_unique = TRUE)){
+        print("'tree' contains trees that are not unique. Reducing to unique topologies...")
+        print(Rboretum::getUniqueTopologies(tree,return_table = TRUE))
+        
+        tree <- Rboretum::getUniqueTopologies(tree)
+        
         tree_taxa <- Rboretum::getSharedTaxa(tree)
         tree_count <- length(tree)
         tree_names <- names(tree)
         
-        if(any(duplicated(tree_names))){
-          stop("'tree' multiPhlyo contains trees with identical names.")
-        }
+      } else{
+        
+        tree_taxa <- Rboretum::getSharedTaxa(tree)
+        tree_count <- length(tree)
+        tree_names <- names(tree)
       }
+    
+      if(any(duplicated(tree_names))){
+        stop("'tree' multiPhlyo contains trees with identical names.")
+      }
+    }
+  }
+  
   
   if(!Rboretum::isAlignmentSignal(signal,tree_taxa)){
     stop("'signal' does not appear to be the ouput from getAlignmentSignal() or batch_getAlignmentSignal, and/or 'signal' taxa don't match those from 'tree'")

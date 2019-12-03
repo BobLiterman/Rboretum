@@ -12,7 +12,7 @@ getUniqueTopologies(trees, return_table)
 \item{return_table}{OPTIONAL: If TRUE, return summary table rather than multiPhylo}
 }
 \value{
-multiPhylo containing unique topologies
+multiPhylo containing unique topologies; or, summary table of the same data
 }
 \description{
 Rboretum Unique Topology Fetcher

@@ -2,7 +2,7 @@
 #'
 #' @param trees Named, rooted multiPhylo object
 #' @param return_table OPTIONAL: If TRUE, return summary table rather than multiPhylo
-#' @return multiPhylo containing unique topologies
+#' @return multiPhylo containing unique topologies; or, summary table of the same data
 #' @export
 
 getUniqueTopologies <- function(trees,return_table){
@@ -89,21 +89,15 @@ getUniqueTopologies <- function(trees,return_table){
     tree_groups[[i]] <- c(length(tree_groups[[i]]),paste(sort(tree_groups[[i]]),collapse = ';'))
   }
   
-  
   top_names <- names(tree_groups)
   top_count <- lapply(tree_groups,function(x){as.integer(x[[1]])}) %>% unlist() %>% as.integer()
   top_trees <- lapply(tree_groups,function(x){as.character(x[[2]])}) %>% unlist() %>% as.character()
-  
-  print(paste(c('Of',length(trees),'trees, there are',unique_count,'unique topologies, after pruning to commmon taxa.'),collapse = ' '))
-  
-  summary_df <- data.frame(Topology_ID = as.character(top_names),Trees_with_Topology = as.character(top_trees), Tree_Count = as.integer(top_count),Tree_Percent = round((top_count/as.numeric(length(trees))*100),1))
-  print(summary_df)
-  
-  names(unique_trees) <- top_names
- 
+
   if(return_table){
+    summary_df <- data.frame(Topology_ID = as.character(top_names),Trees_with_Topology = as.character(top_trees), Tree_Count = as.integer(top_count),Tree_Percent = round((top_count/as.numeric(length(trees))*100),1))
     return(summary_df)
   } else{
-  return(unique_trees)
+    names(unique_trees) <- top_names
+    return(unique_trees)
   }
 }

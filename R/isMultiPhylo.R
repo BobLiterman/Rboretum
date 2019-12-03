@@ -49,20 +49,40 @@ isMultiPhylo <- function(test_object,check_rooted,check_names,check_three_taxa,c
 
     if('multiPhylo' %in% test_object_class & length(test_object)>=2){
       
+      if(!check_rooted){
+        root_check <- TRUE
+      } else{
       root_check  <- c()
       for(i in 1:length(test_object)){
         root_check <- c(root_check,ape::is.rooted(test_object[[i]]))
       }
-      
       root_check <- all(root_check)
-      name_check <- !is.null(names(test_object))
-      three_taxa_check <- Rboretum::checkSharedTaxa(test_object)
-      all_taxa_check <- Rboretum::checkSameTaxa(test_object)
+      }
       
-      if(has_error(silent = TRUE,Rboretum::compareTrees(test_object))){
+      if(!check_names){
+        name_check <- TRUE
+      } else{
+        name_check <- !is.null(names(test_object))
+      }
+      
+      if(!check_three_taxa){
+        three_taxa_check <- TRUE
+      } else{
+        three_taxa_check <- Rboretum::checkSharedTaxa(test_object)
+      }
+      
+      if(!check_all_taxa){
+        all_taxa_check <- TRUE
+      } else{
+        all_taxa_check <- Rboretum::checkSameTaxa(test_object)
+      }
+      
+      if(!check_unique){
+        unique_check  <- TRUE
+      } else if(has_error(silent = TRUE,Rboretum::compareTrees(test_object))){
         unique_check <- FALSE
       } else{
-      
+        
         compare_vector <- Rboretum::compareTrees(test_object) %>% pull(Comparable)
       
         if(all(compare_vector)){
@@ -71,22 +91,7 @@ isMultiPhylo <- function(test_object,check_rooted,check_names,check_three_taxa,c
           unique_check <- FALSE
         }
       }
-      
-      if(!check_rooted){
-        root_check <- TRUE
-      }
-      if(!check_names){
-        name_check <- TRUE
-      }
-      if(!check_three_taxa){
-        three_taxa_check <- TRUE
-      }
-      if(!check_all_taxa){
-        all_taxa_check <- TRUE
-      }
-      if(!check_unique){
-        unique_check  <- TRUE
-      }
+    
       if(all(c(root_check,name_check,three_taxa_check,all_taxa_check,unique_check))){
         return(TRUE)
       } else{

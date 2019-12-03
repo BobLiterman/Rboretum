@@ -33,7 +33,7 @@ batch_getTreeSupport <- function(tree,signal,max_missing,alignment_name,include_
   if(Rboretum::isMultiPhylo(tree)){
     
     if(Rboretum::checkSameTopology(tree)){
-      print("'tree' contains trees that all have the same topology. Processing first single tree...")
+      print("'tree' contains trees that all have the same topology. Processing first tree...")
       
       tree <- as.phylo(tree[[1]])
       

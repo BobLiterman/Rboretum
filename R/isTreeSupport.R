@@ -12,9 +12,9 @@ isTreeSupport <- function(test_object,tree){
     return(FALSE)
   } else if(nrow(test_object) == 0){
     return(FALSE)
-  } else if(has_error(silent=TRUE,expr=all(names(existing_splits)[1:4] == c('Clade','Mirror_Clade','Split_Node','Split_Bootstrap')))){
+  } else if(has_error(silent=TRUE,expr=all(names(test_object)[1:4] == c('Clade','Mirror_Clade','Split_Node','Split_Bootstrap')))){
     return(FALSE)
-  } else if(!all(names(existing_splits)[1:4] == c('Clade','Mirror_Clade','Split_Node','Split_Bootstrap'))){    
+  } else if(!all(names(test_object)[1:4] == c('Clade','Mirror_Clade','Split_Node','Split_Bootstrap'))){    
     return(FALSE)
   } 
   

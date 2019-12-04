@@ -407,5 +407,5 @@ basicTreePlotter2 <- function(tree,branch_length,branch_weight,node_label,node_s
   }
   
   tandemPlotter(plotList)
-  return(plotList)
+  # return(plotList)
 }

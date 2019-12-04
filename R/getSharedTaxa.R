@@ -15,7 +15,5 @@ getSharedTaxa <- function(trees){
   all_species <- purrr::map(.x=trees,.f=function(x){x$tip.label}) %>% unlist() %>% unique() %>% sort()
   shared_species <- all_species[table(purrr::map(.x=trees,.f=function(x){x$tip.label}) %>% unlist())==length(trees)]
   
-  if(length(shared_species)>0){
-    return(shared_species)
-  } else{ stop('No species common to all trees.')}
+  return(shared_species)
 }

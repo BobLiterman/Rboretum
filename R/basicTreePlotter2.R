@@ -212,7 +212,12 @@ basicTreePlotter2 <- function(tree,branch_length,branch_weight,node_label,node_s
   
   plotList <- list()
   
+  if(tree_count == 1){
+    tree <- c(tree,tree)
+  }
+  
   for(i in 1:tree_count){
+    tree <- tree[[i]]
   
     # Create base tree
     if(colorTips){
@@ -407,5 +412,5 @@ basicTreePlotter2 <- function(tree,branch_length,branch_weight,node_label,node_s
   }
   
   tandemPlotter(plotList)
-  # return(plotList)
+  return(plotList)
 }

@@ -62,8 +62,8 @@ treeTrimmer <- function(tree,taxa,remove){
       return(ape::drop.tip(tree,tree$tip.label[match(taxa, tree$tip.label)]))
     } else if(Rboretum::isMultiPhylo(tree)){
       
-      if(!is.null(names(trees))){
-        tree_names <- names(trees)
+      if(!is.null(names(tree))){
+        tree_names <- names(tree)
         namedTrees <- TRUE
       } else{namedTrees <- FALSE }
         

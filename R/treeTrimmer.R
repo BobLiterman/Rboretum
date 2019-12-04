@@ -40,9 +40,8 @@ treeTrimmer <- function(tree,taxa,remove){
         namedTrees <- TRUE
       } else{ namedTrees <- FALSE }
       
-      for(i in 1:length(tree)){
-        tree[[i]] <- ape::drop.tip(tree[[i]],tree[[i]]$tip.label[-match(taxa, tree[[i]]$tip.label)])
-      }
+      tree <- purrr::map(.x = tree,.f = function(x){ape::drop.tip(x,x$tip.label[-match(taxa, x$tip.label)])})
+      class(tree) <- "multiPhylo"
       
       if(namedTrees){ names(tree)  <- tree_names }
       
@@ -58,31 +57,23 @@ treeTrimmer <- function(tree,taxa,remove){
       
       if(length(keep_taxa) < 2){
         stop("Can't trim to fewer than two tips.")
-      } else{
-          return(ape::drop.tip(tree,tree$tip.label[-match(keep_taxa, tree$tip.label)]))
       }
-    }
-    
-    if(Rboretum::isMultiPhylo(tree)){
+      
+      return(ape::drop.tip(tree,tree$tip.label[match(taxa, tree$tip.label)]))
+    } else if(Rboretum::isMultiPhylo(tree)){
       
       if(!is.null(names(trees))){
         tree_names <- names(trees)
         namedTrees <- TRUE
       } else{namedTrees <- FALSE }
         
-      for(i in 1:length(tree)){
-        
-        keep_taxa <- tree[[i]]$tip.label[!tree[[i]]$tip.label %in% taxa]
-
-        if(length(keep_taxa) < 2){
-          stop("Can't trim to fewer than two tips.")
-        } else{
-          tree[[i]] <- ape::drop.tip(tree[[i]],tree[[i]]$tip.label[-match(keep_taxa, tree[[i]]$tip.label)])
-        } 
-      }
+      if(any(purrr::map(.x = tree,.f = function(x){length(x$tip.label[!x$tip.label %in% taxa])}) %>% unlist() < 2)){
+        stop("Can't trim to fewer than two tips.")
+      } else{
+        tree <- purrr::map(.x = tree, .f = function(x){ape::drop.tip(x,x$tip.label[match(taxa, x$tip.label)])})
         if(namedTrees){ names(tree)  <- tree_names }
-        
         return(tree)
+      }
     }
   } 
 }

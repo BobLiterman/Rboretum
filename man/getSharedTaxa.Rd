@@ -7,11 +7,11 @@
 getSharedTaxa(trees)
 }
 \arguments{
-\item{trees}{multiPhylo object}
+\item{trees}{multiPhylo object where >= 3 species are shared among all trees}
 }
 \value{
 Sorted character vector of tip labels present in all trees
 }
 \description{
-This function takes a multiPhylo object and returns a sorted list of taxa common to all trees. Note: Function will STOP if no taxa are shared.
+This function takes a multiPhylo object and returns a sorted list of taxa common to all trees. Note: Function will STOP if <3 taxa are shared among trees.
 }

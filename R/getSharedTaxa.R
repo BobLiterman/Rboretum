@@ -7,15 +7,15 @@
 
 getSharedTaxa <- function(trees){
   
-  # Check that input is multiphylo and has at least 2 trees
-  if(!Rboretum::isMultiPhylo(trees, check_three_taxa = TRUE)){
+  if(!Rboretum::isMultiPhylo(trees,check_three_taxa = TRUE)){
     stop("'trees' does not appear to be a valid multiPhylo where all trees share at least three taxa.")
+  } else{
+    
+    all_species <- purrr::map(.x=trees,.f=function(x){x$tip.label}) %>% unlist() %>% unique() %>% sort()
+    tip_table  <- purrr::map(.x=trees,.f=function(x){x$tip.label}) %>% unlist() %>% table()
+  
+    shared_species <- all_species[tip_table==length(trees)]
+  
+    return(shared_species)
   }
-
-  all_species <- purrr::map(.x=trees,.f=function(x){x$tip.label}) %>% unlist() %>% unique() %>% sort()
-  tip_table  <- purrr::map(.x=trees,.f=function(x){x$tip.label}) %>% unlist() %>% table()
-  
-  shared_species <- all_species[tip_table==length(trees)]
-  
-  return(shared_species)
 }

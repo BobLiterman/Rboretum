@@ -57,9 +57,9 @@ basicTreePlotter2 <- function(tree,branch_length,branch_weight,node_label,node_s
   } else if(!Rboretum::isMultiPhylo(tree,check_unique = TRUE)){
     
     print("'tree' contains trees that are not unique. Reducing to unique topologies...")
-    
-    tree <- Rboretum::getUniqueTopologies(tree)
+
     print(Rboretum::getUniqueTopologies(tree,return_table = TRUE))
+    tree <- Rboretum::getUniqueTopologies(tree)
     
     tree_taxa <- Rboretum::getSharedTaxa(tree)
     tree_count <- length(tree)

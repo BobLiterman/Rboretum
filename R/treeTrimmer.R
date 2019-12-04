@@ -71,6 +71,7 @@ treeTrimmer <- function(tree,taxa,remove){
         stop("Can't trim to fewer than two tips.")
       } else{
         tree <- purrr::map(.x = tree, .f = function(x){ape::drop.tip(x,x$tip.label[match(taxa, x$tip.label)])})
+        class(tree) <- "multiPhylo"
         if(namedTrees){ names(tree)  <- tree_names }
         return(tree)
       }

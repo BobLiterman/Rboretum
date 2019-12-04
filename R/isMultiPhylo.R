@@ -45,15 +45,14 @@ isMultiPhylo <- function(test_object,check_named,check_rooted,check_three_taxa,c
   if(has_error(silent=TRUE,expr=unlist(attributes(test_object)))){
     if(verbose){ print("Can't execute unlist(attributes(test_object))")}
     return(FALSE)
-  } else{
-    
-    test_object_class <- unlist(attributes(test_object)$class)
-    
-    if(!'multiPhylo' %in% test_object_class){
+  } else if(!'multiPhylo' %in% unlist(attributes(test_object)$class)){
       if(verbose){ print("'multiPhylo' not an attribute of test_object")}
       return(FALSE)
     } else if(length(test_object) < 2){
       if(verbose){ print("'multiPhylo' contains fewer than two trees.")}
+      return(FALSE)
+    } else if(!purrr::map(.x = test_object,.f = function(x){Rboretum::isPhylo(x)}) %>% unlist() %>% all()){
+      if(verbose){ print("'multiPhylo' contains non-phylo objects.")}
       return(FALSE)
     } else if(check_named & is.null(names(test_object))){
       if(verbose){ print("'test_object' has no names assigned.")}
@@ -61,14 +60,18 @@ isMultiPhylo <- function(test_object,check_named,check_rooted,check_three_taxa,c
     } else if(check_rooted & !all(unlist(purrr::map(.x = test_object,.f = ape::is.rooted)))){
       if(verbose){ print("One or more trees from 'test_object' are not rooted.")}
       return(FALSE)
-    } else if(check_three_taxa & !purrr::map(.x = test_object,.f = function(x){return(x$tip.label)}) %>% unlist() %>% table() %>% (function(x){x==length(test_object)}) %>% sum() >= 3){
-      if(verbose){ print("Trees share fewer than three common taxa.")}
-      return(FALSE)
-    } else if(check_all_taxa & !purrr::map(.x = test_object,.f = function(x){return(x$tip.label)}) %>% unlist() %>% table() %>% (function(x){x==length(test_object)}) %>% sum() == purrr::map(.x = test_object,.f = function(x){return(x$tip.label)}) %>% unlist() %>% unique() %>% length()){
-      if(verbose){ print("Trees do not share all taxa.")}
-      return(FALSE)
     } else{
-      return(TRUE)
+      
+      tree_taxa <- purrr::map(.x = test_object,.f = function(x){x$tip.label}) %>% unlist() %>% unique() %>% sort()
+      taxa_count <- length(tree_taxa)
+      tree_count <- length(test_object) 
+      
+      if(check_three_taxa & !purrr::map(.x = test_object,.f = function(x){x$tip.label}) %>% unlist() %>% table() %>% (function(x){x==tree_count}) %>% sum() >= 3){
+        if(verbose){ print("Trees share fewer than three common taxa.")}
+        return(FALSE)
+      } else if(check_all_taxa & !purrr::map(.x = test_object,.f = function(x){x$tip.label}) %>% unlist() %>% table() %>% (function(x){x==tree_count}) %>% sum() == taxa_count){
+        if(verbose){ print("Trees do not share all taxa.")}
+        return(FALSE)
+      } else{ return(TRUE) }
     }
-  }
 }

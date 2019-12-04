@@ -8,22 +8,22 @@
 
 checkTips <- function(tree,taxa){
   
+  if(!Rboretum::isPhylo(tree) & !Rboretum::isMultiPhylo(tree)){
+    stop("'tree' does not appear be a valid phylo or multiPhylo object.")
+  }
+  
   if(Rboretum::isPhylo(tree)){
+    
     if(all(taxa %in% tree$tip.label)){
       return(TRUE)
-    } else{ return(FALSE) }
-  } else if(Rboretum::isMultiPhylo(tree)){
-    species_check <- c()
-      
-    for(i in 1:length(tree)){
-      species_check <- c(species_check,all(taxa %in% tree[[i]]$tip.label))
+    } else{ 
+      return(FALSE) 
     }
-      
-    if(all(species_check)){
+    
+  } else if(Rboretum::isMultiPhylo(tree)){
+    
+    if(purrr::map(.x = tree,.f = function(x){all(taxa %in% x$tip.label)}) %>% unlist() %>% all()){
       return(TRUE)
     } else{ return(FALSE) }
-  }
-  else{
-    stop("'tree' does not appear to be a valid phylo or multiPhylo object")
   }
 }

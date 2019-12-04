@@ -35,8 +35,8 @@ treeTrimmer <- function(tree,taxa,remove){
     
     if(Rboretum::isMultiPhylo(tree)){
       
-      if(!is.null(names(trees))){
-        tree_names <- names(trees)
+      if(!is.null(names(tree))){
+        tree_names <- names(tree)
         namedTrees <- TRUE
       } else{ namedTrees <- FALSE }
       

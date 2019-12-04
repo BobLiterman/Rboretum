@@ -217,31 +217,31 @@ basicTreePlotter2 <- function(tree,branch_length,branch_weight,node_label,node_s
   }
   
   for(i in 1:tree_count){
-    tree <- tree[[i]]
+    temp_tree <- tree[[i]]
   
     # Create base tree
     if(colorTips){
-      tree <- ggtree::groupOTU(tree,to_color)
+      temp_tree <- ggtree::groupOTU(temp_tree,to_color)
       
       if(is.character(to_color)){
         if(bWeight & branch_length){
-          return_tree <- ggtree(tree,size=branch_weight,aes(color=group)) + scale_color_manual(values = colors)
+          return_tree <- ggtree(temp_tree,size=branch_weight,aes(color=group)) + scale_color_manual(values = colors)
         } else if(bWeight & !branch_length){
-          return_tree <- ggtree(tree,size=branch_weight,branch.length = 'none',aes(color=group)) + scale_color_manual(values = colors)
+          return_tree <- ggtree(temp_tree,size=branch_weight,branch.length = 'none',aes(color=group)) + scale_color_manual(values = colors)
         } else if(!bWeight & branch_length){
-          return_tree <- ggtree(tree,aes(color=group)) + scale_color_manual(values = colors)
+          return_tree <- ggtree(temp_tree,aes(color=group)) + scale_color_manual(values = colors)
         } else if(!bWeight & !branch_length){
-          return_tree <- ggtree(tree,branch.length = 'none',aes(color=group)) + scale_color_manual(values = colors)
+          return_tree <- ggtree(temp_tree,branch.length = 'none',aes(color=group)) + scale_color_manual(values = colors)
         }
       } else{
         if(bWeight & branch_length){
-          return_tree <- ggtree(tree,size=branch_weight,aes(color=group)) + scale_color_manual(breaks = names(to_color),values = colors)
+          return_tree <- ggtree(temp_tree,size=branch_weight,aes(color=group)) + scale_color_manual(breaks = names(to_color),values = colors)
         } else if(bWeight & !branch_length){
-          return_tree <- ggtree(tree,size=branch_weight,branch.length = 'none',aes(color=group)) + scale_color_manual(breaks = names(to_color),values = colors)
+          return_tree <- ggtree(temp_tree,size=branch_weight,branch.length = 'none',aes(color=group)) + scale_color_manual(breaks = names(to_color),values = colors)
         } else if(!bWeight & branch_length){
-          return_tree <- ggtree(tree,aes(color=group)) + scale_color_manual(breaks = names(to_color),values = colors)
+          return_tree <- ggtree(temp_tree,aes(color=group)) + scale_color_manual(breaks = names(to_color),values = colors)
         } else if(!bWeight & !branch_length){
-          return_tree <- ggtree(tree,branch.length = 'none',aes(color=group)) + scale_color_manual(breaks = names(to_color),values = colors)
+          return_tree <- ggtree(temp_tree,branch.length = 'none',aes(color=group)) + scale_color_manual(breaks = names(to_color),values = colors)
         }
         
         if(color_legend){
@@ -250,13 +250,13 @@ basicTreePlotter2 <- function(tree,branch_length,branch_weight,node_label,node_s
       }
     } else{
       if(bWeight & branch_length){
-        return_tree <- ggtree(tree,size=branch_weight)
+        return_tree <- ggtree(temp_tree,size=branch_weight)
       } else if(bWeight & !branch_length){
-        return_tree <- ggtree(tree,size=branch_weight,branch.length = 'none')
+        return_tree <- ggtree(temp_tree,size=branch_weight,branch.length = 'none')
       } else if(!bWeight & branch_length){
-        return_tree <- ggtree(tree)
+        return_tree <- ggtree(temp_tree)
       } else if(!bWeight & !branch_length){
-        return_tree <- ggtree(tree,branch.length = 'none')
+        return_tree <- ggtree(temp_tree,branch.length = 'none')
       }
     }
     if(extendX){
@@ -398,9 +398,9 @@ basicTreePlotter2 <- function(tree,branch_length,branch_weight,node_label,node_s
     
     if(titlePlot){
       if(colorTips & color_legend){
-      return_tree <- return_tree + ggplot2::ggtitle(tree_names[i]) + theme(legend.position = 'right',plot.title = element_text(hjust = 0.5))
+      return_tree <- return_tree + ggplot2::ggtitle(plot_title[i]) + theme(legend.position = 'right',plot.title = element_text(hjust = 0.5))
       } else{
-        return_tree <- return_tree + ggplot2::ggtitle(tree_names[i]) + theme(plot.title = element_text(hjust = 0.5))
+        return_tree <- return_tree + ggplot2::ggtitle(plot_title[i]) + theme(plot.title = element_text(hjust = 0.5))
       }
     }
     

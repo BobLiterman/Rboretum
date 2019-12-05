@@ -4,7 +4,7 @@
 \alias{readRooted}
 \title{Rboretum Rooted Tree Reader}
 \usage{
-readRooted(to_root, root_taxa, tree_regex, tree_names)
+readRooted(to_root, root_taxa, starts_with, ends_with, contains, tree_names)
 }
 \arguments{
 \item{to_root}{Where to find tree files. Options include:
@@ -15,7 +15,11 @@ readRooted(to_root, root_taxa, tree_regex, tree_names)
 
 \item{root_taxa}{Character vector containing outgroup species IDs (Must be in tree(s) and monophyletic)}
 
-\item{tree_regex}{OPTIONAL: If 'to_root' is a directory, provide a regex code to get all tree files. [See examples below; Default: Read all files in directory]}
+\item{starts_with}{OPTIONAL: If 'to_root' is a directory, provide a character vector of file prefixes (e.g. all trees start with "RAxML")}
+
+\item{ends_with}{OPTIONAL: If 'to_root' is a directory, provide a character vector of file extentions (e.g. all trees end with ".nwk")}
+
+\item{contains}{OPTIONAL: If 'to_root' is a directory, provide a character vector of internal strings (e.g. all trees contain the string 'tree')}
 
 \item{tree_names}{OPTIONAL: If multiple tree paths are provided, a character vector of names to assign to trees. Length must equal the number of trees. [Default: Trees will be autonamed based on the filename]}
 }
@@ -39,10 +43,6 @@ myTrees <- readRooted(tree_paths,root_taxa,tree_names=tree_names)
 myTrees <- readRooted('/path/to/tree/dir/',root_taxa) # Trees will be named based off their filenames
 
 # Read all .nwk files from a directory
-myTrees <- readRooted('/path/to/tree/dir/',root_taxa,tree_regex="\\\\.nwk$") # Trees will be named based off their filenames
+myTrees <- readRooted('/path/to/tree/dir/',root_taxa,ends_with=".nwk") # Trees will be named based off their filenames
 
-# tree_regex examples
-tree_regex = "^PREFIX" # Files that start with PREFIX
-tree_regex = "\\\\.nwk$" # All files ending in .nwk
-tree_regex = "\\\\.nwk$|\\\\.nex$" # All files ending in .nwk or .nex
 }

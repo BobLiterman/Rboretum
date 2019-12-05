@@ -7,7 +7,9 @@
 #'   \item A path to a single directory containing all tree files
 #' }
 #' @param root_taxa Character vector containing outgroup species IDs (Must be in tree(s) and monophyletic)
-#' @param tree_regex OPTIONAL: If 'to_root' is a directory, provide a regex code to get all tree files. [See examples below; Default: Read all files in directory]
+#' @param starts_with OPTIONAL: If 'to_root' is a directory, provide a character vector of file prefixes (e.g. all trees start with "RAxML")
+#' @param ends_with OPTIONAL: If 'to_root' is a directory, provide a character vector of file extentions (e.g. all trees end with ".nwk")
+#' @param contains OPTIONAL: If 'to_root' is a directory, provide a character vector of internal strings (e.g. all trees contain the string 'tree')
 #' @param tree_names OPTIONAL: If multiple tree paths are provided, a character vector of names to assign to trees. Length must equal the number of trees. [Default: Trees will be autonamed based on the filename]
 #' @return A phylo object, rooted at specified taxa, or a named, rooted multiPhlyo
 #' @examples 
@@ -24,15 +26,11 @@
 #' myTrees <- readRooted('/path/to/tree/dir/',root_taxa) # Trees will be named based off their filenames
 #' 
 #' # Read all .nwk files from a directory
-#' myTrees <- readRooted('/path/to/tree/dir/',root_taxa,tree_regex="\\.nwk$") # Trees will be named based off their filenames
+#' myTrees <- readRooted('/path/to/tree/dir/',root_taxa,ends_with=".nwk") # Trees will be named based off their filenames
 #' 
-#' # tree_regex examples
-#' tree_regex = "^PREFIX" # Files that start with PREFIX
-#' tree_regex = "\\.nwk$" # All files ending in .nwk
-#' tree_regex = "\\.nwk$|\\.nex$" # All files ending in .nwk or .nex
 #' @export
 
-readRooted <- function(to_root,root_taxa,tree_regex,tree_names){
+readRooted <- function(to_root,root_taxa,starts_with,ends_with,contains,tree_names){
   
   # Ensure that a path and root taxa are provided as character vectors
   if(missing(to_root)){
@@ -43,6 +41,38 @@ readRooted <- function(to_root,root_taxa,tree_regex,tree_names){
     stop("No root taxa provided")
   } else if(!is.character(root_taxa)){
     stop("'root_taxa' should be a character vector of tip labels")
+  }
+  
+  tree_regex <- c()
+  
+  if(missing(starts_with)){
+    starts_with <- c()
+  } else if(!is.character(starts_with)){
+    stop("'starts_with' must be a character vector")
+  } else{
+    starts_with <- unlist(purrr::map(.x=starts_with,.f=function(x){paste(c("^",x),collapse = '')}))
+  }
+  
+  if(missing(ends_with)){
+    ends_with <- c()
+  } else if(!is.character(ends_with)){
+    stop("'ends_with' must be a character vector")
+  } else{
+    ends_with <- unlist(purrr::map(.x=ends_with,.f=function(x){ifelse(substr(x,start = 1,stop = 1)==".",paste(c("\\",x,"$"),collapse = ''),paste(c(x,"$"),collapse = ''))}))
+  }
+  
+  if(missing(contains)){
+    contains <- c()
+  } else if(!is.character(contains)){
+    stop("'contains' must be a character vector")
+  }
+  
+  tree_regex = c(starts_with,ends_with,contains)
+  
+  if(length(tree_regex)==0){
+    rm(tree_regex)
+  } else if(length(tree_regex)>1){
+    tree_regex <- paste(tree_regex,collapse = "|")
   }
   
   if(length(to_root)==1){

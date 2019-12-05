@@ -6,29 +6,30 @@
 #' @export
 
 checkSameTopology <- function(trees){
-  if(!Rboretum::isMultiPhylo(trees)){
-    stop("'trees' does not appear to be a valid multiPhylo object with 2+ trees")
-  } else if(has_error(silent=TRUE,expr=Rboretum::checkSharedTaxa(trees))){
-    stop("Trees do not appear to share three species in common.")
-  } else if(!Rboretum::checkSharedTaxa(trees)){
-    stop("Trees do no share three species in common.")
+  
+  if(!Rboretum::isMultiPhylo(trees,check_rooted = TRUE,check_three_taxa = TRUE)){
+    stop("'trees' does not appear to be a valid multiPhylo object where all trees are rooted and share at least three taxa.")
   }
   
-  if(!Rboretum::checkSameTaxa(trees)){
-    shared_speces <- Rboretum::getSharedTaxa(trees)
-    trees <- Rboretum::treeTrimmer(trees,shared_speces)
+  if(!Rboretum::isMultiPhylo(trees,check_all_taxa = TRUE)){
+    tree_taxa <- Rboretum::getSharedTaxa(trees)
+    trees <- treeTrimmer(trees,tree_taxa)
   }
   
   tree_count <- length(trees)
-  tree_list <- c()
+  
+  top_check <- c()
   
   for(i in 1:(tree_count-1)){
-    for(j in (i+1):tree_count){
-      tree_list <- c(tree_list,ape::all.equal.phylo(trees[[i]],trees[[j]],use.edge.length = FALSE))
+    for(j in 2:tree_count){
+      top_check <- c(top_check,ape:all.equal.phylo(trees[[i]],trees[[j]],use.edge.length = FALSE))
     }
   }
   
-  if(all(tree_list)){
+  if(all(top_check)){
     return(TRUE)
-  } else{ return(FALSE) }
+  } else{
+    return(FALSE)
+  }
+  
 }

@@ -64,7 +64,7 @@ readRooted <- function(to_root,root_taxa,prefix,suffix,tree_names){
   
   if(length(prefix)==0 & length(suffix)==0){
     rm(tree_regex)
-  } else if(length(prefix)>0 &  length(suffix)==0){
+  } else if(length(prefix)>0 & length(suffix)==0){
     tree_regex <- prefix
   } else if(length(prefix)==0 & length(suffix)>0){
     tree_regex <- suffix
@@ -124,7 +124,7 @@ readRooted <- function(to_root,root_taxa,prefix,suffix,tree_names){
             if(has_error(silent=TRUE,list.files(path=to_root,pattern=tree_regex,full.names = TRUE,include.dirs = FALSE))){
               stop("Can't process file fetch. Check regex?")
             } else{
-              tree_paths <- list.files(path=to_root,full.names = TRUE,include.dirs = FALSE)
+              tree_paths <- list.files(path=to_root,pattern=tree_regex,full.names = TRUE,include.dirs = FALSE)
               if(length(tree_paths)==0){
                 stop("No files found in 'to_root'")
               } else if(length(tree_paths)==1){

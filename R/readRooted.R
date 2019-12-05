@@ -50,8 +50,7 @@ readRooted <- function(to_root,root_taxa,prefix,suffix,tree_names){
     stop("'prefix' must be a character vector")
   } else{
     prefix <- unlist(purrr::map(.x=prefix,.f=function(x){paste(c("^",x),collapse = '')}))
-    prefix <- paste(c("(",paste(prefix,collapse = "|",")")))
-    print(prefix)
+    prefix <- paste(c("(",paste(prefix,collapse = "|"),")"),collapse = '')
   }
   
   if(missing(suffix)){
@@ -60,18 +59,17 @@ readRooted <- function(to_root,root_taxa,prefix,suffix,tree_names){
     stop("'suffix' must be a character vector")
   } else{
     suffix <- unlist(purrr::map(.x=suffix,.f=function(x){ifelse(substr(x,start = 1,stop = 1)==".",paste(c("\\",x,"$"),collapse = ''),paste(c(x,"$"),collapse = ''))}))
-    suffix <- paste(c("(",paste(suffix,collapse = "|",")")))
-    print(suffix)
+    prefix <- paste(c("(",paste(prefix,collapse = "|"),")"),collapse = '')
   }
   
   if(length(prefix)==0 & length(suffix)==0){
     rm(tree_regex)
   } else if(length(prefix)>0 &  length(suffix)==0){
     tree_regex <- prefix
-  } else if(length(prefix)==0 &  length(suffix)>0){
+  } else if(length(prefix)==0 & length(suffix)>0){
     tree_regex <- suffix
   } else if(length(prefix)>0 & length(suffix)>0){
-    tree_regex <- paste(paste(prefix,"(.*)",suffix,collapse = ""))
+    tree_regex <- paste(paste(c(prefix,"(.*)",suffix),collapse = ""))
   }
   
   if(!missing(tree_regex)){

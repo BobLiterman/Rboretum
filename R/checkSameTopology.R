@@ -33,7 +33,7 @@ checkSameTopology <- function(trees,check_any){
 
   # Compare all tree topologies
   list_1 <- 1:(tree_count-1)
-  list_2 <- 2:tree-count
+  list_2 <- 2:tree_count
   
   top_check <- purrr::map2(.x = list_1,.y = list_2,.f = function(x,y){ape:all.equal.phylo(trees[[x]],trees[[y]],use.edge.length = FALSE)}) %>% unlist()
 

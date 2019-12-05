@@ -104,7 +104,7 @@ readRooted <- function(to_root,root_taxa,prefix,suffix,tree_names){
                 stop("At least one tree from 'to_root' could not be rooted with 'root_taxa'")
               } else{
                 class(tree) <- "multiPhylo"
-                default_tree_names <- purrr::map(.x=to_root,.f=function(x){basename(x)}) %>% unlist()
+                default_tree_names <- purrr::map(.x=tree_paths,.f=function(x){basename(x)}) %>% unlist()
               }
               if(missing(tree_names)){
                 names(tree) <- default_tree_names
@@ -140,7 +140,7 @@ readRooted <- function(to_root,root_taxa,prefix,suffix,tree_names){
                   stop("At least one tree from 'to_root' could not be rooted with 'root_taxa'")
                 } else{
                   class(tree) <- "multiPhylo"
-                  default_tree_names <- purrr::map(.x=to_root,.f=function(x){basename(x)}) %>% unlist()
+                  default_tree_names <- purrr::map(.x=tree_paths,.f=function(x){basename(x)}) %>% unlist()
                 }
                 if(missing(tree_names)){
                   names(tree) <- default_tree_names

@@ -35,7 +35,7 @@ checkSameTopology <- function(trees,check_any){
   list_1 <- 1:(tree_count-1)
   list_2 <- 2:tree_count
   
-  top_check <- purrr::map2(.x = list_1,.y = list_2,.f = function(x,y){ape:all.equal.phylo(trees[[x]],trees[[y]],use.edge.length = FALSE)}) %>% unlist()
+  top_check <- purrr::map2(.x = list_1,.y = list_2,.f = function(x,y){ape::all.equal.phylo(trees[[x]],trees[[y]],use.edge.length = FALSE)}) %>% unlist()
 
   # check_any= TRUE will return TRUE if any two trees share a topology
   if(check_any){

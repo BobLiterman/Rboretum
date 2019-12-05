@@ -54,7 +54,7 @@ readRooted <- function(to_root,root_taxa,tree_regex,tree_names){
     } else{
       if(isFile){ # If 'to_root' points to a valid file...
         tree <- Rboretum::readRooted_Worker(to_root,root_taxa)
-        if(!Rborteum::isPhylo(tree)){
+        if(!Rboretum::isPhylo(tree)){
           stop("'to_root' cannot be rooted with 'root_taxa'")
         } else{
           return(tree)
@@ -66,7 +66,7 @@ readRooted <- function(to_root,root_taxa,tree_regex,tree_names){
               stop("No files found in 'to_root'")
             } else if(length(tree_paths)==1){
               tree <- Rboretum::readRooted_Worker(tree_paths,root_taxa)
-              if(!Rborteum::isPhylo(tree)){
+              if(!Rboretum::isPhylo(tree)){
                 stop("'to_root' cannot be rooted with 'root_taxa'")
               } else{
                 return(tree)
@@ -102,7 +102,7 @@ readRooted <- function(to_root,root_taxa,tree_regex,tree_names){
                 stop("No files found in 'to_root'")
               } else if(length(tree_paths)==1){
                 tree <- Rboretum::readRooted_Worker(tree_paths,root_taxa)
-                if(!Rborteum::isPhylo(tree)){
+                if(!Rboretum::isPhylo(tree)){
                   stop("'to_root' cannot be rooted with 'root_taxa'")
                 } else{
                   return(tree)

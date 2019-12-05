@@ -22,11 +22,11 @@ readRooted_Worker <- function(to_root_worker,root_taxa){
   if(file.exists(to_root_worker) & !dir.exists(to_root_worker)){
     
     # Read in tree and fetch species
-    if(!has_error(silent=TRUE,expr=ape::read.tree(tree_path))){
-      raw_tree <- ape::read.tree(tree_path)
+    if(!has_error(silent=TRUE,expr=ape::read.tree(to_root_worker))){
+      raw_tree <- ape::read.tree(to_root_worker)
       tree_species <- raw_tree$tip.label
-    } else if(!has_error(silent=TRUE,expr=ape::read.nexus(tree_path))){
-      raw_tree <- ape::read.nexus(tree_path)
+    } else if(!has_error(silent=TRUE,expr=ape::read.nexus(to_root_worker))){
+      raw_tree <- ape::read.nexus(to_root_worker)
       tree_species <- raw_tree$tip.label
     } else{ 
       return(NA) # 'to_root_worker' does not point to file that can be read in by ape::read.tree() or ape::read.nexus()

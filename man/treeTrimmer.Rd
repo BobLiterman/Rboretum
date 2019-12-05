@@ -7,7 +7,11 @@
 treeTrimmer(tree, taxa, remove)
 }
 \arguments{
-\item{tree}{phylo or multiPhylo object}
+\item{tree}{Tree(s) to trim. Options include:
+\itemize{
+  \item A phylo object
+  \item A multiPhylo object
+}}
 
 \item{taxa}{Character vector of desired tip labels to keep (or discard if remove=TRUE)}
 
@@ -17,5 +21,12 @@ treeTrimmer(tree, taxa, remove)
 Pruned phylo or multiPhylo object
 }
 \description{
-This ape wrapper returns a phylo or multiPhylo object that has been pruned to include only specified taxa. Note: Function will STOP if any 'tree' is missing any 'taxa'.
+This function returns a phylo or multiPhylo object that has been pruned to include only specified taxa. Note: Function will STOP if any 'tree' is missing any 'taxa' or if trimming will result in <2 final taxa
+}
+\examples{
+# myTree is a phylo object with 4 tips
+desiredTaxa <- c('Species_1','Species_2','Species_3')
+undesiredTaxa <- 'Species_4'
+trimmedTree <- treeTrimmer(myTree,desiredTaxa) # Trim myTree down to taxa in 'desiredTaxa'
+trimmedTree <- treeTrimmer(myTree,undesiredTaxa,remove=TRUE) # Remove 'undesiredTaxa' from myTree
 }

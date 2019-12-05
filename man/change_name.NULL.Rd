@@ -5,7 +5,7 @@
 \title{Add New Scale
 Source: eliocamp/new_aes.R}
 \usage{
-\method{change_name}{`NULL`}(list, old, new)
+\method{change_name}{NULL}(list, old, new)
 }
 \description{
 Add New Scale

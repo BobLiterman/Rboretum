@@ -9,8 +9,7 @@ isMultiPhylo(
   check_named,
   check_rooted,
   check_three_taxa,
-  check_all_taxa,
-  verbose
+  check_all_taxa
 )
 }
 \arguments{
@@ -23,12 +22,17 @@ isMultiPhylo(
 \item{check_three_taxa}{OPTIONAL: If TRUE, also check if all trees share at least three taxa. [Default: FALSE, don't check taxa]}
 
 \item{check_all_taxa}{OPTIONAL: If TRUE, also check if all trees share all taxa. [Default: FALSE, don't check taxa]}
-
-\item{verbose}{OPTIONAL: If TRUE: Print messages along the way; else execute silently. [Default: FALSE]}
 }
 \value{
 TRUE if 'test_object' is a multiPhylo with 2+ trees; otherwise, FALSE
 }
 \description{
 This function returns TRUE if the passed object is of class multiPhylo and has 2+ trees; Otherwise, FALSE
+}
+\examples{
+isMultiPhylo(myTrees) # Check if 'myTrees' is a valid multiPhylo object with 2+ trees
+isMultiPhylo(myTrees,check_named=TRUE) # Check if 'myTrees' is a valid multiPhylo object with 2+ trees, and that all trees have names
+isMultiPhylo(myTrees,check_rooted=TRUE) # Check if 'myTrees' is a valid multiPhylo object with 2+ trees, and that all trees are rooted
+isMultiPhylo(myTrees,check_three_taxa) # Check if 'myTrees' is a valid multiPhylo object with 2+ trees, and that all trees share at least three taxa
+isMultiPhylo(myTrees,check_all_taxa) # Check if 'myTrees' is a valid multiPhylo object with 2+ trees, and that all trees share all taxa
 }

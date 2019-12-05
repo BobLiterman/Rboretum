@@ -7,7 +7,7 @@
 checkSameTopology(trees, check_any)
 }
 \arguments{
-\item{trees}{multiPhylo object}
+\item{trees}{Rooted, multiPhylo object where all trees share at least three taxa}
 
 \item{check_any}{OPTIONAL: If TRUE, check if ANY (rather than all) trees share a topology [Default: FALSE, check for unanimous topology]}
 }
@@ -16,4 +16,8 @@ TRUE if all trees have the same topology after pruning to identical species list
 }
 \description{
 This function returns TRUE if all trees in multiPhylo have the same topology after pruning to identical species lists
+}
+\examples{
+checkSameTopology(myTrees) # Check if all trees in multiPhylo 'myTrees' share the same topology
+checkSameTopology(myTrees,check_any=TRUE) # Check if any trees in multiPhylo 'myTrees' share a topology
 }

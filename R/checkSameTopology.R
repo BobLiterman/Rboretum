@@ -2,10 +2,11 @@
 #'
 #' This function returns TRUE if all trees in multiPhylo have the same topology after pruning to identical species lists
 #' @param trees multiPhylo object
+#' @param check_any OPTIONAL: If TRUE, check if ANY (rather than all) trees share a topology [Default: FALSE, check for unanimous topology]
 #' @return TRUE if all trees have the same topology after pruning to identical species lists; else, FALSE
 #' @export
 
-checkSameTopology <- function(trees){
+checkSameTopology <- function(trees,check_any){
   
   if(!Rboretum::isMultiPhylo(trees,check_rooted = TRUE,check_three_taxa = TRUE)){
     stop("'trees' does not appear to be a valid multiPhylo object where all trees are rooted and share at least three taxa.")
@@ -26,10 +27,24 @@ checkSameTopology <- function(trees){
     }
   }
   
-  if(all(top_check)){
-    return(TRUE)
+  if(missing(check_any)){
+    check_any <- FALSE
+  } else if(!is.logical(check_any)){
+    check_any <- FALSE
+  }
+  
+  if(check_any){
+    if(any(top_check)){
+      return(TRUE)
+    } else{
+      return(FALSE)
+    }
   } else{
-    return(FALSE)
+    if(all(top_check)){
+      return(TRUE)
+    } else{
+      return(FALSE)
+    }
   }
   
 }

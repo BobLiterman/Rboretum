@@ -4,10 +4,12 @@
 \alias{checkSameTopology}
 \title{Rboretum Identical Topology Checker}
 \usage{
-checkSameTopology(trees)
+checkSameTopology(trees, check_any)
 }
 \arguments{
 \item{trees}{multiPhylo object}
+
+\item{check_any}{OPTIONAL: If TRUE, check if ANY (rather than all) trees share a topology [Default: FALSE, check for unanimous topology]}
 }
 \value{
 TRUE if all trees have the same topology after pruning to identical species lists; else, FALSE

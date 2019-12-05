@@ -133,6 +133,7 @@ readRooted <- function(to_root,root_taxa,tree_regex,tree_names){
       }
     }
   } else{ # If 'to_root' is a list of file paths...
+    tree_regex <- NA
     file_check <- purrr::map(.x = to_root,.f=function(x){ file.exists(to_root) & !dir.exists(to_root)}) %>% unlist() # Check that all paths in 'to_root' point to valid files
     if(!all(file_check)){
       stop("At least on file from 'to_root' points to an invalid path.")

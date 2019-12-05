@@ -59,7 +59,7 @@ readRooted <- function(to_root,root_taxa,prefix,suffix,tree_names){
     stop("'suffix' must be a character vector")
   } else{
     suffix <- unlist(purrr::map(.x=suffix,.f=function(x){ifelse(substr(x,start = 1,stop = 1)==".",paste(c("\\",x,"$"),collapse = ''),paste(c(x,"$"),collapse = ''))}))
-    prefix <- paste(c("(",paste(prefix,collapse = "|"),")"),collapse = '')
+    suffix <- paste(c("(",paste(suffix,collapse = "|"),")"),collapse = '')
   }
   
   if(length(prefix)==0 & length(suffix)==0){
@@ -70,10 +70,6 @@ readRooted <- function(to_root,root_taxa,prefix,suffix,tree_names){
     tree_regex <- suffix
   } else if(length(prefix)>0 & length(suffix)>0){
     tree_regex <- paste(paste(c(prefix,"(.*)",suffix),collapse = ""))
-  }
-  
-  if(!missing(tree_regex)){
-    print(tree_regex)
   }
 
   if(length(to_root)==1){

@@ -133,7 +133,6 @@ readRooted <- function(to_root,root_taxa,tree_regex,tree_names){
       }
     }
   } else{ # If 'to_root' is a list of file paths...
-    tree_regex <- NA
     file_check <- purrr::map(.x = to_root,.f=function(x){ file.exists(to_root) & !dir.exists(to_root)}) %>% unlist() # Check that all paths in 'to_root' point to valid files
     if(!all(file_check)){
       stop("At least on file from 'to_root' points to an invalid path.")
@@ -143,7 +142,7 @@ readRooted <- function(to_root,root_taxa,tree_regex,tree_names){
         stop("At least one tree from 'to_root' could not be rooted with 'root_taxa'")
       } else{
         class(tree) <- "multiPhylo"
-        default_tree_names <- list.files(path=to_root,pattern=tree_regex,full.names = TRUE,include.dirs = FALSE) %>% basename()
+        default_tree_names <- list.files(path=to_root,full.names = TRUE,include.dirs = FALSE) %>% basename()
       }
       if(missing(tree_names)){
         names(tree) <- default_tree_names

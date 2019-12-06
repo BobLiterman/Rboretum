@@ -41,7 +41,7 @@ getUniqueTopologies <- function(trees,print_table,return_table){
   tree_b <- c()
   top_check <- c()
 
-  for(i in 1:raw_tree_count-1){
+  for(i in 1:(raw_tree_count-1)){
     for(j in 2:raw_tree_count){
       tree_a <- c(tree_a,raw_tree_names[[i]])
       tree_b <- c(tree_b,raw_tree_names[[j]])

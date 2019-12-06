@@ -85,6 +85,7 @@ getUniqueTopologies <- function(trees,print_table,return_table){
   
   unique_count <- length(tree_groups)
   names(unique_trees) <- topology_names
+  unique_trees$class <- 'multiPhylo'
   
   top_count <- c()
   top_trees <- c()

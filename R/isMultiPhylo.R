@@ -46,12 +46,16 @@ isMultiPhylo <- function(test_object,check_named,check_rooted,check_three_taxa,c
   }
   
   if(has_error(silent=TRUE,expr=unlist(attributes(test_object)))){ # Can attributes be unlisted?
+    print("Can't access attributes...")
     return(FALSE) # Object attributes can't be unlisted --> FALSE
   } else if(!'multiPhylo' %in% unlist(attributes(test_object)$class)){
+      print("Object is not of class 'multiPhylo...")
       return(FALSE) # 'multiPhylo' not in object class --> FALSE
     } else if(length(test_object) < 2){
+      print("'multiPhylo' contains fewer than two trees...")
       return(FALSE) # 'test_object' has length < 2 --> FALSE
     } else if(!purrr::map(.x = test_object,.f = function(x){Rboretum::isPhylo(x)}) %>% unlist() %>% all()){
+      print("'multiPhylo' contains non-phylo objects...")
       return(FALSE) # 'test_object' not made up of phylo objects --> FALSE
     } else{
       
@@ -73,14 +77,18 @@ isMultiPhylo <- function(test_object,check_named,check_rooted,check_three_taxa,c
         name_error <- any(is.na(tree_names)) | any(is.null(tree_names)) | name_length != tree_count | any(duplicated(tree_names))
       }
       
-      if(check_named & (!has_names | name_error)){
-        return(FALSE) # 'test_object' is a valid multiPhylo but trees are not named --> FALSE
-      } else if(check_rooted & !all(unlist(purrr::map(.x = test_object,.f = ape::is.rooted)))){
+      if(check_rooted & !all(unlist(purrr::map(.x = test_object,.f = ape::is.rooted)))){
+        print('At least one tree is unrooted...')
         return(FALSE) # 'test_object' is a valid multiPhylo but trees are not rooted --> FALSE
-    } else if(check_three_taxa & shared_count < 3){
+      } else if(check_three_taxa & shared_count < 3){
+        print('Trees in multiPhylo share fewer than three taxa...')
         return(FALSE) # 'test_object' is a valid multiPhylo but trees share fewer than three taxa --> FALSE
       } else if(check_all_taxa & shared_count < taxa_count){
+        print('Trees in multiPhylo share do not have identical taxa...')
         return(FALSE) # 'test_object' is a valid multiPhylo but trees do not have identical taxa --> FALSE
+      } else if(check_named & (!has_names | name_error)){
+        print('Everything about the multiPhylo is fine, but the trees are not named, or are not named stably. You can add placeholder tree names by running Rboretum::treeNamer(trees)')
+        return(FALSE) # 'test_object' is a valid multiPhylo but trees are not named --> FALSE
       } else{ 
         return(TRUE) # All checks passed --> TRUE
       }

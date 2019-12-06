@@ -18,7 +18,6 @@ isPhylo <- function(test_object,check_rooted){
   }
   
   if(has_error(silent=TRUE,expr=unlist(attributes(test_object)))){ # Can attributes be unlisted?
-    print("Can't unlist object attributes...")
     return(FALSE) # Object attributes can't be unlisted --> FALSE
   } else{
 

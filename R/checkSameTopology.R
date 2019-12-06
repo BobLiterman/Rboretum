@@ -35,7 +35,7 @@ checkSameTopology <- function(trees,check_any){
   top_check <- c()
 
   for(i in 1:(tree_count-1)){
-    for(j in 2:tree_count){
+    for(j in (i+1):tree_count){
       top_check <- c(top_check,ape::all.equal.phylo(trees[[i]],trees[[j]],use.edge.length = FALSE))
     }
   }

@@ -29,7 +29,6 @@ isPhylo <- function(test_object,check_rooted){
         if(ape::is.rooted(test_object)){ # Is tree rooted?
           return(TRUE) # Is a tree, and rooted --> TRUE
         } else{
-          print("Tree is not rooted...")
           return(FALSE) # Is a tree, but not rooted --> FALSE
         }
       }

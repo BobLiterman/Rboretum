@@ -17,7 +17,7 @@ getUniqueTopologies <- function(trees,print_table,return_table){
   } else if(Rboretum::isMultiPhylo(trees,check_all_unique = TRUE)){ # Trees are already unique
     return(trees)
   }
-
+  
   if(missing(print_table)){
     print_table <- FALSE
   } else if(!is.logical(print_table)){
@@ -43,7 +43,7 @@ getUniqueTopologies <- function(trees,print_table,return_table){
   tree_a <- c()
   tree_b <- c()
   top_check <- c()
-
+  
   for(i in 1:(raw_tree_count-1)){
     for(j in (i+1):raw_tree_count){
       tree_a <- c(tree_a,raw_tree_names[[i]])
@@ -53,22 +53,19 @@ getUniqueTopologies <- function(trees,print_table,return_table){
   }
   
   tree_compare <- data.frame(Tree_1=tree_a,Tree_2=tree_b,Same_Topology=top_check) %>% filter(Same_Topology)
-
+  
   tree_groups <- list()
   grouped_trees <- c()
-  unique_trees <- c()
-  topology_names  <- c()
+  rep_trees <- c()
   
   for(i in 1:raw_tree_count){
     
     next_pos <- length(tree_groups) + 1
-
-    focal_tree <- raw_tree_names[[i]]
     
+    focal_tree <- raw_tree_names[[i]]
     if(!focal_tree %in% grouped_trees){
       
-      unique_trees <- c(unique_trees,trees[[i]])
-      topology_names <- c(topology_names,paste(c('Topology_',next_pos),collapse =''))      
+      rep_trees <- c(rep_trees,i)
       
       tree_group <- tree_compare %>% filter(Tree_1 == focal_tree | Tree_2 == focal_tree)
       
@@ -83,23 +80,29 @@ getUniqueTopologies <- function(trees,print_table,return_table){
     }
   }
   
-  unique_count <- length(tree_groups)
-  names(unique_trees) <- topology_names
-  class(unique_trees) <- "multiPhylo"
+  unique_trees_unsorted <- purrr::map(.x = rep_trees,.f = function(x){trees[[x]]})
+  class(unique_trees_unsorted) <- 'multiPhylo'
   
-  top_count <- c()
-  top_trees <- c()
+  tree_coords <- 1:length(tree_groups)
+  top_count <- purrr::map(.x = tree_coords, .f = function(x){length(tree_groups[[x]])}) %>% unlist() %>% as.integer()
+  top_trees <- purrr::map(.x = tree_coords, .f = function(x){paste(tree_groups[[x]],collapse = ";")}) %>% unlist() %>% as.character()
   
-  for(i in 1:unique_count){
-    top_count <- c(top_count,length(tree_groups[[i]]))
-    top_trees <- c(top_trees,paste(tree_groups[[i]],collapse = ";"))
-  }
+  tree_sorter <- data.frame(Tree_ID = as.integer(tree_coords),
+                            Tree_Count = as.integer(top_count),
+                            Tree_Name = as.character(top_trees)) %>%
+    arrange(desc(Tree_Count),Tree_Name) %>%
+    pull(Tree_ID) %>%
+    as.integer()
   
-  summary_df <- data.frame(Topology_ID = as.character(topology_names),
+  unique_trees <- unique_trees_unsorted[tree_sorter]
+  names(unique_trees) <- purrr::map(.x=1:length(tree_groups),.f=function(x){paste(c("Topology",x),collapse = '_')})
+  top_count <- top_count[tree_sorter]
+  top_trees <- top_trees[tree_sorter]
+  
+  summary_df <- data.frame(Tree_Name = names(unique_trees),
                            Trees_with_Topology = as.character(top_trees),
                            Tree_Count = as.integer(top_count),
                            Tree_Percent = round((top_count/as.numeric(raw_tree_count)*100),1))
-  
   if(print_table){
     print(summary_df)
   }

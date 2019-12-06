@@ -9,7 +9,10 @@ isMultiPhylo(
   check_named,
   check_rooted,
   check_three_taxa,
-  check_all_taxa
+  check_all_taxa,
+  check_all_equal,
+  check_some_equal,
+  check_all_unique
 )
 }
 \arguments{
@@ -22,6 +25,12 @@ isMultiPhylo(
 \item{check_three_taxa}{OPTIONAL: If TRUE, also check if all trees share at least three taxa. [Default: FALSE, don't check taxa]}
 
 \item{check_all_taxa}{OPTIONAL: If TRUE, also check if all trees share all taxa. [Default: FALSE, don't check taxa]}
+
+\item{check_all_equal}{OPTIONAL: If TRUE, also check whether all trees have one, shared topology after pruning to a common set of taxa [Default: FALSE, don't check topology]}
+
+\item{check_some_equal}{OPTIONAL: If TRUE, also check whether some, but not all, trees share a topology after pruning to a common set of taxa [Default: FALSE, don't check topology]}
+
+\item{check_all_unique}{OPTIONAL: If TRUE, also check whether all trees have a unique topology after pruning to a common set of taxa [Default: FALSE, don't check topology]}
 }
 \value{
 TRUE if 'test_object' is a multiPhylo with 2+ trees; otherwise, FALSE

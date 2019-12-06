@@ -55,8 +55,8 @@ getUniqueTopologies <- function(trees,print_table,return_table){
 
   tree_groups <- list()
   grouped_trees <- c()
-  rep_trees <- c()
-  rep_names  <- c()
+  unique_trees <- c()
+  topology_names  <- c()
   
   for(i in 1:raw_tree_count){
     
@@ -66,8 +66,8 @@ getUniqueTopologies <- function(trees,print_table,return_table){
     
     if(!focal_tree %in% grouped_trees){
       
-      rep_trees <- c(rep_trees,trees[[i]])
-      rep_names <- c(rep_names,paste(c('Topology_',next_pos),collapse =''))      
+      unique_trees <- c(unique_trees,trees[[i]])
+      topology_names <- c(topology_names,paste(c('Topology_',next_pos),collapse =''))      
       
       tree_group <- tree_compare %>% filter(Tree_1 == focal_tree | Tree_2 == focal_tree)
       
@@ -83,7 +83,7 @@ getUniqueTopologies <- function(trees,print_table,return_table){
   }
   
   unique_count <- length(tree_groups)
-  names(rep_trees) <- rep_names
+  names(unique_trees) <- topology_names
   
   top_count <- c()
   top_trees <- c()
@@ -93,7 +93,7 @@ getUniqueTopologies <- function(trees,print_table,return_table){
     top_trees <- c(top_trees,paste(tree_groups[[i]],collapse = ";"))
   }
   
-  summary_df <- data.frame(Topology_ID = as.character(rep_names),
+  summary_df <- data.frame(Topology_ID = as.character(topology_names),
                            Trees_with_Topology = as.character(top_trees),
                            Tree_Count = as.integer(top_count),
                            Tree_Percent = round((top_count/as.numeric(raw_tree_count)*100),1))

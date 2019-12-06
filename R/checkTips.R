@@ -20,7 +20,7 @@
 checkTips <- function(tree,taxa,check_mono,check_root){
   
   # Check if 'tree' is valid
-  if(!Rboretum::isPhylo(tree) & !Rboretum::isMultiPhylo(tree)){
+  if(!Rboretum::isMultiPhylo(tree) & !Rboretum::isPhylo(tree)){
     stop("'tree' does not appear be a valid phylo or multiPhylo object.")
   }
   

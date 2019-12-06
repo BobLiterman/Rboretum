@@ -64,6 +64,9 @@ isMultiPhylo <- function(test_object,check_named,check_rooted,check_three_taxa,c
       shared_count <- purrr::map(.x = test_object,.f = function(x){x$tip.label}) %>% unlist() %>% table() %>% (function(x){x==tree_count}) %>% sum()
       
       has_names <- !is.null(names(test_object))
+      
+      name_error <- FALSE
+      
       if(has_names){
         tree_names <- names(test_object)
         name_length <- length(names(test_object))

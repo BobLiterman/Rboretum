@@ -34,7 +34,6 @@ isPhylo <- function(test_object,check_rooted){
         }
       }
     } else{
-      print("Object is not of class phylo...")
       return(FALSE) # 'phylo' not in $class attributes --> FALSE
     }
   }

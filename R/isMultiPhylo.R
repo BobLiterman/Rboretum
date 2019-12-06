@@ -78,10 +78,9 @@ isMultiPhylo <- function(test_object,check_named,check_rooted,check_three_taxa,c
   }
 
   if(has_error(silent=TRUE,expr=unlist(attributes(test_object)))){ # Can attributes be unlisted?
-    print("Can't access attributes...")
+    print("Can't access object attributes...")
     return(FALSE) # Object attributes can't be unlisted --> FALSE
   } else if(!'multiPhylo' %in% unlist(attributes(test_object)$class)){
-      print("Object is not of class 'multiPhylo...")
       return(FALSE) # 'multiPhylo' not in object class --> FALSE
     } else if(length(test_object) < 2){
       print("'multiPhylo' contains fewer than two trees...")

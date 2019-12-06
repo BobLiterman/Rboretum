@@ -29,6 +29,8 @@ getUniqueTopologies <- function(trees,print_table,return_table){
     return_table <- FALSE
   }
   
+  tree_taxa <- Rboretum::getSharedTaxa(trees)
+  
   if(!Rboretum::isMultiPhylo(trees,check_all_taxa = TRUE)){ # Trim to common taxa 
     trees <- Rboretum::treeTrimmer(trees,tree_taxa)
   }

@@ -67,7 +67,7 @@ isMultiPhylo <- function(test_object,check_named,check_rooted,check_three_taxa,c
       if(has_names){
         tree_names <- names(test_object)
         name_length <- length(names(test_object))
-        name_error <- any(is.na(tree_names)) | any(is.null(tree_names)) | name_length != tree_count
+        name_error <- any(is.na(tree_names)) | any(is.null(tree_names)) | name_length != tree_count | any(duplicated(tree_names))
       }
       
       if(check_named & (!has_names | name_error)){

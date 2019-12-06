@@ -78,7 +78,7 @@ checkTips <- function(tree,taxa,check_mono,check_root){
       
       tree_taxa <- Rboretum::getSharedTaxa(tree)
       
-      if(!Rboretum::isMultiphylo(tree,check_all_taxa=TRUE)){
+      if(!Rboretum::isMultiPhylo(tree,check_all_taxa=TRUE)){
         tree <- Rboretum::treeTrimmer(tree,tree_taxa) # Trim to common taxa set prior to assessing monophyly or root
       }
       

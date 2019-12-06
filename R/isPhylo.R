@@ -18,6 +18,7 @@ isPhylo <- function(test_object,check_rooted){
   }
   
   if(has_error(silent=TRUE,expr=unlist(attributes(test_object)))){ # Can attributes be unlisted?
+    print("Can't unlist object attributes...")
     return(FALSE) # Object attributes can't be unlisted --> FALSE
   } else{
 
@@ -28,10 +29,12 @@ isPhylo <- function(test_object,check_rooted){
         if(ape::is.rooted(test_object)){ # Is tree rooted?
           return(TRUE) # Is a tree, and rooted --> TRUE
         } else{
+          print("Tree is not rooted...")
           return(FALSE) # Is a tree, but not rooted --> FALSE
         }
       }
     } else{
+      print("Object is not of class phylo...")
       return(FALSE) # 'phylo' not in $class attributes --> FALSE
     }
   }

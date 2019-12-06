@@ -33,19 +33,23 @@ treeTrimmer <- function(tree,taxa,remove){
   
   if(!remove){ # If 'taxa' is the desired list of species to keep...
     
-    if(!purrr::map(.x = tree,.f = function(x){all(taxa %in% x$tip.label)}) %>% unlist() %>% all()){ # Check if all 'taxa' are in all trees in 'tree'
-      stop("Specified 'taxa' are missing from at least one tree.")
-    } else if(length(taxa) < 2){ # Ensure 'taxa' includes 2+ tip labels
+    if(length(taxa) < 2){ # Ensure 'taxa' includes 2+ tip labels
       stop("Can't trim to fewer than two tips.")
     }
     
     # Prune single tree down to just those tip labels in 'taxa'
     if(Rboretum::isPhylo(tree)){
-      return(ape::drop.tip(tree,tree$tip.label[-match(taxa, tree$tip.label)]))
+      if(all(taxa %in% tree$tip.label)){
+        return(ape::drop.tip(tree,tree$tip.label[-match(taxa, tree$tip.label)]))
+      } else{
+        stop("Specified 'taxa' are missing from at least one tree.")
+      }
     } 
     
     if(Rboretum::isMultiPhylo(tree)){ # If a multiPhylo is provided...
-      
+      if(!purrr::map(.x = tree,.f = function(x){all(taxa %in% x$tip.label)}) %>% unlist() %>% all()){ # Check if all 'taxa' are in all trees in 'tree'
+        stop("Specified 'taxa' are missing from at least one tree.")
+      }  
       # Grab tree names, if named
       if(!is.null(names(tree))){
         tree_names <- names(tree)

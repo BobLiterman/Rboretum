@@ -33,7 +33,7 @@ treeTrimmer <- function(tree,taxa,remove){
   
   if(!remove){ # If 'taxa' is the desired list of species to keep...
     
-    if(!checkTips(tree,taxa)){ # Ensure 'taxa' exist in 'tree' or all trees in 'tree'
+    if(!purrr::map(.x = tree,.f = function(x){all(taxa %in% x$tip.label)}) %>% unlist() %>% all()){ # Check if all 'taxa' are in all trees in 'tree'
       stop("Specified 'taxa' are missing from at least one tree.")
     } else if(length(taxa) < 2){ # Ensure 'taxa' includes 2+ tip labels
       stop("Can't trim to fewer than two tips.")

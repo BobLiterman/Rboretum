@@ -69,7 +69,7 @@ getTreeClades <- function(tree,include_root,print_counts,return_counts){
     
     # Get tree clades
     listed_tree_clades <- purrr::map(.x = tree_splits ,.f = function(x){  pull(x,Clade) %>% as.character()})
-    tree_clade_vec <- as.character(unlist(tree_clades))
+    tree_clade_vec <- as.character(unlist(listed_tree_clades))
 
     if(include_root){
       
@@ -77,7 +77,7 @@ getTreeClades <- function(tree,include_root,print_counts,return_counts){
       tree_names <- names(listed_tree_clades)
       
       listed_root_clades <- purrr::map(.x = tree_splits ,.f = function(x){ x %>% filter(is.na(Split_Node)) %>% select(Clade,Mirror_Clade) %>% slice(1) %>%  unlist() %>% as.character()})
-      root_clade_vec <- as.character(unlist(root_clades))
+      root_clade_vec <- as.character(unlist(listed_root_clades))
 
       listed_tree_clades <- purrr::map(.x=tree_names,.f=function(x){c(listed_tree_clades[[x]],listed_root_clades[[x]])})
       names(listed_tree_clades) <- tree_names

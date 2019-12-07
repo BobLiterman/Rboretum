@@ -49,18 +49,19 @@ getTreeClades <- function(tree,include_root,print_counts,return_counts){
     tree_clades <- tree_splits %>% filter(!is.na(Split_Node)) %>%
       pull(Clade) %>% as.character() %>% sort()
     
-    if(!include_root){ 
+    if(include_root){ 
       
       # Extract root clades if requested
       root_clades <- tree_splits %>% filter(is.na(Split_Node)) %>% 
         select(Clade,Mirror_Clade) %>% slice(1) %>% 
         unlist() %>% as.character()
       
+      tree_clades <- c(tree_clades,root_clades) %>% sort()
+      
       return(tree_clades)
       
     } else{
       
-      tree_clades <- c(tree_clades,root_clades) %>% sort()
       return(tree_clades)
     }
     
@@ -102,5 +103,5 @@ getTreeClades <- function(tree,include_root,print_counts,return_counts){
       return(sorted_clades)
     }
     
-  } else{ stop("Unknown  error.") }
+  } else{ stop("Unknown error.") }
 }

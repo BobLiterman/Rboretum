@@ -17,6 +17,7 @@ getAlignmentSignal_Worker(
 \item{species_info}{List of taxa to analyze. Can be provided as:
 \itemize{
   \item phylo object from which species will be extracted; or
+  \item multiPhylo object from which common species will be extracted; or
   \item Character vector with 3+ taxon IDs
 }}
 

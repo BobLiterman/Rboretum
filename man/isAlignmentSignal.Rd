@@ -12,6 +12,7 @@ isAlignmentSignal(test_object, species_info)
 \item{species_info}{OPTIONAL: Check that passed signal contains information about a specific set of taxa. Set of 3+ species that can be passed as either:
 \itemize{
   \item phylo object from which species will be extracted; or
+  \item multiPhylo object from which common species will be extracted; or
   \item Character vector of desired taxa
 }}
 }

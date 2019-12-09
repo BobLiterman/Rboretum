@@ -9,6 +9,7 @@
 #' @param species_info List of taxa to analyze. Can be provided as:
 #' \itemize{
 #'   \item phylo object from which species will be extracted; or
+#'   \item multiPhylo object from which common species will be extracted; or
 #'   \item Character vector with 3+ taxon IDs
 #' }
 #' @param use_gaps OPTIONAL: Options include:
@@ -33,8 +34,8 @@ getAlignmentSignal <- function(alignment_path,species_info,use_gaps,alignment_na
     stop("'alignment_path' should be a character vector of file paths or the path to an alignment directory.")
   } else if(missing(species_info)){
     stop("No 'species_info' provided")
-  } else if(!is.character(species_info) & !Rboretum::isPhylo(species_info)){
-    stop("'species_info' should be a character vector of tip labels or a phylo object")
+  } else if(!is.character(species_info) & !Rboretum::isPhylo(species_info) & !Rboretum::isMultiPhylo(species_info,check_three_taxa = TRUE)){
+    stop("'species_info' should be a character vector of tip labels, a phylo object, or a multiPhylo where all trees share three taxa.")
   }
   
   # Create regex search pattern in case a directory is given

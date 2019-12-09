@@ -5,6 +5,7 @@
 #' @param species_info OPTIONAL: Check that passed signal contains information about a specific set of taxa. Set of 3+ species that can be passed as either:
 #' \itemize{
 #'   \item phylo object from which species will be extracted; or
+#'   \item multiPhylo object from which common species will be extracted; or
 #'   \item Character vector of desired taxa
 #' }
 #' @return TRUE if output of getAlignmentSignal(); otherwise, FALSE
@@ -50,9 +51,11 @@ isAlignmentSignal <- function(test_object,species_info){
 
     if(Rboretum::isPhylo(species_info)){
       spp_list = paste(sort(species_info$tip.label),collapse = ";")
+    } else if(Rboretum::isMultiPhylo(species_info,check_three_taxa = TRUE)){
+      spp_list = paste(Rboretum::getSharedTaxa(species_info),collapse = ";")
     } else if(is.character(species_info) & length(species_info) > 3){
       spp_list = paste(sort(species_info),collapse = ";")
-    } else { stop("'species_info' is not a valid phylo object, or a character vector with 3+ species IDs") }
+    } else { stop("'species_info' is not a valid phylo object, multiPhylo object where all trees share three taxa, or a character vector with 3+ species IDs") }
     
     if(species_info != unique(signal_taxa)){
       return(FALSE)

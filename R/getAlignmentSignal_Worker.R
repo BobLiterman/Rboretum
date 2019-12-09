@@ -5,6 +5,7 @@
 #' @param species_info List of taxa to analyze. Can be provided as:
 #' \itemize{
 #'   \item phylo object from which species will be extracted; or
+#'   \item multiPhylo object from which common species will be extracted; or
 #'   \item Character vector with 3+ taxon IDs
 #' }
 #' @param use_gaps Options include:
@@ -31,6 +32,8 @@ getAlignmentSignal_Worker <- function(alignment_path,species_info,use_gaps,align
   # Get list of species from tree or from character vector
   if(Rboretum::isPhylo(species_info)){
     spp_list = paste(sort(species_info$tip.label),collapse = ";")
+  } else if(Rboretum::isMultiPhylo(species_info,check_three_taxa = TRUE)){
+    spp_list = paste(Rboretum::getSharedTaxa(species_info),collapse = ";")
   } else if(is.character(species_info) & length(species_info) > 3){
     spp_list = paste(sort(species_info),collapse = ";")
   } else { stop("'species_info' is not a valid phylo object, or a character vector with 3+ species IDs") }

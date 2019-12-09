@@ -36,7 +36,7 @@ summarizeMultiPhylo <- function(trees){
   
   all_clades <- getTreeClades(trees,return_counts = TRUE)
   
-  print(paste(c('Among all trees, and discounting root splits, there are',nrow(all_clades),'unique monophyletic clades...',collapse = ' ')))
+  print(paste(c('Among all trees, and discounting root splits, there are',nrow(all_clades),'unique monophyletic clades...'),collapse = ' '))
   print('Command: getTreeClades(trees,return_counts = TRUE)')
   
   # Check if all trees are unique

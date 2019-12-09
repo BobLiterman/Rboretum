@@ -85,25 +85,23 @@ getTreeClades <- function(tree,include_root,print_counts,return_counts,return_sh
     
     tree_count <- length(tree)
     
-    # Get tree clades
-    listed_tree_clades <- purrr::map(.x = tree_splits ,.f = function(x){  pull(x,Clade) %>% as.character()})
-    tree_clade_vec <- as.character(unlist(listed_tree_clades))
-
-    if(include_root){
-      
-      # Extract root clades if requested
-      tree_names <- names(listed_tree_clades)
-      
-      listed_root_clades <- purrr::map(.x = tree_splits ,.f = function(x){ x %>% filter(is.na(Split_Node)) %>% select(Clade,Mirror_Clade) %>% slice(1) %>%  unlist() %>% as.character()})
-      root_clade_vec <- as.character(unlist(listed_root_clades))
-
-      listed_tree_clades <- purrr::map(.x=tree_names,.f=function(x){c(listed_tree_clades[[x]],listed_root_clades[[x]])})
-      names(listed_tree_clades) <- tree_names
-      tree_clade_vec <- c(tree_clade_vec,root_clade_vec)
-      
+    # Trim to common taxa, if necessary
+    shared_taxa <- Rboretum::getSharedTaxa(tree)
+    if(!Rboretum::isMultiPhylo(tree,check_all_taxa = TRUE)){
+      tree <- Rboretum::treeTrimmer(tree,shared_taxa)
     }
     
-    clade_table <- table(tree_clade_vec)
+    # Get tree clades
+    
+    listed_tree_clades <- purrr::map(.x = tree ,.f = function(x){ Rboretum::getTreeSplits_Worker(x) %>% filter(!is.na(Split_Node)) %>% pull(Clade) %>% as.character()})
+    listed_root_clades <- purrr::map(.x = tree ,.f = function(x){ Rboretum::getTreeSplits_Worker(x) %>% filter(is.na(Split_Node)) %>% select(Clade,Mirror_Clade) %>% slice(1) %>%  unlist() %>% as.character()})
+    
+    if(include_root){
+      listed_tree_clades <- purrr::map(.x=1:tree_count,.f=function(x){c(listed_tree_clades[[x]],listed_root_clades[[x]])})
+      names(listed_tree_clades) <- names(listed_root_clades)
+    }
+    
+    clade_table <- table(unlist(listed_tree_clades))
     
     trees_with_clade <- purrr::map(.x=names(clade_table),.f=function(x){paste(sort(names(list.search(listed_tree_clades,expr = x %in% .))),collapse = ";")}) %>% as.character()
     
@@ -119,9 +117,9 @@ getTreeClades <- function(tree,include_root,print_counts,return_counts,return_sh
         filter(Count == tree_count)
       
       if(nrow(shared_clades)>0){
-       shared_clades <- shared_clades %>%
+        shared_clades <- shared_clades %>%
           pull(Clade) %>% as.character() %>% sort()
-       return(shared_clades)
+        return(shared_clades)
       } else{
         stop("Trees in 'trees' share no clades...")
       }

@@ -57,7 +57,7 @@ isAlignmentSignal <- function(test_object,species_info){
       spp_list = paste(sort(species_info),collapse = ";")
     } else { stop("'species_info' is not a valid phylo object, multiPhylo object where all trees share three taxa, or a character vector with 3+ species IDs") }
     
-    if(species_info != unique(signal_taxa)){
+    if(spp_list != unique(signal_taxa)){
       return(FALSE)
     } else{
       return(TRUE)

@@ -4,7 +4,7 @@
 \alias{getTreeClades}
 \title{Rboretum Clade Fetcher}
 \usage{
-getTreeClades(tree, include_root, print_counts, return_counts)
+getTreeClades(tree, include_root, print_counts, return_counts, return_shared)
 }
 \arguments{
 \item{tree}{Tree(s) to split. Options include:
@@ -18,9 +18,15 @@ getTreeClades(tree, include_root, print_counts, return_counts)
 \item{print_counts}{OPTIONAL: If TRUE, print a summary table of unique splits and how many/which trees contain them [Default: FALSE, no printing]}
 
 \item{return_counts}{OPTIONAL: If TRUE, instead of returning a vector of all clades, return a summary table of unique splits and how many/which trees contain them [Default: FALSE, return clades as sorted vector]}
+
+\item{return_shared}{OPTIONAL: If TRUE, instead of returning a vector of all clades, return a vector of only those clades present in all trees [Default: FALSE, return all clades]}
 }
 \value{
-Dataframe (or a list of dataframes for each unique topology): Column 1: Semi-colon separated monophyletic clade; Column 2: 'Mirror Clade'; Column 3: Phylo Node ID (NA for root split)
+Either:
+\itemize{
+  \item A character vector of monophyletic clades; or,
+  \item A dataframe containing information about clades and their occurrence among trees
+}
 }
 \description{
 This function breaks down a rooted phylo or multiPhylo object into its respective monophyletic clades (root clades excluded unless noted), sorted alphabetically.

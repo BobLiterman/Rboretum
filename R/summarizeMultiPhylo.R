@@ -39,6 +39,18 @@ summarizeMultiPhylo <- function(trees){
   print(paste(c('Among all trees, and discounting root splits, there are',nrow(all_clades),'unique monophyletic clades...'),collapse = ' '))
   print('Command: getTreeClades(trees,return_counts = TRUE)')
   
+  shared_clades <- all_clades %>%
+    filter(Count == tree_count) %>%
+    select(Clade)
+  
+  if(nrow(shared_clades)>0){
+    print('The following clades are present in all trees:')
+    print(shared_clades)
+    print('Command: getTreeClades(trees,return_shared = TRUE)')
+  } else{
+    print("Trees in 'trees' share no clades in common...")
+  }
+  
   # Check if all trees are unique
   if(!Rboretum::isMultiPhylo(trees,check_all_unique = TRUE)){
     raw_tree_count <- tree_count

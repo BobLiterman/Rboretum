@@ -9,10 +9,15 @@
 #' @param include_root OPTIONAL: If TRUE, return two root clades [Default: FALSE, exlclude root clades]
 #' @param print_counts OPTIONAL: If TRUE, print a summary table of unique splits and how many/which trees contain them [Default: FALSE, no printing]
 #' @param return_counts OPTIONAL: If TRUE, instead of returning a vector of all clades, return a summary table of unique splits and how many/which trees contain them [Default: FALSE, return clades as sorted vector]
-#' @return Dataframe (or a list of dataframes for each unique topology): Column 1: Semi-colon separated monophyletic clade; Column 2: 'Mirror Clade'; Column 3: Phylo Node ID (NA for root split)
+#' @param return_shared OPTIONAL: If TRUE, instead of returning a vector of all clades, return a vector of only those clades present in all trees [Default: FALSE, return all clades]
+#' @return Either:
+#' \itemize{
+#'   \item A character vector of monophyletic clades; or,
+#'   \item A dataframe containing information about clades and their occurrence among trees
+#' }
 #' @export
 
-getTreeClades <- function(tree,include_root,print_counts,return_counts){
+getTreeClades <- function(tree,include_root,print_counts,return_counts,return_shared){
   
   # Check if tree is valid
   if(!Rboretum::isMultiPhylo(tree,check_rooted = TRUE, check_named = TRUE, check_three_taxa = TRUE) & !Rboretum::isPhylo(tree,check_rooted = TRUE)){
@@ -38,6 +43,17 @@ getTreeClades <- function(tree,include_root,print_counts,return_counts){
     return_counts <- FALSE
   } else if(!is.logical(return_counts)){
     return_counts <- FALSE
+  }
+  
+  # Return shared clades instead of all clades?
+  if(missing(return_shared)){
+    return_shared <- FALSE
+  } else if(!is.logical(return_shared)){
+    return_shared <- FALSE
+  }
+  
+  if(return_shared & return_counts){
+    stop("Choose either 'return_shared' or 'return_counts'...")
   }
   
   # Get tree splits
@@ -66,6 +82,8 @@ getTreeClades <- function(tree,include_root,print_counts,return_counts){
     }
     
   } else if(Rboretum::isMultiPhylo(tree)){
+    
+    tree_count <- length(tree)
     
     # Get tree clades
     listed_tree_clades <- purrr::map(.x = tree_splits ,.f = function(x){  pull(x,Clade) %>% as.character()})
@@ -96,7 +114,18 @@ getTreeClades <- function(tree,include_root,print_counts,return_counts){
       print(clade_sorter)
     }
     
-    if(return_counts){
+    if(return_shared){
+      shared_clades <- clade_sorter %>%
+        filter(Count == tree_count)
+      
+      if(nrow(shared_clades)>0){
+       shared_clades <- shared_clades %>%
+          pull(Clade) %>% as.character() %>% sort()
+       return(shared_clades)
+      } else{
+        stop("Trees in 'trees' share no clades...")
+      }
+    } else if(return_counts){
       return(clade_sorter)
     } else{
       sorted_clades <- pull(clade_sorter,Clade) %>% as.character() %>% sort()

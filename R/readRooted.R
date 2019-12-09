@@ -114,7 +114,7 @@ readRooted <- function(to_root,root_taxa,tree_names,dummy_names,prefix,suffix){
     file_check <- purrr::map(.x = to_root,.f=function(x){ file.exists(x) & !dir.exists(x)}) %>% unlist() %>% all() # Check that all paths in 'to_root' point to valid files
     
     if(!file_check){
-      stop("At least on file from 'to_root' points to an invalid path.")
+      stop("At least one file from 'to_root' points to an invalid path.")
     } else{
       to_root <- purrr::map(.x=to_root,.f=function(x){file_path_as_absolute(x)}) %>% unlist()
       tree_count <- length(to_root)

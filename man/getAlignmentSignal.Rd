@@ -10,7 +10,8 @@ getAlignmentSignal(
   use_gaps,
   alignment_name,
   prefix,
-  suffix
+  suffix,
+  exisiting_signal
 )
 }
 \arguments{
@@ -38,6 +39,8 @@ getAlignmentSignal(
 \item{prefix}{OPTIONAL: If 'alignment_path' is a directory, provide a character vector of file prefixes (e.g. all alignment files start with "Mafft_")}
 
 \item{suffix}{OPTIONAL: If 'alignment_path' is a directory, provide a character vector of file suffixes (e.g. all alignment files end with ".phy")}
+
+\item{existing_signal}{OPTIONAL: Append these results to the output from getAlignmentSignal() run with the same species_info and a different alignment}
 }
 \value{
 Dataframe containing split pattern for each site, in each alignment, relative to the given set of taxa

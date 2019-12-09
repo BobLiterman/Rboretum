@@ -20,12 +20,13 @@
 #' @param alignment_name Chacter vector of names for each alignment. If missing or incomplete, the base filename is used
 #' @param prefix OPTIONAL: If 'alignment_path' is a directory, provide a character vector of file prefixes (e.g. all alignment files start with "Mafft_")
 #' @param suffix OPTIONAL: If 'alignment_path' is a directory, provide a character vector of file suffixes (e.g. all alignment files end with ".phy")
+#' @param existing_signal OPTIONAL: Append these results to the output from getAlignmentSignal() run with the same species_info and a different alignment
 #' @return Dataframe containing split pattern for each site, in each alignment, relative to the given set of taxa
 #' @export
 
-getAlignmentSignal <- function(alignment_path,species_info,use_gaps,alignment_name,prefix,suffix){
+getAlignmentSignal <- function(alignment_path,species_info,use_gaps,alignment_name,prefix,suffix,exisiting_signal){
   
-  # Ensure that an alignment path and species info are provided
+  # Ensure that a path and root taxa are provided as character vectors
   if(missing(alignment_path)){
     stop("No alignment file or directories indicated with 'alignment_path'")
   } else if(!is.character(alignment_path)){
@@ -33,11 +34,10 @@ getAlignmentSignal <- function(alignment_path,species_info,use_gaps,alignment_na
   } else if(missing(species_info)){
     stop("No 'species_info' provided")
   } else if(!is.character(species_info) & !Rboretum::isPhylo(species_info)){
-    stop("'species_info' must be either a character vector of taxa, or a phylo object.")
+    stop("'species_info' should be a character vector of tip labels or a phylo object")
   }
   
   # Create regex search pattern in case a directory is given
-
   if(missing(prefix)){
     prefix <- c()
   } else if(!is.character(prefix)){
@@ -66,133 +66,108 @@ getAlignmentSignal <- function(alignment_path,species_info,use_gaps,alignment_na
     align_regex <- paste(paste(c(prefix,"(.*)",suffix),collapse = ""))
   }
   
-  # If 'alignment_path' is a single item...
+  # Figure out how many files are being read in
   if(length(alignment_path)==1){
+    
     isFile <- file.exists(alignment_path) & !dir.exists(alignment_path)
     isDir <- dir.exists(alignment_path) & !isFile
     
-    if(!isFile & !isDir){
-      stop("'alignment_path' doesn't point to a valid file or directory path.")
-    } else if(isFile){ # 'alignment_path' points to a single alignment file
-      alignment_path <- file_path_as_absolute(alignment_path)
-      alignment_count <- 1
-    } else if(isDir){ # 'alignment_path' points to a directory
+    if(isFile){ # 'alignment_path' points to a single valid file
       
-      if(has_error(silent=TRUE,list.files(path=to_root,pattern=align_regex,full.names = TRUE,include.dirs = FALSE))){
+      alignment_count <- 1
+      alignment_path <- file_path_as_absolute(alignment_path)
+      default_name <- basename(alignment_path)
+      
+    } else if(isDir){ # 'alignment_path' points to a valid directory
+      
+      if(has_error(silent=TRUE,list.files(path=alignment_path,pattern=align_regex,full.names = TRUE,include.dirs = FALSE))){
         stop("Can't process file fetch. Check path or regex?")
       } else{
         
         alignment_path <- list.files(path=alignment_path,pattern=align_regex,full.names = TRUE,include.dirs = FALSE)
         
         if(length(alignment_path)==0){
-          stop("No files found in 'alignment_path' using provided path and regex")
+          stop("Directory found, but no files identified in 'alignment_path'. Check regex?")
+        } else if(length(alignment_path)==1){
+          alignment_count <- 1
+          default_name <-  basename(alignment_path)
         } else{
           alignment_count <- length(alignment_path)
+          default_name <- purrr::map(alignment_path,.f = function(x){basename(x)}) %>% unlist() %>% as.character()
         }
       }
-    }
-  } else{ # If 'alignment_path' is a vector of multiple paths
+    } else{ stop("'alignment_path' points to neither a valid file or directory.") }
     
-    # Check if all files are valid
-    path_check <- purrr::map(.x=alignment_path,.f=function(x){file.exists(x) & !dir.exists(x)}) %>% unlist() %>% all()
+  } else{ # 'alignment_path' is a list of file paths
     
-    if(path_check){
-      alignment_count <- length(alignment_path)
+    file_check <- purrr::map(.x = alignment_path,.f=function(x){ file.exists(x) & !dir.exists(x)}) %>% unlist() %>% all() # Check that all paths in 'alignment_path' point to valid files
+    
+    if(!file_check){
+      stop("At least one file from 'alignment_path' points to an invalid path.")
     } else{
-      stop("At lease one path in 'alignment_path' points to a non-existent file. Check working directory?")
+      alignment_path <- purrr::map(.x=alignment_path,.f=function(x){file_path_as_absolute(x)}) %>% unlist()
+      alignment_count <- length(alignment_path)
+      default_name <- purrr::map(alignment_path,.f = function(x){basename(x)}) %>% unlist() %>% as.character()
     }
   }
   
+  # Get gap data
+  if(missing(use_gaps)){
+    gap_list <- rep(FALSE,alignment_count)
+  } else if(is.logical(use_gaps)){
+    if(length(use_gaps)==1){
+      if(use_gaps){
+        gap_list <- rep(TRUE,alignment_count)
+      }else{
+        gap_list <- rep(FALSE,alignment_count)
+      }
+    } else{
+      if(length(use_gaps)!=alignment_count){
+        print(paste(c("'use_gaps' (",length(use_gaps),") and number of alignments (",alignment_count,") do not match...using default setting of ignoring gaps..."),collapse = ''))
+        gap_list <- rep(FALSE,alignment_count)
+      } else{
+        gap_list <- use_gaps
+      }
+    } 
+  } else{
+    stop("'use_gaps' must be logical (single value or vector)")
+  }
   
+  if(missing(alignment_name)){
+    alignment_name <- default_name
+  } else if(length(alignment_name) != alignment_count){
+    print(paste(c("'alignment_names' (",length(alignment_names),") and number of alignments (",alignment_count,") do not match...using default names..."),collapse = ''))
+    alignment_name <- default_name
+  }
   
+  if(any(duplicated(alignment_name))){
+    stop("'alignment_name' cannot contain duplicate values")
+  }
   
+  if(alignment_count == 1){
+    signal_df <- Rboretum::getAlignmentSignal_Worker(alignment_path,species_info,gap_list,alignment_name)
+  } else if(alignment_count > 1){
+    
+    signal_df <- tibble(Alignment_Name=character(),Alignment_Position=integer(),Site_Pattern=character(),Gap=logical(),Singleton=logical(),Singleton_Taxa=character(),Non_Base_Taxa=character(),Non_Base_Count=integer(),Split_1=character(),Split_2=character(),Split_3=character(),Split_4=character(),Split_5=character())
+    for(i in 1:alignment_count){
+      temp_df <- Rboretum::getAlignmentSignal_Worker(alignment_path[i],species_info,gap_list[i],alignment_name[i])
+      if(nrow(temp_df)>0){
+        signal_df <- rbind(signal_df,temp_df)
+      }
+    }
+  }
+  
+  if(nrow(signal_df)==0){
+    stop("No data returned. Check alignments and taxa?")
+  } else if(missing(exisiting_signal)){ # If  not appending results, return results
+    return(signal_df)
+  } else if(!Rboretum::isAlignmentSignal(exisiting_signal,species_info)){ # Ensure exisiting_signal contains information about the same taxa
+      print("Object passed as 'exisiting_signal' is failing the test isAlignmentSignal(exisiting_signal,species_info)...Returning results without appending...")
+      return(signal_df)
+  } else if(any(alignment_name %in% existing_signal$Alignment_Name)){ # Ensure that alignment names are all unique
+    print("Object passed as 'exisiting_signal' contains data on an alignment named identically one processed here...Returning results without appending...")
+    return(signal_df)
+  } else{
+    return(rbind(exisiting_signal,signal_df))
+  }
 }
-
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-#   
-#   # Get gap data
-#   if(missing(use_gaps)){
-#     gap_list <- rep(FALSE,alignment_count)
-#   } else if(is.logical(use_gaps)){
-#    if(length(use_gaps)==1){
-#      if(use_gaps){
-#        gap_list <- rep(TRUE,alignment_count)
-#      }else{
-#        gap_list <- rep(FALSE,alignment_count)
-#      }
-#    } else{
-#      if(length(use_gaps)!=alignment_count){
-#        stop("Arguments to 'alignment_paths' and 'use_gaps' differ in count.")
-#      } else{
-#        gap_list <- use_gaps
-#      }
-#    } 
-#   } else{
-#     stop("'use_gaps' must be logical (single value or vector)")
-#   }
-#   
-#   if(missing(alignment_names)){
-#     alignment_names <- c()
-#     for(i in 1:alignment_count){
-#       alignment_names <- c(alignment_names,file_path_sans_ext(basename(file_path_as_absolute(alignment_paths[i]))))
-#     }
-#   } else if(length(alignment_names) != alignment_count){
-#     print("Not enough alignment names provided. Generating names from filenames...")
-#     alignment_names <- c()
-#     for(i in 1:alignment_count){
-#       alignment_names <- c(alignment_names,file_path_sans_ext(basename(file_path_as_absolute(alignment_paths[i]))))
-#     }
-#   }
-#   
-#   if(any(duplicated(alignment_names))){
-#     stop("'alignment_names' contains duplicated values. All names must be unique.")
-#   }
-#   
-#   return_table <- tibble(Alignment_Name=character(),Alignment_Position=integer(),Site_Pattern=character(),Gap=logical(),Singleton=logical(),Singleton_Taxa=character(),Non_Base_Taxa=character(),Non_Base_Count=integer(),Split_1=character(),Split_2=character(),Split_3=character(),Split_4=character(),Split_5=character())
-#   
-#   for(i in 1:alignment_count){
-#     new_df <- Rboretum::getAlignmentSignal(alignment_paths[i],species_info,gap_list[i],alignment_names[i])
-#     if(nrow(new_df)==0){
-#       print(alignment_paths[i])
-#       print("The above alignment returned an error.")
-#     } else{
-#       return_table <- rbind(return_table,new_df)
-#     }
-#   }
-#   
-#   if(nrow(return_table)==0){
-#     stop("All alignments returned errors in getAlignmentSignal.")
-#   } else{
-#     return(return_table)
-#   }
-# }
-# 

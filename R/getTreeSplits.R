@@ -23,7 +23,7 @@ getTreeSplits <- function(tree){
     
   } else if(Rboretum::isMultiPhylo(tree,check_named = TRUE,check_rooted = TRUE,check_three_taxa = TRUE,check_some_equal = TRUE)){ # If a valid multiPhylo is provided, but some trees have the same topology, return splits for the unique trees
     
-    tree <- getUniqueTopologies(tree,print_table = TRUE)
+    tree <- getUniqueTopologies(tree)
     tree_names <- names(tree)
     split_df <- purrr::map(.x = tree,.f = function(x){getTreeSplits_Worker(x)})
     names(split_df) <- tree_names

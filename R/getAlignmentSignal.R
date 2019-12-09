@@ -25,7 +25,7 @@
 #' @return Dataframe containing split pattern for each site, in each alignment, relative to the given set of taxa
 #' @export
 
-getAlignmentSignal <- function(alignment_path,species_info,use_gaps,alignment_name,prefix,suffix,exisiting_signal){
+getAlignmentSignal <- function(alignment_path,species_info,use_gaps,alignment_name,prefix,suffix,existing_signal){
   
   # Ensure that a path and root taxa are provided as character vectors
   if(missing(alignment_path)){
@@ -160,15 +160,15 @@ getAlignmentSignal <- function(alignment_path,species_info,use_gaps,alignment_na
   
   if(nrow(signal_df)==0){
     stop("No data returned. Check alignments and taxa?")
-  } else if(missing(exisiting_signal)){ # If  not appending results, return results
+  } else if(missing(existing_signal)){ # If  not appending results, return results
     return(signal_df)
-  } else if(!Rboretum::isAlignmentSignal(exisiting_signal,species_info)){ # Ensure exisiting_signal contains information about the same taxa
-      print("Object passed as 'exisiting_signal' is failing the test isAlignmentSignal(exisiting_signal,species_info)...Returning results without appending...")
+  } else if(!Rboretum::isAlignmentSignal(existing_signal,species_info)){ # Ensure existing_signal contains information about the same taxa
+      print("Object passed as 'existing_signal' is failing the test isAlignmentSignal(existing_signal,species_info)...Returning results without appending...")
       return(signal_df)
   } else if(any(alignment_name %in% existing_signal$Alignment_Name)){ # Ensure that alignment names are all unique
-    print("Object passed as 'exisiting_signal' contains data on an alignment named identically one processed here...Returning results without appending...")
+    print("Object passed as 'existing_signal' contains data on an alignment named identically one processed here...Returning results without appending...")
     return(signal_df)
   } else{
-    return(rbind(exisiting_signal,signal_df))
+    return(rbind(existing_signal,signal_df))
   }
 }

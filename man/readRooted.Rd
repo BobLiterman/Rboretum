@@ -4,7 +4,7 @@
 \alias{readRooted}
 \title{Rboretum Rooted Tree Reader}
 \usage{
-readRooted(to_root, root_taxa, prefix, suffix, tree_names)
+readRooted(to_root, root_taxa, tree_names, dummy_names, prefix, suffix)
 }
 \arguments{
 \item{to_root}{Where to find tree files. Options include:
@@ -15,11 +15,13 @@ readRooted(to_root, root_taxa, prefix, suffix, tree_names)
 
 \item{root_taxa}{Character vector containing outgroup species IDs (Must be in tree(s) and monophyletic)}
 
+\item{tree_names}{OPTIONAL: If multiple tree paths are provided, a character vector of names to assign to trees. Length must equal the number of trees. [Default: Trees will be autonamed based on the filename]}
+
+\item{dummy_names}{OPTIONAL: If TRUE, and multiple tree paths are provdied, trees will be named with placeholder names (e.g. Tree_1, Tree_2, etc.) [Default: Trees will be autonamed based on the filename]}
+
 \item{prefix}{OPTIONAL: If 'to_root' is a directory, provide a character vector of file prefixes (e.g. all trees start with "RAxML")}
 
 \item{suffix}{OPTIONAL: If 'to_root' is a directory, provide a character vector of file suffixes (e.g. all trees end with ".nwk")}
-
-\item{tree_names}{OPTIONAL: If multiple tree paths are provided, a character vector of names to assign to trees. Length must equal the number of trees. [Default: Trees will be autonamed based on the filename]}
 }
 \value{
 A phylo object, rooted at specified taxa, or a named, rooted multiPhlyo

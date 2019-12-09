@@ -34,19 +34,19 @@ summarizeMultiPhylo <- function(trees){
     print('All trees contain identical tip labels...')
   }
   
-  all_clades <- getTreeClades(trees,return_counts = TRUE)
+  all_clades <- Rboretum::getTreeClades(trees,include_root = TRUE)
   
-  print(paste(c('Among all trees, and discounting root splits, there are',nrow(all_clades),'unique monophyletic clades...'),collapse = ' '))
+  print(paste(c('Among all trees, including root splits there are',length(all_clades),'unique monophyletic clades...'),collapse = ' '))
   print('Command: getTreeClades(trees,return_counts = TRUE)')
   
-  shared_clades <- all_clades %>%
-    filter(Count == tree_count) %>%
-    select(Clade)
+  shared_clades <- Rboretum::getTreeClades(trees,include_root = TRUE,return_counts = TRUE) %>%
+    filter(Count==tree_count) %>%
+    select(Clade) %>% as.character() %>% sort()
   
-  if(nrow(shared_clades)>0){
-    print('The following clades are present in all trees:')
-    print(shared_clades)
+  if(length(shared_clades)>0){
+    print('The following clades are present in all trees...')
     print('Command: getTreeClades(trees,return_shared = TRUE)')
+    purrr::map(.x=shared_clades,.f=function(x){print(x)})
   } else{
     print("Trees in 'trees' share no clades in common...")
   }

@@ -176,7 +176,7 @@ getTreeSupport <- function(tree,signal,alignment_name,max_missing,include_gap,on
     if(add_support){
       
       # Get old alignment names
-      old_names <- names(exisiting_support)[4:ncol(existing_support)]
+      old_names <- names(existing_support)[4:ncol(existing_support)]
       
       # Can't have duplicate IDs
       if(any(alignment_name %in% old_names)){

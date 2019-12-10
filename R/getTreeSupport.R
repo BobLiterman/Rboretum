@@ -153,7 +153,7 @@ getTreeSupport <- function(tree,signal,alignment_name,max_missing,include_gap,on
   }
   
   raw_alignment_name <- unique(signal$Alignment_Name)
-  alignment_count <- length(raw_alignement_name)
+  alignment_count <- length(raw_alignment_name)
 
   if(alignment_count == 1){
     default_name <- paste(c(raw_alignment_name,"_m",max_missing),collapse = '')

@@ -20,7 +20,7 @@
 #' @return The same split table from getTreeSplits(tree), but with (1) no root row, and (2) a support column for the specfied alignment/missing combination
 #' @export
 
-getTreeSupport <- function(tree,signal,alignment_name,max_missing,include_gap,only_gap,include_singleton,include_biallelic,include_triallelic,include_quadallelic,include_pentallelic){
+getTreeSupport <- function(tree,signal,alignment_name,max_missing,include_gap,only_gap,include_singleton,include_biallelic,include_triallelic,include_quadallelic,include_pentallelic,existing_support){
 
   # Check if tree and signal are valid and compatible
   if(!Rboretum::isPhylo(tree,check_rooted = TRUE) & !Rboretum::isMultiPhylo(tree,check_named = TRUE,check_rooted = TRUE, check_three_taxa = TRUE)){

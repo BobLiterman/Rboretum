@@ -205,7 +205,7 @@ getTreeSupport <- function(tree,signal,alignment_name,max_missing,include_gap,on
         print("Columns above already in existing_support, returning unappendend results")
         return(support_list)
       } else{
-        appended_list <- purrr::map(.x=support_list,.f=function(x){left_join(existing_support,x,by=c('Clade','Mirror_Clade','Split_Node'))})
+        appended_list <- purrr::map(.x=names(support_list),.f=function(x){left_join(existing_support,support_list[[x]],by=c('Clade','Mirror_Clade','Split_Node'))})
         names(appended_list) <- names(support_list)
         print(paste(c('Added results from:',paste(alignment_name,collapse = ";")),collapse = " "))
         return(appended_list)

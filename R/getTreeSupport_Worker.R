@@ -16,7 +16,7 @@ getTreeSupport_Worker <- function(tree,signal,alignment_name){
     stop("'signal' is either not the output from getAlignmentSignal(), or does not contain the same taxa as 'tree'")
   } else {
     raw_alignment_name <- unique(signal$Alignment_Name)
-    alignment_count <- length(raw_alignement_name)
+    alignment_count <- length(raw_alignment_name)
     if(alignment_count != length(alignment_name)){
       stop("'alignment_name' and number of detected alignments do not match")
     }

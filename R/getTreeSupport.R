@@ -40,11 +40,11 @@ getTreeSupport <- function(tree,signal,alignment_name,max_missing,include_gap,on
       tree <- as.phylo(tree[[1]])
     } else if(Rboretum::isMultiPhylo(tree,check_all_unique = TRUE)){
       tree_count <- length(tree)
-      tree_names <- names(trees)
+      tree_names <- names(tree)
     } else if(Rboretum::isMultiPhylo(tree,check_some_equal = TRUE)){
       tree <- Rboretum::getUniqueTopologies(tree)
       tree_count <- length(tree)
-      tree_names <- names(trees)
+      tree_names <- names(tree)
     }
   }
   

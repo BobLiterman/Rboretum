@@ -47,7 +47,7 @@ isTreeSupport <- function(test_object,tree){
       return(FALSE)
     } else if(!all(names(test_object)[1:3] == c("Clade","Mirror_Clade","Split_Node"))){ # Test that cols 1:3 are split cols
       return(FALSE)
-    } else if(nrow(test_object) == length(tree_clades)){ # Ensure data
+    } else if(nrow(test_object) != length(tree_clades)){ # Ensure data
       return(FALSE)
     } else if(any(is.na(test_object$Split_Node))){ # Tree support lacks root information
       return(FALSE)

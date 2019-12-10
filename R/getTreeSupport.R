@@ -192,7 +192,7 @@ getTreeSupport <- function(tree,signal,alignment_name,max_missing,include_gap,on
       return(support_df)
     }
   } else{ # If result is for multiple trees, return a named list
-    support_list <- purrr::map(.x=tree,.f = function(x){Rboretum::getTreeSupportWorker(x,signal,alignment_name)})
+    support_list <- purrr::map(.x=tree,.f = function(x){Rboretum::getTreeSupport_Worker(x,signal,alignment_name)})
     names(support_list) <- tree_names
     
     if(add_support){

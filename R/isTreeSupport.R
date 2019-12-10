@@ -104,7 +104,20 @@ isTreeSupport <- function(test_object,tree){
     clade_check <- purrr::map(.x=names(test_object),.f=function(x){all(sort(test_object[[x]]$Clade) == Rboretum::getTreeClades(tree[[x]]))}) %>% unlist()
     if(!all(name_check)){
       return(FALSE)
-    } else{
+    }
+
+    # Ensure each tree has data for all alignments
+    col_nums <- purrr::map(.x=names(test_object),.f=function(x){ncol(test_object[[x]])}) %>% unlist() %>% as.integer()
+    if(length(unique(col_nums))!=1){
+      return(FALSE)
+    }
+    
+    # Ensure each tree has data for all alignments
+    col_names <- purrr::map(.x=names(test_object),.f=function(x){paste(names(test_object[[x]]),collapse = ";")}) %>% unlist() %>% as.character()
+    if(length(unique(col_names))!=1){
+      return(FALSE)
+    }
+    else{
       return(TRUE)
     }
   }

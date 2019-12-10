@@ -172,11 +172,46 @@ getTreeSupport <- function(tree,signal,alignment_name,max_missing,include_gap,on
 
   if(tree_count == 1){
     support_df <- Rboretum::getTreeSupport_Worker(tree,signal,alignment_name)
-    return(support_df)
-  } else{
+    
+    if(add_support){
+      
+      # Get old alignment names
+      old_names <- names(exisiting_support)[4:ncol(existing_support)]
+      
+      # Can't have duplicate IDs
+      if(any(alignment_name %in% old_names)){
+        print(alignment_name[alignment_name %in% old_names])
+        print("Columns above already in existing_support, returning unappendend results")
+        return(support_df)
+      } else{
+        support_df <- left_join(existing_support,support_df,by=c('Clade','Mirror_Clade','Split_Node'))
+        print(paste(c('Added results from:',paste(alignment_name,collapse = ";")),collapse = " "))
+        return(support_df)
+      }
+    } else{
+      return(support_df)
+    }
+  } else{ # If result is for multiple trees, return a named list
     support_list <- purrr::map(.x=tree,.f = function(x){Rboretum::getTreeSupportWorker(x,signal,alignment_name)})
     names(support_list) <- tree_names
-    return(support_list)
+    
+    if(add_support){
+      # Get old alignment columns
+      old_names <- names(existing_support[[1]])[4:ncol(existing_support[[1]])]
+      
+      # Can't have duplicate IDs
+      if(any(alignment_name %in% old_names)){
+        print(alignment_name[alignment_name %in% old_names])
+        print("Columns above already in existing_support, returning unappendend results")
+        return(support_list)
+      } else{
+        appended_list <- purrr::map(.x=support_list,.f=function(x){left_join(existing_support,x,by=c('Clade','Mirror_Clade','Split_Node'))})
+        names(appended_list) <- names(support_list)
+        print(paste(c('Added results from:',paste(alignment_name,collapse = ";")),collapse = " "))
+        return(appended_list)
+      }
+    } else{
+      return(support_list)
+    }
   }
-
 }

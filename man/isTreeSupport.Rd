@@ -4,7 +4,7 @@
 \alias{isTreeSupport}
 \title{Rboretum Alignment Signal Checker}
 \usage{
-isTreeSupport(test_object, tree)
+isTreeSupport(test_object, tree, return_tree)
 }
 \arguments{
 \item{test_object}{R object to check}
@@ -14,6 +14,8 @@ isTreeSupport(test_object, tree)
   \item A rooted phylo object; or,
   \item A named, rooted multiPhylo object where all trees share 3+ taxa
 }}
+
+\item{return_tree}{OPTIONAL: If testing a phylo object against the support for multiple trees, return the name of the matching tree [False: return logical]}
 }
 \value{
 TRUE if output of getTreeSupport(); otherwise, FALSE

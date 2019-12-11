@@ -44,9 +44,9 @@ summarizeMultiPhylo <- function(trees){
     select(Clade) %>% as.character() %>% sort()
   
   if(length(shared_clades)>0){
-    print('The following clades are present in all trees...')
+    print(paste(c('All trees share',length(shared_clades),'clades, including:'),collapse = ' '))
+    print(shared_clades)
     print('Command: getTreeClades(trees,return_shared = TRUE)')
-    purrr::map(.x=shared_clades,.f=function(x){print(x)})
   } else{
     print("Trees in 'trees' share no clades in common...")
   }

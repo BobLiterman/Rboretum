@@ -40,12 +40,11 @@ summarizeMultiPhylo <- function(trees){
   print('Command: getTreeClades(trees,return_counts = TRUE)')
   
   shared_clades <- Rboretum::getTreeClades(trees,include_root = TRUE,return_counts = TRUE) %>%
-    filter(Count==tree_count) %>%
-    select(Clade) %>% as.character() %>% sort()
+    filter(Count==tree_count)
   
-  if(length(shared_clades)>0){
-    print(paste(c('All trees share',length(shared_clades),'clades, including:'),collapse = ' '))
-    print(shared_clades)
+  if(nrow(shared_clades)>0){
+    print(paste(c('All trees share',nrow(shared_clades),'clades, including:'),collapse = ' '))
+    print(paste(sort(pull(shared_clades,Clade)),sep = ", "))
     print('Command: getTreeClades(trees,return_shared = TRUE)')
   } else{
     print("Trees in 'trees' share no clades in common...")

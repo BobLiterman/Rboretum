@@ -7,10 +7,11 @@
 #'   \item A rooted phylo object; or,
 #'   \item A named, rooted multiPhylo object where all trees share 3+ taxa
 #' }
+#' @param return_tree OPTIONAL: If testing a phylo object against the support for multiple trees, return the name of the matching tree [False: return logical]
 #' @return TRUE if output of getTreeSupport(); otherwise, FALSE
 #' @export
 
-isTreeSupport <- function(test_object,tree){
+isTreeSupport <- function(test_object,tree,return_tree){
   
   # Ensure dataframe columns match expected and that data exists
   if(!is.data.frame(test_object) & !is.list(test_object)){
@@ -62,16 +63,6 @@ isTreeSupport <- function(test_object,tree){
   
   if(is.list(test_object)){
     
-    # Ensure results list is the same length as trees
-    if(length(test_object) != tree_count){ 
-      return(FALSE)
-    } 
-    
-    # Ensure support list has the same name as trees
-    if(!all(names(test_object) == tree_names)){ 
-      return(FALSE)
-    }
-      
     # Test that cols 1:3 are split cols
     err_name <- purrr::map(.x=names(test_object),.f=function(x){has_error(silent=TRUE,expr=all(names(test_object[[x]])[1:3] == c("Clade","Mirror_Clade","Split_Node")))}) %>% unlist()
     if(any(err_name)){
@@ -83,29 +74,12 @@ isTreeSupport <- function(test_object,tree){
       return(FALSE)
     }
     
-    # Ensure data
-    data_check <- purrr::map(.x=names(test_object),.f=function(x){nrow(test_object[[x]]) == length(Rboretum::getTreeClades(tree[[x]]))}) %>% unlist()
-    if(!all(data_check)){
-      return(FALSE)
-    }
-    
     # Tree support lacks root information
     root_check <- purrr::map(.x=names(test_object),.f=function(x){any(is.na(test_object[[x]]$Split_Node))}) %>% unlist()
     if(any(root_check)){
       return(FALSE)
     }
     
-    # Ensure clades match between tree and support
-    err_clade <- purrr::map(.x=names(test_object),.f=function(x){has_error(silent=TRUE,expr=all(sort(test_object[[x]]$Clade) == Rboretum::getTreeClades(tree[[x]])))}) %>% unlist()
-    if(any(err_name)){
-      return(FALSE)
-    } 
-    
-    clade_check <- purrr::map(.x=names(test_object),.f=function(x){all(sort(test_object[[x]]$Clade) == Rboretum::getTreeClades(tree[[x]]))}) %>% unlist()
-    if(!all(name_check)){
-      return(FALSE)
-    }
-
     # Ensure each tree has data for all alignments
     col_nums <- purrr::map(.x=names(test_object),.f=function(x){ncol(test_object[[x]])}) %>% unlist() %>% as.integer()
     if(length(unique(col_nums))!=1){
@@ -117,8 +91,77 @@ isTreeSupport <- function(test_object,tree){
     if(length(unique(col_names))!=1){
       return(FALSE)
     }
-    else{
-      return(TRUE)
+    
+    if(Rboretum::isMultiPhylo(tree)){
+      # Ensure results list is the same length as trees
+      if(length(test_object) != tree_count){ 
+        return(FALSE)
+      } 
+      
+      # Ensure support list has the same name as trees
+      if(!all(names(test_object) == tree_names)){ 
+        return(FALSE)
+      }
+      
+      # Ensure data
+      data_check <- purrr::map(.x=names(test_object),.f=function(x){nrow(test_object[[x]]) == length(Rboretum::getTreeClades(tree[[x]]))}) %>% unlist()
+      if(!all(data_check)){
+        return(FALSE)
+      }
+      
+      # Ensure clades match between tree and support
+      err_clade <- purrr::map(.x=names(test_object),.f=function(x){has_error(silent=TRUE,expr=all(sort(test_object[[x]]$Clade) == Rboretum::getTreeClades(tree[[x]])))}) %>% unlist()
+      if(any(err_clade)){
+        return(FALSE)
+      } 
+      
+      clade_check <- purrr::map(.x=names(test_object),.f=function(x){all(sort(test_object[[x]]$Clade) == Rboretum::getTreeClades(tree[[x]]))}) %>% unlist()
+      if(!all(name_check)){
+        return(FALSE)
+      } else{
+        return(TRUE)
+      }
+    } else{ # To test whether support in a list matches a single phylo...
+      
+      # Ensure data
+      data_check <- purrr::map(.x=names(test_object),.f=function(x){nrow(test_object[[x]]) == length(tree_clades)}) %>% unlist()
+      if(!all(data_check)){
+        return(FALSE)
+      }
+      
+      # Ensure clades can be compared between phylo and support
+      err_clade <- purrr::map(.x=names(test_object),.f=function(x){has_error(silent=TRUE,expr=all(sort(test_object[[x]]$Clade) == tree_clades))}) %>% unlist()
+      if(any(err_clade)){
+        return(FALSE)
+      }
+      
+      # Find matching tree, if any
+      clade_check <- purrr::map(.x=names(test_object),.f=function(x){all(sort(test_object[[x]]$Clade) == tree_clades)}) %>% unlist()
+      matching_tree <- names(test_object)[clade_check]
+      
+      if(sum(clade_check)>1){
+        stop('Error in clade comparison') # Multiple support trees match tree?
+      } else if(sum(clade_check)==1){
+        
+        if(missing(return_tree)){
+          return_tree <- FALSE
+        } else if(!is.logical(return_tree)){
+          return_tree <- FALSE
+        }
+        
+        if(return_tree){
+          return(matching_tree)
+        } else{
+          return(TRUE)
+        }
+        
+      } else{
+        return(FALSE) # Tree is not included in support list
+      }
+      
+      
     }
+      
+
   }
 }

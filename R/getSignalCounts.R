@@ -1,8 +1,9 @@
-#' Rboretum Alignment Clade Support Fetcher
+#' Rboretum Alignment Signal Support Tabler
 #'
-#' This function extracts phylogenetic signal from a multiple-sequence alignment and returns the support for the clade provided
-#' @param signal Output table from getAlignmentSignal() run with taxa against 'tree'
-#' @param clade Character vector containing entire clade of interest
+#' This function extracts phylogenetic signal from a multiple-sequence alignment and returns a table where the names are semicolon-separated supported clades
+#' @param signal Output table from getAlignmentSignal()
+#' @param clade OPTIONAL: Character vector containing all members (2+) of clade for which support is requested. If provided, return total intger support for this set of taxa, rather than the entire table. 
+#' @param separate OPTIONAL: If true, separate results from different alignments (as coded by the Alignment_Name column) [Default: FALSE, return a single table/count]
 #' @param max_missing OPTIONAL: Number of missing sites allowed in alignment column before it is not considered [Default: 0, no missing taxa allowed]
 #' @param include_gap OPTIONAL: If TRUE, count sites with gap positions ('-') as informative signal; otherwise, count gaps as missing data [Default: FALSE: Gaps are treated as missing]
 #' @param only_gap OPTIONAL: TRUE or FALSE; Only count sites with gap positions ('-') [Default: FALSE]
@@ -11,16 +12,52 @@
 #' @param include_triallelic OPTIONAL: If TRUE, count sites with triallelic variation as part of total support [Default: TRUE]
 #' @param include_quadallelic OPTIONAL: If TRUE, count sites with quadallelic variation as part of total support [Default: TRUE]
 #' @param include_pentallelic OPTIONAL: If TRUE, count sites with pentallelic variation as part of total support [Default: TRUE]
-#' @return Table of counts for clade support among  all sites in multiple-sequence alignment
+#' @return Table of counts for clade support among  all sites in multiple-sequence alignment; or support for a specific clade if requested.
 #' @export
 
-getCladeSupport <- function(signal,clade,max_missing,include_gap,only_gap,include_singleton,include_biallelic,include_triallelic,include_quadallelic,include_pentallelic){
+getSignalCounts <- function(signal,clade,separate,max_missing,include_gap,only_gap,include_singleton,include_biallelic,include_triallelic,include_quadallelic,include_pentallelic){
 
   # Check if signal is valid
   if(!Rboretum::isAlignmentSignal(signal)){
     stop("'signal' is either not the output from getAlignmentSignal()")
   } else{
-    signal_taxa <- isAlignmentSignal(signal,return_taxa = TRUE)
+    signal_taxa <- Rboretum::isAlignmentSignal(signal,return_taxa = TRUE)
+  }
+  
+  # Process clade information if present
+  if(missing(clade)){
+    return_clade <- FALSE
+  } else if(!is.character(clade)){
+    stop("'clade' should be a character vector of 2+ taxa")
+  } else if(length(clade)==1){
+    if(str_detect(clade,";")){
+      clade <- sort(semiVector(clade))
+      return_clade <- TRUE
+    } else{
+      stop("'clade' must contain 2+ taxa")
+    }
+  } else{
+    clade <- sort(clade)
+    return_clade <- TRUE
+  }
+  
+  if(return_clade){
+    if(!all(clade %in% signal_taxa)){
+      print("Signal Taxa:")
+      print(signal_taxa)
+      print("Requested Clade:")
+      print(clade)
+      stop("Some/all species from 'clade' species not present in alignment signal")
+    } else{
+      clade <- vectorSemi(clade)
+    }
+  }
+  
+  # Separate results by alignment, or return total?
+  if(missing(separate)){
+    separate <- FALSE
+  } else if(!is.logical(separate)){
+    separate <- FALSE
   }
   
   # Set maximum number of missing taxa allowed
@@ -137,64 +174,25 @@ getCladeSupport <- function(signal,clade,max_missing,include_gap,only_gap,includ
   
   raw_alignment_name <- unique(signal$Alignment_Name)
   alignment_count <- length(raw_alignment_name)
-
-  if(alignment_count == 1){
-    default_name <- paste(c(raw_alignment_name,"_m",max_missing),collapse = '')
-  } else{
-    default_name <- purrr::map(.x = raw_alignment_name,.f = function(x){paste(c(x,"_m",max_missing),collapse = '')}) %>% unlist() %>% as.character()
-  }
   
-  # Set alignment names to defaults if necessary
-  if(missing(alignment_name)){
-    alignment_name <- default_name
-  } else if(!is.character(alignment_name)){
-    alignment_name <- default_name
-  } else if(length(alignment_name) != alignment_count){
-    alignment_name <- default_name
-  }
-
-  if(tree_count == 1){
-    support_df <- Rboretum::getTreeSupport_Worker(tree,signal,alignment_name)
+  if(alignment_count == 1 | !separate){
+    support_table <- signal %>% select(starts_with('Split_')) %>% unlist() %>% table()
     
-    if(add_support){
-      
-      # Get old alignment names
-      old_names <- names(existing_support)[4:ncol(existing_support)]
-      
-      # Can't have duplicate IDs
-      if(any(alignment_name %in% old_names)){
-        print(alignment_name[alignment_name %in% old_names])
-        print("Columns above already in existing_support, returning unappendend results")
-        return(support_df)
-      } else{
-        support_df <- left_join(existing_support,support_df,by=c('Clade','Mirror_Clade','Split_Node'))
-        print(paste(c('Added results from:',paste(alignment_name,collapse = ";")),collapse = " "))
-        return(support_df)
-      }
+    if(return_clade){
+      return(Rboretum::tableCount(support_table,clade)) 
     } else{
-      return(support_df)
+      return(support_table)
     }
-  } else{ # If result is for multiple trees, return a named list
-    support_list <- purrr::map(.x=tree,.f = function(x){Rboretum::getTreeSupport_Worker(x,signal,alignment_name)})
-    names(support_list) <- tree_names
+  } else if(alignment_count > 1 & separate){
+    support_table <- purrr::map(.x = raw_alignment_name, .f = function(x){signal %>% filter(Alignment_Name == x) %>% select(starts_with('Split_')) %>% unlist() %>% table()})
+    names(support_table) <- raw_alignment_name
     
-    if(add_support){
-      # Get old alignment columns
-      old_names <- names(existing_support[[1]])[4:ncol(existing_support[[1]])]
-      
-      # Can't have duplicate IDs
-      if(any(alignment_name %in% old_names)){
-        print(alignment_name[alignment_name %in% old_names])
-        print("Columns above already in existing_support, returning unappendend results")
-        return(support_list)
-      } else{
-        appended_list <- purrr::map2(.x=existing_support,.y = support_list,.f=function(x,y){left_join(x,y,by=c('Clade','Mirror_Clade','Split_Node'))})
-        names(appended_list) <- names(support_list)
-        print(paste(c('Added results from:',paste(alignment_name,collapse = ";")),collapse = " "))
-        return(appended_list)
-      }
+    if(return_clade){
+      support_counts <- purrr::map(.x = raw_alignment_name, .f = function(x){Rboretum::tableCount(support_table[[x]],clade)}) %>% unlist()
+      support_df <- data.frame(Alignment=as.character(raw_alignment_name),Support=as.integer(support_counts))
+      return(support_df)
     } else{
-      return(support_list)
+      return(support_table)
     }
   }
 }

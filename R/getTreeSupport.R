@@ -53,14 +53,14 @@ getTreeSupport <- function(tree,signal,alignment_name,max_missing,include_gap,on
   
   if(missing(max_missing)){
     max_missing <- 0
-  } else if(max_missing == 0){
-    max_missing <- as.integer(0)
-  } else if(!is.integer(max_missing)){
-    stop("'max_missing' must be an integer")
+  } else if(has_error(silent=TRUE,expr=as.integer(max_missing))){
+    stop("'max_missing' should be an integer value")
   } else{
-    if(max_missing > max_possible_missing){
-      max_missing <- max_possible_missing
-    }
+    max_missing <- as.integer(max_missing)
+  }
+
+  if(max_missing > max_possible_missing){
+    max_missing <- max_possible_missing
   }
   
   if(missing(include_gap)){

@@ -15,7 +15,8 @@ getTreeSupport(
   include_biallelic,
   include_triallelic,
   include_quadallelic,
-  include_pentallelic
+  include_pentallelic,
+  existing_support
 )
 }
 \arguments{

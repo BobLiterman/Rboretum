@@ -61,7 +61,7 @@ getSignalCounts <- function(signal,clade,separate,max_missing,include_gap,only_g
   }
   
   # Set maximum number of missing taxa allowed
-  max_possible_missing <- length(tree_taxa) - 3
+  max_possible_missing <- length(signal_taxa) - 3
   
   if(missing(max_missing)){
     max_missing <- 0
@@ -117,14 +117,6 @@ getSignalCounts <- function(signal,clade,separate,max_missing,include_gap,only_g
     include_pentallelic <- TRUE
   }
   
-  if(missing(existing_support)){
-    add_support <- FALSE
-  } else if(!Rboretum::isTreeSupport(existing_support,tree)){
-    stop("'existing_support' is either not the output from getTreeSupport(), or does not contain split information from 'tree'")
-  } else{
-    add_support <- TRUE
-  }
-
   informative_patterns <- c('biallelic','triallelic','quadallelic','pentallelic')
   
   signal <- signal %>% 

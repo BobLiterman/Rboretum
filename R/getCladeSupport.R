@@ -1,8 +1,7 @@
 #' Rboretum Alignment Clade Support Fetcher
 #'
-#' This function extracts phylogenetic signal from a multiple-sequence alignment and returns the support for the clade provided
+#' This function extracts phylogenetic signal from a multiple-sequence alignment and returns a table where the names are semicolon-separated supported clades
 #' @param signal Output table from getAlignmentSignal() run with taxa against 'tree'
-#' @param clade Character vector containing entire clade of interest
 #' @param max_missing OPTIONAL: Number of missing sites allowed in alignment column before it is not considered [Default: 0, no missing taxa allowed]
 #' @param include_gap OPTIONAL: If TRUE, count sites with gap positions ('-') as informative signal; otherwise, count gaps as missing data [Default: FALSE: Gaps are treated as missing]
 #' @param only_gap OPTIONAL: TRUE or FALSE; Only count sites with gap positions ('-') [Default: FALSE]
@@ -14,13 +13,18 @@
 #' @return Table of counts for clade support among  all sites in multiple-sequence alignment
 #' @export
 
-getCladeSupport <- function(signal,clade,max_missing,include_gap,only_gap,include_singleton,include_biallelic,include_triallelic,include_quadallelic,include_pentallelic){
+getSignalTable <- function(signal,max_missing,include_gap,only_gap,include_singleton,include_biallelic,include_triallelic,include_quadallelic,include_pentallelic){
 
   # Check if signal is valid
   if(!Rboretum::isAlignmentSignal(signal)){
     stop("'signal' is either not the output from getAlignmentSignal()")
+  } else if(length(clade)<=1){
+    stop("'clade' must contain 2+ taxon IDs")
   } else{
     signal_taxa <- isAlignmentSignal(signal,return_taxa = TRUE)
+    if(!all(clade %in% signal_taxa)){
+      stop("Taxon IDs from 'clade' not present in 'signal'")
+    }
   }
   
   # Set maximum number of missing taxa allowed

@@ -8,10 +8,11 @@
 #'   \item multiPhylo object from which common species will be extracted; or
 #'   \item Character vector of desired taxa
 #' }
+#' @param return_taxa OPTIONAL: If TRUE, if object appears to be signal, return signal taxa rather than TRUE or FALSE [Default: FALSE, return logical]
 #' @return TRUE if output of getAlignmentSignal(); otherwise, FALSE
 #' @export
 
-isAlignmentSignal <- function(test_object,species_info){
+isAlignmentSignal <- function(test_object,species_info,return_taxa){
   
   # Ensure dataframe columns match expected and that data exists
   if(!is.data.frame(test_object)){
@@ -22,6 +23,13 @@ isAlignmentSignal <- function(test_object,species_info){
     return(FALSE)
   } else if(!all(names(test_object) == c('Alignment_Name','Alignment_Position','Site_Pattern','Gap','Singleton','Singleton_Taxa','Non_Base_Taxa','Non_Base_Count','Split_1','Split_2','Split_3','Split_4','Split_5'))){
     return(FALSE)
+  }
+  
+  # Return logical or taxa list?
+  if(missing(return_taxa)){
+    return_taxa <- FALSE
+  } else if(!is.logical(return_taxa)){
+    return_taxa <- FALSE
   }
   
   # Get species info for each alignment
@@ -46,7 +54,11 @@ isAlignmentSignal <- function(test_object,species_info){
   if(length(unique(signal_taxa))!=1){ # If entries for different alignments return different species lists, return FALSE
     return(FALSE)
   } else if(missing(species_info)){ # If no species tests are requested,  return TRUE
-    return(TRUE)
+    if(return_taxa){
+      return(sort(semiVector(unique(signal_taxa))))
+    } else{
+      return(TRUE)
+    }
   } else{ # Ensure species from 'test_object' match species from 'species_info'
 
     if(Rboretum::isPhylo(species_info)){
@@ -60,7 +72,11 @@ isAlignmentSignal <- function(test_object,species_info){
     if(spp_list != unique(signal_taxa)){
       return(FALSE)
     } else{
-      return(TRUE)
+      if(return_taxa){
+        return(sort(semiVector(unique(signal_taxa))))
+      } else{
+        return(TRUE)
+      }    
     }
   }
 }

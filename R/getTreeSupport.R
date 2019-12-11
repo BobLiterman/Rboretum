@@ -122,6 +122,12 @@ getTreeSupport <- function(tree,signal,alignment_name,max_missing,include_gap,on
   if(only_gap){
     signal <- signal %>%
       filter(Gap==TRUE)
+    include_gap <- TRUE
+  }
+  
+  if(!include_gap){
+    signal <- signal %>%
+      filter(Gap==FALSE)
   }
   
   if(!include_singleton){

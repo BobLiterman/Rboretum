@@ -5,7 +5,7 @@
 #' @param tree OPTIONAL: Check that passed support object contains information about a specific set of trees. Options include:
 #' \itemize{
 #'   \item A rooted phylo object; or,
-#'   \item A named, rooted multiPhylo object where all trees share 3+ taxa
+#'   \item A named, rooted multiPhylo object where all trees share 3taxa
 #' }
 #' @param return_tree OPTIONAL: If testing a phylo object against the support for multiple trees, return the name of the matching tree [False: return logical]
 #' @return TRUE if output of getTreeSupport(); otherwise, FALSE
@@ -93,12 +93,12 @@ isTreeSupport <- function(test_object,tree,return_tree){
     }
     
     if(Rboretum::isMultiPhylo(tree)){
-      
+      print(1)
       # Ensure results list is the same length as trees
       if(length(test_object) != tree_count){ 
         return(FALSE)
       } 
-
+      
       # Removed to allow passing of unique trees with new names      
       # # Ensure support list has the same name as trees
       # if(!all(names(test_object) == tree_names)){ 
@@ -108,17 +108,20 @@ isTreeSupport <- function(test_object,tree,return_tree){
       # Ensure tree support has the same number of rows as the number of clades in each tree
       data_check <- purrr::map(.x=1:tree_count,.f=function(x){nrow(test_object[[x]]) == length(Rboretum::getTreeClades(tree[[x]]))}) %>% unlist()
       if(!all(data_check)){
+        print(2)
         return(FALSE)
       }
       
       # Ensure clades match between tree and support
       err_clade <- purrr::map(.x=1:tree_count,.f=function(x){has_error(silent=TRUE,expr=all(sort(test_object[[x]]$Clade) == Rboretum::getTreeClades(tree[[x]])))}) %>% unlist()
       if(any(err_clade)){
+        print(3)
         return(FALSE)
       } 
       
       clade_check <- purrr::map(.x=1:tree_count,.f=function(x){all(sort(test_object[[x]]$Clade) == Rboretum::getTreeClades(tree[[x]]))}) %>% unlist()
       if(!all(name_check)){
+        print(4)
         return(FALSE)
       } else{
         return(TRUE)

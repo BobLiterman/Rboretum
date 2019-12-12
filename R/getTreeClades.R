@@ -66,20 +66,15 @@ getTreeClades <- function(tree,include_root,print_counts,return_counts,return_sh
       pull(Clade) %>% as.character() %>% sort()
     
     if(include_root){ 
-      
       # Extract root clades if requested
       root_clades <- tree_splits %>% filter(is.na(Split_Node)) %>% 
         select(Clade,Mirror_Clade) %>% slice(1) %>% 
         unlist() %>% as.character()
       
-      tree_clades <- c(tree_clades,root_clades) %>% sort()
-      
-      return(tree_clades)
-      
-    } else{
-      
-      return(tree_clades)
+      tree_clades <- c(tree_clades,root_clades) %>% as.character() %>% sort()
     }
+    
+    return(tree_clades)
     
   } else if(Rboretum::isMultiPhylo(tree)){
     

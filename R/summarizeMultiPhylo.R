@@ -44,7 +44,7 @@ summarizeMultiPhylo <- function(trees){
   
   if(nrow(shared_clades)>0){
     print(paste(c('All trees share',nrow(shared_clades),'clades, including:'),collapse = ' '))
-    print(sort(pull(shared_clades,Clade)))
+    print(sort(as.character(pull(shared_clades,Clade))))
     print('Command: getTreeClades(trees,return_shared = TRUE)')
   } else{
     print("Trees in 'trees' share no clades in common...")

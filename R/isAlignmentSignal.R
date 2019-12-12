@@ -53,7 +53,9 @@ isAlignmentSignal <- function(test_object,species_info,return_taxa){
   
   if(length(unique(signal_taxa))!=1){ # If entries for different alignments return different species lists, return FALSE
     return(FALSE)
-  } else if(missing(species_info)){ # If no species tests are requested,  return TRUE
+  }
+  
+  if(missing(species_info)){ # If no species tests are requested,  return TRUE
     if(return_taxa){
       return(sort(semiVector(unique(signal_taxa))))
     } else{

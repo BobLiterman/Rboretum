@@ -12,7 +12,7 @@ isTreeSupport(test_object, tree, return_tree)
 \item{tree}{OPTIONAL: Check that passed support object contains information about a specific set of trees. Options include:
 \itemize{
   \item A rooted phylo object; or,
-  \item A named, rooted multiPhylo object where all trees share 3+ taxa
+  \item A named, rooted multiPhylo object where all trees share 3taxa
 }}
 
 \item{return_tree}{OPTIONAL: If testing a phylo object against the support for multiple trees, return the name of the matching tree [False: return logical]}

@@ -9,7 +9,9 @@
 
 getSharedTaxa <- function(trees){
   
-  if(!Rboretum::isMultiPhylo(trees,check_three_taxa = TRUE)){
+  if(Rboretum::isPhylo(trees)){ # Return taxa from phylo
+    return(sort(trees$tip.label))
+  } else if(!Rboretum::isMultiPhylo(trees,check_three_taxa = TRUE)){
     stop("'trees' does not appear to be a valid multiPhylo where all trees share at least three taxa.")
   }
 

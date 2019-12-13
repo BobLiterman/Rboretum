@@ -2,24 +2,24 @@
 % Please edit documentation in R/isTreeSupport.R
 \name{isTreeSupport}
 \alias{isTreeSupport}
-\title{Rboretum Alignment Signal Checker}
+\title{Rboretum Tree Support Checker}
 \usage{
-isTreeSupport(test_object, tree, return_tree)
+isTreeSupport(test_object, tree, partial)
 }
 \arguments{
 \item{test_object}{R object to check}
 
-\item{tree}{OPTIONAL: Check that passed support object contains information about a specific set of trees. Options include:
+\item{tree}{Check that passed support object contains information about a specific set of trees. Options include:
 \itemize{
   \item A rooted phylo object; or,
-  \item A named, rooted multiPhylo object where all trees share 3taxa
+  \item A named, rooted multiPhylo object where all trees share 3+ taxa
 }}
 
-\item{return_tree}{OPTIONAL: If testing a phylo object against the support for multiple trees, return the name of the matching tree [False: return logical]}
+\item{partial}{OPTIONAL: Allow for parital matches (as long as all clades from 'tree' are present, return TRUE) [Default: FALSE, test all clades]}
 }
 \value{
-TRUE if output of getTreeSupport(); otherwise, FALSE
+TRUE if output of getTreeSupport(tree,...); otherwise, FALSE
 }
 \description{
-This function returns TRUE if the passed object is the output of getAlignmentSignal; otherwise, FALSE
+This function returns TRUE if the passed object is the output of getTreeSupport; otherwise, FALSE
 }

@@ -105,7 +105,6 @@ getTreeSupport <- function(signal,tree,clade,separate_signal,return_integer,incl
       } else{
         test_taxa <- purrr::map(.x=clade,.f=function(x){semiVector(x)}) %>% unlist() %>% as.character() %>% unique() %>% sort()
         test_clade <- purrr::map(.x=clade,.f=function(x){semiSorter(x)}) %>% unlist() %>% as.character() # Ensure clades are sorted internally
-        
         if(!all(test_taxa %in% signal_taxa)){
           stop("'clade' contains taxon not present in signal")
         }
@@ -126,7 +125,11 @@ getTreeSupport <- function(signal,tree,clade,separate_signal,return_integer,incl
       }
       
       # Get clades from tree
-      test_clade <- ifelse(include_root,Rboretum::getTreeClades(tree,include_root = TRUE),Rboretum::getTreeClades(tree))
+      if(include_root){
+        test_clade <- Rboretum::getTreeClades(tree,include_root = TRUE)
+      } else{
+        test_clade <- Rboretum::getTreeClades(tree)
+      }
     }
     
     if(missing(existing_support)){
@@ -234,7 +237,6 @@ getTreeSupport <- function(signal,tree,clade,separate_signal,return_integer,incl
   }
   
   surviving_alignments <- unique(signal$Alignment_Name)
-  
   # Generate support tables
   if(!separate_signal | length(signal_name)==1){ # If return results as a summation, or if only one alignment is present...
     

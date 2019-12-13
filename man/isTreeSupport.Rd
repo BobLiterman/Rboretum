@@ -4,22 +4,18 @@
 \alias{isTreeSupport}
 \title{Rboretum Tree Support Checker}
 \usage{
-isTreeSupport(test_object, tree, partial)
+isTreeSupport(test_object, test_clade, partial)
 }
 \arguments{
 \item{test_object}{R object to check}
 
-\item{tree}{Check that passed support object contains information about a specific set of trees. Options include:
-\itemize{
-  \item A rooted phylo object; or,
-  \item A named, rooted multiPhylo object where all trees share 3+ taxa
-}}
+\item{test_clade}{Character vector of semicolon-separated clades. Function checks that passed support object contains information about these clades.}
 
-\item{partial}{OPTIONAL: Allow for parital matches (as long as all clades from 'tree' are present, return TRUE) [Default: FALSE, test all clades]}
+\item{partial}{OPTIONAL: If TRUE, as long as all clades from 'test_clade' are present, return TRUE [Default: FALSE, require that test_clades also includes all clades in support object]}
 }
 \value{
-TRUE if output of getTreeSupport(tree,...); otherwise, FALSE
+TRUE if output of getTreeSupport() with information on 'test_clade'; otherwise, FALSE
 }
 \description{
-This function returns TRUE if the passed object is the output of getTreeSupport; otherwise, FALSE
+This function returns TRUE if the passed object is the output of getTreeSupport() and contains information about clades in 'test_clade'; otherwise, FALSE
 }

@@ -1,13 +1,17 @@
 #' Rboretum Alignment Signal Support Mapper
 #'
 #' This function maps phylogenetic signal from a multiple-sequence alingment onto a rooted phylo or multiPhylo object
-#' @param tree Tree(s) onto which alignment signal will be mapped. Options include:
+#' @param signal Output table from getAlignmentSignal()
+#' @param tree OPTIONAL: Tree(s) onto which alignment signal will be mapped. Not considered if 'clade' argument is used. Tree options include:
 #' \itemize{
 #'   \item A rooted phylo object
 #'   \item A rooted, named multiPhylo object where all trees share 3+ taxa
 #' }
-#' @param signal Output table from getAlignmentSignal() run with taxa against 'tree'
-#' @param alignment_name OPTIONAL: Column name(s) for data being added [Default: Alignment name from signal dataframe + 'm_<MISSING>']
+#' @param clade OPTIONAL: Character vector including specific clades of interest as semicolon-separted taxon (i.e. get support for a specific clade set rather than a whole tree). Supercedes 'tree' argument
+#' @param separate_signal OPTIONAL: If FALSE, return values as the sum of all datasets [Default: TRUE, return results separated by dataset]
+#' @param return_integer OPTIONAL: If TRUE, and a specific set of clades are queried, return the integer support summed across datasets [Default: FALSE, return results as a dataframe]
+#' @param include_root OPTIONAL: If TRUE and using a 'tree',  return alignment support for root clades as well [Default: FALSE, don't include root clades]
+#' @param dataset_name OPTIONAL: Character vector containing a new name for each alignment dataset in 'signal',  [Default: Alignment name from signal dataframe + 'm_<MISSING>']
 #' @param max_missing OPTIONAL: Number of missing sites allowed in alignment column before it is not considered [Default: 0, no missing taxa allowed]
 #' @param include_gap OPTIONAL: If TRUE, count sites with gap positions ('-') as informative signal; otherwise, count gaps as missing data [Default: FALSE: Gaps are treated as missing]
 #' @param only_gap OPTIONAL: TRUE or FALSE; Only count sites with gap positions ('-') [Default: FALSE]
@@ -16,40 +20,28 @@
 #' @param include_triallelic OPTIONAL: If TRUE, count sites with triallelic variation as part of total support [Default: TRUE]
 #' @param include_quadallelic OPTIONAL: If TRUE, count sites with quadallelic variation as part of total support [Default: TRUE]
 #' @param include_pentallelic OPTIONAL: If TRUE, count sites with pentallelic variation as part of total support [Default: TRUE]
+#' @param return_table OPTIONAL: If TRUE, return entire table of filtered signal counts by clade [FALSE: Return clade support counts]
 #' @param existing_support OPTIONAL: Append these results to the output from getTreeSupport() run with the same 'tree' and different alignment options
-#' @return The same split table from getTreeSplits(tree), but with (1) no root row, and (2) a support column for the specfied alignment/missing combination
+#' @return A dataframe containing each monophyletic clade in 'tree', along with site support from all alignments in 'signal' as separate columns
 #' @export
 
-getTreeSupport <- function(tree,signal,alignment_name,max_missing,include_gap,only_gap,include_singleton,include_biallelic,include_triallelic,include_quadallelic,include_pentallelic,existing_support){
-
-  # Check if tree and signal are valid and compatible
-  if(!Rboretum::isPhylo(tree,check_rooted = TRUE) & !Rboretum::isMultiPhylo(tree,check_named = TRUE,check_rooted = TRUE, check_three_taxa = TRUE)){
-    stop("'tree' must be a rooted phylo object, or a named, rooted multiPhylo for getTreeSupport")
-  } else if(!Rboretum::isAlignmentSignal(signal,tree)){
-    stop("'signal' is either not the output from getAlignmentSignal(), or does not contain the same taxa as 'tree'")
-  } else if(Rboretum::isPhylo(tree)){
-    tree_count <- 1
-    tree_taxa <- sort(tree$tip.label) # Get tree taxa
-  } else{ # If tree is a multiPhylo
-    
-    tree_taxa <- Rboretum::getSharedTaxa(tree)
-    
-    # Reduce 'tree' to unique topologies
-    if(Rboretum::isMultiPhylo(tree,check_all_equal=TRUE)){
-      tree_count <- 1
-      tree <- as.phylo(tree[[1]])
-    } else if(Rboretum::isMultiPhylo(tree,check_all_unique = TRUE)){
-      tree_count <- length(tree)
-      tree_names <- names(tree)
-    } else if(Rboretum::isMultiPhylo(tree,check_some_equal = TRUE)){
-      tree <- Rboretum::getUniqueTopologies(tree)
-      tree_count <- length(tree)
-      tree_names <- names(tree)
-    }
+getTreeSupport <- function(signal,tree,clade,separate_signal,return_integer,include_root,dataset_name,max_missing,include_gap,only_gap,include_singleton,include_biallelic,include_triallelic,include_quadallelic,include_pentallelic,return_table,existing_support){
+  
+  # Check for tree or clade arguments
+  if(missing(tree) & missing(clade) & missing(return_table)){
+    stop("Must provide either a 'tree' or 'clade' argument, or ask that 'return_table' = TRUE")
+  }
+  
+  # Validate signal and get signal taxa
+  if(!Rboretum::isAlignmentSignal(signal)){
+    stop("'signal' is either not the output from getAlignmentSignal()")
+  } else{
+    signal_taxa <- Rboretum::isAlignmentSignal(signal,return_taxa = TRUE)
+    signal_name <- unique(signal$Alignment_Name)
   }
   
   # Set maximum number of missing taxa allowed
-  max_possible_missing <- length(tree_taxa) - 3
+  max_possible_missing <- length(signal_taxa) - 3
   
   if(missing(max_missing)){
     max_missing <- 0
@@ -58,9 +50,98 @@ getTreeSupport <- function(tree,signal,alignment_name,max_missing,include_gap,on
   } else{
     max_missing <- as.integer(max_missing)
   }
-
+  
   if(max_missing > max_possible_missing){
     max_missing <- max_possible_missing
+  }
+  
+  if(missing(separate_signal)){
+    separate_signal <- TRUE
+  } else if(!is.logical(separate_signal)){
+    separate_signal <- TRUE
+  }
+  
+  if(missing(return_integer)){
+    return_integer <- FALSE
+  } else if(!is.logical(return_integer)){
+    return_integer <- FALSE
+  }
+  
+  if(return_integer){
+    separate_signal <- FALSE
+  }
+  
+  if(missing(return_table)){
+    return_table <- FALSE
+  } else if(!is.logical(return_table)){
+    return_table <- FALSE
+  }
+  
+  if(!separate_signal){
+    default_name <- paste(c('Total_m',max_missing),collapse = '')
+  } else{
+    # Generate default names based on signal object and number of missing taxa allowed (replaced by supplying dataset_name vector)
+    default_name <- purrr::map(.x=signal_name,.f=function(x){paste(c(x,'_m',max_missing),collapse = '')}) %>% unlist() %>% as.character()
+  }
+  
+  # Set alignment names to defaults if necessary
+  if(missing(dataset_name)){
+    dataset_name <- default_name
+  } else if(!is.character(dataset_name)){
+    dataset_name <- default_name
+  } else if(!separate_signal & length(dataset_name)!=1){
+    stop("Requested that data not be separated, yet provided multiple dataset names")
+  } else if(separate_signal & length(dataset_name) != length(signal_name)){ # If number of alignments in 'signal' are different from the number of new names provided, use default names
+    stop("'signal' contains a different number of alignments than names provided by 'dataset_name'")
+  }
+  
+  if(!return_table){
+    
+    if(!missing(clade)){
+      if(!is.character(clade)){
+        stop("'clade' argument should be a charcter vector of semicolon-separated taxa")
+      } else if(!purrr::map(.x=clade,.f=function(x){str_detect(x,";")}) %>% unlist() %>% all()){
+        stop("'clade' argument should be a charcter vector of semicolon-separated taxa")
+      } else{
+        test_taxa <- purrr::map(.x=clade,.f=function(x){semiVector(x)}) %>% unlist() %>% as.character() %>% unique() %>% sort()
+        test_clade <- purrr::map(.x=clade,.f=function(x){semiSorter(x)}) %>% unlist() %>% as.character() # Ensure clades are sorted internally
+        
+        if(!all(test_taxa %in% signal_taxa)){
+          stop("'clade' contains taxon not present in signal")
+        }
+      }
+      
+    } else{ # If no 'clade' argument, process 'tree'
+      
+      if(!Rboretum::isPhylo(tree,check_rooted = TRUE) & !Rboretum::isMultiPhylo(tree,check_named = TRUE,check_rooted = TRUE, check_three_taxa = TRUE)){
+        stop("'tree' must be a rooted phylo object, or a named, rooted multiPhylo for getTreeSupport")
+      } else if(!Rboretum::isAlignmentSignal(signal,tree)){
+        stop("'signal' is either not the output from getAlignmentSignal(), or does not contain the same taxa as 'tree'")
+      }
+      
+      if(missing(include_root)){
+        include_root <- FALSE
+      } else if(!is.logical(include_root)){
+        include_root <- FALSE
+      }
+      
+      # Get clades from tree
+      test_clade <- ifelse(include_root,Rboretum::getTreeClades(tree,include_root = TRUE),Rboretum::getTreeClades(tree))
+    }
+    
+    if(missing(existing_support)){
+      add_support <- FALSE
+    } else if(!Rboretum::isTreeSupport(existing_support,test_clade)){
+      stop("'existing_support' is either not the output from getTreeSupport(), or does not contain identical clade information as requested from 'tree' or 'clade'")
+    } else{
+      
+      if(any(names(existing_support) %in% dataset_name)){
+        print(names(existing_support)[names(existing_support) %in% dataset_name])
+        stop("'existing_support' already contains columns with the column names above. Cannot add a column with an identical names.")
+      } else{
+        add_support <- TRUE
+      }
+    }
   }
   
   if(missing(include_gap)){
@@ -105,14 +186,6 @@ getTreeSupport <- function(tree,signal,alignment_name,max_missing,include_gap,on
     include_pentallelic <- TRUE
   }
   
-  if(missing(existing_support)){
-    add_support <- FALSE
-  } else if(!Rboretum::isTreeSupport(existing_support,tree)){
-    stop("'existing_support' is either not the output from getTreeSupport(), or does not contain split information from 'tree'")
-  } else{
-    add_support <- TRUE
-  }
-
   informative_patterns <- c('biallelic','triallelic','quadallelic','pentallelic')
   
   signal <- signal %>% 
@@ -155,71 +228,66 @@ getTreeSupport <- function(tree,signal,alignment_name,max_missing,include_gap,on
       filter(!str_detect(Site_Pattern,'pentallelic'))
   }
   
-  # Figure out alignment count after filtering
+  # Ensure filtering has left some data
   if(nrow(signal)==0){
     stop("No data fits the filtering criteria.")
   }
   
-  raw_alignment_name <- unique(signal$Alignment_Name)
-  alignment_count <- length(raw_alignment_name)
-
-  if(alignment_count == 1){
-    default_name <- paste(c(raw_alignment_name,"_m",max_missing),collapse = '')
-  } else{
-    default_name <- purrr::map(.x = raw_alignment_name,.f = function(x){paste(c(x,"_m",max_missing),collapse = '')}) %>% unlist() %>% as.character()
+  surviving_alignments <- unique(signal$Alignment_Name)
+  
+  # Generate support tables
+  if(!separate_signal | length(signal_name)==1){ # If return results as a summation, or if only one alignment is present...
+    
+    support_table <- signal %>% select(starts_with('Split_')) %>% unlist() %>% table()
+    
+  } else{ # If splitting results up by dataset...
+    
+    support_table <-purrr::map(.x = 1:length(signal_name),.f=function(x){ifelse(signal_name[x] %in% surviving_alignments,signal %>% filter(Alignment_Name == signal_name[x]) %>% select(starts_with('Split_')) %>% unlist() %>% table(),table("RBORTEUM_DUMMY"))})
+    names(support_table) <- dataset_name
+    
   }
   
-  # Set alignment names to defaults if necessary
-  if(missing(alignment_name)){
-    alignment_name <- default_name
-  } else if(!is.character(alignment_name)){
-    alignment_name <- default_name
-  } else if(length(alignment_name) != alignment_count){
-    alignment_name <- default_name
+  if(return_table){
+    return(support_table)
   }
-
-  if(tree_count == 1){
-    support_df <- Rboretum::getTreeSupport_Worker(tree,signal,alignment_name)
+  
+  clade_df <- data.frame(Clade = test_clade) %>% mutate(Clade = as.character(Clade))
+  
+  # Generate support counts
+  if(!separate_signal | length(signal_name)==1){ # If returning results as a summation, or if only one alignment is present...
     
-    if(add_support){
-      
-      # Get old alignment names
-      old_names <- names(existing_support)[4:ncol(existing_support)]
-      
-      # Can't have duplicate IDs
-      if(any(alignment_name %in% old_names)){
-        print(alignment_name[alignment_name %in% old_names])
-        print("Columns above already in existing_support, returning unappendend results")
-        return(support_df)
-      } else{
-        support_df <- left_join(existing_support,support_df,by=c('Clade','Mirror_Clade','Split_Node'))
-        print(paste(c('Added results from:',paste(alignment_name,collapse = ";")),collapse = " "))
-        return(support_df)
-      }
-    } else{
-      return(support_df)
-    }
-  } else{ # If result is for multiple trees, return a named list
-    support_list <- purrr::map(.x=tree,.f = function(x){Rboretum::getTreeSupport_Worker(x,signal,alignment_name)})
-    names(support_list) <- tree_names
+    clade_support <- purrr::map(.x=test_clade,.f=function(x){Rboretum::tableCount(support_table,x)}) %>% unlist() %>% as.integer()
     
-    if(add_support){
-      # Get old alignment columns
-      old_names <- names(existing_support[[1]])[4:ncol(existing_support[[1]])]
-      
-      # Can't have duplicate IDs
-      if(any(alignment_name %in% old_names)){
-        print(alignment_name[alignment_name %in% old_names])
-        print("Columns above already in existing_support, returning unappendend results")
-        return(support_list)
-      } else{
-        appended_list <- purrr::map2(.x=existing_support,.y = support_list,.f=function(x,y){left_join(x,y,by=c('Clade','Mirror_Clade','Split_Node'))})
-        names(appended_list) <- names(support_list)
-        print(paste(c('Added results from:',paste(alignment_name,collapse = ";")),collapse = " "))
-        return(appended_list)
-      }
-    } else{
-      return(support_list)
+    if(return_integer){
+      return(clade_support)
     }
+    
+    clade_df <- clade_df %>%
+      mutate(Support = clade_support) %>%
+      rename(!!dataset_name := Support)
+    
+  } else{ # If splitting results up by dataset...
+    
+    clade_support <- purrr::map(.x=dataset_name,.f=function(x){lapply(test_clade,function(y) Rboretum::tableCount(support_table[[x]],as.chararacter(y))) %>% unlist() %>% as.integer()})
+    names(clade_support) <- dataset_name
+    
+    if(return_integer){
+      return(clade_support)
+    }
+    
+    for(i in 1:(length(dataset_name))){
+      clade_df[,(i+1)] <- as.integer(clade_support[[i]])
+    }
+    
+    names(clade_df) <- c('Clade',dataset_name)
+  }
+  
+  if(add_support){
+    existing_support <- existing_support %>% 
+      left_join(clade_df,by='Clade')
+    print("Data added successfully...")
+    return(existing_support)
+  } else{
+    return(clade_df)
   }
 }

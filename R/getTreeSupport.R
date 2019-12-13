@@ -67,10 +67,6 @@ getTreeSupport <- function(signal,tree,clade,separate_signal,return_integer,incl
     return_integer <- FALSE
   }
   
-  if(return_integer){
-    separate_signal <- FALSE
-  }
-  
   if(missing(return_table)){
     return_table <- FALSE
   } else if(!is.logical(return_table)){
@@ -244,7 +240,18 @@ getTreeSupport <- function(signal,tree,clade,separate_signal,return_integer,incl
     
   } else{ # If splitting results up by dataset...
     
-    support_table <-purrr::map(.x = 1:length(signal_name),.f=function(x){ifelse(signal_name[x] %in% surviving_alignments,signal %>% filter(Alignment_Name == signal_name[x]) %>% select(starts_with('Split_')) %>% unlist() %>% table(),table("RBORTEUM_DUMMY"))})
+    support_table <- list()
+    for(i in 1:length(signal_name)){
+      if(signal_name[i] %in% surviving_alignments){
+        
+        support_table[[i]] <- signal %>% 
+          filter(Alignment_Name == signal_name[i]) %>% 
+          select(starts_with('Split_')) %>% 
+          unlist() %>% table()
+      } else{
+        support_table[[i]] <- table("RBORETUM_DUMMY")
+      }
+    }
     names(support_table) <- dataset_name
     
   }
@@ -270,7 +277,7 @@ getTreeSupport <- function(signal,tree,clade,separate_signal,return_integer,incl
     
   } else{ # If splitting results up by dataset...
     
-    clade_support <- purrr::map(.x=dataset_name,.f=function(x){lapply(test_clade,function(y) Rboretum::tableCount(support_table[[x]],as.chararacter(y))) %>% unlist() %>% as.integer()})
+    clade_support <- purrr::map(.x=dataset_name,.f=function(x){lapply(test_clade,function(y) Rboretum::tableCount(support_table[[x]],as.character(y))) %>% unlist() %>% as.integer()})
     names(clade_support) <- dataset_name
     
     if(return_integer){

@@ -25,7 +25,7 @@
 #' @param to_color OPTIONAL: Color tips or clades via:
 #' \itemize{
 #'   \item Character vector of taxa, all to be colored the same color
-#'   \item List of groups of taxa, each of which will have their own color. List can be named for use with a legend (set color_legend == TRUE)
+#'   \item List of groups of taxa, each of which will have their own color. List can be named for use with a legend (set highlight_legend == TRUE)
 #' }
 #' @param colors OPTIONAL: Colors for clade highlighting. Must be hex or valid R colors. Provide a color for each group (1 if character vector, 1 for each group if named list) or default colors will be used.
 #' @param highlight_legend OPTIONAL: TRUE [Include a legend for colored tips, given a list]; False [Default: No legend]
@@ -217,15 +217,15 @@ basicPlotter <- function(tree,branch_length,branch_weight,node_label,node_size,n
         } else{colors <- c('black',colors)}
         
       } else if(group_count > 1){
-        
         if(length(colors) != group_count | any(has_error(silent=TRUE,expr=grDevices::col2rgb(colors)))){
           print("Invalid color choice. Using defaults.")
           colors <- c('black',viridisLite::viridis(group_count))
+        } else{colors <- c('black',colors)
         }
-      } else{colors <- c('black',colors)}
+      }
     }
   }
-
+  
   if(missing(highlight_legend)){
     highlight_legend <- FALSE
   } else if(!is.logical(highlight_legend)){
@@ -268,7 +268,7 @@ basicPlotter <- function(tree,branch_length,branch_weight,node_label,node_size,n
           return_tree <- ggtree(temp_tree,branch.length = 'none',aes(color=group)) + scale_color_manual(breaks = names(to_color),values = colors)
         }
         
-        if(color_legend){
+        if(highlight_legend){
           return_tree <- return_tree + labs(color = "Focal Clades") + theme(legend.position = 'right')
         }
       }
@@ -422,7 +422,7 @@ basicPlotter <- function(tree,branch_length,branch_weight,node_label,node_size,n
     }
     
     if(titlePlot){
-      if(colorTips & color_legend){
+      if(colorTips & highlight_legend){
         return_tree <- return_tree + ggplot2::ggtitle(plot_title[i]) + theme(legend.position = 'right',plot.title = element_text(hjust = 0.5))
       } else{
         return_tree <- return_tree + ggplot2::ggtitle(plot_title[i]) + theme(plot.title = element_text(hjust = 0.5))

@@ -268,7 +268,7 @@ basicPlotter <- function(tree,branch_length,branch_weight,node_label,node_size,n
           return_tree <- ggtree(temp_tree,branch.length = 'none',aes(color=group)) + scale_color_manual(breaks = names(to_color),values = colors)
         }
         
-        if(highlight_legend){
+        if(highlight_legend & is.list(to_color)){
           return_tree <- return_tree + labs(color = "Focal Clades") + theme(legend.position = 'right')
         }
       }

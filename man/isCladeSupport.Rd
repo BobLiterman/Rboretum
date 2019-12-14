@@ -4,7 +4,7 @@
 \alias{isCladeSupport}
 \title{Rboretum Clade Support Checker}
 \usage{
-isCladeSupport(test_object, tree)
+isCladeSupport(test_object, tree, partial)
 }
 \arguments{
 \item{test_object}{R object to check}
@@ -14,6 +14,8 @@ isCladeSupport(test_object, tree)
   \item A rooted phylo object; or,
   \item A named, rooted multiPhylo object where all trees share 3+ taxa
 }}
+
+\item{partial}{OPTIONAL: If TRUE, as long as all clades from 'tree' are present, return TRUE [Default: FALSE, require that 'tree' also includes all clades in support object]}
 }
 \value{
 TRUE if output of getTreeClades(tree,return_count=TRUE); otherwise, FALSE

@@ -276,20 +276,86 @@ basicPlotter <- function(tree,branch_length,branch_weight,node_label,node_size,n
           return_tree <- ggtree(temp_tree,aes(color=group)) + scale_color_manual(values = colors)
         } else if(!bWeight & !branch_length){
           return_tree <- ggtree(temp_tree,branch.length = 'none',aes(color=group)) + scale_color_manual(values = colors)
-        }
+        } #+ ggplot2::ggtitle(plot_title[i]) + labs(color = "Focal Clades") + theme(legend.position = 'right',plot.title = element_text(hjust = 0.5))
       } else{
-        if(bWeight & branch_length){
-          return_tree <- ggtree(temp_tree,size=branch_weight,aes(color=group)) + scale_color_manual(breaks = names(to_color),values = colors)
-        } else if(bWeight & !branch_length){
-          return_tree <- ggtree(temp_tree,size=branch_weight,branch.length = 'none',aes(color=group)) + scale_color_manual(breaks = names(to_color),values = colors)
-        } else if(!bWeight & branch_length){
-          return_tree <- ggtree(temp_tree,aes(color=group)) + scale_color_manual(breaks = names(to_color),values = colors)
-        } else if(!bWeight & !branch_length){
-          return_tree <- ggtree(temp_tree,branch.length = 'none',aes(color=group)) + scale_color_manual(breaks = names(to_color),values = colors)
-        }
-        
-        if(temp_highlight_legend & is.list(to_color)){
-          return_tree <- return_tree + labs(color = "Focal Clades") + theme(legend.position = 'right')
+        if(titlePlot){
+          if(temp_highlight_legend){
+            if(bWeight & branch_length){
+              return_tree <- ggtree(temp_tree,size=branch_weight,aes(color=group)) + scale_color_manual(breaks = names(to_color),values = colors) + 
+                ggplot2::ggtitle(plot_title[i]) + 
+                labs(color = "Focal Clades") + 
+                theme(legend.position = 'right',plot.title = element_text(hjust = 0.5))
+            } else if(bWeight & !branch_length){
+              return_tree <- ggtree(temp_tree,size=branch_weight,branch.length = 'none',aes(color=group)) + scale_color_manual(breaks = names(to_color),values = colors) + 
+                ggplot2::ggtitle(plot_title[i]) + 
+                labs(color = "Focal Clades") + 
+                theme(legend.position = 'right',plot.title = element_text(hjust = 0.5))
+            } else if(!bWeight & branch_length){
+              return_tree <- ggtree(temp_tree,aes(color=group)) + scale_color_manual(breaks = names(to_color),values = colors) + 
+                ggplot2::ggtitle(plot_title[i]) + 
+                labs(color = "Focal Clades") + 
+                theme(legend.position = 'right',plot.title = element_text(hjust = 0.5))
+            } else if(!bWeight & !branch_length){
+              return_tree <- ggtree(temp_tree,branch.length = 'none',aes(color=group)) + scale_color_manual(breaks = names(to_color),values = colors) + 
+                ggplot2::ggtitle(plot_title[i]) + 
+                labs(color = "Focal Clades") + 
+                theme(legend.position = 'right',plot.title = element_text(hjust = 0.5))
+            }
+          } else{
+            if(bWeight & branch_length){
+              return_tree <- ggtree(temp_tree,size=branch_weight,aes(color=group)) + scale_color_manual(breaks = names(to_color),values = colors) + 
+                ggplot2::ggtitle(plot_title[i]) + theme(plot.title = element_text(hjust = 0.5))
+
+                
+            } else if(bWeight & !branch_length){
+              return_tree <- ggtree(temp_tree,size=branch_weight,branch.length = 'none',aes(color=group)) + scale_color_manual(breaks = names(to_color),values = colors) + 
+                ggplot2::ggtitle(plot_title[i]) + theme(plot.title = element_text(hjust = 0.5))
+            } else if(!bWeight & branch_length){
+              return_tree <- ggtree(temp_tree,aes(color=group)) + scale_color_manual(breaks = names(to_color),values = colors) + 
+                ggplot2::ggtitle(plot_title[i]) + theme(plot.title = element_text(hjust = 0.5))
+            } else if(!bWeight & !branch_length){
+              return_tree <- ggtree(temp_tree,branch.length = 'none',aes(color=group)) + scale_color_manual(breaks = names(to_color),values = colors) + 
+                ggplot2::ggtitle(plot_title[i]) + theme(plot.title = element_text(hjust = 0.5))
+            }
+          }
+        } else{
+          if(temp_highlight_legend){
+            if(bWeight & branch_length){
+              return_tree <- ggtree(temp_tree,size=branch_weight,aes(color=group)) + scale_color_manual(breaks = names(to_color),values = colors) + 
+                labs(color = "Focal Clades") + 
+                theme(legend.position = 'right')
+            } else if(bWeight & !branch_length){
+              return_tree <- ggtree(temp_tree,size=branch_weight,branch.length = 'none',aes(color=group)) + scale_color_manual(breaks = names(to_color),values = colors) + 
+                labs(color = "Focal Clades") + 
+                theme(legend.position = 'right')
+            } else if(!bWeight & branch_length){
+              return_tree <- ggtree(temp_tree,aes(color=group)) + scale_color_manual(breaks = names(to_color),values = colors) + 
+                labs(color = "Focal Clades") + 
+                theme(legend.position = 'right')
+            } else if(!bWeight & !branch_length){
+              return_tree <- ggtree(temp_tree,branch.length = 'none',aes(color=group)) + scale_color_manual(breaks = names(to_color),values = colors) + 
+                labs(color = "Focal Clades") + 
+                theme(legend.position = 'right')
+            }
+          } else{
+            if(bWeight & branch_length){
+              return_tree <- ggtree(temp_tree,size=branch_weight,aes(color=group)) + scale_color_manual(breaks = names(to_color),values = colors) + 
+                labs(color = "Focal Clades") + 
+                theme(legend.position = 'right')
+            } else if(bWeight & !branch_length){
+              return_tree <- ggtree(temp_tree,size=branch_weight,branch.length = 'none',aes(color=group)) + scale_color_manual(breaks = names(to_color),values = colors) + 
+                labs(color = "Focal Clades") + 
+                theme(legend.position = 'right')
+            } else if(!bWeight & branch_length){
+              return_tree <- ggtree(temp_tree,aes(color=group)) + scale_color_manual(breaks = names(to_color),values = colors) + 
+                labs(color = "Focal Clades") + 
+                theme(legend.position = 'right')
+            } else if(!bWeight & !branch_length){
+              return_tree <- ggtree(temp_tree,branch.length = 'none',aes(color=group)) + scale_color_manual(breaks = names(to_color),values = colors) + 
+                labs(color = "Focal Clades") + 
+                theme(legend.position = 'right')
+            }
+          }
         }
       }
     } else{
@@ -303,7 +369,7 @@ basicPlotter <- function(tree,branch_length,branch_weight,node_label,node_size,n
         return_tree <- ggtree(temp_tree,branch.length = 'none')
       }
     }
-    
+
     if(extendX){
       if(!reverseX){
         return_tree <- return_tree + ggplot2::xlim(0,xmax)
@@ -631,8 +697,8 @@ basicPlotter <- function(tree,branch_length,branch_weight,node_label,node_size,n
     }
     
     if(titlePlot){
-      if(colorTips & temp_highlight_legend){
-        return_tree <- return_tree + ggplot2::ggtitle(plot_title[i]) + theme(legend.position = 'right',plot.title = element_text(hjust = 0.5))
+      if(temp_highlight_legend){
+        return_tree <- return_tree + ggplot2::ggtitle(plot_title[i]) + labs(color = "Focal Clades") + theme(legend.position = 'right',plot.title = element_text(hjust = 0.5))
       } else{
         return_tree <- return_tree + ggplot2::ggtitle(plot_title[i]) + theme(plot.title = element_text(hjust = 0.5))
       }

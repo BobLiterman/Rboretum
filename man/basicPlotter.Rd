@@ -60,7 +60,7 @@ basicPlotter(
 \item{to_color}{OPTIONAL: Color tips or clades via:
 \itemize{
   \item Character vector of taxa, all to be colored the same color
-  \item List of groups of taxa, each of which will have their own color. List can be named for use with a legend (set color_legend == TRUE)
+  \item List of groups of taxa, each of which will have their own color. List can be named for use with a legend (set highlight_legend == TRUE)
 }}
 
 \item{colors}{OPTIONAL: Colors for clade highlighting. Must be hex or valid R colors. Provide a color for each group (1 if character vector, 1 for each group if named list) or default colors will be used.}

@@ -98,9 +98,10 @@ basicPlotter <- function(tree,branch_length,branch_weight,node_label,node_size,n
   } else if(Rboretum::isMultiPhylo(tree,check_some_equal = TRUE)){
     
     tree_taxa <- Rboretum::getSharedTaxa(tree)
+    tree_table <- Rboretum::getUniqueTopologies(tree,return_table = TRUE)
     tree <- Rboretum::getUniqueTopologies(tree)
     tree_count <- length(tree)
-    tree_names <- names(tree)
+    tree_names <- as.character(tree_table$Trees_with_Topology)
     
     if(any(duplicated(tree_names))){
       stop("'tree' multiPhlyo contains trees with identical names.")

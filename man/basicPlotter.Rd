@@ -28,7 +28,7 @@ basicPlotter(
 \item{tree}{Tree(s) to plot. Options include:
 \itemize{
   \item A single, rooted phylo object; or,
-  \item A named, rooted multiPhylo object [Only unique topologies plotted]
+  \item A named, rooted multiPhylo object [Only unique topologies plotted, from most to least common]
 }}
 
 \item{branch_length}{OPTIONAL: TRUE [plot tree(s) with branch lengths]; FALSE [Default: plot cladogram(s)]}
@@ -73,7 +73,7 @@ basicPlotter(
 \item{plot_title}{OPTIONAL: Character vector containing plot titles (1 per tree) [Default: No title for phylo, tree name for multiPhylo]}
 }
 \value{
-ggtree object
+ggtree object or list of ggtree objects
 }
 \description{
 Given a phylo or multiPhylo object (tree), this ggtree wrapper returns a ggtree plot object, adjusted with possible arguments

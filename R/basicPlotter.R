@@ -253,9 +253,10 @@ basicPlotter <- function(tree,branch_length,branch_weight,node_label,node_size,n
   for(i in 1:tree_count){
     temp_tree <- tree[[i]]
     
-    # Only allow legend on right-most plot
-    if(i != tree_count){
-      highlight_legend <- FALSE
+    temp_highlight_legend <- highlight_legend
+    
+    if(i!=tree_count){
+      temp_highlight_legend <- FALSE
     }
     
     # Create base tree
@@ -287,7 +288,7 @@ basicPlotter <- function(tree,branch_length,branch_weight,node_label,node_size,n
           return_tree <- ggtree(temp_tree,branch.length = 'none',aes(color=group)) + scale_color_manual(breaks = names(to_color),values = colors)
         }
         
-        if(highlight_legend & is.list(to_color)){
+        if(temp_highlight_legend & is.list(to_color)){
           return_tree <- return_tree + labs(color = "Focal Clades") + theme(legend.position = 'right')
         }
       }
@@ -630,7 +631,7 @@ basicPlotter <- function(tree,branch_length,branch_weight,node_label,node_size,n
     }
     
     if(titlePlot){
-      if(colorTips & highlight_legend){
+      if(colorTips & temp_highlight_legend){
         return_tree <- return_tree + ggplot2::ggtitle(plot_title[i]) + theme(legend.position = 'right',plot.title = element_text(hjust = 0.5))
       } else{
         return_tree <- return_tree + ggplot2::ggtitle(plot_title[i]) + theme(plot.title = element_text(hjust = 0.5))

@@ -36,7 +36,7 @@
 basicPlotter <- function(tree,branch_length,branch_weight,node_label,node_size,node_nudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax,reverse_x,to_color,colors,highlight_legend,plot_title){
   
   # Ensure tree is valid for plotter
-  if(!Rboretum::isMultiPhylo(tree,check_rooted = TRUE,check_names = TRUE,check_three_taxa = TRUE) & !Rboretum::isPhylo(tree,check_rooted = TRUE)){
+  if(!Rboretum::isMultiPhylo(tree,check_rooted = TRUE,check_named = TRUE,check_three_taxa = TRUE) & !Rboretum::isPhylo(tree,check_rooted = TRUE)){
     stop("'tree' must be either a rooted phylo object or a named, rooted, mulitPhlyo object basicPlotter")
   }
   

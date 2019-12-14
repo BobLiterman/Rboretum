@@ -4,7 +4,7 @@
 #' @param tree Tree(s) to plot. Options include:
 #' \itemize{
 #'   \item A single, rooted phylo object; or,
-#'   \item A named, rooted multiPhylo object [Only unique topologies plotted]
+#'   \item A named, rooted multiPhylo object [Only unique topologies plotted, from most to least common]
 #' }
 #' @param branch_length OPTIONAL: TRUE [plot tree(s) with branch lengths]; FALSE [Default: plot cladogram(s)]
 #' @param branch_weight OPTIONAL: Set ggtree branch thickness
@@ -31,7 +31,7 @@
 #' @param highlight_legend OPTIONAL: TRUE [Include a legend for colored tips, given a list]; False [Default: No legend]
 #' @param color_branches OPTIONAL: If TRUE and coloring taxa or clades, color the branches rather than the tip labels [Default: FALSE, colorize tip labels]
 #' @param plot_title OPTIONAL: Character vector containing plot titles (1 per tree) [Default: No title for phylo, tree name for multiPhylo]
-#' @return ggtree object
+#' @return ggtree object or list of ggtree objects
 #' @export
 
 basicPlotter <- function(tree,branch_length,branch_weight,node_label,node_size,node_nudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax,reverse_x,to_color,colors,highlight_legend,color_branches,plot_title){
@@ -252,9 +252,18 @@ basicPlotter <- function(tree,branch_length,branch_weight,node_label,node_size,n
   for(i in 1:tree_count){
     temp_tree <- tree[[i]]
     
+    # Only allow legend on right-most plot
+    if(i != tree_count){
+      highlight_legend <- FALSE
+    }
+    
     # Create base tree
-    if(colorTips & color_branches){
+    
+    if(colorTips){
       temp_tree <- ggtree::groupOTU(temp_tree,to_color)
+    }
+    
+    if(colorTips & color_branches){
       
       if(is.character(to_color)){
         if(bWeight & branch_length){
@@ -341,9 +350,8 @@ basicPlotter <- function(tree,branch_length,branch_weight,node_label,node_size,n
     
     # Process tip labels
     if(colorTips & !color_branches){
-    
+      
       if(is.character(to_color)){
-        
         if(!tAlign & !tOffset){
           if(tSize & taxa_italic){
             return_tree <- return_tree + geom_tiplab(aes(color=group),size=taxa_size,fontface='italic') + scale_color_manual(values = colors)
@@ -527,98 +535,98 @@ basicPlotter <- function(tree,branch_length,branch_weight,node_label,node_size,n
         }
         
       }
-    
+      
     } else {
-    if(!tAlign & !tOffset){
-      if(tSize & taxa_italic){
-        return_tree <- return_tree + geom_tiplab(size=taxa_size,fontface='italic')
-      } else if(tSize & !taxa_italic){
-        return_tree <- return_tree + geom_tiplab(size=taxa_size)
-      } else if(!tSize & taxa_italic){
-        return_tree <- return_tree + geom_tiplab(fontface='italic')
-      } else{
-        return_tree <- return_tree + geom_tiplab()
-      }
-    } else if(!tAlign & tOffset){
-      if(tSize & taxa_italic){
-        return_tree <- return_tree + geom_tiplab(size=taxa_size,fontface='italic',offset=taxa_offset)
-      } else if(tSize & !taxa_italic){
-        return_tree <- return_tree + geom_tiplab(size=taxa_size,offset=taxa_offset)
-      } else if(!tSize & taxa_italic){
-        return_tree <- return_tree + geom_tiplab(fontface='italic',offset=taxa_offset)
-      } else{
-        return_tree <- return_tree + geom_tiplab(offset=taxa_offset)
-      }
-    } else if(tAlign & !tOffset){
-      if(taxa_align == 'right'){
-        if(branch_legnth){
-          if(tSize & taxa_italic){
-            return_tree <- return_tree + geom_tiplab(size=taxa_size,fontface='italic',hjust=1,align=TRUE)
-          } else if(tSize & !taxa_italic){
-            return_tree <- return_tree + geom_tiplab(size=taxa_size,hjust=1,align=TRUE)
-          } else if(!tSize & taxa_italic){
-            return_tree <- return_tree + geom_tiplab(fontface='italic',hjust=1,align=TRUE)
-          } else{
-            return_tree <- return_tree + geom_tiplab(hjust=1,align=TRUE)
-          }
-        } else{
-          if(tSize & taxa_italic){
-            return_tree <- return_tree + geom_tiplab(size=taxa_size,fontface='italic',hjust=1)
-          } else if(tSize & !taxa_italic){
-            return_tree <- return_tree + geom_tiplab(size=taxa_size,hjust=1)
-          } else if(!tSize & taxa_italic){
-            return_tree <- return_tree + geom_tiplab(fontface='italic',hjust=1)
-          } else{
-            return_tree <- return_tree + geom_tiplab(hjust=1)
-          }
-        }
-      } else{
+      if(!tAlign & !tOffset){
         if(tSize & taxa_italic){
-          return_tree <- return_tree + geom_tiplab(size=taxa_size,fontface='italic',hjust=0,align = TRUE)
+          return_tree <- return_tree + geom_tiplab(size=taxa_size,fontface='italic')
         } else if(tSize & !taxa_italic){
-          return_tree <- return_tree + geom_tiplab(size=taxa_size,hjust=0,align = TRUE)
+          return_tree <- return_tree + geom_tiplab(size=taxa_size)
         } else if(!tSize & taxa_italic){
-          return_tree <- return_tree + geom_tiplab(fontface='italic',hjust=0,align = TRUE)
+          return_tree <- return_tree + geom_tiplab(fontface='italic')
         } else{
-          return_tree <- return_tree + geom_tiplab(hjust=0,align = TRUE)
+          return_tree <- return_tree + geom_tiplab()
         }
-      }
-    } else if(tAlign & tOffset){
-      if(taxa_align == 'right'){
-        if(branch_length){
-          if(tSize & taxa_italic){
-            return_tree <- return_tree + geom_tiplab(size=taxa_size,fontface='italic',hjust=1,offset=taxa_offset,align=TRUE)
-          } else if(tSize & !taxa_italic){
-            return_tree <- return_tree + geom_tiplab(size=taxa_size,hjust=1,offset=taxa_offset,align=TRUE)
-          } else if(!tSize & taxa_italic){
-            return_tree <- return_tree + geom_tiplab(fontface='italic',hjust=1,offset=taxa_offset,align=TRUE)
-          } else{
-            return_tree <- return_tree + geom_tiplab(hjust=1,offset=taxa_offset,align=TRUE)
-          }
-        } else{
-          if(tSize & taxa_italic){
-            return_tree <- return_tree + geom_tiplab(size=taxa_size,fontface='italic',hjust=1,offset=taxa_offset)
-          } else if(tSize & !taxa_italic){
-            return_tree <- return_tree + geom_tiplab(size=taxa_size,hjust=1,offset=taxa_offset)
-          } else if(!tSize & taxa_italic){
-            return_tree <- return_tree + geom_tiplab(fontface='italic',hjust=1,offset=taxa_offset)
-          } else{
-            return_tree <- return_tree + geom_tiplab(hjust=1,offset=taxa_offset)
-          }
-        }
-      } else{
+      } else if(!tAlign & tOffset){
         if(tSize & taxa_italic){
-          return_tree <- return_tree + geom_tiplab(size=taxa_size,fontface='italic',hjust=0,offset=taxa_offset,align = TRUE)
+          return_tree <- return_tree + geom_tiplab(size=taxa_size,fontface='italic',offset=taxa_offset)
         } else if(tSize & !taxa_italic){
-          return_tree <- return_tree + geom_tiplab(size=taxa_size,hjust=0,offset=taxa_offset,align = TRUE)
+          return_tree <- return_tree + geom_tiplab(size=taxa_size,offset=taxa_offset)
         } else if(!tSize & taxa_italic){
-          return_tree <- return_tree + geom_tiplab(fontface='italic',hjust=0,offset=taxa_offset,align = TRUE)
+          return_tree <- return_tree + geom_tiplab(fontface='italic',offset=taxa_offset)
         } else{
-          return_tree <- return_tree + geom_tiplab(hjust=0,offset=taxa_offset,align = TRUE)
+          return_tree <- return_tree + geom_tiplab(offset=taxa_offset)
+        }
+      } else if(tAlign & !tOffset){
+        if(taxa_align == 'right'){
+          if(branch_legnth){
+            if(tSize & taxa_italic){
+              return_tree <- return_tree + geom_tiplab(size=taxa_size,fontface='italic',hjust=1,align=TRUE)
+            } else if(tSize & !taxa_italic){
+              return_tree <- return_tree + geom_tiplab(size=taxa_size,hjust=1,align=TRUE)
+            } else if(!tSize & taxa_italic){
+              return_tree <- return_tree + geom_tiplab(fontface='italic',hjust=1,align=TRUE)
+            } else{
+              return_tree <- return_tree + geom_tiplab(hjust=1,align=TRUE)
+            }
+          } else{
+            if(tSize & taxa_italic){
+              return_tree <- return_tree + geom_tiplab(size=taxa_size,fontface='italic',hjust=1)
+            } else if(tSize & !taxa_italic){
+              return_tree <- return_tree + geom_tiplab(size=taxa_size,hjust=1)
+            } else if(!tSize & taxa_italic){
+              return_tree <- return_tree + geom_tiplab(fontface='italic',hjust=1)
+            } else{
+              return_tree <- return_tree + geom_tiplab(hjust=1)
+            }
+          }
+        } else{
+          if(tSize & taxa_italic){
+            return_tree <- return_tree + geom_tiplab(size=taxa_size,fontface='italic',hjust=0,align = TRUE)
+          } else if(tSize & !taxa_italic){
+            return_tree <- return_tree + geom_tiplab(size=taxa_size,hjust=0,align = TRUE)
+          } else if(!tSize & taxa_italic){
+            return_tree <- return_tree + geom_tiplab(fontface='italic',hjust=0,align = TRUE)
+          } else{
+            return_tree <- return_tree + geom_tiplab(hjust=0,align = TRUE)
+          }
+        }
+      } else if(tAlign & tOffset){
+        if(taxa_align == 'right'){
+          if(branch_length){
+            if(tSize & taxa_italic){
+              return_tree <- return_tree + geom_tiplab(size=taxa_size,fontface='italic',hjust=1,offset=taxa_offset,align=TRUE)
+            } else if(tSize & !taxa_italic){
+              return_tree <- return_tree + geom_tiplab(size=taxa_size,hjust=1,offset=taxa_offset,align=TRUE)
+            } else if(!tSize & taxa_italic){
+              return_tree <- return_tree + geom_tiplab(fontface='italic',hjust=1,offset=taxa_offset,align=TRUE)
+            } else{
+              return_tree <- return_tree + geom_tiplab(hjust=1,offset=taxa_offset,align=TRUE)
+            }
+          } else{
+            if(tSize & taxa_italic){
+              return_tree <- return_tree + geom_tiplab(size=taxa_size,fontface='italic',hjust=1,offset=taxa_offset)
+            } else if(tSize & !taxa_italic){
+              return_tree <- return_tree + geom_tiplab(size=taxa_size,hjust=1,offset=taxa_offset)
+            } else if(!tSize & taxa_italic){
+              return_tree <- return_tree + geom_tiplab(fontface='italic',hjust=1,offset=taxa_offset)
+            } else{
+              return_tree <- return_tree + geom_tiplab(hjust=1,offset=taxa_offset)
+            }
+          }
+        } else{
+          if(tSize & taxa_italic){
+            return_tree <- return_tree + geom_tiplab(size=taxa_size,fontface='italic',hjust=0,offset=taxa_offset,align = TRUE)
+          } else if(tSize & !taxa_italic){
+            return_tree <- return_tree + geom_tiplab(size=taxa_size,hjust=0,offset=taxa_offset,align = TRUE)
+          } else if(!tSize & taxa_italic){
+            return_tree <- return_tree + geom_tiplab(fontface='italic',hjust=0,offset=taxa_offset,align = TRUE)
+          } else{
+            return_tree <- return_tree + geom_tiplab(hjust=0,offset=taxa_offset,align = TRUE)
+          }
         }
       }
     }
-  }
     
     if(titlePlot){
       if(colorTips & highlight_legend){

@@ -20,6 +20,7 @@ basicPlotter(
   to_color,
   colors,
   highlight_legend,
+  color_branches,
   plot_title
 )
 }
@@ -66,6 +67,8 @@ basicPlotter(
 \item{colors}{OPTIONAL: Colors for clade highlighting. Must be hex or valid R colors. Provide a color for each group (1 if character vector, 1 for each group if named list) or default colors will be used.}
 
 \item{highlight_legend}{OPTIONAL: TRUE [Include a legend for colored tips, given a list]; False [Default: No legend]}
+
+\item{color_branches}{OPTIONAL: If TRUE and coloring taxa or clades, color the branches rather than the tip labels [Default: FALSE, colorize tip labels]}
 
 \item{plot_title}{OPTIONAL: Character vector containing plot titles (1 per tree) [Default: No title for phylo, tree name for multiPhylo]}
 }

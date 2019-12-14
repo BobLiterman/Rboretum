@@ -29,11 +29,12 @@
 #' }
 #' @param colors OPTIONAL: Colors for clade highlighting. Must be hex or valid R colors. Provide a color for each group (1 if character vector, 1 for each group if named list) or default colors will be used.
 #' @param highlight_legend OPTIONAL: TRUE [Include a legend for colored tips, given a list]; False [Default: No legend]
+#' @param color_branches OPTIONAL: If TRUE and coloring taxa or clades, color the branches rather than the tip labels [Default: FALSE, colorize tip labels]
 #' @param plot_title OPTIONAL: Character vector containing plot titles (1 per tree) [Default: No title for phylo, tree name for multiPhylo]
 #' @return ggtree object
 #' @export
 
-basicPlotter <- function(tree,branch_length,branch_weight,node_label,node_size,node_nudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax,reverse_x,to_color,colors,highlight_legend,plot_title){
+basicPlotter <- function(tree,branch_length,branch_weight,node_label,node_size,node_nudge,taxa_size,taxa_italic,taxa_align,taxa_offset,xmax,reverse_x,to_color,colors,highlight_legend,color_branches,plot_title){
   
   # Ensure tree is valid for plotter
   if(!Rboretum::isMultiPhylo(tree,check_rooted = TRUE,check_named = TRUE,check_three_taxa = TRUE) & !Rboretum::isPhylo(tree,check_rooted = TRUE)){
@@ -232,6 +233,14 @@ basicPlotter <- function(tree,branch_length,branch_weight,node_label,node_size,n
     highlight_legend <- FALSE
   }
   
+  if(missing(color_branches)){
+    color_branches <- FALSE
+  } else if(!is.logical(color_branches)){
+    color_branches <- FALSE
+  } else if(!colorTips){
+    color_branches <- FALSE
+  }
+  
   # Create empty plot list
   plotList <- list()
   
@@ -244,7 +253,7 @@ basicPlotter <- function(tree,branch_length,branch_weight,node_label,node_size,n
     temp_tree <- tree[[i]]
     
     # Create base tree
-    if(colorTips){
+    if(colorTips & color_branches){
       temp_tree <- ggtree::groupOTU(temp_tree,to_color)
       
       if(is.character(to_color)){
@@ -331,6 +340,195 @@ basicPlotter <- function(tree,branch_length,branch_weight,node_label,node_size,n
     }
     
     # Process tip labels
+    if(colorTips & !color_branches){
+    
+      if(is.character(to_color)){
+        
+        if(!tAlign & !tOffset){
+          if(tSize & taxa_italic){
+            return_tree <- return_tree + geom_tiplab(aes(color=group),size=taxa_size,fontface='italic') + scale_color_manual(values = colors)
+          } else if(tSize & !taxa_italic){
+            return_tree <- return_tree + geom_tiplab(aes(color=group),size=taxa_size) + scale_color_manual(values = colors)
+          } else if(!tSize & taxa_italic){
+            return_tree <- return_tree + geom_tiplab(aes(color=group),fontface='italic') + scale_color_manual(values = colors)
+          } else{
+            return_tree <- return_tree + geom_tiplab(aes(color=group)) + scale_color_manual(values = colors)
+          }
+        } else if(!tAlign & tOffset){
+          if(tSize & taxa_italic){
+            return_tree <- return_tree + geom_tiplab(aes(color=group),size=taxa_size,fontface='italic',offset=taxa_offset) + scale_color_manual(values = colors)
+          } else if(tSize & !taxa_italic){
+            return_tree <- return_tree + geom_tiplab(aes(color=group),size=taxa_size,offset=taxa_offset) + scale_color_manual(values = colors)
+          } else if(!tSize & taxa_italic){
+            return_tree <- return_tree + geom_tiplab(aes(color=group),fontface='italic',offset=taxa_offset) + scale_color_manual(values = colors)
+          } else{
+            return_tree <- return_tree + geom_tiplab(aes(color=group),offset=taxa_offset) + scale_color_manual(values = colors)
+          }
+        } else if(tAlign & !tOffset){
+          if(taxa_align == 'right'){
+            if(branch_legnth){
+              if(tSize & taxa_italic){
+                return_tree <- return_tree + geom_tiplab(aes(color=group),size=taxa_size,fontface='italic',hjust=1,align=TRUE) + scale_color_manual(values = colors)
+              } else if(tSize & !taxa_italic){
+                return_tree <- return_tree + geom_tiplab(aes(color=group),size=taxa_size,hjust=1,align=TRUE) + scale_color_manual(values = colors)
+              } else if(!tSize & taxa_italic){
+                return_tree <- return_tree + geom_tiplab(aes(color=group),fontface='italic',hjust=1,align=TRUE) + scale_color_manual(values = colors)
+              } else{
+                return_tree <- return_tree + geom_tiplab(aes(color=group),hjust=1,align=TRUE) + scale_color_manual(values = colors)
+              }
+            } else{
+              if(tSize & taxa_italic){
+                return_tree <- return_tree + geom_tiplab(aes(color=group),size=taxa_size,fontface='italic',hjust=1) + scale_color_manual(values = colors)
+              } else if(tSize & !taxa_italic){
+                return_tree <- return_tree + geom_tiplab(aes(color=group),size=taxa_size,hjust=1) + scale_color_manual(values = colors)
+              } else if(!tSize & taxa_italic){
+                return_tree <- return_tree + geom_tiplab(aes(color=group),fontface='italic',hjust=1) + scale_color_manual(values = colors)
+              } else{
+                return_tree <- return_tree + geom_tiplab(aes(color=group),hjust=1) + scale_color_manual(values = colors)
+              }
+            }
+          } else{
+            if(tSize & taxa_italic){
+              return_tree <- return_tree + geom_tiplab(aes(color=group),size=taxa_size,fontface='italic',hjust=0,align = TRUE) + scale_color_manual(values = colors)
+            } else if(tSize & !taxa_italic){
+              return_tree <- return_tree + geom_tiplab(aes(color=group),size=taxa_size,hjust=0,align = TRUE) + scale_color_manual(values = colors)
+            } else if(!tSize & taxa_italic){
+              return_tree <- return_tree + geom_tiplab(aes(color=group),fontface='italic',hjust=0,align = TRUE) + scale_color_manual(values = colors)
+            } else{
+              return_tree <- return_tree + geom_tiplab(aes(color=group),hjust=0,align = TRUE) + scale_color_manual(values = colors)
+            }
+          }
+        } else if(tAlign & tOffset){
+          if(taxa_align == 'right'){
+            if(branch_length){
+              if(tSize & taxa_italic){
+                return_tree <- return_tree + geom_tiplab(aes(color=group),size=taxa_size,fontface='italic',hjust=1,offset=taxa_offset,align=TRUE) + scale_color_manual(values = colors)
+              } else if(tSize & !taxa_italic){
+                return_tree <- return_tree + geom_tiplab(aes(color=group),size=taxa_size,hjust=1,offset=taxa_offset,align=TRUE) + scale_color_manual(values = colors)
+              } else if(!tSize & taxa_italic){
+                return_tree <- return_tree + geom_tiplab(aes(color=group),fontface='italic',hjust=1,offset=taxa_offset,align=TRUE) + scale_color_manual(values = colors)
+              } else{
+                return_tree <- return_tree + geom_tiplab(aes(color=group),hjust=1,offset=taxa_offset,align=TRUE) + scale_color_manual(values = colors)
+              }
+            } else{
+              if(tSize & taxa_italic){
+                return_tree <- return_tree + geom_tiplab(aes(color=group),size=taxa_size,fontface='italic',hjust=1,offset=taxa_offset) + scale_color_manual(values = colors)
+              } else if(tSize & !taxa_italic){
+                return_tree <- return_tree + geom_tiplab(aes(color=group),size=taxa_size,hjust=1,offset=taxa_offset) + scale_color_manual(values = colors)
+              } else if(!tSize & taxa_italic){
+                return_tree <- return_tree + geom_tiplab(aes(color=group),fontface='italic',hjust=1,offset=taxa_offset) + scale_color_manual(values = colors)
+              } else{
+                return_tree <- return_tree + geom_tiplab(aes(color=group),hjust=1,offset=taxa_offset) + scale_color_manual(values = colors)
+              }
+            }
+          } else{
+            if(tSize & taxa_italic){
+              return_tree <- return_tree + geom_tiplab(aes(color=group),size=taxa_size,fontface='italic',hjust=0,offset=taxa_offset,align = TRUE) + scale_color_manual(values = colors)
+            } else if(tSize & !taxa_italic){
+              return_tree <- return_tree + geom_tiplab(aes(color=group),size=taxa_size,hjust=0,offset=taxa_offset,align = TRUE) + scale_color_manual(values = colors)
+            } else if(!tSize & taxa_italic){
+              return_tree <- return_tree + geom_tiplab(aes(color=group),fontface='italic',hjust=0,offset=taxa_offset,align = TRUE) + scale_color_manual(values = colors)
+            } else{
+              return_tree <- return_tree + geom_tiplab(aes(color=group),hjust=0,offset=taxa_offset,align = TRUE) + scale_color_manual(values = colors)
+            }
+          }
+        }
+        
+      } else{
+        
+        if(!tAlign & !tOffset){
+          if(tSize & taxa_italic){
+            return_tree <- return_tree + geom_tiplab(aes(color=group),size=taxa_size,fontface='italic') + scale_color_manual(breaks = names(to_color),values = colors)
+          } else if(tSize & !taxa_italic){
+            return_tree <- return_tree + geom_tiplab(aes(color=group),size=taxa_size) + scale_color_manual(breaks = names(to_color),values = colors)
+          } else if(!tSize & taxa_italic){
+            return_tree <- return_tree + geom_tiplab(aes(color=group),fontface='italic') + scale_color_manual(breaks = names(to_color),values = colors)
+          } else{
+            return_tree <- return_tree + geom_tiplab(aes(color=group)) + scale_color_manual(breaks = names(to_color),values = colors)
+          }
+        } else if(!tAlign & tOffset){
+          if(tSize & taxa_italic){
+            return_tree <- return_tree + geom_tiplab(aes(color=group),size=taxa_size,fontface='italic',offset=taxa_offset) + scale_color_manual(breaks = names(to_color),values = colors)
+          } else if(tSize & !taxa_italic){
+            return_tree <- return_tree + geom_tiplab(aes(color=group),size=taxa_size,offset=taxa_offset) + scale_color_manual(breaks = names(to_color),values = colors)
+          } else if(!tSize & taxa_italic){
+            return_tree <- return_tree + geom_tiplab(aes(color=group),fontface='italic',offset=taxa_offset) + scale_color_manual(breaks = names(to_color),values = colors)
+          } else{
+            return_tree <- return_tree + geom_tiplab(aes(color=group),offset=taxa_offset) + scale_color_manual(breaks = names(to_color),values = colors)
+          }
+        } else if(tAlign & !tOffset){
+          if(taxa_align == 'right'){
+            if(branch_legnth){
+              if(tSize & taxa_italic){
+                return_tree <- return_tree + geom_tiplab(aes(color=group),size=taxa_size,fontface='italic',hjust=1,align=TRUE) + scale_color_manual(breaks = names(to_color),values = colors)
+              } else if(tSize & !taxa_italic){
+                return_tree <- return_tree + geom_tiplab(aes(color=group),size=taxa_size,hjust=1,align=TRUE) + scale_color_manual(breaks = names(to_color),values = colors)
+              } else if(!tSize & taxa_italic){
+                return_tree <- return_tree + geom_tiplab(aes(color=group),fontface='italic',hjust=1,align=TRUE) + scale_color_manual(breaks = names(to_color),values = colors)
+              } else{
+                return_tree <- return_tree + geom_tiplab(aes(color=group),hjust=1,align=TRUE) + scale_color_manual(breaks = names(to_color),values = colors)
+              }
+            } else{
+              if(tSize & taxa_italic){
+                return_tree <- return_tree + geom_tiplab(aes(color=group),size=taxa_size,fontface='italic',hjust=1) + scale_color_manual(breaks = names(to_color),values = colors)
+              } else if(tSize & !taxa_italic){
+                return_tree <- return_tree + geom_tiplab(aes(color=group),size=taxa_size,hjust=1) + scale_color_manual(breaks = names(to_color),values = colors)
+              } else if(!tSize & taxa_italic){
+                return_tree <- return_tree + geom_tiplab(aes(color=group),fontface='italic',hjust=1) + scale_color_manual(breaks = names(to_color),values = colors)
+              } else{
+                return_tree <- return_tree + geom_tiplab(aes(color=group),hjust=1) + scale_color_manual(breaks = names(to_color),values = colors)
+              }
+            }
+          } else{
+            if(tSize & taxa_italic){
+              return_tree <- return_tree + geom_tiplab(aes(color=group),size=taxa_size,fontface='italic',hjust=0,align = TRUE) + scale_color_manual(breaks = names(to_color),values = colors)
+            } else if(tSize & !taxa_italic){
+              return_tree <- return_tree + geom_tiplab(aes(color=group),size=taxa_size,hjust=0,align = TRUE) + scale_color_manual(breaks = names(to_color),values = colors)
+            } else if(!tSize & taxa_italic){
+              return_tree <- return_tree + geom_tiplab(aes(color=group),fontface='italic',hjust=0,align = TRUE) + scale_color_manual(breaks = names(to_color),values = colors)
+            } else{
+              return_tree <- return_tree + geom_tiplab(aes(color=group),hjust=0,align = TRUE) + scale_color_manual(breaks = names(to_color),values = colors)
+            }
+          }
+        } else if(tAlign & tOffset){
+          if(taxa_align == 'right'){
+            if(branch_length){
+              if(tSize & taxa_italic){
+                return_tree <- return_tree + geom_tiplab(aes(color=group),size=taxa_size,fontface='italic',hjust=1,offset=taxa_offset,align=TRUE) + scale_color_manual(breaks = names(to_color),values = colors)
+              } else if(tSize & !taxa_italic){
+                return_tree <- return_tree + geom_tiplab(aes(color=group),size=taxa_size,hjust=1,offset=taxa_offset,align=TRUE) + scale_color_manual(breaks = names(to_color),values = colors)
+              } else if(!tSize & taxa_italic){
+                return_tree <- return_tree + geom_tiplab(aes(color=group),fontface='italic',hjust=1,offset=taxa_offset,align=TRUE) + scale_color_manual(breaks = names(to_color),values = colors)
+              } else{
+                return_tree <- return_tree + geom_tiplab(aes(color=group),hjust=1,offset=taxa_offset,align=TRUE) + scale_color_manual(breaks = names(to_color),values = colors)
+              }
+            } else{
+              if(tSize & taxa_italic){
+                return_tree <- return_tree + geom_tiplab(aes(color=group),size=taxa_size,fontface='italic',hjust=1,offset=taxa_offset) + scale_color_manual(breaks = names(to_color),values = colors)
+              } else if(tSize & !taxa_italic){
+                return_tree <- return_tree + geom_tiplab(aes(color=group),size=taxa_size,hjust=1,offset=taxa_offset) + scale_color_manual(breaks = names(to_color),values = colors)
+              } else if(!tSize & taxa_italic){
+                return_tree <- return_tree + geom_tiplab(aes(color=group),fontface='italic',hjust=1,offset=taxa_offset) + scale_color_manual(breaks = names(to_color),values = colors)
+              } else{
+                return_tree <- return_tree + geom_tiplab(aes(color=group),hjust=1,offset=taxa_offset) + scale_color_manual(breaks = names(to_color),values = colors)
+              }
+            }
+          } else{
+            if(tSize & taxa_italic){
+              return_tree <- return_tree + geom_tiplab(aes(color=group),size=taxa_size,fontface='italic',hjust=0,offset=taxa_offset,align = TRUE) + scale_color_manual(breaks = names(to_color),values = colors)
+            } else if(tSize & !taxa_italic){
+              return_tree <- return_tree + geom_tiplab(aes(color=group),size=taxa_size,hjust=0,offset=taxa_offset,align = TRUE) + scale_color_manual(breaks = names(to_color),values = colors)
+            } else if(!tSize & taxa_italic){
+              return_tree <- return_tree + geom_tiplab(aes(color=group),fontface='italic',hjust=0,offset=taxa_offset,align = TRUE) + scale_color_manual(breaks = names(to_color),values = colors)
+            } else{
+              return_tree <- return_tree + geom_tiplab(aes(color=group),hjust=0,offset=taxa_offset,align = TRUE) + scale_color_manual(breaks = names(to_color),values = colors)
+            }
+          }
+        }
+        
+      }
+    
+    } else {
     if(!tAlign & !tOffset){
       if(tSize & taxa_italic){
         return_tree <- return_tree + geom_tiplab(size=taxa_size,fontface='italic')
@@ -420,6 +618,7 @@ basicPlotter <- function(tree,branch_length,branch_weight,node_label,node_size,n
         }
       }
     }
+  }
     
     if(titlePlot){
       if(colorTips & highlight_legend){

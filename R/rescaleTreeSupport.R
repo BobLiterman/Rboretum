@@ -16,18 +16,6 @@ rescaleTreeSupport <- function(tree_support,scale,return_total){
   
   if(missing(tree_support)){
     stop("'tree_support' is required.")
-  } 
-  
-  if(missing(return_total)){
-    return_total <- FALSE
-  } else if(!is.logical(return_total)){
-    return_total <- FALSE
-  }
-  
-  if(missing(scale)){
-    if(!return_total){
-      stop("'scale' is required if not returning raw totals.")
-    }
   } else if(!is.data.frame(tree_support)){
     stop("'tree_support' is not a dataframe")
   } else if(names(tree_support)[1] != 'Clade'){
@@ -35,6 +23,18 @@ rescaleTreeSupport <- function(tree_support,scale,return_total){
   } else if(ncol(tree_support)==1){
     stop("No data columns.")
   } else{
+    
+    if(missing(return_total)){
+      return_total <- FALSE
+    } else if(!is.logical(return_total)){
+      return_total <- FALSE
+    }
+    
+    if(missing(scale)){
+      if(!return_total){
+        stop("'scale' is necssary if not returning total values")
+      }
+    }
     
     data_columns <- 2:ncol(tree_support)
     

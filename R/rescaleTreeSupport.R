@@ -16,8 +16,18 @@ rescaleTreeSupport <- function(tree_support,scale,return_total){
   
   if(missing(tree_support)){
     stop("'tree_support' is required.")
-  } else if(missing(scale)){
-    stop("'scale' is required.")
+  } 
+  
+  if(missing(return_total)){
+    return_total <- FALSE
+  } else if(!is.logical(return_total)){
+    return_total <- FALSE
+  }
+  
+  if(missing(scale)){
+    if(!return_total){
+      stop("'scale' is required if not returning raw totals.")
+    }
   } else if(!is.data.frame(tree_support)){
     stop("'tree_support' is not a dataframe")
   } else if(names(tree_support)[1] != 'Clade'){
@@ -32,12 +42,6 @@ rescaleTreeSupport <- function(tree_support,scale,return_total){
       stop("Cannot perform rowSums on second through the last columns. Are all columns integer/numeric?")
     } else{
       clade_totals <- tree_support[data_columns] %>% rowSums() # Get row support (total support summed across datasets)
-      
-      if(missing(return_total)){
-        return_total <- FALSE
-      } else if(!is.logical(return_total)){
-        return_total <- FALSE
-      }
       
       if(return_total){
         return(as.numeric(clade_totals))

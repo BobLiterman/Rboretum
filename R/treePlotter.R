@@ -507,7 +507,6 @@ treePlotter <- function(tree,clade_support,tree_support,geom_size,use_pies,pie_x
   # Create empty plot list
   plotList <- list()
   
-  print(colors)
   for(i in 1:tree_count){
     
     # Pull out tree

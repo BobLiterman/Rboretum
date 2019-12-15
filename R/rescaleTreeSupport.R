@@ -8,10 +8,11 @@
 #'   \item Two-item numeric vector [return summation values that have been rescaled to fit between c(min,max) (e.g. rescale millions of sites to range between c(1,20))]
 #'   \item "log" [return log-transformed totals]
 #' }
+#' @param return_total OPTIONAL: If TRUE, return raw sum total support values for each clade
 #' @return Numeric vector the length of the number of clades, and corresponding to rescaled total support values
 #' @export
 
-rescaleTreeSupport <- function(tree_support,scale){
+rescaleTreeSupport <- function(tree_support,scale,return_total){
   
   if(missing(tree_support)){
     stop("'tree_support' is required.")
@@ -31,6 +32,16 @@ rescaleTreeSupport <- function(tree_support,scale){
       stop("Cannot perform rowSums on second through the last columns. Are all columns integer/numeric?")
     } else{
       clade_totals <- tree_support[data_columns] %>% rowSums() # Get row support (total support summed across datasets)
+      
+      if(missing(return_total)){
+        return_total <- FALSE
+      } else if(!is.logical(return_total)){
+        return_total <- FALSE
+      }
+      
+      if(return_total){
+        return(as.numeric(clade_totals))
+      }
     }
   }
   
@@ -61,7 +72,7 @@ rescaleTreeSupport <- function(tree_support,scale){
       has_support <- has_support %>%
         mutate(Scaled_Support = log(Raw_Total_Support))
     }
-  } else if(is.numeric(scale) | is.integer(scale)){ # If 'scale' is a number...
+  } else if(is.numeric(scale)){ # If 'scale' is a number...
     
     if(length(scale)==1){
       has_support <- has_support %>%

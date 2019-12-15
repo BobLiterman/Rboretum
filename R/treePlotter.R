@@ -192,7 +192,7 @@ treePlotter <- function(tree,clade_support,tree_support,geom_size,use_pies,pie_x
     treeSupport <- FALSE
     piePossible <- FALSE
     
-  } else if(!Rboretum::isTreeSupport(tree_support,tree_clades,partial = TRUE)){
+  } else if(!Rboretum::isTreeSupport(tree_support,tree,partial = TRUE)){
     stop("'tree_support' does not contain information about all the clades in 'tree'")
   } else{
     

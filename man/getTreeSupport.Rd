@@ -5,48 +5,67 @@
 \title{Rboretum Alignment Signal Support Mapper}
 \usage{
 getTreeSupport(
-  tree,
   signal,
+  tree,
+  clade,
+  separate_signal,
+  return_integer,
+  include_root,
+  dataset_name,
   max_missing,
-  alignment_name,
   include_gap,
+  only_gap,
   include_singleton,
   include_biallelic,
   include_triallelic,
   include_quadallelic,
   include_pentallelic,
-  only_gap,
+  return_table,
   existing_support
 )
 }
 \arguments{
-\item{tree}{phylo object onto which alignment signal will be mapped}
+\item{signal}{Output table from getAlignmentSignal()}
 
-\item{signal}{Output table from getAlignmentSignal() run with taxa from 'tree'}
+\item{tree}{OPTIONAL: Tree(s) onto which alignment signal will be mapped. Not considered if 'clade' argument is used. Tree options include:
+\itemize{
+  \item A rooted phylo object
+  \item A rooted, named multiPhylo object where all trees share 3+ taxa
+}}
 
-\item{max_missing}{OPTIONAL: Number of missing sites allowed in alignment column [Default: 0]}
+\item{clade}{OPTIONAL: Character vector including specific clades of interest as semicolon-separted taxon (i.e. get support for a specific clade set rather than a whole tree). Supercedes 'tree' argument}
 
-\item{alignment_name}{OPTIONAL: Column name for data being added [Default: Alignment name from signal dataframe + 'm_<MISSING>']}
+\item{separate_signal}{OPTIONAL: If FALSE, return values as the sum of all datasets [Default: TRUE, return results separated by dataset]}
 
-\item{include_gap}{OPTIONAL: TRUE or FALSE; Count sites with gap positions ('-') as part of total support [Default: TRUE]}
+\item{return_integer}{OPTIONAL: If TRUE, and a specific set of clades are queried, return the integer support summed across datasets [Default: FALSE, return results as a dataframe]}
 
-\item{include_singleton}{OPTIONAL: TRUE or FALSE; Count sites with singletons as part of total support [Default: TRUE]}
+\item{include_root}{OPTIONAL: If TRUE and using a 'tree',  return alignment support for root clades as well [Default: FALSE, don't include root clades]}
 
-\item{include_biallelic}{OPTIONAL: TRUE or FALSE; Count sites with biiallelic variation as part of total support [Default: TRUE]}
+\item{dataset_name}{OPTIONAL: Character vector containing a new name for each alignment dataset in 'signal',  [Default: Alignment name from signal dataframe + 'm_<MISSING>']}
 
-\item{include_triallelic}{OPTIONAL: TRUE or FALSE; Count sites with triallelic variation as part of total support [Default: TRUE]}
+\item{max_missing}{OPTIONAL: Number of missing sites allowed in alignment column before it is not considered [Default: 0, no missing taxa allowed]}
 
-\item{include_quadallelic}{OPTIONAL: TRUE or FALSE; Count sites with quadallelic variation as part of total support [Default: TRUE]}
+\item{include_gap}{OPTIONAL: If TRUE, count sites with gap positions ('-') as informative signal; otherwise, count gaps as missing data [Default: FALSE: Gaps are treated as missing]}
 
-\item{include_pentallelic}{OPTIONAL: TRUE or FALSE; Count sites with pentallelic variation as part of total support [Default: TRUE]}
+\item{only_gap}{OPTIONAL: TRUE or FALSE; Only count sites with gap positions ('-') [Default: FALSE]}
 
-\item{only_gap}{OPTIONAL: TRUE or FALSE; Only count sites with gap positions ('-') as part of total support [Default: FALSE]}
+\item{include_singleton}{OPTIONAL: If TRUE, count sites with singletons as part of total support [Default: TRUE]}
 
-\item{existing_support}{OPTIONAL: Output from previous getTreeSupport() using the same tree, run with new alignment/missing combination}
+\item{include_biallelic}{OPTIONAL: If TRUE, count sites with biiallelic variation as part of total support [Default: TRUE]}
+
+\item{include_triallelic}{OPTIONAL: If TRUE, count sites with triallelic variation as part of total support [Default: TRUE]}
+
+\item{include_quadallelic}{OPTIONAL: If TRUE, count sites with quadallelic variation as part of total support [Default: TRUE]}
+
+\item{include_pentallelic}{OPTIONAL: If TRUE, count sites with pentallelic variation as part of total support [Default: TRUE]}
+
+\item{return_table}{OPTIONAL: If TRUE, return entire table of filtered signal counts by clade [FALSE: Return clade support counts]}
+
+\item{existing_support}{OPTIONAL: Append these results to the output from getTreeSupport() run with the same 'tree' and different alignment options}
 }
 \value{
-The same split table from getTreeSplits(tree), but with (1) no root row, and (2) a support column for the specfied alignment/missing combination
+A dataframe containing each monophyletic clade in 'tree', along with site support from all alignments in 'signal' as separate columns
 }
 \description{
-This function computes the alignment support for a specified tree
+This function maps phylogenetic signal from a multiple-sequence alingment onto a rooted phylo or multiPhylo object
 }

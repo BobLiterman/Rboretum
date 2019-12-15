@@ -9,11 +9,15 @@ isPhylo(test_object, check_rooted)
 \arguments{
 \item{test_object}{R object to check}
 
-\item{check_rooted}{OPTIONAL: If TRUE, also check if tree is rooted. Default: FALSE, don't check rootedness}
+\item{check_rooted}{OPTIONAL: If TRUE, also check if tree is rooted. [Default: FALSE, don't check rootedness]}
 }
 \value{
 TRUE if phylo, otherwise FALSE
 }
 \description{
 This function returns TRUE if the passed object is of class phylo; Otherwise, FALSE
+}
+\examples{
+isPhylo(tree) # Check if 'tree' is a phylo object
+isPhylo(tree,check_rooted = TRUE) # Check if 'tree' is a rooted phylo object
 }

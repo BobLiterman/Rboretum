@@ -15,3 +15,8 @@ Sorted semicolon delimited string
 \description{
 This function returns a sorted, semicolon-delimited string from an unsorted semicolon-delimited string
 }
+\examples{
+myShuffledString <- 'c;d;a;b'
+semiSorter(myShuffledString)
+> 'a;b;c;d'
+}

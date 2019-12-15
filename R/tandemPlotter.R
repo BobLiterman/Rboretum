@@ -15,7 +15,7 @@ tandemPlotter <- function(...){
       plotList <- list(...)[[1]]
     }
   }
-
+  
   if(length(plotList)<2){
     stop("Two or more plots needed for tandem.treePlot.")
   }
@@ -24,7 +24,7 @@ tandemPlotter <- function(...){
   
   if(!all(plotCheck)){
     stop("One argument passed is not of class ggplot or ggtree")
-    }
+  }
   
   plot_count <- length(plotList)
   plot_step <- 1/plot_count

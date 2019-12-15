@@ -7,11 +7,15 @@
 getTreeSplits(tree)
 }
 \arguments{
-\item{tree}{Rooted phylo object}
+\item{tree}{Tree(s) to split. Options include:
+\itemize{
+  \item A rooted phylo object
+  \item A rooted, named multiPhylo object where all trees share 3+ taxa
+}}
 }
 \value{
-Four-column dataframe; 1: Semi-colon separated monophyletic clade; 2: 'Mirror Clade'; 3: Phylo Node ID; 4: Node Boostrap (if present)
+Dataframe (or a list of dataframes for each unique topology): Column 1: Semi-colon separated monophyletic clade; Column 2: 'Mirror Clade'; Column 3: Phylo Node ID (NA for root split)
 }
 \description{
-This function takes a rooted phylo object and returns information about each monophyletic group/split
+This function breaks down a rooted phylo or multiPhylo object into its respective set of splits
 }

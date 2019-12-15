@@ -1,51 +1,67 @@
 #' Rboretum Tree Support Checker
 #'
-#' This function returns TRUE if the passed object is the output of getTreeSupport; otherwise, FALSE
+#' This function returns TRUE if the passed object is the output of getTreeSupport() and contains information about clades in 'test_clade'; otherwise, FALSE
 #' @param test_object R object to check
-#' @param tree OPTIONAL: phylo object [Check that passed tree support contains information about a specific tree.]
-#' @return TRUE if output of getTreeSupport(); otherwise, FALSE
+#' @param test_clade Character vector of semicolon-separated clades. Function checks that passed support object contains information about these clades.
+#' @param partial OPTIONAL: If TRUE, as long as all clades from 'test_clade' are present, return TRUE [Default: FALSE, require that test_clades also includes all clades in support object]
+#' @return TRUE if output of getTreeSupport() with information on 'test_clade'; otherwise, FALSE
 #' @export
-#'
-isTreeSupport <- function(test_object,tree){
+
+isTreeSupport <- function(test_object,test_clade,partial){
   
+  # Ensure dataframe columns match expected and that data exists
   if(!is.data.frame(test_object)){
-    return(FALSE)
-  } else if(nrow(test_object) == 0){
-    return(FALSE)
-  } else if(has_error(silent=TRUE,expr=all(names(test_object)[1:4] == c('Clade','Mirror_Clade','Split_Node','Split_Bootstrap')))){
-    return(FALSE)
-  } else if(!all(names(test_object)[1:4] == c('Clade','Mirror_Clade','Split_Node','Split_Bootstrap'))){    
-    return(FALSE)
-  } else if(ncol(test_object) == 4){
-    return(FALSE)
+    return(FALSE) # Tree support is a df
+  } else if(names(test_object)[1] != "Clade"){
+    return(FALSE) # Tree support starts with a clade column
   } else{
-    support_cols <- 5:ncol(tree_support)
-    for(i in support_cols){
-      if(has_error(silent = TRUE,as.integer(test_object[i]))){
-        return(FALSE)
-      }
-    }
+    
+    # Get sorted clades from getTreeSupport
+    support_clades <- sort(as.character(test_object$Clade))
+    
+    if(!purrr::map(.x=support_clades,.f=function(x){str_detect(x,";")}) %>% unlist() %>% all()){
+      stop("Clades in 'test_object' should be semicolon-separated character strings")
+    } 
+    
+    support_clades <- purrr::map(.x=support_clades,.f = function(x){Rboretum::semiSorter(x)}) %>% unlist() %>% as.character() %>% sort() # Sort clades
+    
   }
   
-  if(missing(tree)){
-    return(TRUE)
-  } else if(!Rboretum::isPhylo(tree)){
-    stop("'tree' argument does not appear to be a valid phylo object")
-  } else if(!ape::is.rooted(tree)){
-    stop("'tree' must be rooted for isTreeSupport()")
+  # Ensure 'test_clade' is a character vector of semicolon-separated clades
+  
+  if(!is.character(test_clade)){
+    stop("'test_clade' must be a character vector")
+  } else if(!purrr::map(.x=test_clade,.f=function(x){str_detect(x,";")}) %>% unlist() %>% all()){
+    stop("Clades in 'test_clade' should be semicolon-separated character strings")
   } else{
+    test_clade <- purrr::map(.x=test_clade,.f = function(x){Rboretum::semiSorter(x)}) %>% unlist() %>% as.character() %>% sort() # Sort clades
+  }
+  
+  # Allow partial matches?
+  if(missing(partial)){
+    partial <- FALSE
+  } else if(!is.logical(partial)){
+    partial <- FALSE
+  }
+  
+  if(partial){ # Partial matches are true if all clades from tree are present in support
     
-    clades <- test_object %>% pull(Clade) %>% as.character() %>% sort()
-    mirror_clades <- test_object %>% pull(Mirror_Clade) %>% as.character() %>% sort()
-    
-    tree_splits <- Rboretum::getTreeSplits(tree) %>% filter(!is.na(Split_Node))
-    tree_clades <- tree_splits %>% pull(Clade) %>% as.character() %>% sort()
-    tree_mirror_clades <- tree_splits %>% pull(Mirror_Clade) %>% as.character() %>% sort()
-    
-    if(all(clades == tree_clades) & all(mirror_clades == tree_mirror_clades)){
-      return(TRUE)
+    if(all(test_clade %in% support_clades)){
+      return(TRUE) 
     } else{
-      return(FALSE)
+      return(FALSE) 
+    }
+    
+  } else{ # Complete matches are true if 'test_clade' and support contain identical clade information
+    
+    if(length(test_clade) != length(support_clades)){
+      return(FALSE) 
+    } else{
+      if(all(test_clade == support_clades)){
+        return(TRUE)
+      } else{
+        return(FALSE)
+      }
     }
   }
 }

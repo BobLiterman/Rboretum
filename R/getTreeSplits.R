@@ -1,111 +1,42 @@
 #' Rboretum Tree Splitter
 #'
-#' This function takes a rooted phylo object and returns information about each monophyletic group/split
-#' @param tree Rooted phylo object
-#' @return Four-column dataframe; 1: Semi-colon separated monophyletic clade; 2: 'Mirror Clade'; 3: Phylo Node ID; 4: Node Boostrap (if present)
+#' This function breaks down a rooted phylo or multiPhylo object into its respective set of splits
+#' @param tree Tree(s) to split. Options include:
+#' \itemize{
+#'   \item A rooted phylo object
+#'   \item A rooted, named multiPhylo object where all trees share 3+ taxa
+#' }
+#' @return Dataframe (or a list of dataframes for each unique topology): Column 1: Semi-colon separated monophyletic clade; Column 2: 'Mirror Clade'; Column 3: Phylo Node ID (NA for root split)
 #' @export
 
 getTreeSplits <- function(tree){
   
-  if(has_error(silent=TRUE,expr=ape::is.rooted(tree))){
-    stop("Error in ape::is.rooted. Is 'tree' a phylo object?")
-  } else if(!ape::is.rooted(tree)){
-    stop("Tree must be rooted for getTreeSplits")}
-  
-  # Get species
-  tree_species <- sort(tree$tip.label)
-  species_count <- length(tree_species)
-  
-  mono_clades <- c()
-  mirror_clades <- c()
-  node_list <- c()
-  bootstrap_list <- c()
-  
-  if(is.null(tree$node.label)){
-    hasBS <- FALSE
-  } else { hasBS <- TRUE }
-  
-  # Get all subtrees
-  for(j in ape::subtrees(tree)){
-    temp_clade <- c((j$tip.label))
-    mirror_clade <- dplyr::setdiff(tree_species, temp_clade)
+  if(Rboretum::isPhylo(tree,check_rooted = TRUE)){ # If a phylo object is provided, get splits...
+    split_df <- getTreeSplits_Worker(tree)
+    return(split_df)
+  } else if(Rboretum::isMultiPhylo(tree,check_named = TRUE,check_rooted = TRUE,check_three_taxa = TRUE,check_all_equal = TRUE)){ # If a valid multiPhylo is provided, but all trees have the same topology, return splits for the first tree
     
-    temp_length <- length(temp_clade)
-    mirror_length <- length(mirror_clade)
+    common_taxa <- Rboretum::getSharedTaxa(tree)
+    first_tree <- treeTrimmer(tree[[1]],common_taxa)
+    split_df <- getTreeSplits_Worker(first_tree)
+    return(split_df)
     
-    # Remove subtree that is whole tree
-    if(temp_length != species_count & mirror_length != species_count){
-      
-      # Find monophyletic group
-      mono_A <- ape::is.monophyletic(tree,temp_clade)
-      mono_B <- ape::is.monophyletic(tree,mirror_clade)
-      
-      # Note actual monophyletic clades and add bootrap values if appropriate
-      if(mono_A & !(mono_B)){
-        mono_clades <- c(mono_clades,sort(temp_clade) %>% paste(collapse = ";"))
-        mirror_clades <- c(mirror_clades,sort(mirror_clade) %>% paste(collapse = ";"))
-        node_list <- c(node_list,ape::getMRCA(tree,temp_clade))
-        
-        if(hasBS){
-          bs_tree <- Rboretum::treeTrimmer(tree,temp_clade)
-          node_bs <- bs_tree$node.label[1]
-          if(!is.na(as.numeric(node_bs))){
-            bootstrap_list <- c(bootstrap_list,as.numeric(node_bs))
-          } else{ bootstrap_list <- c(bootstrap_list,NA) }
-        }
-      } else if(mono_B & !(mono_A)){
-        mono_clades <- c(mono_clades,sort(mirror_clade) %>% paste(collapse = ";"))
-        mirror_clades <- c(mirror_clades,sort(temp_clade) %>% paste(collapse = ";"))
-        node_list <- c(node_list,ape::getMRCA(tree,mirror_clade))
-        
-        if(hasBS){
-          bs_tree <- Rboretum::treeTrimmer(tree,temp_clade)
-          node_bs <- bs_tree$node.label[1]
-          if(!is.na(as.numeric(node_bs))){
-            bootstrap_list <- c(bootstrap_list,as.numeric(node_bs))
-          } else{ bootstrap_list <- c(bootstrap_list,NA) }
-        }
-      } else if(mono_A & mono_B){
-        
-        mono_clades <- c(mono_clades,sort(temp_clade) %>% paste(collapse = ";"))
-        mirror_clades <- c(mirror_clades,sort(mirror_clade) %>% paste(collapse = ";"))
-        node_list <- c(node_list,NA)
-        
-        if(temp_length > 1 & mirror_length > 1){
-        
-            if(hasBS){
-            root_1 <- sort(temp_clade)
-            root_tree_1 <- Rboretum::treeTrimmer(tree,root_1)
-            root_1_BS <- root_tree_1$node.label[1]
-            
-            root_2 <- sort(mirror_clade)
-            root_tree_2 <- Rboretum::treeTrimmer(tree,root_2)
-            root_2_BS <- root_tree_2$node.label[1]
-            
-            if(!is.na(as.numeric(root_1_BS))){
-              bootstrap_list <- c(bootstrap_list,as.numeric(root_1_BS))
-            } else if(!is.na(as.numeric(root_2_BS))){
-              bootstrap_list <- c(bootstrap_list,as.numeric(root_2_BS))
-            } else{ bootstrap_list <- c(bootstrap_list,NA) }
-          }
-        } else{
-          
-          if(hasBS){
-            bootstrap_list <- c(bootstrap_list,NA)
-          }
-        }
-      }
-    }
-  }
-  
-  if(hasBS){
-    clade_node_df <- data.frame("Clade"=as.character(mono_clades),"Mirror_Clade"=as.character(mirror_clades),"Split_Node"=as.integer(node_list),"Split_Bootstrap"=as.numeric(bootstrap_list)) %>%
-      filter((!duplicated(Split_Node))) # Two entries for root reduced to one
+  } else if(Rboretum::isMultiPhylo(tree,check_named = TRUE,check_rooted = TRUE,check_three_taxa = TRUE,check_some_equal = TRUE)){ # If a valid multiPhylo is provided, but some trees have the same topology, return splits for the unique trees
+    
+    tree <- getUniqueTopologies(tree)
+    tree_names <- names(tree)
+    split_df <- purrr::map(.x = tree,.f = function(x){getTreeSplits_Worker(x)})
+    names(split_df) <- tree_names
+    return(split_df)
+    
+  } else if(Rboretum::isMultiPhylo(tree,check_named = TRUE,check_rooted = TRUE,check_three_taxa = TRUE,check_all_unique = TRUE)){ # If a valid multiPhylo is provided, and all trees have a unique topology, return splits for all trees
+    
+    tree_names <- names(tree)
+    split_df <- purrr::map(.x = tree,.f = function(x){getTreeSplits_Worker(x)})
+    names(split_df) <- tree_names
+    return(split_df)
+    
   } else{
-    clade_node_df <- data.frame("Clade"=as.character(mono_clades),"Mirror_Clade"=as.character(mirror_clades),"Split_Node"=as.integer(node_list)) %>%
-      mutate("Split_Bootstrap" = NA) %>%
-      filter((!duplicated(Split_Node))) # Two entries for root reduced to one
+    stop("'tree' does not appear to be a rooted phylo, or a named, rooted multiPhylo object where all trees share 3+ taxa.")
   }
-  
-  return(clade_node_df)
 }

@@ -4,7 +4,7 @@
 \alias{isAlignmentSignal}
 \title{Rboretum Alignment Signal Checker}
 \usage{
-isAlignmentSignal(test_object, species_info)
+isAlignmentSignal(test_object, species_info, return_taxa)
 }
 \arguments{
 \item{test_object}{R object to check}
@@ -12,8 +12,11 @@ isAlignmentSignal(test_object, species_info)
 \item{species_info}{OPTIONAL: Check that passed signal contains information about a specific set of taxa. Set of 3+ species that can be passed as either:
 \itemize{
   \item phylo object from which species will be extracted; or
+  \item multiPhylo object from which common species will be extracted; or
   \item Character vector of desired taxa
 }}
+
+\item{return_taxa}{OPTIONAL: If TRUE, if object appears to be signal, return signal taxa rather than TRUE or FALSE [Default: FALSE, return logical]}
 }
 \value{
 TRUE if output of getAlignmentSignal(); otherwise, FALSE

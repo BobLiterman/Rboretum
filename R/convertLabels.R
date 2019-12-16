@@ -29,11 +29,11 @@ convertLabels <- function(to_convert,name_df,from,to){
   
   # Get 'from' column [current IDs]
   if(missing(from)){
-    current_ids <- as.character(name_df[,1])
+    current_ids <- pull(name_df,1) %>% as.character()
   } else{ 
     if(!as.character(from) %in% names(name_df)){
       stop("'from' column not found in name_df")
-    } else{ current_ids <- as.character(pull(name_df,from)) }
+    } else{ current_ids <- pull(name_df,from) %>% as.character() }
   }
   
   # Ensure 'from' column IDs are unique
@@ -43,11 +43,11 @@ convertLabels <- function(to_convert,name_df,from,to){
   
   # Get 'to' column [desired IDs]
   if(missing(to)){
-    new_ids <- as.character(name_df[,2])
+    new_ids <- pull(name_df,2) %>% as.character()
   } else{ 
     if(!as.character(to) %in% names(name_df)){
       stop("'to' column not found in name_df")
-    } else{ new_ids <- as.character(pull(name_df,to)) }
+    } else{ new_ids <- pull(name_df,to) %>% as.character() }
   }
   
   # Ensure 'to' column IDs are unique

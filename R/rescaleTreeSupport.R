@@ -8,11 +8,12 @@
 #'   \item Two-item numeric vector [return summation values that have been rescaled to fit between c(min,max) (e.g. rescale millions of sites to range between c(1,20))]
 #'   \item "log" [return log-transformed totals]
 #' }
+#' @param scale_range OPTIONAL: Set range of values to scale by giving a c(min,max). Values below min or above max will be set to the minimum/maximum value without it. [Default: Use all data]
 #' @param return_total OPTIONAL: If TRUE, return raw sum total support values for each clade
 #' @return Numeric vector the length of the number of clades, and corresponding to rescaled total support values
 #' @export
 
-rescaleTreeSupport <- function(tree_support,scale,return_total){
+rescaleTreeSupport <- function(tree_support,scale,scale_range,return_total){
   
   if(missing(tree_support)){
     stop("'tree_support' is required.")
@@ -51,14 +52,15 @@ rescaleTreeSupport <- function(tree_support,scale,return_total){
   
   new_df <- data.frame(Sort = as.integer(1:length(tree_support$Clade)),Clade=as.character(tree_support$Clade),Raw_Total_Support=as.numeric(clade_totals)) # Create dataframe
   
-  zero_support <- new_df %>% filter(Raw_Total_Support == 0) # Filter out clades with no support 
+  # Filter out rows that have support
   has_support <- new_df %>% filter(Raw_Total_Support > 0)
   
   if(nrow(has_support)==0){
     stop("No data found")
   }
-  
+
   # Handle 0 support nodes
+  zero_support <- new_df %>% filter(Raw_Total_Support == 0)
   if(nrow(zero_support)>0){
     zero_support <- zero_support %>%
       mutate(Scaled_Support = 0)
@@ -66,6 +68,47 @@ rescaleTreeSupport <- function(tree_support,scale,return_total){
   } else{
     add_zero <- FALSE
   }
+  
+  # Handle scale ranging 
+  
+  if(missing(scale_range)){
+    add_high <- FALSE
+    add_low <- FALSE
+  
+  } else if(!is.numeric(scale_range) | length(scale_range) != 2){
+    stop("'scale_range' should  be a two item numeric range [c(min,max)]")
+  } else{
+    
+    add_high <- FALSE
+    add_low <- FALSE
+    
+    scale_min <- scale_range[1]
+    scale_max <- scale_range[2]
+    
+    if(scale_min > scale_max){
+      stop("'scale_range' should  be a two item numeric range [c(min,max)]")
+    } else{
+
+      low_data <- has_support %>% filter(Raw_Total_Support < scale_min)
+      high_data <- has_support %>% filter(Raw_Total_Support > scale_max)
+      
+      # If any data exists below the min threshold, prune it off and add it back later
+      if(nrow(low_data)>0){
+        add_low <- TRUE 
+      }
+      
+      # Same for high data
+      if(nrow(high_data)>0){
+        add_high <- TRUE
+      }
+      
+      has_support <- filter(Raw_Total_Support >= scale_min & Raw_Total_Support <= scale_max)
+    }
+  }
+  
+
+  
+
   
   if(is.character(scale)){ # If 'scale' is a chaaracter, it should be 'log'
     if(length(scale)!=1){
@@ -75,6 +118,18 @@ rescaleTreeSupport <- function(tree_support,scale,return_total){
     } else{
       has_support <- has_support %>%
         mutate(Scaled_Support = log(Raw_Total_Support))
+      
+      if(add_low){
+        data_min <- min(has_support$Scaled_Support)
+        low_data$Scaled_Support <- as.numeric(data_min)
+        has_support <- rbind(has_support,low_data)
+      }
+      if(add_high){
+        data_max <- max(has_support$Scaled_Support)
+        high_data$Scaled_Support <- as.numeric(data_max)
+        has_support <- rbind(has_support,high_data)
+      }
+      
     }
   } else if(is.numeric(scale)){ # If 'scale' is a number...
     
@@ -82,18 +137,40 @@ rescaleTreeSupport <- function(tree_support,scale,return_total){
       has_support <- has_support %>%
         mutate(Scaled_Support = as.numeric(scale))
       
+      if(add_low){
+        low_data$Scaled_Support <- as.numeric(scale)
+        has_support <- rbind(has_support,low_data)
+      }
+      if(add_high){
+        high_data$Scaled_Support <- as.numeric(scale)
+        has_support <- rbind(has_support,high_data)
+      }
+      
     } else if(length(scale)==2){
+      
+      if(nrow(has_support)<2){
+        stop("Dataest has been pruned to fewer than two datapoints, which therefore cannot be scaled.")
+      }
       
       min <- scale[1]
       max <- scale[2]
       
-      if(!(min < max)){
+      if(min > max){
         stop("'scale' values should be given in terms of c(min,max)")
       }
       
       raw_values <- has_support %>% pull(Raw_Total_Support) %>% as.numeric()
       new_values <- scales::rescale(raw_values,to=scale)
       has_support$Scaled_Support <- new_values
+      
+      if(add_low){
+        low_data$Scaled_Support <- as.numeric(min)
+        has_support <- rbind(has_support,low_data)
+      }
+      if(add_high){
+        high_data$Scaled_Support <- as.numeric(max)
+        has_support <- rbind(has_support,high_data)
+      }
       
     } else{
       stop("If 'scale' is numeric, it should be one or two items long.")
@@ -106,7 +183,7 @@ rescaleTreeSupport <- function(tree_support,scale,return_total){
     
   } else{
     
-    scaled_values <- has_support %>% pull(Scaled_Support) %>% as.numeric()
+    scaled_values <- has_support %>% arrange(Sort) %>% pull(Scaled_Support) %>% as.numeric()
     
   }
   

@@ -37,6 +37,7 @@
 #'   \item "bold.italic"
 #' }
 #' @param node_label_color OPTIONAL: Set ggtree node label color [Default: 'black']
+#' @param node_label_box OPTIONAL: Set ggtree node label as a label with a white background [Default: FALSE, print as text]
 #' @param node_label_nudge OPTIONAL: Set ggtree node label nudge_x [Default: 0]
 #' @param taxa_font_size OPTIONAL: Set ggtree tip label font size [Default: 5]
 #' @param taxa_fontface OPTIONAL: Set tip label fontface. Options include:
@@ -66,7 +67,7 @@
 #' @return ggtree object or list of ggtree objects
 #' @export
 
-treePlotter <- function(tree,clade_support,tree_support,geom_size,use_pies,pie_xnudge,pie_ynudge,pie_legend_position,branch_length,branch_weight,node_label,node_label_font_size,node_label_fontface,node_label_color,node_label_nudge,taxa_font_size,taxa_fontface,taxa_offset,xmax,reverse_x,to_color,colors,highlight_legend,color_branches,plot_title,legend_shape_size,legend_font_size,legend_title_size,geom_alpha,geom_color){
+treePlotter <- function(tree,clade_support,tree_support,geom_size,use_pies,pie_xnudge,pie_ynudge,pie_legend_position,branch_length,branch_weight,node_label,node_label_font_size,node_label_fontface,node_label_color,node_label_box,node_label_nudge,taxa_font_size,taxa_fontface,taxa_offset,xmax,reverse_x,to_color,colors,highlight_legend,color_branches,plot_title,legend_shape_size,legend_font_size,legend_title_size,geom_alpha,geom_color){
   
   # Ensure tree is valid for plotter
   if(!Rboretum::isMultiPhylo(tree,check_rooted = TRUE,check_three_taxa = TRUE) & !Rboretum::isPhylo(tree,check_rooted = TRUE)){
@@ -334,6 +335,13 @@ treePlotter <- function(tree,clade_support,tree_support,geom_size,use_pies,pie_x
     node_label_color <- 'black'
   } else if(has_error(silent=TRUE,expr=grDevices::col2rgb(node_label_color))){
     node_label_color <- 'black'
+  }
+  
+  # Print geom_nodelab in a box?
+  if(missing(node_label_box)){
+    node_label_box <- FALSE
+  } else if(!is.logical(node_label_box)){
+    node_label_box <- FALSE
   }
   
   # Nudge node label?
@@ -741,13 +749,29 @@ treePlotter <- function(tree,clade_support,tree_support,geom_size,use_pies,pie_x
     if(node_label == "none"){
       return_tree <- return_tree
     } else if(node_label == "node"){
-      return_tree <- return_tree + geom_nodelab(color=node_label_color,nudge_x = node_label_nudge,size=node_label_font_size,fontface=node_label_fontface,aes(label=node))
+      if(node_label_box){
+        return_tree <- return_tree + geom_nodelab(color=node_label_color,nudge_x = node_label_nudge,size=node_label_font_size,fontface=node_label_fontface,aes(label=node))
+      } else{
+        return_tree <- return_tree + geom_nodelab(geom='label',fill='white',color=node_label_color,nudge_x = node_label_nudge,size=node_label_font_size,fontface=node_label_fontface,aes(label=node))
+      }
     } else if(node_label == "bs"){
-      return_tree <- return_tree + geom_nodelab(color=node_label_color,nudge_x = node_label_nudge,size=node_label_font_size,fontface=node_label_fontface)
+      if(node_label_box){
+        return_tree <- return_tree + geom_nodelab(geom='label',fill='white',color=node_label_color,nudge_x = node_label_nudge,size=node_label_font_size,fontface=node_label_fontface)
+      } else{
+        return_tree <- return_tree + geom_nodelab(color=node_label_color,nudge_x = node_label_nudge,size=node_label_font_size,fontface=node_label_fontface)
+      }
     } else if(node_label == "clade"){
-      return_tree <- return_tree + geom_nodelab(color=node_label_color,nudge_x = node_label_nudge,size=node_label_font_size,fontface=node_label_fontface,aes(label=clade_percent))
+      if(node_label_box){
+        return_tree <- return_tree + geom_nodelab(geom='label',fill='white',color=node_label_color,nudge_x = node_label_nudge,size=node_label_font_size,fontface=node_label_fontface,aes(label=clade_percent))
+      } else{
+        return_tree <- return_tree + geom_nodelab(color=node_label_color,nudge_x = node_label_nudge,size=node_label_font_size,fontface=node_label_fontface,aes(label=clade_percent))
+      }
     } else if(node_label == "support"){
-      return_tree <- return_tree + geom_nodelab(color=node_label_color,nudge_x = node_label_nudge,size=node_label_font_size,fontface=node_label_fontface,aes(label=total_sites))
+      if(node_label_box){
+        return_tree <- return_tree + geom_nodelab(geom='label',fill='white',color=node_label_color,nudge_x = node_label_nudge,size=node_label_font_size,fontface=node_label_fontface,aes(label=total_sites))
+      } else{
+        return_tree <- return_tree + geom_nodelab(color=node_label_color,nudge_x = node_label_nudge,size=node_label_font_size,fontface=node_label_fontface,aes(label=total_sites))
+      }
     }
     
     ###### FINISHED TREE; If a single tree is passed, return it; otherwise, add to plot list and continue...

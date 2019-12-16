@@ -14,6 +14,7 @@
 #'   \item c(min,max): If used with tree_support, geoms will be sized based on the total support across datasets and rescaled between min and max.
 #'   \item "log": If used with tree_support, geoms will be sized based on the log-transformed total support across datasets
 #' }
+#' @param scale_range OPTIONAL: If plotting tree_support, supply the range of values to be scaled. Values outside this range will be displayed as the otherwise min/max geom size. [Default: scale all data]
 #' @param use_pies OPTIONAL: If TRUE and tree_support contains inforomation from 2+ datasets, data from tree_support will be displayed as an inset pie chart rather than a geom_nodepoint [Default: FALSE, use geom_nodepoint; DEACTIVATED WHEN clade_support IS PROVIDED]
 #' @param pie_xnudge OPTIONAL: Set ggtree pie label hjust [Default: 0]
 #' @param pie_ynudge OPTIONAL: Set ggtree pie label yjust [Default: 0]
@@ -67,7 +68,7 @@
 #' @return ggtree object or list of ggtree objects
 #' @export
 
-treePlotter <- function(tree,clade_support,tree_support,geom_size,use_pies,pie_xnudge,pie_ynudge,pie_legend_position,branch_length,branch_weight,node_label,node_label_font_size,node_label_fontface,node_label_color,node_label_box,node_label_nudge,taxa_font_size,taxa_fontface,taxa_offset,xmax,reverse_x,to_color,colors,highlight_legend,color_branches,plot_title,legend_shape_size,legend_font_size,legend_title_size,geom_alpha,geom_color){
+treePlotter <- function(tree,clade_support,tree_support,geom_size,scale_range,use_pies,pie_xnudge,pie_ynudge,pie_legend_position,branch_length,branch_weight,node_label,node_label_font_size,node_label_fontface,node_label_color,node_label_box,node_label_nudge,taxa_font_size,taxa_fontface,taxa_offset,xmax,reverse_x,to_color,colors,highlight_legend,color_branches,plot_title,legend_shape_size,legend_font_size,legend_title_size,geom_alpha,geom_color){
   
   # Ensure tree is valid for plotter
   if(!Rboretum::isMultiPhylo(tree,check_rooted = TRUE,check_three_taxa = TRUE) & !Rboretum::isPhylo(tree,check_rooted = TRUE)){
@@ -512,9 +513,17 @@ treePlotter <- function(tree,clade_support,tree_support,geom_size,use_pies,pie_x
   # Rescale tree support
   if(treeSupport){
     raw_totals <- Rboretum::rescaleTreeSupport(tree_support,return_total = TRUE)
-    scaled_totals  <- Rboretum::rescaleTreeSupport(tree_support,scale = geom_size)
-    tree_support_summary <- data.frame(Clade=as.character(tree_support$Clade),total_sites = as.integer(raw_totals),scaled_total = as.numeric(scaled_totals)) %>%
-      mutate(Clade=as.character(Clade))
+    
+    if(missing(scale_range)){
+      scaled_totals  <- Rboretum::rescaleTreeSupport(tree_support,scale = geom_size)
+      tree_support_summary <- data.frame(Clade=as.character(tree_support$Clade),total_sites = as.integer(raw_totals),scaled_total = as.numeric(scaled_totals)) %>%
+        mutate(Clade=as.character(Clade))
+    } else{
+      scaled_totals  <- Rboretum::rescaleTreeSupport(tree_support,scale = geom_size,scale_range=scale_range)
+      tree_support_summary <- data.frame(Clade=as.character(tree_support$Clade),total_sites = as.integer(raw_totals),scaled_total = as.numeric(scaled_totals)) %>%
+        mutate(Clade=as.character(Clade))
+    }
+
   }
   
   # Create dummy multiPhylo for simple handling

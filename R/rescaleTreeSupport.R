@@ -102,7 +102,7 @@ rescaleTreeSupport <- function(tree_support,scale,scale_range,return_total){
         add_high <- TRUE
       }
       
-      has_support <- filter(Raw_Total_Support >= scale_min & Raw_Total_Support <= scale_max)
+      has_support <- has_support %>% filter(Raw_Total_Support >= scale_min & Raw_Total_Support <= scale_max)
     }
   }
   

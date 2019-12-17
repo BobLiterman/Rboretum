@@ -151,10 +151,11 @@ convertLabels <- function(to_convert,name_df,from,to){
       new_id_list <- c()
       
       for(old_id in clade_list[[i]]){
-        new_id_list <- c(new_id_list,sort(new_ids[match(old_id,current_ids)]))
+        new_id_list <- c(new_id_list,new_ids[match(old_id,current_ids)])
       }
       
-      new_id_list <- paste(new_id_list,collapse = ";")
+      
+      new_id_list <- new_id_list %>% sort() %>% paste(collapse = ";")
       
       clade_list[[i]] <- new_id_list
     }

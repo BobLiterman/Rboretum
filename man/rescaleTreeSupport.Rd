@@ -4,7 +4,7 @@
 \alias{rescaleTreeSupport}
 \title{Rboretum Tree Support Rescaler}
 \usage{
-rescaleTreeSupport(tree_support, scale, return_total)
+rescaleTreeSupport(tree_support, scale, scale_range, return_total)
 }
 \arguments{
 \item{tree_support}{Output of getTreeSupport}
@@ -15,6 +15,8 @@ rescaleTreeSupport(tree_support, scale, return_total)
   \item Two-item numeric vector [return summation values that have been rescaled to fit between c(min,max) (e.g. rescale millions of sites to range between c(1,20))]
   \item "log" [return log-transformed totals]
 }}
+
+\item{scale_range}{OPTIONAL: Set range of values to scale by giving a c(min,max). Values below min or above max will be set to the minimum/maximum value without it. [Default: Use all data]}
 
 \item{return_total}{OPTIONAL: If TRUE, return raw sum total support values for each clade}
 }

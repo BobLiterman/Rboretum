@@ -9,7 +9,11 @@ isTreeSupport(test_object, test_clade, partial)
 \arguments{
 \item{test_object}{R object to check}
 
-\item{test_clade}{Character vector of semicolon-separated clades. Function checks that passed support object contains information about these clades.}
+\item{test_clade}{Source for clades to check. Function checks that passed support object contains information about these clades. Options include:
+\itemize{
+  \item Rooted phylo or multiPhylo object
+  \item vector of semicolon-separated clades. 
+}}
 
 \item{partial}{OPTIONAL: If TRUE, as long as all clades from 'test_clade' are present, return TRUE [Default: FALSE, require that test_clades also includes all clades in support object]}
 }

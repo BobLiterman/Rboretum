@@ -9,6 +9,7 @@ treePlotter(
   clade_support,
   tree_support,
   geom_size,
+  scale_range,
   use_pies,
   pie_xnudge,
   pie_ynudge,
@@ -18,6 +19,8 @@ treePlotter(
   node_label,
   node_label_font_size,
   node_label_fontface,
+  node_label_color,
+  node_label_box,
   node_label_nudge,
   taxa_font_size,
   taxa_fontface,
@@ -54,6 +57,8 @@ treePlotter(
   \item "log": If used with tree_support, geoms will be sized based on the log-transformed total support across datasets
 }}
 
+\item{scale_range}{OPTIONAL: If plotting tree_support, supply the range of values to be scaled. Values outside this range will be displayed as the otherwise min/max geom size. [Default: scale all data]}
+
 \item{use_pies}{OPTIONAL: If TRUE and tree_support contains inforomation from 2+ datasets, data from tree_support will be displayed as an inset pie chart rather than a geom_nodepoint [Default: FALSE, use geom_nodepoint; DEACTIVATED WHEN clade_support IS PROVIDED]}
 
 \item{pie_xnudge}{OPTIONAL: Set ggtree pie label hjust [Default: 0]}
@@ -84,6 +89,10 @@ treePlotter(
   \item "italic"
   \item "bold.italic"
 }}
+
+\item{node_label_color}{OPTIONAL: Set ggtree node label color [Default: 'black']}
+
+\item{node_label_box}{OPTIONAL: Set ggtree node label as a label with a white background [Default: FALSE, print as text]}
 
 \item{node_label_nudge}{OPTIONAL: Set ggtree node label nudge_x [Default: 0]}
 

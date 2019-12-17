@@ -100,7 +100,7 @@ getTreeClades <- function(tree,include_root,print_counts,return_counts,return_sh
     
     trees_with_clade <- purrr::map(.x=names(clade_table),.f=function(x){paste(sort(names(list.search(listed_tree_clades,expr = x %in% .))),collapse = ";")}) %>% as.character()
     
-    clade_sorter <- data.frame(Clade=as.character(names(clade_table)),Count=as.integer(clade_table),Trees=as.character(trees_with_clade)) %>% 
+    clade_sorter <- data.frame(Clade=as.character(names(clade_table)),Count=as.integer(clade_table),Trees=as.character(trees_with_clade),stringsAsFactors = FALSE) %>% 
       arrange(desc(Count),Clade)
     
     if(print_counts){

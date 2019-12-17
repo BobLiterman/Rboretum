@@ -50,7 +50,7 @@ rescaleTreeSupport <- function(tree_support,scale,scale_range,return_total){
     }
   }
   
-  new_df <- data.frame(Sort = as.integer(1:length(tree_support$Clade)),Clade=as.character(tree_support$Clade),Raw_Total_Support=as.numeric(clade_totals)) # Create dataframe
+  new_df <- data.frame(Sort = as.integer(1:length(tree_support$Clade)),Clade=as.character(tree_support$Clade),Raw_Total_Support=as.numeric(clade_totals),stringsAsFactors = FALSE) # Create dataframe
   
   # Filter out rows that have support
   has_support <- new_df %>% filter(Raw_Total_Support > 0)

@@ -516,12 +516,10 @@ treePlotter <- function(tree,clade_support,tree_support,geom_size,scale_range,us
     
     if(missing(scale_range)){
       scaled_totals  <- Rboretum::rescaleTreeSupport(tree_support,scale = geom_size)
-      tree_support_summary <- data.frame(Clade=as.character(tree_support$Clade),total_sites = as.integer(raw_totals),scaled_total = as.numeric(scaled_totals)) %>%
-        mutate(Clade=as.character(Clade))
+      tree_support_summary <- data.frame(Clade=as.character(tree_support$Clade),total_sites = as.integer(raw_totals),scaled_total = as.numeric(scaled_totals),stringsAsFactors = FALSE)
     } else{
       scaled_totals  <- Rboretum::rescaleTreeSupport(tree_support,scale = geom_size,scale_range=scale_range)
-      tree_support_summary <- data.frame(Clade=as.character(tree_support$Clade),total_sites = as.integer(raw_totals),scaled_total = as.numeric(scaled_totals)) %>%
-        mutate(Clade=as.character(Clade))
+      tree_support_summary <- data.frame(Clade=as.character(tree_support$Clade),total_sites = as.integer(raw_totals),scaled_total = as.numeric(scaled_totals),stringsAsFactors = FALSE)
     }
 
   }

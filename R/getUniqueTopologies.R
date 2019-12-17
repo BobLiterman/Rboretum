@@ -52,7 +52,7 @@ getUniqueTopologies <- function(trees,print_table,return_table){
     }
   }
   
-  tree_compare <- data.frame(Tree_1=tree_a,Tree_2=tree_b,Same_Topology=top_check) %>% filter(Same_Topology)
+  tree_compare <- data.frame(Tree_1=tree_a,Tree_2=tree_b,Same_Topology=top_check,stringsAsFactors = FALSE) %>% filter(Same_Topology)
   
   tree_groups <- list()
   grouped_trees <- c()
@@ -89,7 +89,7 @@ getUniqueTopologies <- function(trees,print_table,return_table){
   
   tree_sorter <- data.frame(Tree_ID = as.integer(tree_coords),
                             Tree_Count = as.integer(top_count),
-                            Tree_Name = as.character(top_trees)) %>%
+                            Tree_Name = as.character(top_trees),stringsAsFactors = FALSE) %>%
     arrange(desc(Tree_Count),Tree_Name) %>%
     pull(Tree_ID) %>%
     as.integer()
@@ -102,7 +102,7 @@ getUniqueTopologies <- function(trees,print_table,return_table){
   summary_df <- data.frame(Tree_Name = names(unique_trees),
                            Trees_with_Topology = as.character(top_trees),
                            Tree_Count = as.integer(top_count),
-                           Tree_Percent = round((top_count/as.numeric(raw_tree_count)*100),1))
+                           Tree_Percent = round((top_count/as.numeric(raw_tree_count)*100),1),stringsAsFactors = FALSE)
   if(print_table){
     print(summary_df)
   }

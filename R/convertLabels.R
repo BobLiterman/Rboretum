@@ -142,7 +142,7 @@ convertLabels <- function(to_convert,name_df,from,to){
     
     return(new_list)
     
-  } else if(convert_type == 'clade'){ # If converting semicolon-separated clades
+  } else if(convert_type == 'clade'){ # If converting semicolon-separated clades, return sorted, converted clade
     
     clade_list <- lapply(to_convert,function(x) Rboretum::semiVector(x))
     
@@ -151,7 +151,7 @@ convertLabels <- function(to_convert,name_df,from,to){
       new_id_list <- c()
       
       for(old_id in clade_list[[i]]){
-        new_id_list <- c(new_id_list,new_ids[match(old_id,current_ids)])
+        new_id_list <- c(new_id_list,sort(new_ids[match(old_id,current_ids)]))
       }
       
       new_id_list <- paste(new_id_list,collapse = ";")
@@ -161,7 +161,7 @@ convertLabels <- function(to_convert,name_df,from,to){
     
     return(unlist(clade_list))
     
-  } else if(convert_type == 'taxa'){ # If converting a list of raw taxon IDs
+  } else if(convert_type == 'taxa'){ # If converting a vector of raw taxon IDs
     
     new_id_list <- c()
     

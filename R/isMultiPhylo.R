@@ -20,6 +20,9 @@
 
 isMultiPhylo <- function(test_object,check_named,check_rooted,check_three_taxa,check_all_taxa,check_all_equal,check_some_equal,check_all_unique){
 
+  if(missing(test_object)){
+    stop("'test_object' not provided")
+  }
   # Check if trees are named?
   if(missing(check_named)){
     check_named <- FALSE

@@ -66,7 +66,7 @@ extractNodeAges <- function(tree,return_summary){
   if(return_summary){
     
     # Warn if topologies differ
-    if(!Rboretum::isMultiPhylo(check_all_equal=TRUE)){
+    if(!Rboretum::isMultiPhylo(tree,check_all_equal=TRUE)){
       warning("WARNING: Trees have different topologies, which may impact node age summaries")
     }
     

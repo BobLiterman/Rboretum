@@ -197,12 +197,12 @@ def process_nonbase(pos):
     non_base_taxa = itemgetter(*non_base_index)(sorted(spp_list))
     non_base_count = int(len(non_base_index))
 
-    if len(non_base_index) == 1:
+    if non_base_count == 1:
         non_base_taxa_string = non_base_taxa
-    if len(non_base_index) > 1:
+    if non_base_count > 1:
         non_base_taxa_string = ";".join(sorted(non_base_taxa))
 
-    if len(spp_list) - len(non_base_taxa) >= 3:
+    if len(spp_list) - non_base_count >= 3:
         
         # Get species list and sequence data from taxa with appropriate bases
         new_seq = [v for k,v in enumerate(seq_string) if k not in non_base_index]
@@ -223,13 +223,14 @@ def process_nonbase(pos):
             singleton_list = [base for base, count in site_set.items() if count == 1]
             singelton_index = findOccurrences(new_seq, singleton_list)
             singleton_taxa = itemgetter(*singelton_index)(sorted(new_spp))
-            
-            if len(singelton_index) == 1:
+            singleton_count = int(len(singelton_index))
+
+            if singleton_count == 1:
                 taxa =  singleton_taxa
-            elif len(singelton_index) > 1:
+            elif singleton_count > 1:
                 taxa = ";".join(sorted(singleton_taxa))
 
-            if len(new_spp) - len(singleton_taxa) >= 3:
+            if len(new_spp) - singleton_count >= 3:
                     
                 # Get species list and sequence data from taxa with appropriate bases
                 new_seq2 = [v for k,v in enumerate(new_seq) if k not in singelton_index]
@@ -357,12 +358,12 @@ def process_nonbase_gap(pos):
     non_base_taxa = itemgetter(*non_base_index)(sorted(spp_list))
     non_base_count = int(len(non_base_index))
 
-    if len(non_base_index) == 1:
+    if non_base_count == 1:
         non_base_taxa_string = non_base_taxa
-    if len(non_base_index) > 1:
+    if non_base_count > 1:
         non_base_taxa_string = ";".join(sorted(non_base_taxa))
 
-    if len(spp_list) - len(non_base_taxa) >= 3:
+    if len(spp_list) - non_base_count >= 3:
         
         # Get species list and sequence data from taxa with appropriate bases
         new_seq = [v for k,v in enumerate(seq_string) if k not in non_base_index]
@@ -385,13 +386,14 @@ def process_nonbase_gap(pos):
             singleton_list = [base for base, count in site_set.items() if count == 1]
             singelton_index = findOccurrences(new_seq, singleton_list)
             singleton_taxa = itemgetter(*singelton_index)(sorted(new_spp))
-            
-            if len(singelton_index) == 1:
+            singleton_count = int(len(singelton_index))
+
+            if singleton_count == 1:
                 taxa =  singleton_taxa
-            elif len(singelton_index) > 1:
+            elif singleton_count > 1:
                 taxa = ";".join(sorted(singleton_taxa))
 
-            if len(new_spp) - len(singleton_taxa) >= 3:
+            if len(new_spp) - singleton_count >= 3:
                     
                 # Get species list and sequence data from taxa with appropriate bases
                 new_seq2 = [v for k,v in enumerate(new_seq) if k not in singelton_index]
@@ -599,13 +601,14 @@ def process_singletons(pos):
     singleton_list = [base for base, count in site_set.items() if count == 1]
     singelton_index = findOccurrences(seq_string, singleton_list)
     singleton_taxa = itemgetter(*singelton_index)(sorted(spp_list))
+    singleton_count = int(len(singelton_index))
 
-    if len(singelton_index) == 1:
+    if singleton_count == 1:
         taxa =  singleton_taxa
-    if len(singelton_index) > 1:
+    if singleton_count > 1:
         taxa = ";".join(sorted(singleton_taxa))
 
-    if len(spp_list) - len(singleton_taxa) >= 3:
+    if len(spp_list) - singleton_count >= 3:
         
         # Get species list and sequence data from taxa with appropriate bases
         new_seq = [v for k,v in enumerate(seq_string) if k not in singelton_index]

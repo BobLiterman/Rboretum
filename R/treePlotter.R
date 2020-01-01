@@ -48,7 +48,7 @@
 #'   \item "italic"
 #'   \item "bold.italic"
 #' }
-#' @param taxa_offset OPTIONAL: Set ggtree tip label offset
+#' @param taxa_offset OPTIONAL: Set ggtree tip label offset [Default: 0]
 #' @param xmax OPTIONAL: Set ggplot xlim upper limit (e.g if long tip labels run off plot)
 #' @param reverse_x OPTIONAL: TRUE [plot tree with tips on left]; FALSE [Default: plot tree with tips on right]
 #' @param to_color OPTIONAL: Color tips or clades via:
@@ -370,10 +370,10 @@ treePlotter <- function(tree,clade_support,tree_support,geom_size,scale_range,us
   
   # Offset tip labels?
   if(missing(taxa_offset)){
-    tOffset <- FALSE
+    taxa_offset <- 0
   } else if(!is.numeric(taxa_offset)){
-    tOffset<-FALSE
-  } else{ tOffset <- TRUE }
+    taxa_offset <- 0
+  }
   
   # Extend X-axis?
   if(missing(xmax)){

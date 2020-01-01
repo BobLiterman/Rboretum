@@ -27,4 +27,5 @@ Depends:
     ggtree (>= 1.16.6),
     grDevices (>= 3.6.1),
     viridisLite (>= 0.3.0),
-    rlist (>= 0.4.6.1)
+    rlist (>= 0.4.6.1),
+    BiocManager (>= 1.30.10)

@@ -3,382 +3,236 @@
 **Dr. Rachel Schwartz**  
 University of Rhode Island  
 
-v.1.0 (11/16/2019)  
-
-### DEPENDENCIES
+v.1.0 (01/01/2020)  
+** **
+### Program Dependencies
 - R version >= 3.6.1
-- ggtree
-- ape (>= 5.3)
-- phytools (>= 0.6.99)
-- phangorn (>= 2.5.5)
-- testit (>= 0.9)
-- tidyverse (>= 1.2.1)
-- tools (>= 3.6.1)
-- reticulate (>= 1.13)
-- scales (>= 1.0.0)
-- viridis (>= 0.5.1)
-- cowplot (>= 1.0.0)
-- Python3
-- Biopython
-
-### INSTALLATION  
-1) Clone repo  
-
-```
-git clone https://github.com/BobLiterman/Rboretum.git
-```
-2) In R:  
-
+- Python version >= 3.6+ w/Biopython  
+** **
+### R Package Dependencies  
+- ape (>= 5.3)  
+- phytools (>= 0.6.99)  
+- phangorn (>= 2.5.5)  
+- testit (>= 0.9)  
+- tidyverse (>= 1.2.1)  
+- tools (>= 3.6.1)  
+- reticulate (>= 1.13)  
+- scales (>= 1.0.0)  
+- viridis (>= 0.5.1)  
+- cowplot (>= 1.0.0)  
+- ggtree (>= 1.16.6)  
+- grDevices (>= 3.6.1)  
+- viridisLite (>= 0.3.0)  
+- rlist (>= 0.4.6.1)  
+- BiocManager (>= 1.30.10)  
+** **
+### Rboretum Installation
 ```
 library(devtools)
 devtools::install_github("BobLiterman/Rboretum")
 ```
-
-### RBORETUM FUNCTIONS  
-
-## NOTE:  
-As of this moment when you're reading this, these function names and arguments are slightly out-dated. As part of the development of this package, function names and calls are in a state of flux. However, nearly all functions are operational and you can use ?function to get a basic set of instructions. Clean docs are coming!  
-
-**Functions that work (for me) at the moment:**  
-
-**Tree Functions:**  
-- readRootedTree
-- batch_readRootedTree
-- treeTrimmer
-- checkRoot
-- checkSameTopology
-- checkSameTaxa
-- checkSharedTaxa
-- checkComparable  
-- checkTips
-- getTreeClades
-- getTreeSplits
-- compareTrees
-- convertTipLabels
-- getCladeSupport
-- compareClades
-- getSharedTaxa
-
-**Plotting Functions:**  
-- basicTreePlotter
-- supportTreePlotter
-- batch_basicTreePlotter
-- tandemPlotter
-
-**Alignment Functions:**
-- getAlignmentSignal
-- getTreeSupport
-- batch_getAlignmentSignal
-
-**Utility Functions:**  
-- isPlot
-- isMultiPhylo
-- isAlignmentSignal
-- isPhylo
-- isTreeSupport
-- semiVector
-- semiSorter
-- tableCount
-
-
-
-#### read.rooted()  
-- **Function Description:**  
-Reads an unrooted or rooted tree into R as a phylo object, rooted at a specified outgroup  
-
-- **Arguments:**  
-      **1) tree_path:** Path to tree file (must be readable by ape::read.tree or ape::read.nexus)  
-      **2) root_taxa:** Character vector containing desired outgroup taxa  
-      
-- **Returns:**  
-Rooted phylo object
-
-#### trim.tree()  
-- **Function Description:**  
-Trims a phylo object or a set of multiPhylo objects down to a desired set of taxa
-
-- **Arguments:**  
-      **1) tree:** phylo or multiPhylo object  
-      **2) taxa:** Character vector of desired tip labels to keep (or discard if remove=TRUE)  
-      **3) remove:** *OPTIONAL:* If TRUE, tip labels specified by 'taxa' are removed from all trees rather than retained [Default: FALSE, prune 'tree' down to 'taxa']  
-      
-- **Returns:**  
-phylo or multiPhylo object with desired taxa retained (or removed)
-
-#### check.tip()  
-- **Function Description:**  
-Checks whether tree(s) contain specific taxa  
-
-- **Arguments:**  
-      **1) tree:** phylo or multiPhylo object  
-      **2) taxa:** Character vector of desired tip labels to query
-      
-- **Returns:**  
-TRUE if all taxa in tree/all trees; otherwise, FALSE
-
-#### check.root()  
-- **Function Description:**  
-Checks whether specified taxa are part of a root split
-
-- **Arguments:**  
-      **1) tree:** phylo object  
-      **2) taxa:** Character vector of desired tip labels to query
-      
-- **Returns:**  
-TRUE if taxa are part of a root split; otherwise, FALSE
-
-#### convert.tips()  
-- **Function Description:**  
-Converts tip labels on a phylo object based on a user-supplied name conversion dataframe
-
-- **Arguments:**  
-      **1) tree:** phylo object  
-      **2) name_df:** Dataframe containing name equivalency columns  
-      **3) from:** Column ID with current tip labels  
-      **4) to:** Column ID with desired tip labels  
-      
-- **Returns:**  
-phylo object with converted tip labels
-
-#### get.splits()  
-- **Function Description:**  
-Breaks down a rooted phylo object into all splits
-
-- **Arguments:**  
-      **1) tree:** phylo object  
-      
-- **Returns:**  
-Dataframe with split information, node numbers, and bootstrap values (if present)  
-
-#### get.clades()  
-- **Function Description:**  
-Extracts monophyletic clades from a rooted phylo object, including both root clades  
-- **Arguments:**  
-      **1) tree:** phylo object  
-      
-- **Returns:**  
-Character vector with all clades, with taxa separated by semicolons  
-
-#### check.shared()  
-- **Function Description:**  
-Given a multiPhylo object, returns TRUE if all trees share at least three taxa   
-- **Arguments:**  
-      **1) trees:** multiPhylo object  
-      
-- **Returns:**  
-TRUE if three tip labels are shared in all trees; otherwise, FALSE  
-
-#### get.shared()  
-- **Function Description:**  
-Given a multiPhylo object, returns taxa that occur in all trees  
-- **Arguments:**  
-      **1) trees:** multiPhylo object  
-      
-- **Returns:**  
-Character vector of taxa shared in all trees  
-
-#### same.taxa()  
-- **Function Description:**  
-Given a multiPhylo object, returns TRUE if all trees share all taxa
-- **Arguments:**  
-      **1) trees:** multiPhylo object  
-      
-- **Returns:**  
-TRUE if all taxa occur in all trees; otherwise, FALSE  
-
-#### same.topology()  
-- **Function Description:**  
-Given a multiPhylo object, returns TRUE if all trees have identical topology, after pruning to common species set if necessary  
-- **Arguments:**  
-      **1) trees:** multiPhylo object  
-      
-- **Returns:**  
-TRUE if trees have the same topology, after pruning to common species set if necessary ; otherwise, FALSE  
-
-#### check.comparable()  
-- **Function Description:**  
-Checks if two trees (1) share at least three species, and (2) have a unique topology  
-- **Arguments:**  
-      **1) tree_1:** phylo object  
-      **2) tree_2:** phylo object
-      
-- **Returns:**  
-TRUE if trees share >= 3 species and have a unique topology; otherwise, FALSE  
-
-#### get.comparable()  
-- **Function Description:**  
-Given a multiPhylo object, returns a dataframe with information about which trees are comparable (share >= 3 species and have a unique topology)  
-- **Arguments:**  
-      **1) trees:** multiPhylo object  
-      **2) tree_names:** *OPTIONAL:* Character vector containing names for trees in multiPhylo. If missing, tree names will be 'Tree_1', 'Tree_2', etc.  
-      **3) return_only_comparable:** *OPTIONAL:* If TRUE, return table will only contain information about comparable trees. [Default: FALSE, return all comparisons]  
-      
-- **Returns:**  
-Dataframe containing pairwise tree comparisons, and if comparable, a semicolon-separated list of shared species  
-
-#### compare.clades()
-- **Function Description:**  
-Given a multiPhylo object, returns a dataframe with information about all splits,  and what trees they do (and do not) occur in    
-- **Arguments:**  
-      **1) trees:** multiPhylo object  
-      **2) tree_names:** *OPTIONAL:* Character vector containing names for trees in multiPhylo. If missing, tree names will be 'Tree_1', 'Tree_2', etc.  
-      **3) return_only_shared:** *OPTIONAL:* If TRUE, return table will only contain information clades present in all trees. [Default: FALSE, return information about all clades]  
-      
-- **Returns:**  
-Dataframe containing all clades from multiPhylo, the clade size, and which trees the clade is found in. If 'return_only_shared'==TRUE, returns a two-column dataframe with common clades their size  
-
-#### alignment.signal()  
-- **Function Description:**  
-Processes a multiple sequence alignment (FASTA, Phylip, or Nexus) and extracts phylogenetic signal information from each site that has data for at least three taxa.  
-
-**NOTE 1:** Signal can be extracted for only a subset of taxa included in the total alignment by specifying fewer taxa via 'species_info'  
-
-**NOTE 2:** To use this function, the user must first source the python script through reticulate (linked to Python3 with Biopython installed):  
+** **
+### Loading Library
 ```
+library(Rboretum)
 source_python(paste(system.file(package="Rboretum"), "Split_Processor.py", sep="/"))
 ```
-- **Arguments:**  
-      **1) alignment_path:** Path to alignment file  
-      **2) species_info:** Either (1) a tree containing species of interest; or (2) a character vector with the desired taxa IDs. *NAMES MUST MATCH IDs IN ALIGNMENT FILE*  
-      **3) informative_gaps:** *OPTIONAL:* If TRUE, gaps (-) in the alignment  will be treated as informative characters. [Default: FALSE, gaps are treated as missing data]  
-      **4) alignment_name:** *OPTIONAL:* A name for the alignment. If missing, the file name (without extension) will be used.    
+** **
+### Rboretum Function Summary    
+
+#### Tree Functions
+1) **readRooted**: Read in tree(s) as rooted phylo or multiPhylo
+2) **treeTrimmer**: Prune tree(s) down to desired set of taxa  
+3) **checkTips**: Check whether taxon labels are present in tree(s), and if so, optionally, whether they are monophyletic or root groups
+4) **getTreeSplits**: Break down rooted phylo or multiPhylo objects into respective sets of splits  
+5) **getTreeClades**: Extract monophyletic groups from rooted phylo or multiPhylo objects, and/or tally clade distribution among multiple trees
+6) **getSharedTaxa**: Given a multiPhylo, return list of shared taxon labels
+7) **getUniqueTopologies**: Reduce multiPhylo down to unique topologies    
+8) **summarizeMultiPhylo**: Print summary information about a multiPhylo object  
+9) **convertLabels**: Convert taxon labels for trees and Rboretum files  
+10) **extractNodeAges**:  Extract node age information from rooted phylo or multiPhylo objects that are scaled to time  
+11) **treeNamer**:  Adds dummy names to multiPhylo trees (e.g. Tree_1, Tree_2, etc.)  
+
+#### Alignment Support Functions  
+1) **getAlignmentSignal**: For one or more multiple-sequence alignments (NEXUS, FASTA, phylip, phylip-relaxed), get the pattern of sequence variation (e.g. invariant, biallelic, triallelic, etc.) at each site as it relates to a specified set of taxa, as well as missing taxa and gap detection, and parsimony-based split analysis  
+2) **getTreeSupport**: Process output from getAlignmentSignal to query support for specific data subsets (e.g. only biallelic sites, or no missing data allowed), for either a specific tree, set of trees, or clade of interest  
+
+#### Tree Plotting Functions  
+1) **treePlotter**: ggtree wrapper to plot tree(s) with lots of options  
+2) **tandemPlotter**: Plot trees/ggplots side by side  
+** **
+### Rboretum Function Arguments
+#### NOTE:  
+**Required arguments are in bold**  
+*Optional arguments are in italics*  
+**Default options are bold**  
+** **
+1) **readRooted**: Returns phylo or multiPhylo  
+    - **to_root**: Character vector of tree locations. Options include:   
+      - Path to single tree  
+        - '/path/to/tree.nwk'  
+      - Paths to multiple trees  
+        - c('/path/to/tree_1.nwk','/path/to/tree_2.nwk')
+      - Path to directory containing tree(s)  
+        - '/path/to/tree/directory'  
+    - **root_taxa**: Character vector of root taxon labels. All trees will be rooted with these taxa  
+    - *tree_names*: If reading in multiple trees, character vector of tree names [**Default: No tree names**]  
+    - *dummy_names*: TRUE/**FALSE**; Add dummy tree names to multiPhylo [e.g. Tree_1, Tree_2, etc.]
+    - *prefix*: If a directory is given, a character vector of tree file prefixes (e.g. Read in only files that start with 'RAxML') [**Default: All files in directory**]  
+    - *suffix*: If a directory is given, a character vector of tree file suffixes (e.g. Read in only files that end with 'nexus') [**Default: All files in directory**]    
+** **    
+2) **treeTrimmer**: Returns phylo or multiPhylo   
+    - **tree**: Tree(s) to trim. Options include:  
+      - phylo object  
+      - multiPhylo object
+    - **taxa**: Character vector of taxon labels to retain or remove from tree(s)  
+    - *remove*: TRUE/**FALSE**; Remove 'taxa' from tree(s) rather than trimming tree(s) down to only 'taxa'  
+** **    
+3) **checkTips**: Returns TRUE or FALSE 
+    - **tree**: Tree(s) to check. Options include:  
+      - phylo object  
+      - multiPhylo object
+    - **taxa**: Character vector of taxon labels. *Return TRUE if  'taxa' are present in all trees in 'tree', else; FALSE*
+    - *check_mono*: TRUE/**FALSE**; Also check if 'taxa' are monophyletic in all supplied trees  
+    - *check_root*: TRUE/**FALSE**; Also check if 'taxa' are part of a root split in all supplied trees  
+** **
+4) **getTreeSplits**: Returns dataframe  
+    - **tree**: Tree(s) to split. Options include:  
+      - phylo object  
+      - multiPhylo object  
+** **
+5) **getTreeClades**: *Default*: Returns character vector of monophyletic clades from tree(s)  
+    - **tree**: Tree(s) from which to extract clades. Options include:  
+      - phylo object  
+      - multiPhylo object    
+    - *include_root*: TRUE/**FALSE**; Also return both sides of root split  
+    - *print_counts*: TRUE/**FALSE**; Print a summary table of unique splits and how many/which trees contain them, but return clades  
+    - *return_counts*: TRUE/**FALSE**; Instead of clades, return summary table of unique splits and how many/which trees contain them  
+** **
+6) **getSharedTaxa**: Returns a character vector of taxon labels present in all trees
+    - **trees**: multiPhylo object  
+** **
+7) **getUniqueTopologies**: *Default*: Returns phylo or multiPhylo  
+    - **trees**: multiPhylo object  
+    - *print_table*: TRUE/**FALSE**; Print summary table of unique topologies  
+    - *return_table*: TRUE/**FALSE**; Return summary table of unique topologies  
+** **
+8) **summarizeMultiPhylo**: No return  
+    - **trees**: multiPhylo object to summarize
+** **
+9) **convertLabels**: Returns object with converted taxon labels  
+    - **to_convert**:  Object to convert. Options include:  
+      - phylo object  
+      - multiPhylo object  
+      - Character vector of taxon IDs  
+      - List of character vectors containing taxon IDs  
+      - Character vector of semicolon-separated clades  
+    - **name_df**: Dataframe containing name equivalency columns   
+    - *from*: Column name with current taxon tip IDs [**Default: Column 1**]    
+    - *to*: Column name with desired taxon tip IDs [**Default: Column 2**]     
+** **
+10) **extractNodeAges**: Returns a dataframe  
+      - **tree**: Tree(s) from which to extract dates. Options include:  
+        - phylo object  
+        - multiPhylo object  
+      - *return_summary*: TRUE/**FALSE**; If a multiPhylo is provided, return summary values for each clade age rather than separate values for each tree  
+** **
+11) **treeNamer**: Returns named multiPhylo  
+    - **trees**: multiPhylo of trees to name  
+** **
+12) **getAlignmentSignal**: Returns a dataframe  
+    - **alignment_path**: Character vector of alignment locations. Options include:   
+      - Path to single alignment  
+      - Paths to multiple alignments  
+      - Path to directory containing alignment(s)  
+    - **species_info**: Analyze alignment(s) for the following taxa. Options include:  
+      - phylo object  
+      - multiPhylo object  
+      - Character vector of taxon labels  
+    - *use_gaps*: TRUE/**FALSE**; Treat gaps (-) in alignment as potentially informative data  
+    - *alignment_name*: Character vector containing a unique name for each alignment file  [**Default**: Use file name]  
+    - *prefix*: If a directory is given, a character vector of alignment file prefixes [**Default: All files in directory**]  
+    - *suffix*: If a directory is given, a character vector of alignment file suffixes [**Default: All files in directory**] 
+    - *existing_signal*: Output from getAlignmentSignal run against the same taxa, but with different alignments. Will append results to dataframe if names are unique.  
+** **
+13) **getTreeSupport**: *Default*: Returns dataframe  
+    - **signal**: Output from getAlignmentSignal run against same taxa as present in 'tree',  or at least with all taxa from 'clade'    
+    - **tree**: Tree(s) on which to map support. Options include:  
+      - phylo object  
+      - multiPhylo object 
       
-- **Returns:**  
-Dataframe containing phylogenetic signal contained in each site of the alignment, including the pattern of variation (e.g. invariant, singletons, biallelic, triallelic, etc.), and which clades are supported  
+      OR 
+    - **clade**: Character vector containing taxon labels. Get support for this clade (**Note**: supercedes 'tree' if both are provided)  
+    - *separate_signal*: **TRUE**/FALSE; If 'signal' contains data from multiple alignments, return results separated by alignment. If FALSE, return total support.  
+    - *return_integer*: TRUE/**FALSE**; Return integer vector of total support for each clade across alignments, rather than a dataframe  
+    - *include_root*: TRUE/**FALSE**; Get support for root clade  
+    - *dataset_name*: Character vector of names for each dataset [**Default: Alignment name + 'm<MAX_MISSING>'**]  
+    - *max_missing*: Number of taxon allowed to have missing data in a column and still extract signal [**Default: 0**]  
+    - *include_gap*: TRUE/**FALSE**; Use signal from columns where any taxon has a gap (-)  
+    - *only_gap*: TRUE/**FALSE**; Only use signal from columns with gaps (-) present    
+    - *include_singleton*: **TRUE**/FALSE; Use signal from columns where some taxon are singletons  
+    - *include_biallelic*: **TRUE**/FALSE; Use signal from biallelic sites  
+    - *include_triallelic*: **TRUE**/FALSE; Use signal from triallelic sites  
+    - *include_quadallelic*: **TRUE**/FALSE; Use signal from quadallelic sites  
+    - *include_pentallelic*: **TRUE**/FALSE; Use signal from pentallelic sites (column contains A,C,T,G,-)  
+    - *return_table*: TRUE/**FALSE**; Return table of support counts for all clades rather than support for particular trees or clades  
+    - *existing_support*: Output from getTreeSupport run against the same taxa, but with different alignments/options. Will append results to dataframe if names are unique.
+** **
+14) **treePlotter**: Returns plot object  
+    - **tree**: Tree to plot. Options include:  
+      - phylo object  
+      - multiPhylo object 
+    - *clade_support*: Output of getTreeClades(return_counts=TRUE); Will color node labels based on clade prevalence in multiPhylo   
+    - *tree_support*: Output of getTreeSupport(); Will add alignment support information to tree(s) for node labeling or geom_size scaling   
+    - *geom_size*: If clade_support or tree_support are provided, how should the geoms be sized? Options include:  
+      - Single numeric value [**Default: 4**]  
+      - c(min,max): With tree_support, scale total tree_support to fall with min:max   
+      - 'log': With tree_support, log-transform total tree_support values  
+    - *scale_range*: c(min,max); With tree_support, min and max of values to scale. Raw values below 'min' or above 'max' will be scaled to in-scale min and max values [**Default: Scale all values**]
+    - *use_pies*: TRUE/**FALSE**; If tree_support contains data from multiple alignments, plot pie chart on node rather than geom_nodepoint  
+    - *pie_xnudge*: xnudge for pie geom [**Default: 0**]  
+    - *pie_ynudge*: ynudge for pie geom [**Default: 0**]  
+    - *pie_legend_position*: Numerical vector of length four specifying legend xmin,xmax,ymin,ymax respectively. [**Default = c(1,1,1,1)**; **NOTE**: This is a necessary oddity of generating a legend for nodepie data]
+    - *branch_length*: TRUE/**FALSE**; Plot tree with branch lengths  
+    - *branch_weight*: ggtree branch thickness [**Default: 1**] 
+    - *node_label*: ggtree node label choice. Options include:  
+      - **"bs": Bootstrap values**  
+      - "none": No labels  
+      - "node": ggtree node ID  
+      - "support": With tree_support, the total raw site support count for each node  
+      - "clade": With clade_support, the percent of trees from multiPhylo that contain that node  
+    - *node_label_font_size*: Font size for node labels [**Default: 5**]
+    - *node_label_fontface*: Fontface for node label. Options include:  
+      - **"plain"**  
+      - "bold"  
+      - "italic"  
+      - "bold.italic"  
+    - *node_label_color*: Color for node label [**Default: 'black'**]
+    - *node_label_box*: TRUE/**FALSE**; Print node label as a label in a box with a white background  
+    - *node_label_nudge*: Node label nudge [**Default: 0**]  
+    - *taxa_font_size*: Font size for taxon labels [**Default: 5**] 
+    - *taxa_fontface*: Fontface for taxon label. Options include:  
+      - **"plain"**  
+      - "bold"  
+      - "italic"  
+      - "bold.italic"   
+    - *taxa_offset*: Offset value for taxon labels [**Default: 0**]
+    - *xmax*: ggplot xlim upper limit (e.g if long tip labels run off plot) [**Default: Don't extend plot**]
+    - *reverse_x*: TRUE/**FALSE**; Plot tree in reverse orientation (tips on left)   
+    - *to_color*: Tips or clade to color. Options include:  
+      - Character vector of taxa, all to be colored the same color  
+      - List of taxon vectors, each of which will have their own color. List can be named for use with a legend (set highlight_legend == TRUE)  
+    - *colors*:  Colors for clade highlighting. Must be hex or valid R colors.  
+    - *highlight_legend*: TRUE/**FALSE**; Include legend for group coloration  
+    - *color_branches*: TRUE/**FALSE**; Color branches rather than tip labels [**NOTE**: Not available if clade_support is given]  
+    - *plot_title*: Character vector of plot titles [**Default: No name for phylo; tree name for multiPhylo**]
+    - *legend_shape_size*: ggplot2 size for legend icons [**Default: 5**]  
+    - *legend_font_size*: ggplot2 size for legend font [**Default: 10**]  
+    - *legend_title_size*: ggplot size for legend title [**Default: 10**]  
+    - *geom_alpha*: ggplot2 alpha value for geom_nodepoint (or pies) [**Default: 0.9**]   
+    - *geom_color*: ggplot2 color value for geom_nodepoint if clade_support not provided [**Default: 'red'**]
 
-#### tree.support()
-- **Function Description:**  
-Maps output from alignment.signal() onto a phylo object (i.e. How many sites from this alignment support this tree, and which nodes?). Support from multiple alignments can be added to a single dataframe by including the 'existing_splits' argument  
+** **
+15) **tandemPlotter** Returns plot object  
+    - Separate ggtree/ggplot objects, or a list of object to plot side by side.  
 
-- **Arguments:**  
-      **1) signal:** Output from alignment.signal() run with only+all taxa from 'tree'  
-      **2) tree:** Rooted phylo object  
-      **3) max_missing:** *OPTIONAL:* Only process signal from sites containing 'max_missing' species with missing data [Default: 0]  
-      **4) alignment_name:** *OPTIONAL:* A name for the alignment. If missing, the name from alignment.signal() will be used  
-      **5) include_gap:** *OPTIONAL:* If FALSE, do not process signal from sites containing gaps (-) [Default: TRUE, process gap signal]  
-      **6) include_biallelic:** *OPTIONAL:* If FALSE, do not process signal from sites with biallelic variation [Default: TRUE, process biallelic sites]  
-      **7) include_triallelic:** *OPTIONAL:* If FALSE, do not process signal from sites with triallelic variation [Default: TRUE, process triallelic sites]  
-      **8) include_quadallelic:** *OPTIONAL:* If FALSE, do not process signal from sites with quadallelic variation [Default: TRUE, process quadallelic sites]  
-      **9) include_pentallelic:** *OPTIONAL:* If FALSE, do not process signal from sites with pentallelic variation [Default: TRUE, process pentallelic sites]  
-      **10) only_gap:** *OPTIONAL:* If TRUE, only process data from gap positions [Default: FALSE, process non-gap sites]  
-      **11) existing_splits:** *OPTIONAL:* Output from tree.support() run with a different alignment (or other options) against the same tree. Will add a new column to the existing dataframe assuming that the alignment ID is unique  
-      
-- **Returns:**  
-Dataframe containing all splits from 'tree', as well as support values from the specified alignment   
-
-#### clade.support()
-- **Function Description:**  
-Queries output from alignment.signal() for support for a specific clade (i.e. How many sites this alignment support this clade?).  
-
-- **Arguments:**  
-      **1) signal:** Output from alignment.signal() run with only+all taxa from 'tree'  
-      **2) clade:** Character vector containing taxa from clade to query  
-      **3) max_missing:** *OPTIONAL:* Only process signal from sites containing 'max_missing' species with missing data [Default: 0]  
-      **4) include_gap:** *OPTIONAL:* If FALSE, do not process signal from sites containing gaps (-) [Default: TRUE, process gap signal]  
-      **5) include_biallelic:** *OPTIONAL:* If FALSE, do not process signal from sites with biallelic variation [Default: TRUE, process biallelic sites]  
-      **6) include_triallelic:** *OPTIONAL:* If FALSE, do not process signal from sites with triallelic variation [Default: TRUE, process triallelic sites]  
-      **7) include_quadallelic:** *OPTIONAL:* If FALSE, do not process signal from sites with quadallelic variation [Default: TRUE, process quadallelic sites]  
-      **8) include_pentallelic:** *OPTIONAL:* If FALSE, do not process signal from sites with pentallelic variation [Default: TRUE, process pentallelic sites]  
-      **9) only_gap:** *OPTIONAL:* If TRUE, only process data from gap positions [Default: FALSE, process non-gap sites]  
-      **10) as_root:** *OPTIONAL:* If TRUE, limit signal to biallelic sites with no taxa missing [Default: FALSE]  
-      
-- **Returns:**  
-Integer count of sites from alignment.signal() that support the queried clade  
-
-#### basic.treePlot()
-- **Function Description:**  
-A ggtree wrapper that makes plotting trees 'your way' easier!  
-
-- **Arguments:**  
-    **1) tree:** ggtree object  
-    **2) branch_length:** *OPTIONAL:* If TRUE, plot tree with branch lengths [Default: FALSE, plot as cladogram]  
-    **3) branch_weight:** *OPTIONAL:* Adjust thickness of tree branches  
-    **4) node_label:** *OPTIONAL:*  Choice of node labels for tree:  
-    - 'bs': Print bootstrap values [Default]  
-    - 'node': Print ggtree node id  
-    - 'none': No node labels  
-    
-    **5) node_size:** *OPTIONAL:* Adjust size of node labels  
-    **6) node_nudge:** *OPTIONAL:* Adjust ggtree node label 'nudge_x'  
-    **7) taxa_size:** *OPTIONAL:* Adjust tip label size  
-    **8) taxa_italic:** *OPTIONAL:* If TRUE, print tip labels in italic [Default: FALSE]  
-    **9) taxa_align:** *OPTIONAL:* Set tip label alignment [Default: No alignment]  
-    - 'left'  
-    - 'right'  
-    
-    **10) taxa_offset:** *OPTIONAL:* Set ggtree tip label offset  
-    **11) xmax:** *OPTIONAL:* Add padding to right side of plot (e.g. if tip labels run off the plot)  
-    **12) reverse_x:** *OPTIONAL:*  If TRUE, plot tree with tip labels on the left [Default: FALSE, plot tree with tip labels on the right]  
-    **13) rename_tips:** *OPTIONAL:* Two column dataframe where column 1 contains current tip labels and column 2 contains desired tip labels  
-    
-#### support.treePlot()  
-- **Function Description:**  
-Plots tree like basic.treePlot, but also plots support information on the nodes. Support can come from tree.support(), compare.clades() or both.  
-
-**Note:** Must include either tree_support or clade_support argument; can include both    
- 
-- **Additional Arguments from those in basic.treePlot:**  
-    **1) tree_support:** *OPTIONAL:* Output from tree.support() run for the same tree and one or more alignments. Will add geom_nodepoint labels to nodes with total support across alignments  
-    **2) clade_support:** *OPTIONAL:* Output from compare.clades() run with the same tree as part of a multiPhylo. Will color geom_nodepoint geoms based on how many trees in the multiPhylo contain that clade    
-    **3) support_scales:** *OPTIONAL:* How to choose size of geom_nodepoint  
-    
-    - Single numeric argument: geom_nodepoint geoms will all be scaled to this size [Default: 10]  
-    - c(x,y): Node geoms for non-zero support nodes will be sized based on total support values that have been rescaled to be between x and y (both numeric values; ie. c(1,10))  
-    - 'log': Node geoms for non-zero support nodes will be sized based on total support values that have been log transformed  
-      
-    **4) node_alpha:** *OPTIONAL:* Adjust geom_nodepoint alpha value [Default: 0.9]  
-    **5) node_color:** *OPTIONAL:* Adjust geom_nodepoint color if clade_support is missing [Default: 'red']  
-    **6) legend_shape_size:**  Adjust size of legend shapes if clade_support is provided  
-    **7) legend_font_size:** Adjust size of legend font if clade_support is provided  
-    **8) legend_title_size:** Adjust size of legend title if clade_support is provided  
-    **9) node_label:**  
-    - 'none': No node labels [Default]  
-    - 'bs': Print bootstrap values  
-    - 'node': Print ggtree node id  
-    - 'support': Print total site support for node (not scaled)  
-    
-
-#### pies.treePlot()
-- **Function Description:**  
-Plots tree like basic.treePlot, but also plots support information on the nodes, broken down by alignment as a pie chart. 
-
-**Note:** Most arguments are identical to support.treePlot, but:  
- 
- *1.* 'tree_support' must contain information about 2+ alignments to make a pie  
- *2.* Clade support cannot be mapped (no clade_support)  
- *3.* X-axis cannot be reversed (no reverse_x)  
-
-- **Additional Arguments from those in support.treePlot:**  
-  **1) legend_position:** *OPTIONAL:* Due to complications in making a legend for inset pie charts, legend coordinates must be set in the form of c(xmin,xmax,ymin,ymax) or it will likely not be visible in the plot  
-  **2) pie_xnudge:** *OPTIONAL:* Set ggtree pie label hjust  
-  **3) pie_ynudge:** *OPTIONAL:* Set ggtree pie label vjust  
-#### tandem.treePlot()
-- **Function Description:**  
-Simple wrapper that allows plotting two ggtree/ggplot objects side by side in a single plot  
-
-- **Arguments**  
-    **1) plot_1:** ggtree/ggplot object to be plotted on the left   
-    **2) plot_2:** ggtree/ggplot object to be plotted on the right  
-    
-- **Returns:**  
-A side-by-side plot with plot_1 and plot_2  
-
-#### tableCount()
-- **Function Description:**  
-Simple helper function that queries output from table() but returns 0 rather than NA if item is not found
-
-- **Arguments:**  
-      **1) search_table:** Output from table()  
-      **2) name:** Item to search for in table  
-      
-- **Returns:**  
-Integer count of occurrences of  item from table  
-#### semiVector()
-- **Function Description:**  
-Simple helper function that converts a semicolon-separated string into a character vector  
-
-- **Arguments:**  
-      **1) string_to_split:** Semicolon-separated character string  
-      
-- **Returns:**  
-Character vector  

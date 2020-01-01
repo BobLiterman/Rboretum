@@ -1,6 +1,6 @@
 #' Rboretum Node Age Extractor
 #'
-#' This function takes a tree where branches are scaled to time and returns the estimated node ages, or a summary of node ages acrosss trees
+#' This function takes a tree where branches are scaled to time and returns the estimated node ages, or a summary of node ages across trees
 #' @param tree Tree(s) to extract date information from. Options include:
 #' \itemize{
 #'   \item A single, rooted phylo object; or,

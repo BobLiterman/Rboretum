@@ -207,7 +207,7 @@ treePlotter <- function(tree,clade_support,tree_support,geom_size,scale_range,us
     if(ncol(tree_support)>2 & !cladeSupport){
       piePossible <- TRUE
     } else{
-      piePossible <- FALSE
+      piePossible <- FALSE # TODO: Fix for node labels
     }
   }
   

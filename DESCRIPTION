@@ -10,7 +10,7 @@ Description: This package facilitates comparisons of phylogenetic trees (shared 
 License: CC0
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.0.0
+RoxygenNote: 7.0.2
 biocViews:
 Depends:
     R (>= 3.6.1),

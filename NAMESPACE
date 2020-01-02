@@ -3,7 +3,7 @@
 S3method(bump_aes,Layer)
 S3method(bump_aes,Scale)
 S3method(bump_aes,list)
-S3method(change_name,NULL)
+S3method(change_name,"NULL")
 S3method(change_name,character)
 S3method(change_name,default)
 S3method(ggplot_add,new_aes)

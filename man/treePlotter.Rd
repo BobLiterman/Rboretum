@@ -106,7 +106,7 @@ treePlotter(
   \item "bold.italic"
 }}
 
-\item{taxa_offset}{OPTIONAL: Set ggtree tip label offset}
+\item{taxa_offset}{OPTIONAL: Set ggtree tip label offset [Default: 0]}
 
 \item{xmax}{OPTIONAL: Set ggplot xlim upper limit (e.g if long tip labels run off plot)}
 

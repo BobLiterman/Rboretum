@@ -16,5 +16,5 @@ extractNodeAges(tree, return_summary)
 \item{return_summary}{OPTIONAL: If TRUE and a multiPhylo is provided, return a summary of node ages across trees with mean and median values per clade}
 }
 \description{
-This function takes a tree where branches are scaled to time and returns the estimated node ages, or a summary of node ages acrosss trees
+This function takes a tree where branches are scaled to time and returns the estimated node ages, or a summary of node ages across trees
 }

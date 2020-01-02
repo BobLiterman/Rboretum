@@ -757,9 +757,9 @@ treePlotter <- function(tree,clade_support,tree_support,geom_size,scale_range,us
       return_tree <- return_tree
     } else if(node_label == "node"){
       if(node_label_box){
-        return_tree <- return_tree + geom_nodelab(color=node_label_color,nudge_x = node_label_nudge,size=node_label_font_size,fontface=node_label_fontface,aes(label=node))
-      } else{
         return_tree <- return_tree + geom_nodelab(geom='label',fill='white',color=node_label_color,nudge_x = node_label_nudge,size=node_label_font_size,fontface=node_label_fontface,aes(label=node))
+      } else{
+        return_tree <- return_tree + geom_nodelab(color=node_label_color,nudge_x = node_label_nudge,size=node_label_font_size,fontface=node_label_fontface,aes(label=node))
       }
     } else if(node_label == "bs"){
       if(node_label_box){

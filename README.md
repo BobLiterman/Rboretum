@@ -38,6 +38,8 @@ library(Rboretum)
 source_python(paste(system.file(package="Rboretum"), "Split_Processor.py", sep="/"))
 ```
 ** **
+**See brief tutorial script in 'inst' folder! To be expanded soon!**
+** **
 ### Rboretum Function Summary    
 
 #### Tree Functions

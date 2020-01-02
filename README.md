@@ -38,7 +38,7 @@ library(Rboretum)
 source_python(paste(system.file(package="Rboretum"), "Split_Processor.py", sep="/"))
 ```
 ** **
-Are you visiting this repo after seeing the **totally rad** talk at SSB 2020 by @ErenAda ? Welcome! Just so you know...Rboretum is a work in progress, **and raising issues would be very helpful**. 
+Are you visiting this repo after seeing the **totally rad** talk at SSB 2020 by @ErenAda ? Welcome! Just so you know...Rboretum is very much a work in progress, **and raising early issues would be very helpful**. What do you wish you could easily do in R? Let me know and I'll try to make it happen for you.
 
 For basic usage, please see a **brief tutorial script in 'inst' folder**...all to be expanded soon!
 

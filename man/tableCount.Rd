@@ -17,7 +17,3 @@ Number of times that value occurs in the table
 \description{
 This function returns the count of items in an R table, or 0 if item does not occur in table
 }
-\examples{
-tableCount(table(geneDF$Count),'SOX9')
-
-}

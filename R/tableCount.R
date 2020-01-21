@@ -5,15 +5,12 @@
 #' @param name Name of item you want the count for
 #' @return Number of times that value occurs in the table
 #' @export
-#' @examples
-#' tableCount(table(geneDF$Count),'SOX9')
-#'
-
 tableCount <- function(search_table,name){
-  if(name %in% names(search_table)){
+  if(!is.integer(search_table) | is.null(names(search_table))){
+    stop("'search_table' is not a named integer list.")
+  } else if(name %in% names(search_table)){
     return(as.integer(search_table[name]))
-  }
-  else{
+  } else{
     return(as.integer(0))
   }
 }

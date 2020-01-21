@@ -13,11 +13,10 @@ semiVector(string_to_split)
 Character vector
 }
 \description{
-This function returns a vector of items from a string separated by semicolons (;)
+This function takes a string separated by semicolons (;) and returns a character vector
 }
 \examples{
 myString <- 'a;b;c;d'
 semiVector(myString)
 > ['a','b','c','d']
-
 }

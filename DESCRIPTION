@@ -10,9 +10,10 @@ Description: This package facilitates comparisons of phylogenetic trees (shared 
 License: CC0
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 6.1.99.9000
+RoxygenNote: 7.0.2
+biocViews:
 Depends:
-    ggtree,
+    R (>= 3.6.1),
     ape (>= 5.3),
     phytools (>= 0.6.99),
     phangorn (>= 2.5.5),
@@ -22,4 +23,9 @@ Depends:
     reticulate (>= 1.13),
     scales (>= 1.0.0),
     viridis (>= 0.5.1),
-    cowplot (>= 1.0.0)
+    cowplot (>= 1.0.0),
+    ggtree (>= 1.16.6),
+    grDevices (>= 3.6.1),
+    viridisLite (>= 0.3.0),
+    rlist (>= 0.4.6.1),
+    BiocManager (>= 1.30.10)

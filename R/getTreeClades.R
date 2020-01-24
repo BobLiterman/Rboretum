@@ -63,7 +63,10 @@ getTreeClades <- function(tree,include_root,print_counts,return_counts,return_sh
     
     # Get non-root clades  
     tree_clades <- tree_splits %>% filter(!is.na(Split_Node)) %>%
-      pull(Clade) %>% as.character() %>% sort()
+      pull(Clade) %>% as.character() %>% 
+      sort()
+    num_spp <- unlist(tree_clades %>% map(str_count, pattern = ";"))
+    tree_clades <- tree_clades[order(num_spp,decreasing = FALSE)] #sort by num spp
     
     if(include_root){ 
       # Extract root clades if requested
@@ -71,7 +74,8 @@ getTreeClades <- function(tree,include_root,print_counts,return_counts,return_sh
         select(Clade,Mirror_Clade) %>% slice(1) %>% 
         unlist() %>% as.character()
       
-      tree_clades <- c(tree_clades,root_clades) %>% as.character() %>% sort()
+      num_spp <- unlist(tree_clades %>% map(str_count, pattern = ";"))
+      tree_clades <- tree_clades[order(num_spp,decreasing = FALSE)] #sort by num spp
     }
     
     return(tree_clades)

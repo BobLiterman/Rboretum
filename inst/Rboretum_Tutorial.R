@@ -3,12 +3,8 @@
 
 library(Rboretum)
 
-# Set working directory to test data folder
-data_dir <- paste(system.file(package="Rboretum"), "data", sep="/")
-setwd(data_dir)
-
 # In order to use alignment features, the user must source the scripts
-source_python(paste(system.file(package="Rboretum"), "Split_Processor.py", sep="/"))
+source_python(paste(system.file("data", "Gene_1.nwk", package = "Rboretum"), "Split_Processor.py", sep="/"))
 
 # Rboretum can read trees in as rooted phylo objects if the outgroup can be specified
 geneTree1 <- readRooted('Gene_1.nwk',root_taxa = c('Species_C','Species_H'))

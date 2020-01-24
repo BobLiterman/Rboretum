@@ -4,10 +4,11 @@
 library(Rboretum)
 
 # In order to use alignment features, the user must source the scripts
-source_python(paste(system.file("data", "Gene_1.nwk", package = "Rboretum"), "Split_Processor.py", sep="/"))
+source_python(system.file("", "Split_Processor.py", package = "Rboretum"))
 
 # Rboretum can read trees in as rooted phylo objects if the outgroup can be specified
-geneTree1 <- readRooted('Gene_1.nwk',root_taxa = c('Species_C','Species_H'))
+Gene1_file <- system.file("extdata", "Gene_1.nwk", package = "Rboretum")
+geneTree1 <- readRooted(Gene1_file,root_taxa = c('Species_C','Species_H'))
 
 # Extract monophyletic clades from trees
 getTreeClades(geneTree1)
@@ -32,9 +33,13 @@ treePlotter(geneTree1,xmax = 7,to_color = cladesOfInterest) # Highlight taxa by 
 treePlotter(geneTree1,xmax = 7,to_color = cladesOfInterest,highlight_legend = TRUE,color_branches = TRUE) # Highlight taxa by group
 
 # If (1) there are multiple trees to read in, and (2) all trees share the same outgroup, they can be read in together in a few different ways
-tree_paths <- c('Gene_1.nwk','Gene_2.nwk','Gene_3.nwk','Gene_4.nwk','Gene_5.nwk')
+file_names <- c('Gene_1.nwk','Gene_2.nwk','Gene_3.nwk','Gene_4.nwk','Gene_5.nwk')
+tree_paths <- paste(system.file("extdata",
+                     file_names,
+                     package = "Rboretum"), sep = ",")
 
 allTrees <- readRooted(to_root = tree_paths,root_taxa = c('Species_C','Species_H')) # Read in multiple trees by passing multiple paths
+data_dir <- system.file("extdata", package = "Rboretum")
 allTrees <- readRooted(to_root = data_dir,suffix = 'nwk',root_taxa = c('Species_C','Species_H'),tree_names = c('Gene_1','Gene_2','Gene_3','Gene_4','Gene_5')) # Read in trees from <dir> that end with <suffix>, and assign new names
 
 # Summarize a multiPhlyo

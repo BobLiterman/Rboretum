@@ -7,7 +7,7 @@ v.1.0 (01/01/2020)
 ** **
 ### Program Dependencies
 - R version >= 3.6.1
-- Python version >= 3.6+ w/Biopython  
+- Python version >= 3.6+ w/[Biopython](https://biopython.org/wiki/Download)  
 ** **
 ### R Package Dependencies  
 - ape (>= 5.3)  
@@ -21,6 +21,7 @@ v.1.0 (01/01/2020)
 - viridis (>= 0.5.1)  
 - cowplot (>= 1.0.0)  
 - ggtree (>= 1.16.6)  
+- ggimage
 - grDevices (>= 3.6.1)  
 - viridisLite (>= 0.3.0)  
 - rlist (>= 0.4.6.1)  

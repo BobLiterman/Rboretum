@@ -12,6 +12,7 @@ Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.0.2
 biocViews:
+Remotes: GuangchuangYu/ggimage
 Depends:
     R (>= 3.6.1),
     ape (>= 5.3),
@@ -25,7 +26,10 @@ Depends:
     viridis (>= 0.5.1),
     cowplot (>= 1.0.0),
     ggtree (>= 1.16.6),
+    ggimage,
     grDevices (>= 3.6.1),
     viridisLite (>= 0.3.0),
     rlist (>= 0.4.6.1),
     BiocManager (>= 1.30.10)
+Suggests: knitr, rmarkdown
+VignetteBuilder: knitr

@@ -1,0 +1,228 @@
+---
+title: "Rboretum"
+author: "Rachel Schwartz and Robert Literman"
+date: "` r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Rboretum}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+```{r setup, include=FALSE}
+#build your vignette with the devtools::build_vignettes()
+knitr::opts_chunk$set(echo = TRUE, fig.width = 5)
+```
+
+## Introduction
+
+These notes should enable the user to gain an understanding
+of how their alignment data support different phylogenetic trees,
+and how to make easy comparisons of clades present in different trees,
+using the Rboretum package. 
+This document illustrates features included in Rboretum,
+including visualizing trees,
+extracting the list of clades found in each tree, and
+comparing these clades among trees.
+
+## Getting started
+
+The first thing we will do (after loading the library) is read in a tree.
+We assume trees are in Newick format.
+We use the function `readRooted` to read the tree and automatically root it.
+Trees can be rooted with any number of taxa in a clade by providing them in a list.
+
+```{r data, message=FALSE}
+library(Rboretum)
+Gene1_file <- system.file("extdata", "Gene_1.nwk", package = "Rboretum")
+geneTree1 <- readRooted(Gene1_file,root_taxa = c('Species_C','Species_H'))
+```
+
+Note that here we are using the example tree included with the package,
+but you can simply specify the path to your tree file.
+
+## Plotting
+
+We can plot the tree using the `treePlotter` function.
+The `xmax` argument allows us to adjust the width of the tree so that species names can be viewed in their entirety.
+You may need to adjust this parameter depending on your species names.
+Use larger numbers for a narrower tree and longer names.
+Node support is also shown.
+
+```{r plot}
+treePlotter(geneTree1,xmax = 8)
+```
+
+You can include branch lengths on the tree using the `branch_length` argument.
+Here the support is also shown more clearly by placing the node labels in a box with the `node_label_box` argument.
+
+```{r plot2}
+treePlotter(geneTree1,branch_length = TRUE,xmax=3,node_label_box = TRUE)
+```
+
+You can also label the nodes numerically by setting the `node_label` argument.
+
+```{r plot3}
+treePlotter(geneTree1,xmax = 8,node_label = "node",node_label_box = TRUE) 
+```
+
+Taxa can be highlighted on the tree using the `to_color` argument
+and specifying the taxa to highlight as a list. 
+Red is the default highlight color;
+alternatives can be specified with the `colors` argument.
+
+```{r plot4}
+treePlotter(geneTree1,xmax = 8,to_color = c('Species_A','Species_B'),colors = "blue")
+```
+
+We can also highlight groups of taxa by creating a list of named vectors.
+This list is then passed to the `to_color` argument.
+
+```{r plot5}
+cladesOfInterest <- list('Group 1' = c('Species_A','Species_F'),
+                         'Group 2'=c('Species_B','Species_O'))
+treePlotter(geneTree1,xmax = 8,to_color = cladesOfInterest)
+```
+
+We provide a legend for this plot and add color to branches using the
+`highlight_legend` and `color_branches` arguments, respectively.
+
+```{r plot6}
+treePlotter(geneTree1,xmax = 9,to_color = cladesOfInterest,highlight_legend = TRUE,color_branches = TRUE)
+```
+
+You can trim a tree to a set of taxa
+either by specifying ta list of taxa to include
+or a list of taxa to remove (by using the `remove` argument).
+
+```{r trim}
+trimmedTree <- treeTrimmer(geneTree1,taxa = c('Species_A','Species_B','Species_C'))
+treePlotter(trimmedTree)
+
+noSpeciesETree <- treeTrimmer(geneTree1,taxa = 'Species_E',remove = TRUE) # Remove taxa rather than retain
+treePlotter(noSpeciesETree)
+```
+
+Check if tips are in a tree
+
+```{r tips}
+checkTips(trimmedTree,'Species_A')
+checkTips(trimmedTree,'Species_F')
+```
+
+Frequently, labels in a dataset (that are passed on to the tree)
+are not the labels that you would like to have in a publications.
+To convert the dataset labels to more informative labels set up a file (e.g. csv or tsv)
+containing the original names and the preferred names. 
+
+```{r labels}
+name_file <- system.file("extdata", 'Name_Conversion_Table.tsv', package = "Rboretum") #specify the path to your file
+name_df <- read_tsv(name_file)
+head(name_df)
+```
+
+Now you can convert the labels so that your tree includes the correct species information.
+
+```{r labels2}
+renamed_tree <- convertLabels(geneTree1,name_df)
+treePlotter(renamed_tree,xmax = 7,node_label_nudge = 0.2)
+```
+
+## Clades
+
+You can get a written list of which clades are present in the tree using the `getTreeClades` function.
+These will match what you see in the phylogenies above.
+
+```{r clades}
+geneTree1_clades <- getTreeClades(geneTree1)
+geneTree1_clades
+```
+
+When thinking about a tree as unrooted, the equivalent to a clade can been seen as a spilt.
+The `getTreeSplits` function provides a list of all groups of species given the division of
+the tree at any branch.
+
+```{r splits}
+getTreeSplits(geneTree1)
+```
+
+## Working with multiple trees
+
+`readRooted` can also read muliple trees together as a multiPhylo object.
+You can specify a list of files.
+
+```{r multi}
+file_names <- c('Gene_1.nwk','Gene_2.nwk','Gene_3.nwk','Gene_4.nwk','Gene_5.nwk')
+tree_paths <- paste(
+  system.file("extdata", file_names, package = "Rboretum"), #replace the system file function with the path to your data
+  sep = ",")
+
+allTrees <- readRooted(to_root = tree_paths,root_taxa = c('Species_C','Species_H'))
+```
+
+Alternatively you can read all the files of a particular suffix from a particular folder.
+In this case includes the `tree_names` argument to name the trees.
+
+```{r multi2}
+data_dir <- system.file("extdata", package = "Rboretum") #specify your folder path here
+allTrees <- readRooted(to_root = data_dir,suffix = 'nwk',root_taxa = c('Species_C','Species_H'),
+                       tree_names = c('Gene_1','Gene_2','Gene_3','Gene_4','Gene_5'))
+```
+
+Summarizing this multiPhlyo object provides
+* information on shared tips
+* the number of clades found in one tree only
+* the number of shared clades and the species in those clades (i.e. the clades you are likely certain of given different results from different datasets)
+* the number of unique topologies (i.e. a result found for only one dataset)
+* a list of which datasets produced which topolgies
+
+```{r multisum}
+summarizeMultiPhylo(allTrees)
+```
+
+We then obtain the list of all clades identified across all trees,
+and which datasets supported each clade.
+This knowledge can help us identify strongly supported, less controversial clades.
+
+```{r multi_clades}
+getTreeClades(allTrees,print_counts = TRUE)
+```
+
+You can also check whether species are present in all of your trees.
+Additionally you can check whether these species form a monophyletic clade.
+
+```{r multi_tips}
+checkTips(allTrees,c('Species_A','Species_F')) # Check all trees in a multiPhylo
+checkTips(allTrees,c('Species_A','Species_F'),check_mono = TRUE) # Also check if species are monophyletic
+checkTips(allTrees,c('Species_A','Species_F'),check_mono = TRUE,check_root = TRUE) # Check if species are monophyletic and root
+checkTips(allTrees,c('Species_C','Species_H'),check_mono = TRUE,check_root = TRUE) # Check if species are monophyletic and root
+```
+
+## Parsing signal from alignments
+
+In order to use alignment features, which are written in python, source the scripts.
+
+```{r loadp}
+source_python(system.file("", "Split_Processor.py", package = "Rboretum")) #run this as shown
+```
+
+Here we read in mulitple sequence alignments to parse signal.
+We specify the directory containing alignments and include all alignments with a particular suffix.
+The `species_info argument` specifies the trees (read above) for which we want to process the signal.
+You can process site patterns with gaps as missing data (FALSE) or treated as informative indels (TRUE).
+
+```{r signal}
+alignmentSignal <- getAlignmentSignal(data_dir,suffix = 'phylip',use_gaps = FALSE,species_info = allTrees)
+```
+
+Get support for clades in allTrees
+
+```{r support}
+treeSupport <- getTreeSupport(alignmentSignal,allTrees,dataset_name = c('Gene_1','Gene_2','Gene_3','Gene_4','Gene_5'))
+cladeSupport <- getTreeClades(allTrees,return_counts = TRUE)
+
+# Plot support
+treePlotter(geneTree1,tree_support = treeSupport,geom_size = c(1,3),xmax=8,node_label_nudge = 0.5,geom_alpha=0.5,node_label_fontface = 'bold',use_pies = TRUE,pie_legend_position = c(8,8,8,8))
+treePlotter(allTrees,clade_support = cladeSupport,tree_support = treeSupport,geom_size = c(3,20),node_label = 'support',xmax=8,node_label_nudge = 0.5,geom_alpha=0.5,node_label_fontface = 'bold') %>% tandemPlotter()
+treePlotter(allTrees,tree_support = treeSupport,geom_size = c(1,3),node_label = 'clade',xmax=8,node_label_nudge = 0.5,geom_alpha=0.5,node_label_fontface = 'bold',use_pies = TRUE,pie_legend_position = c(-1,-1,-1,-1)) %>% tandemPlotter()
+```

@@ -30,9 +30,12 @@ v.1.0 (01/01/2020)
 ### Rboretum Installation
 ```
 library(devtools)
->>>>>>> 37faa01c4b2983adea972644d6721fa972f091a0
 devtools::install_github("BobLiterman/Rboretum")
 ```
+
+Note that if you have any problems relating to the installation of `reticulate` see 
+the following [issue](https://github.com/BobLiterman/Rboretum/issues/10).
+
 ** **
 ### Loading Library
 ```
@@ -42,7 +45,7 @@ source_python(paste(system.file(package="Rboretum"), "Split_Processor.py", sep="
 ** **
 Are you visiting this repo after seeing the **totally rad** talk at SSB 2020 by @ErenAda ? Welcome! Just so you know...Rboretum is very much a work in progress, **and raising early issues would be very helpful**. What do you wish you could easily do in R? Let me know and I'll try to make it happen for you.
 
-For basic usage, please see a **brief tutorial script in 'inst' folder**...all to be expanded soon!
+For basic usage, please see the associated vignette.
 
 Feel free to reach out to me on Twitter (@BobLiterman) or over e-mail (literman@uri.edu)
 ** **

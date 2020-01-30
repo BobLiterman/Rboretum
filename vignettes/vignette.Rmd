@@ -11,7 +11,7 @@ vignette: >
 
 ```{r setup, include=FALSE}
 #build your vignette with the devtools::build_vignettes()
-knitr::opts_chunk$set(echo = TRUE, fig.width = 5)
+knitr::opts_chunk$set(echo = TRUE, fig.width = 6, warning = FALSE, message=FALSE)
 ```
 
 ## Introduction
@@ -32,7 +32,7 @@ We assume trees are in Newick format.
 We use the function `readRooted` to read the tree and automatically root it.
 Trees can be rooted with any number of taxa in a clade by providing them in a list.
 
-```{r data, message=FALSE}
+```{r data}
 library(Rboretum)
 Gene1_file <- system.file("extdata", "Gene_1.nwk", package = "Rboretum")
 geneTree1 <- readRooted(Gene1_file,root_taxa = c('Species_C','Species_H'))
@@ -88,7 +88,7 @@ We provide a legend for this plot and add color to branches using the
 `highlight_legend` and `color_branches` arguments, respectively.
 
 ```{r plot6}
-treePlotter(geneTree1,xmax = 9,to_color = cladesOfInterest,highlight_legend = TRUE,color_branches = TRUE)
+treePlotter(geneTree1,xmax = 8,to_color = cladesOfInterest,highlight_legend = TRUE,color_branches = TRUE)
 ```
 
 You can trim a tree to a set of taxa
@@ -97,10 +97,10 @@ or a list of taxa to remove (by using the `remove` argument).
 
 ```{r trim}
 trimmedTree <- treeTrimmer(geneTree1,taxa = c('Species_A','Species_B','Species_C'))
-treePlotter(trimmedTree)
+treePlotter(trimmedTree, xmax = 5)
 
 noSpeciesETree <- treeTrimmer(geneTree1,taxa = 'Species_E',remove = TRUE) # Remove taxa rather than retain
-treePlotter(noSpeciesETree)
+treePlotter(noSpeciesETree, xmax = 8)
 ```
 
 Check if tips are in a tree
@@ -125,7 +125,7 @@ Now you can convert the labels so that your tree includes the correct species in
 
 ```{r labels2}
 renamed_tree <- convertLabels(geneTree1,name_df)
-treePlotter(renamed_tree,xmax = 7,node_label_nudge = 0.2)
+treePlotter(renamed_tree,xmax = 10,node_label_nudge = 0.2)
 ```
 
 ## Clades
@@ -215,14 +215,44 @@ You can process site patterns with gaps as missing data (FALSE) or treated as in
 alignmentSignal <- getAlignmentSignal(data_dir,suffix = 'phylip',use_gaps = FALSE,species_info = allTrees)
 ```
 
-Get support for clades in allTrees
+Get support for clades in allTrees.
+`getTreeSupport` generates a data frame that shows how many sites support each clade
+in each dataset.
+`getTreeClades` generates a data frame that shows for each clade the trees 
+that it is found in.
 
 ```{r support}
-treeSupport <- getTreeSupport(alignmentSignal,allTrees,dataset_name = c('Gene_1','Gene_2','Gene_3','Gene_4','Gene_5'))
-cladeSupport <- getTreeClades(allTrees,return_counts = TRUE)
+treeSupport <- getTreeSupport(alignmentSignal,allTrees,
+                              dataset_name = c('Gene_1','Gene_2','Gene_3','Gene_4','Gene_5'))
+head(treeSupport)
+```
 
-# Plot support
-treePlotter(geneTree1,tree_support = treeSupport,geom_size = c(1,3),xmax=8,node_label_nudge = 0.5,geom_alpha=0.5,node_label_fontface = 'bold',use_pies = TRUE,pie_legend_position = c(8,8,8,8))
-treePlotter(allTrees,clade_support = cladeSupport,tree_support = treeSupport,geom_size = c(3,20),node_label = 'support',xmax=8,node_label_nudge = 0.5,geom_alpha=0.5,node_label_fontface = 'bold') %>% tandemPlotter()
-treePlotter(allTrees,tree_support = treeSupport,geom_size = c(1,3),node_label = 'clade',xmax=8,node_label_nudge = 0.5,geom_alpha=0.5,node_label_fontface = 'bold',use_pies = TRUE,pie_legend_position = c(-1,-1,-1,-1)) %>% tandemPlotter()
+```{r support2}
+cladeSupport <- getTreeClades(allTrees,return_counts = TRUE)
+head(cladeSupport)
+```
+
+Tree support information can be plotted as pies at the nodes.
+Each pie shows the proportion of support at that node coming from each dataset.
+The size of the pies are proportional to the amount of overall support.
+
+```{r supportplot}
+
+treePlotter(geneTree1,tree_support = treeSupport,geom_size = c(.1,.5),xmax=11,
+            node_label_nudge = 0.5,geom_alpha=0.8,node_label_fontface = 'bold',
+            use_pies = TRUE,pie_legend_position = c(8,8,8,8))
+```
+
+
+
+```{r supportplotc}
+treePlotter(allTrees,clade_support = cladeSupport,tree_support = treeSupport,
+            geom_size = c(3,10),node_label = 'support',xmax=6,
+            node_label_nudge = 0.5,geom_alpha=0.5,node_label_fontface = 'bold') %>% 
+  tandemPlotter()
+```
+
+
+```{r supportplot3}
+#treePlotter(allTrees,tree_support = treeSupport,geom_size = c(1,3),node_label = 'clade',xmax=8,node_label_nudge = 0.5,geom_alpha=0.5,node_label_fontface = 'bold',use_pies = TRUE,pie_legend_position = c(-1,-1,-1,-1)) %>% tandemPlotter()
 ```

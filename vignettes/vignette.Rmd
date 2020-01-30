@@ -238,7 +238,7 @@ The size of the pies are proportional to the amount of overall support.
 
 ```{r supportplot}
 
-treePlotter(geneTree1,tree_support = treeSupport,geom_size = c(.1,.5),xmax=11,
+treePlotter(geneTree1,tree_support = treeSupport,geom_size = c(.4,.8),xmax=9,
             node_label_nudge = 0.5,geom_alpha=0.8,node_label_fontface = 'bold',
             use_pies = TRUE,pie_legend_position = c(8,8,8,8))
 ```

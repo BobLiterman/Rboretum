@@ -2,7 +2,6 @@
 # Example Data: 5 genes were sequenced for 20 species. Maxmimum likelihood trees were inferred from the alignments, and results are analyzed here.
 
 library(Rboretum)
-#source("R/getTreeClades.R")
 
 # Rboretum can read trees in as rooted phylo objects if the outgroup can be specified
 Gene1_file <- system.file("extdata", "Gene_1.nwk", package = "Rboretum")

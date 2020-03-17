@@ -31,5 +31,8 @@ Depends:
     viridisLite (>= 0.3.0),
     rlist (>= 0.4.6.1),
     BiocManager (>= 1.30.10)
-Suggests: knitr, rmarkdown
+Suggests: 
+    knitr,
+    rmarkdown,
+    testthat
 VignetteBuilder: knitr

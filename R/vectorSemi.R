@@ -10,5 +10,11 @@
 #' @export
 
 vectorSemi <- function(char_vec){
-  return(paste(char_vec,collapse = ";"))
+  
+  # If vector has only 1 element, return element
+  if(length(char_vec)==1){
+    return(char_vec)
+  } else{
+    return(paste(char_vec,collapse = ";"))
+  }
 }

@@ -21,7 +21,7 @@ isPhylo <- function(test_object,check_rooted){
     return(FALSE) # Object attributes can't be unlisted --> FALSE
   } else{
 
-    if('phylo' %in% unlist(attributes(test_object)$class)){ # Is 'phylo' in $class?
+    if('phylo' %in% unlist(attributes(test_object))['class']){ # Is 'phylo' in $class?
       if(!check_rooted){
         return(TRUE) # Is a tree --> TRUE
       } else{

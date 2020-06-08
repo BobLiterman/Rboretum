@@ -49,16 +49,16 @@ getTreeSplits_Worker <- function(tree){
       
       # Note actual monophyletic clades and add bootrap values if appropriate
       if(mono_A & !(mono_B)){
-        mono_clades <- c(mono_clades,sort(temp_clade) %>% paste(collapse = ";"))
-        mirror_clades <- c(mirror_clades,sort(mirror_clade) %>% paste(collapse = ";"))
+        mono_clades <- c(mono_clades,naturalsort(temp_clade) %>% paste(collapse = ";"))
+        mirror_clades <- c(mirror_clades,naturalsort(mirror_clade) %>% paste(collapse = ";"))
         node_list <- c(node_list,ape::getMRCA(tree,temp_clade))
       } else if(mono_B & !(mono_A)){
-        mono_clades <- c(mono_clades,sort(mirror_clade) %>% paste(collapse = ";"))
-        mirror_clades <- c(mirror_clades,sort(temp_clade) %>% paste(collapse = ";"))
+        mono_clades <- c(mono_clades,naturalsort(mirror_clade) %>% paste(collapse = ";"))
+        mirror_clades <- c(mirror_clades,naturalsort(temp_clade) %>% paste(collapse = ";"))
         node_list <- c(node_list,ape::getMRCA(tree,mirror_clade))
       } else if(mono_A & mono_B){ # Root clade
-        mono_clades <- c(mono_clades,sort(temp_clade) %>% paste(collapse = ";"))
-        mirror_clades <- c(mirror_clades,sort(mirror_clade) %>% paste(collapse = ";"))
+        mono_clades <- c(mono_clades,naturalsort(temp_clade) %>% paste(collapse = ";"))
+        mirror_clades <- c(mirror_clades,naturalsort(mirror_clade) %>% paste(collapse = ";"))
         node_list <- c(node_list,NA)
       }
     }

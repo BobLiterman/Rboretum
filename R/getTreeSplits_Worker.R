@@ -19,26 +19,14 @@ getTreeSplits_Worker <- function(tree){
   mirror_clades <- c()
   node_list <- c()
   
-  tree_subtrees <- ape::subtrees(tree)
-  
-  tip_list <- list()
-  
-  # Get all subtrees and create named list for monophyly check
-  for(subtree in 1:length(tree_subtrees)){
-    temp_subtree <- tree_subtrees[[subtree]]
-    temp_tips <- temp_subtree[[2]]
-    temp_name <- Rboretum::vectorSemi(naturalsort(temp_tips))
-    tip_list[[temp_name]] <- temp_tips
-  }
-  
   # Process subtrees
-  for(j in tree_subtrees){
+  for(j in ape::subtrees(tree)){
     temp_clade <- j$tip.label
 
     # Remove subtree that is whole tree
     if(length(temp_clade) != species_count){
-      mirror_clade <- tip_list[[Rboretum::vectorSemi(naturalsort(dplyr::setdiff(tree_species, temp_clade)))]]
-
+      mirror_clade <- dplyr::setdiff(tree_species, temp_clade)
+      
       # Find monophyletic group
       mono_A <- ape::is.monophyletic(tree,temp_clade)
       mono_B <- ape::is.monophyletic(tree,mirror_clade)

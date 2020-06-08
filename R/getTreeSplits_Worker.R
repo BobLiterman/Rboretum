@@ -19,10 +19,23 @@ getTreeSplits_Worker <- function(tree){
   mirror_clades <- c()
   node_list <- c()
   
-  # Get all subtrees
-  for(j in ape::subtrees(tree)){
+  tree_subtrees <- ape::subtrees(tree)
+  
+  tip_list <- list()
+  
+  # Get all subtrees and create named list for monophyly check
+  for(subtree in 1:length(tree_subtrees)){
+    temp_subtree <- tree_subtrees[[subtree]]
+    temp_tips <- temp_subtree[[2]]
+    temp_name <- Rboretum::vectorSemi(sort(temp_tips))
+    temp_length <- length(temp_tips)
+    tip_list[[temp_name]] <- temp_tips
+  }
+  
+  # Process subtrees
+  for(j in tree_subtrees){
     temp_clade <- c((j$tip.label))
-    mirror_clade <- dplyr::setdiff(tree_species, temp_clade)
+    mirror_clade <- tip_list[[Rboretum::vectorSemi(dplyr::setdiff(tree_species, temp_clade))]]
     
     temp_length <- length(temp_clade)
     mirror_length <- length(mirror_clade)

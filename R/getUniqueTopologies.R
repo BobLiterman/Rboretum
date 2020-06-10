@@ -17,6 +17,7 @@ getUniqueTopologies <- function(trees,print_table,return_table){
   } else if(Rboretum::isMultiPhylo(trees,check_all_unique = TRUE)){ # Trees are already unique
     return(trees)
   } else if(!Rboretum::isMultiPhylo(trees,check_named = TRUE)){ # Trees need names
+    print("Note: Trees being autonamed via treeNamer(trees)...")
     trees <- Rboretum::treeNamer(trees)
   }
   

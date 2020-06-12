@@ -30,9 +30,11 @@ Depends:
     grDevices (>= 3.6.3),
     viridisLite (>= 0.3.0),
     rlist (>= 0.4.6.1),
-    BiocManager (>= 1.30.10)
+    BiocManager (>= 1.30.10),
+    naturalsort (>= 0.1.3)
 Suggests: 
     knitr,
     rmarkdown,
     testthat
-VignetteBuilder: knitr
+VignetteBuilder: 
+    knitr

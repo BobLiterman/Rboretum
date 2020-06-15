@@ -12,23 +12,20 @@ getTreeSplits_Worker <- function(tree){
   }
   
   # Get species
-  tree_species <- sort(tree$tip.label)
+  tree_species <- naturalsort(tree$tip.label)
   species_count <- length(tree_species)
   
   mono_clades <- c()
   mirror_clades <- c()
   node_list <- c()
   
-  # Get all subtrees
+  # Process subtrees
   for(j in ape::subtrees(tree)){
-    temp_clade <- c((j$tip.label))
-    mirror_clade <- dplyr::setdiff(tree_species, temp_clade)
-    
-    temp_length <- length(temp_clade)
-    mirror_length <- length(mirror_clade)
-    
+    temp_clade <- j$tip.label
+
     # Remove subtree that is whole tree
-    if(temp_length != species_count & mirror_length != species_count){
+    if(length(temp_clade) != species_count){
+      mirror_clade <- dplyr::setdiff(tree_species, temp_clade)
       
       # Find monophyletic group
       mono_A <- ape::is.monophyletic(tree,temp_clade)
@@ -36,16 +33,16 @@ getTreeSplits_Worker <- function(tree){
       
       # Note actual monophyletic clades and add bootrap values if appropriate
       if(mono_A & !(mono_B)){
-        mono_clades <- c(mono_clades,sort(temp_clade) %>% paste(collapse = ";"))
-        mirror_clades <- c(mirror_clades,sort(mirror_clade) %>% paste(collapse = ";"))
+        mono_clades <- c(mono_clades,Rboretum::vectorSemi(naturalsort(temp_clade)))
+        mirror_clades <- c(mirror_clades,Rboretum::vectorSemi(naturalsort(mirror_clade)))
         node_list <- c(node_list,ape::getMRCA(tree,temp_clade))
       } else if(mono_B & !(mono_A)){
-        mono_clades <- c(mono_clades,sort(mirror_clade) %>% paste(collapse = ";"))
-        mirror_clades <- c(mirror_clades,sort(temp_clade) %>% paste(collapse = ";"))
+        mono_clades <- c(mono_clades,Rboretum::vectorSemi(naturalsort(mirror_clade)))
+        mirror_clades <- c(mirror_clades,Rboretum::vectorSemi(naturalsort(temp_clade)))
         node_list <- c(node_list,ape::getMRCA(tree,mirror_clade))
       } else if(mono_A & mono_B){ # Root clade
-        mono_clades <- c(mono_clades,sort(temp_clade) %>% paste(collapse = ";"))
-        mirror_clades <- c(mirror_clades,sort(mirror_clade) %>% paste(collapse = ";"))
+        mono_clades <- c(mono_clades,Rboretum::vectorSemi(naturalsort(temp_clade)))
+        mirror_clades <- c(mirror_clades,Rboretum::vectorSemi(naturalsort(mirror_clade)))
         node_list <- c(node_list,NA)
       }
     }

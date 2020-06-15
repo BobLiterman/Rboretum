@@ -10,5 +10,11 @@
 #' @export
 
 semiVector <- function(string_to_split){
+  
+  # If no ';', return string
+  if(!stringr::str_detect(string_to_split,";")){
+    return(string_to_split)
+  } else{
   return(stringr::str_split(string_to_split,pattern = ';') %>% unlist())
+  }
 }

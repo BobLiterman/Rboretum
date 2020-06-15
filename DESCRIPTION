@@ -14,25 +14,25 @@ RoxygenNote: 7.0.2
 biocViews:
 Remotes: GuangchuangYu/ggimage
 Depends:
-    R (>= 3.6.1),
+    R (>= 3.6.3),
     ape (>= 5.3),
-    phytools (>= 0.6.99),
+    phytools (>= 0.7.47),
     phangorn (>= 2.5.5),
-    testit (>= 0.9),
-    tidyverse (>= 1.2.1),
-    tools (>= 3.6.1),
-    reticulate (>= 1.13),
-    scales (>= 1.0.0),
+    testit (>= 0.11),
+    tidyverse (>= 1.3.0),
+    tools (>= 3.6.3),
+    reticulate (>= 1.16),
+    scales (>= 1.1.1),
     viridis (>= 0.5.1),
     cowplot (>= 1.0.0),
     ggtree (>= 1.16.6),
-    ggimage,
-    grDevices (>= 3.6.1),
+    ggimage (>= 0.2.8),
+    grDevices (>= 3.6.3),
     viridisLite (>= 0.3.0),
     rlist (>= 0.4.6.1),
-    BiocManager (>= 1.30.10)
+    BiocManager (>= 1.30.10),
+    naturalsort (>= 0.1.3)
 Suggests: 
     knitr,
     rmarkdown,
     testthat
-VignetteBuilder: knitr

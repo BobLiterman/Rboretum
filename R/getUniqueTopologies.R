@@ -9,13 +9,16 @@
 
 getUniqueTopologies <- function(trees,print_table,return_table){
   
-  if(!Rboretum::isMultiPhylo(trees,check_rooted = TRUE,check_named = TRUE,check_three_taxa = TRUE)){
-    stop("'trees' must be a named, rooted multiPhylo object where all trees share at least three taxa.")
+  if(!Rboretum::isMultiPhylo(trees,check_rooted = TRUE,check_three_taxa = TRUE)){
+    stop("'trees' must be a rooted multiPhylo object where all trees share at least three taxa.")
   } else if(Rboretum::isMultiPhylo(trees,check_all_equal = TRUE)){ # One unique tree, return first
     print("Note: All trees have the same topology. Returning first tree...")
     return(trees[[1]])
   } else if(Rboretum::isMultiPhylo(trees,check_all_unique = TRUE)){ # Trees are already unique
     return(trees)
+  } else if(!Rboretum::isMultiPhylo(trees,check_named = TRUE)){ # Trees need names
+    print("Note: Trees being autonamed via treeNamer(trees)...")
+    trees <- Rboretum::treeNamer(trees)
   }
   
   if(missing(print_table)){

@@ -9,7 +9,7 @@ isPlot <- function(test_object){
   if(has_error(silent=TRUE,expr=unlist(attributes(test_object)))){
     return(FALSE)
   } else{
-    test_object_class <- unlist(attributes(test_object)$class)
+    test_object_class <- unlist(attributes(test_object)['class'])
 
     if(!any(c('ggtree','ggplot') %in% test_object_class)){
       return(FALSE)

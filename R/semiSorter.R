@@ -15,11 +15,11 @@ semiSorter <- function(string_to_sort){
     stop("semiSorter expects a character argument")
   }
   
-  if(length(string_to_sort)==1){ # Return single elements
+  if(str_detect(string_to_sort,";")){ # If already semicolon-separated, return sorted character vector
+    return(paste(naturalsort(semiVector(string_to_sort)),collapse = ";"))
+  } else if(length(string_to_sort)==1){ # Return single elements
     return(string_to_sort)
   } else{ # Return sorted + joined character
     return(paste(naturalsort(string_to_sort),collapse = ";"))
-  } else if(str_detect(string_to_sort,";")){ # If already semicolon-separated, return sorted character vector
-    return(paste(naturalsort(semiVector(string_to_sort)),collapse = ";"))
-  } 
+  }
 }

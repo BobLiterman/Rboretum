@@ -15,7 +15,7 @@ semiSorter <- function(string_to_sort){
     stop("semiSorter expects a character argument")
   }
   if(length(string_to_sort)==1){
-    if(str_detect(string_to_sort,";")){ # If already semicolon-separated, return sorted character vector
+    if(suppressWarnings(str_detect(string_to_sort,";"))){ # If already semicolon-separated, return sorted character vector
       return(paste(naturalsort(semiVector(string_to_sort)),collapse = ";"))
     } else  # Return single elements
       return(string_to_sort)

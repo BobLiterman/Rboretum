@@ -56,6 +56,14 @@
 #' @param highlight_legend OPTIONAL: Include a legend for colored tips, given a list; [Default: False: No highlight legend]
 #' @param color_branches OPTIONAL: If TRUE and coloring taxa or clades, color the branches rather than the tip labels [Default: FALSE, colorize tip labels; DEACTIVATED IF clade_support is provided]
 #' @param plot_title OPTIONAL: Character vector containing plot titles (1 per tree) [Default: No title for phylo, tree name for multiPhylo]
+#' @param plot_title_size OPTIONAL: Set ggplot title font size [Default: 10]
+#' @param plot_title_fontface OPTIONAL: Set ggplot title fontface
+#' \itemize{
+#'   \item "plain" [Default]
+#'   \item "bold"
+#'   \item "italic"
+#'   \item "bold.italic"
+#' }
 #' @param legend_shape_size OPTIONAL: ggplot2 size for legend icons [Default: 5]
 #' @param legend_font_size OPTIONAL: ggplot2 size for legend font [Default: 10]
 #' @param legend_title_size OPTIONAL: ggplot size for legend title [Default: 10]
@@ -64,7 +72,7 @@
 #' @return ggtree object or list of ggtree objects
 #' @export
 
-treePlotter <- function(tree,clade_support,tree_support,geom_size,scale_range,branch_length,branch_weight,node_label,node_label_font_size,node_label_fontface,node_label_color,node_label_box,node_label_nudge,taxa_font_size,taxa_fontface,taxa_offset,xmax,reverse_x,to_color,colors,highlight_legend,color_branches,plot_title,legend_shape_size,legend_font_size,legend_title_size,geom_alpha,geom_color){
+treePlotter <- function(tree,clade_support,tree_support,geom_size,scale_range,branch_length,branch_weight,node_label,node_label_font_size,node_label_fontface,node_label_color,node_label_box,node_label_nudge,taxa_font_size,taxa_fontface,taxa_offset,xmax,reverse_x,to_color,colors,highlight_legend,color_branches,plot_title,plot_title_size,plot_title_fontface,legend_shape_size,legend_font_size,legend_title_size,geom_alpha,geom_color){
   
   # Ensure tree is valid for plotter
   if(!Rboretum::isMultiPhylo(tree,check_rooted = TRUE,check_three_taxa = TRUE) & !Rboretum::isPhylo(tree,check_rooted = TRUE)){
@@ -639,6 +647,24 @@ treePlotter <- function(tree,clade_support,tree_support,geom_size,scale_range,br
     }
     
     # Add titles
+    
+    # Set title size
+    if(missing(plot_title_size)){
+      plot_title_size <- 10
+    } else if(!is.numeric(plot_title_size)){
+      plot_title_size <- 10
+    }
+    
+    # Set title fontface
+    if(missing(plot_title_fontface)){
+      plot_title_fontface <- 'plain'
+    } else if(!is.character(plot_title_fontface)){
+      plot_title_fontface <- 'plain'
+    } else if(!(plot_title_fontface %in% c('plain','bold','italic','bold.italic'))){
+      plot_title_fontface <- 'plain'
+    }
+    
+    
     if(titlePlot){
       return_tree <- return_tree + ggplot2::ggtitle(plot_title[i])
     }
@@ -646,7 +672,7 @@ treePlotter <- function(tree,clade_support,tree_support,geom_size,scale_range,br
     # Adjust theme (FIX LEGENDS)
     if(i!=tree_count){
       if(titlePlot){
-        return_tree <- return_tree + theme(plot.title = element_text(hjust = 0))
+        return_tree <- return_tree + theme(plot.title = element_text(hjust = 0.5,face = plot_title_fontface,size = plot_title_size))
       }
     } else{
       if(titlePlot){
@@ -654,7 +680,7 @@ treePlotter <- function(tree,clade_support,tree_support,geom_size,scale_range,br
           theme(legend.position="right",
                 legend.title=element_text(size=legend_title_size),
                 legend.text=element_text(size=legend_font_size),
-                plot.title = element_text(hjust = 0)) +
+                plot.title = element_text(hjust = 0.5,face = plot_title_fontface,size = plot_title_size)) +
           guides(color = guide_legend(override.aes = list(size = legend_shape_size)))
         
       } else{

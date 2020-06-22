@@ -28,6 +28,8 @@ treePlotter(
   highlight_legend,
   color_branches,
   plot_title,
+  plot_title_size,
+  plot_title_fontface,
   legend_shape_size,
   legend_font_size,
   legend_title_size,
@@ -113,6 +115,16 @@ treePlotter(
 \item{color_branches}{OPTIONAL: If TRUE and coloring taxa or clades, color the branches rather than the tip labels [Default: FALSE, colorize tip labels; DEACTIVATED IF clade_support is provided]}
 
 \item{plot_title}{OPTIONAL: Character vector containing plot titles (1 per tree) [Default: No title for phylo, tree name for multiPhylo]}
+
+\item{plot_title_size}{OPTIONAL: Set ggplot title font size [Default: 10]}
+
+\item{plot_title_fontface}{OPTIONAL: Set ggplot title fontface
+\itemize{
+  \item "plain" [Default]
+  \item "bold"
+  \item "italic"
+  \item "bold.italic"
+}}
 
 \item{legend_shape_size}{OPTIONAL: ggplot2 size for legend icons [Default: 5]}
 

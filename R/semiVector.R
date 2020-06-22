@@ -25,7 +25,7 @@ semiVector <- function(string_to_split){
   if(length(string_to_split)==1){
       return(stringr::str_split(string_to_split[1],pattern = ';') %>% unlist())
   } else{
-    sep_list = purrr::map(.x=string_to_split,.f=function(x){stringr::str_split(string_to_split[x],pattern = ';')[[1]]})
+    sep_list = purrr::map(.x=string_to_split,.f=function(x){stringr::str_split(x,pattern = ';')[[1]]})
     return(sep_list)
   }
 }

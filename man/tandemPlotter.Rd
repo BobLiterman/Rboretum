@@ -3,14 +3,17 @@
 \name{tandemPlotter}
 \alias{tandemPlotter}
 \title{Rboretum Tandem Plotter
-Simple cowplot wrapper to plot two or more ggtree/ggplot objects side by side. Plots can be passed individually, or as a list}
+Simple cowplot wrapper to plot two or more ggtree/ggplot objects side-by-side, or vertically. Plots can be passed individually, or as a list}
 \usage{
-tandemPlotter(...)
+tandemPlotter(vertical, ...)
+}
+\arguments{
+\item{vertical}{OPTIONAL: If TRUE, draw plots as vertical stack. [Default: FALSE, print plots side-by-side]}
 }
 \value{
 Side-by-side ggplot object
 }
 \description{
 Rboretum Tandem Plotter
-Simple cowplot wrapper to plot two or more ggtree/ggplot objects side by side. Plots can be passed individually, or as a list
+Simple cowplot wrapper to plot two or more ggtree/ggplot objects side-by-side, or vertically. Plots can be passed individually, or as a list
 }

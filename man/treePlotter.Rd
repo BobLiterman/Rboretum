@@ -32,6 +32,8 @@ treePlotter(
   highlight_legend,
   color_branches,
   plot_title,
+  plot_title_size,
+  plot_title_fontface,
   legend_shape_size,
   legend_font_size,
   legend_title_size,
@@ -126,16 +128,6 @@ treePlotter(
 
 \item{plot_title}{OPTIONAL: Character vector containing plot titles (1 per tree) [Default: No title for phylo, tree name for multiPhylo]}
 
-\item{legend_shape_size}{OPTIONAL: ggplot2 size for legend icons [Default: 5]}
-
-\item{legend_font_size}{OPTIONAL: ggplot2 size for legend font [Default: 10]}
-
-\item{legend_title_size}{OPTIONAL: ggplot size for legend title [Default: 10]}
-
-\item{geom_alpha}{OPTIONAL: ggplot2 alpha value for geom_nodepoint (or pies) [Default: 0.9]}
-
-\item{geom_color}{OPTIONAL: ggplot2 color value for geom_nodepoint if clade_support not provided [Default: 'red']}
-
 \item{plot_title_size}{OPTIONAL: Set ggplot title font size [Default: 10]}
 
 \item{plot_title_fontface}{OPTIONAL: Set ggplot title fontface
@@ -145,6 +137,16 @@ treePlotter(
   \item "italic"
   \item "bold.italic"
 }}
+
+\item{legend_shape_size}{OPTIONAL: ggplot2 size for legend icons [Default: 5]}
+
+\item{legend_font_size}{OPTIONAL: ggplot2 size for legend font [Default: 10]}
+
+\item{legend_title_size}{OPTIONAL: ggplot size for legend title [Default: 10]}
+
+\item{geom_alpha}{OPTIONAL: ggplot2 alpha value for geom_nodepoint (or pies) [Default: 0.9]}
+
+\item{geom_color}{OPTIONAL: ggplot2 color value for geom_nodepoint if clade_support not provided [Default: 'red']}
 }
 \value{
 ggtree object or list of ggtree objects

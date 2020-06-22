@@ -76,7 +76,7 @@
 #' @return ggtree object or list of ggtree objects
 #' @export
 
-treePlotter <- function(tree,clade_support,tree_support,geom_size,scale_range,use_pies,pie_xnudge,pie_ynudge,pie_legend_position,branch_length,branch_weight,node_label,node_label_font_size,node_label_fontface,node_label_color,node_label_box,node_label_nudge,taxa_font_size,taxa_fontface,taxa_offset,xmax,reverse_x,to_color,colors,highlight_legend,color_branches,plot_title,legend_shape_size,legend_font_size,legend_title_size,geom_alpha,geom_color){  
+treePlotter <- function(tree,clade_support,tree_support,geom_size,scale_range,use_pies,pie_xnudge,pie_ynudge,pie_legend_position,branch_length,branch_weight,node_label,node_label_font_size,node_label_fontface,node_label_color,node_label_box,node_label_nudge,taxa_font_size,taxa_fontface,taxa_offset,xmax,reverse_x,to_color,colors,highlight_legend,color_branches,plot_title,plot_title_size,plot_title_fontface,legend_shape_size,legend_font_size,legend_title_size,geom_alpha,geom_color){  
   # Ensure tree is valid for plotter
   if(!Rboretum::isMultiPhylo(tree,check_rooted = TRUE,check_three_taxa = TRUE) & !Rboretum::isPhylo(tree,check_rooted = TRUE)){
     stop("'tree' must be either a rooted phylo object or a rooted, mulitPhlyo object basicPlotter")

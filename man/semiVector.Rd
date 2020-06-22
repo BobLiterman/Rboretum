@@ -7,7 +7,7 @@
 semiVector(string_to_split)
 }
 \arguments{
-\item{string_to_split}{Semicolon delimited string}
+\item{string_to_split}{Semicolon delimited character vector of length 1}
 }
 \value{
 Character vector

@@ -643,10 +643,10 @@ treePlotter <- function(tree,clade_support,tree_support,geom_size,scale_range,br
       return_tree <- return_tree + ggplot2::ggtitle(plot_title[i])
     }
     
-    # Adjust theme
+    # Adjust theme (FIX LEGENDS)
     if(i!=tree_count){
       if(titlePlot){
-        return_tree <- return_tree + theme(plot.title = element_text(hjust = 0.5))
+        return_tree <- return_tree + theme(plot.title = element_text(hjust = 0))
       }
     } else{
       if(titlePlot){
@@ -654,7 +654,7 @@ treePlotter <- function(tree,clade_support,tree_support,geom_size,scale_range,br
           theme(legend.position="right",
                 legend.title=element_text(size=legend_title_size),
                 legend.text=element_text(size=legend_font_size),
-                plot.title = element_text(hjust = 0.5)) +
+                plot.title = element_text(hjust = 0)) +
           guides(color = guide_legend(override.aes = list(size = legend_shape_size)))
         
       } else{

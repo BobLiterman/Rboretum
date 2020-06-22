@@ -46,6 +46,7 @@ isAlignmentSignal <- function(test_object,species_info,return_taxa){
       select(Singleton_Taxa,Non_Base_Taxa,Split_1,Split_2,Split_3,Split_4,Split_5) %>% 
       select_if(~ !any(is.na(.))) %>% 
       unite(col = "Taxa",sep = ";") %>% 
+      pull(Taxa) %>%
       semiSorter()
     
     signal_taxa <- c(signal_taxa,alignment_taxa)

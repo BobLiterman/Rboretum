@@ -7,16 +7,11 @@
 semiVector(string_to_split)
 }
 \arguments{
-\item{string_to_split}{Semicolon delimited character vector of length 1}
+\item{string_to_split}{Semicolon delimited character}
 }
 \value{
-Character vector
+If string_to_split is a single item, semiVector returns a character vector split by ';'. If string_to_split contains multiple items, function returns a list of separated vectors
 }
 \description{
 This function takes a string separated by semicolons (;) and returns a character vector
-}
-\examples{
-myString <- 'a;b;c;d'
-semiVector(myString)
-> ['a','b','c','d']
 }

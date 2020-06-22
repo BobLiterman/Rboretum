@@ -5,7 +5,7 @@
 \title{Rboretum Tandem Plotter
 Simple cowplot wrapper to plot two or more ggtree/ggplot objects side-by-side, or vertically. Plots can be passed individually, or as a list}
 \usage{
-tandemPlotter(vertical, ...)
+tandemPlotter(..., vertical)
 }
 \arguments{
 \item{vertical}{OPTIONAL: If TRUE, draw plots as vertical stack. [Default: FALSE, print plots side-by-side]}

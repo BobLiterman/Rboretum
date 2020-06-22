@@ -4,11 +4,13 @@
 #' @return Side-by-side ggplot object
 #' @export
 
-tandemPlotter <- function(vertical,...){
+tandemPlotter <- function(...,vertical){
   
   if(missing(vertical)){
     vertical=FALSE
-  } else if(!is.logical(vertical)){
+  }
+  
+  if(!is.logical(vertical)){
     stop("'vertical' must be TRUE (stack plots vertically) or FALSE (add plots as horizontal side-by-side")
   }
   

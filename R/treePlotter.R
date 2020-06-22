@@ -8,13 +8,17 @@
 #' }
 #' @param clade_support OPTIONAL: Output of getTreeClades(return_counts=TRUE), including data from all clades in 'tree'
 #' @param tree_support OPTIONAL: Output of getTreeSupport, including data from all clades in 'tree'
-#' @param geom_size OPTIONAL: How should geom_nodepoint be sized? Options include:
+#' @param geom_size OPTIONAL: How should geom_nodepoint (or pies) be sized? Options include:	
 #' \itemize{
 #'   \item Single numeric value: All geom_nodepoint geoms will be this size [Default: 4]
 #'   \item c(min,max): If used with tree_support, geoms will be sized based on the total support across datasets and rescaled between min and max.
 #'   \item "log": If used with tree_support, geoms will be sized based on the log-transformed total support across datasets
 #' }
 #' @param scale_range OPTIONAL: If plotting tree_support, supply the range of values to be scaled. Values outside this range will be displayed as the otherwise min/max geom size. [Default: scale all data]
+#' @param use_pies OPTIONAL: If TRUE and tree_support contains inforomation from 2+ datasets, data from tree_support will be displayed as an inset pie chart rather than a geom_nodepoint [Default: FALSE, use geom_nodepoint; DEACTIVATED WHEN clade_support IS PROVIDED]	
+#' @param pie_xnudge OPTIONAL: Set ggtree pie label hjust [Default: 0]	
+#' @param pie_ynudge OPTIONAL: Set ggtree pie label yjust [Default: 0]	
+#' @param pie_legend_position OPTIONAL: Numerical vector of length four specifying legend xmin,xmax,ymin,ymax respectively. [Default = c(1,1,1,1); Necessary oddity of generating a legend for nodepie data]
 #' @param branch_length OPTIONAL: TRUE [plot tree(s) with branch lengths]; FALSE [Default: plot cladogram(s)]
 #' @param branch_weight OPTIONAL: Set ggtree branch thickness [Default: 1]
 #' @param node_label OPTIONAL: Choice of node labels include:
@@ -67,13 +71,12 @@
 #' @param legend_shape_size OPTIONAL: ggplot2 size for legend icons [Default: 5]
 #' @param legend_font_size OPTIONAL: ggplot2 size for legend font [Default: 10]
 #' @param legend_title_size OPTIONAL: ggplot size for legend title [Default: 10]
-#' @param geom_alpha OPTIONAL: ggplot2 alpha value for geom_nodepoint [Default: 0.9]
+#' @param geom_alpha OPTIONAL: ggplot2 alpha value for geom_nodepoint (or pies) [Default: 0.9]
 #' @param geom_color OPTIONAL: ggplot2 color value for geom_nodepoint if clade_support not provided [Default: 'red']
 #' @return ggtree object or list of ggtree objects
 #' @export
 
-treePlotter <- function(tree,clade_support,tree_support,geom_size,scale_range,branch_length,branch_weight,node_label,node_label_font_size,node_label_fontface,node_label_color,node_label_box,node_label_nudge,taxa_font_size,taxa_fontface,taxa_offset,xmax,reverse_x,to_color,colors,highlight_legend,color_branches,plot_title,plot_title_size,plot_title_fontface,legend_shape_size,legend_font_size,legend_title_size,geom_alpha,geom_color){
-  
+treePlotter <- function(tree,clade_support,tree_support,geom_size,scale_range,use_pies,pie_xnudge,pie_ynudge,pie_legend_position,branch_length,branch_weight,node_label,node_label_font_size,node_label_fontface,node_label_color,node_label_box,node_label_nudge,taxa_font_size,taxa_fontface,taxa_offset,xmax,reverse_x,to_color,colors,highlight_legend,color_branches,plot_title,legend_shape_size,legend_font_size,legend_title_size,geom_alpha,geom_color){  
   # Ensure tree is valid for plotter
   if(!Rboretum::isMultiPhylo(tree,check_rooted = TRUE,check_three_taxa = TRUE) & !Rboretum::isPhylo(tree,check_rooted = TRUE)){
     stop("'tree' must be either a rooted phylo object or a rooted, mulitPhlyo object basicPlotter")
@@ -197,6 +200,7 @@ treePlotter <- function(tree,clade_support,tree_support,geom_size,scale_range,br
   if(missing(tree_support)){
     
     treeSupport <- FALSE
+    piePossible <- FALSE
   } else if(!Rboretum::isTreeSupport(tree_support,tree,partial = TRUE)){
     stop("'tree_support' does not contain information about all the clades in 'tree'")
   } else{
@@ -204,11 +208,42 @@ treePlotter <- function(tree,clade_support,tree_support,geom_size,scale_range,br
     treeSupport <- TRUE
     tree_support <- tree_support %>%
       filter(Clade %in% tree_clades)
+    
+    # Pie charts are only possible when tree_support contains 2+ columns of support	
+    if(ncol(tree_support)>2 & !cladeSupport){	
+      piePossible <- TRUE	
+    } else{	
+      piePossible <- FALSE # TODO: Fix for node labels	
+    }
   }
-
+  
+  # Print pie charts on nodes?	
+  if(missing(use_pies)){	
+    use_pies <- FALSE	
+  } else if(!is.logical(use_pies)){	
+    use_pies <- FALSE	
+  } else if(!piePossible){	
+    use_pies <- FALSE	
+  }	
+  
+  # Nudge pies?	
+  if(missing(pie_xnudge)){	
+    pie_xnudge <- 0	
+  } else if(!is.numeric(pie_xnudge)){	
+    pie_xnudge <- 0	
+  }	
+  
+  if(missing(pie_ynudge)){	
+    pie_ynudge <- 0	
+  } else if(!is.numeric(pie_ynudge)){	
+    pie_ynudge <- 0	
+  }
+  
   # Only add nodepoint labels if tree_support or clade_support is provided
   if(!treeSupport & !cladeSupport){
     nodePoint <- FALSE
+  } else if(use_pies){	
+    nodePoint <- FALSE	
   } else{
     nodePoint <-  TRUE
   }
@@ -461,6 +496,15 @@ treePlotter <- function(tree,clade_support,tree_support,geom_size,scale_range,br
   
   # Handle legend arguments
   
+  # Pie legend hack	
+  if(missing(pie_legend_position)){	
+    pie_legend_position <- c(1,1,1,1)	
+  } else if(!is.numeric(pie_legend_position)){	
+    pie_legend_position <- c(1,1,1,1)	
+  } else if(length(pie_legend_position) != 4){	
+    pie_legend_position <- c(1,1,1,1)	
+  }	
+  
   # Include legend if highlight from list of taxa?
   if(missing(highlight_legend)){
     highlight_legend <- FALSE
@@ -533,6 +577,32 @@ treePlotter <- function(tree,clade_support,tree_support,geom_size,scale_range,br
         select(node,clade_count,clade_percent,total_sites,scaled_total) %>%
         rename(size_geom = 'scaled_total') %>%
         mutate(clade_count = as.factor(clade_count))
+    }
+    
+    if(use_pies){	
+      
+      # Generate pie chart from tree support and make dummy legend	
+      pie_df <- Rboretum::getTreeSplits(temp_tree) %>%	
+        filter(!is.na(Split_Node)) %>%	
+        select(Split_Node,Clade) %>%	
+        rename(node=Split_Node) %>%	
+        mutate(node=as.integer(node), Clade = as.character(Clade)) %>%	
+        left_join(tree_support,by='Clade') %>% 	
+        left_join(tree_support_summary,by='Clade') %>%	
+        select(-Clade)	
+      
+      pies <- nodepie(pie_df,cols=2:ncol(tree_support),alpha = geom_alpha)	
+      
+      pie_color_data <- cbind(tree_support[2:ncol(tree_support)]) %>%	
+        gather(key = 'Dataset',value = 'Count') %>%	
+        ggplot(aes(x=Dataset, y=Count,fill=Dataset)) +	
+        geom_bar(stat="identity", width=1) +      	
+        theme(legend.position="right",	
+              legend.title=element_text(size=legend_title_size),	
+              legend.text=element_text(size=legend_font_size)) +	
+        guides(fill = guide_legend(override.aes = list(size = legend_shape_size)))	
+      
+      legend_for_pie <- gtable::gtable_filter(ggplot_gtable(ggplot_build(pie_color_data)), "guide-box") 	
     }
     
     # Build base tree (Branch lengths? Colored branches?)
@@ -691,6 +761,16 @@ treePlotter <- function(tree,clade_support,tree_support,geom_size,scale_range,br
           guides(color = guide_legend(override.aes = list(size = legend_shape_size)))
         
       }
+    }
+    
+    if(use_pies){	
+      if(reverse_x){	
+        return_tree <- inset(return_tree,pies,height=pie_df$scaled_total,width=pie_df$scaled_total,hjust=pie_xnudge,vjust=pie_ynudge,reverse_x = TRUE) + 	
+          ggplot2::annotation_custom(grob = legend_for_pie,xmin = pie_legend_position[1],xmax = pie_legend_position[2],ymin = pie_legend_position[3],ymax = pie_legend_position[4])	
+      } else{	
+        return_tree <- inset(return_tree,pies,height=pie_df$scaled_total,width=pie_df$scaled_total,hjust=pie_xnudge,vjust=pie_ynudge) + 	
+          ggplot2::annotation_custom(grob = legend_for_pie,xmin = pie_legend_position[1],xmax = pie_legend_position[2],ymin = pie_legend_position[3],ymax = pie_legend_position[4])	
+      }	
     }
     
     # Process node labels

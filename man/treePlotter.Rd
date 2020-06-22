@@ -10,6 +10,10 @@ treePlotter(
   tree_support,
   geom_size,
   scale_range,
+  use_pies,
+  pie_xnudge,
+  pie_ynudge,
+  pie_legend_position,
   branch_length,
   branch_weight,
   node_label,
@@ -28,8 +32,6 @@ treePlotter(
   highlight_legend,
   color_branches,
   plot_title,
-  plot_title_size,
-  plot_title_fontface,
   legend_shape_size,
   legend_font_size,
   legend_title_size,
@@ -48,7 +50,7 @@ treePlotter(
 
 \item{tree_support}{OPTIONAL: Output of getTreeSupport, including data from all clades in 'tree'}
 
-\item{geom_size}{OPTIONAL: How should geom_nodepoint be sized? Options include:
+\item{geom_size}{OPTIONAL: How should geom_nodepoint (or pies) be sized? Options include:
 \itemize{
   \item Single numeric value: All geom_nodepoint geoms will be this size [Default: 4]
   \item c(min,max): If used with tree_support, geoms will be sized based on the total support across datasets and rescaled between min and max.
@@ -56,6 +58,14 @@ treePlotter(
 }}
 
 \item{scale_range}{OPTIONAL: If plotting tree_support, supply the range of values to be scaled. Values outside this range will be displayed as the otherwise min/max geom size. [Default: scale all data]}
+
+\item{use_pies}{OPTIONAL: If TRUE and tree_support contains inforomation from 2+ datasets, data from tree_support will be displayed as an inset pie chart rather than a geom_nodepoint [Default: FALSE, use geom_nodepoint; DEACTIVATED WHEN clade_support IS PROVIDED]}
+
+\item{pie_xnudge}{OPTIONAL: Set ggtree pie label hjust [Default: 0]}
+
+\item{pie_ynudge}{OPTIONAL: Set ggtree pie label yjust [Default: 0]}
+
+\item{pie_legend_position}{OPTIONAL: Numerical vector of length four specifying legend xmin,xmax,ymin,ymax respectively. [Default = c(1,1,1,1); Necessary oddity of generating a legend for nodepie data]}
 
 \item{branch_length}{OPTIONAL: TRUE [plot tree(s) with branch lengths]; FALSE [Default: plot cladogram(s)]}
 
@@ -116,6 +126,16 @@ treePlotter(
 
 \item{plot_title}{OPTIONAL: Character vector containing plot titles (1 per tree) [Default: No title for phylo, tree name for multiPhylo]}
 
+\item{legend_shape_size}{OPTIONAL: ggplot2 size for legend icons [Default: 5]}
+
+\item{legend_font_size}{OPTIONAL: ggplot2 size for legend font [Default: 10]}
+
+\item{legend_title_size}{OPTIONAL: ggplot size for legend title [Default: 10]}
+
+\item{geom_alpha}{OPTIONAL: ggplot2 alpha value for geom_nodepoint (or pies) [Default: 0.9]}
+
+\item{geom_color}{OPTIONAL: ggplot2 color value for geom_nodepoint if clade_support not provided [Default: 'red']}
+
 \item{plot_title_size}{OPTIONAL: Set ggplot title font size [Default: 10]}
 
 \item{plot_title_fontface}{OPTIONAL: Set ggplot title fontface
@@ -125,16 +145,6 @@ treePlotter(
   \item "italic"
   \item "bold.italic"
 }}
-
-\item{legend_shape_size}{OPTIONAL: ggplot2 size for legend icons [Default: 5]}
-
-\item{legend_font_size}{OPTIONAL: ggplot2 size for legend font [Default: 10]}
-
-\item{legend_title_size}{OPTIONAL: ggplot size for legend title [Default: 10]}
-
-\item{geom_alpha}{OPTIONAL: ggplot2 alpha value for geom_nodepoint [Default: 0.9]}
-
-\item{geom_color}{OPTIONAL: ggplot2 color value for geom_nodepoint if clade_support not provided [Default: 'red']}
 }
 \value{
 ggtree object or list of ggtree objects

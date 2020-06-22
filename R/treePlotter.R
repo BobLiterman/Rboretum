@@ -683,10 +683,10 @@ treePlotter <- function(tree,clade_support,tree_support,geom_size,scale_range,us
           return_tree <- return_tree + 
             Rboretum::new_scale_color() + 
             geom_nodepoint(size=geom_size, alpha=geom_alpha,aes(color=clade_count)) +
-            scale_discrete_manual(aesthetics = c('color'),limits = clade_numbers,values = viridisLite::viridis(length(clade_numbers)),name = "Trees with Split")
+            scale_discrete_manual(aesthetics = c('color'),limits = factor(clade_numbers),values = viridisLite::viridis(length(clade_numbers)),name = "Trees with Split")
         } else{
           return_tree <- return_tree + geom_nodepoint(size=geom_size, alpha=geom_alpha,aes(color=clade_count)) +
-            scale_discrete_manual(aesthetics = c('color'),limits = clade_numbers,values = viridisLite::viridis(length(clade_numbers)),name = "Trees with Split")
+            scale_discrete_manual(aesthetics = c('color'),limits = factor(clade_numbers),values = viridisLite::viridis(length(clade_numbers)),name = "Trees with Split")
         }
       } else if(cladeSupport & treeSupport){
         if(colorTips){
@@ -694,12 +694,12 @@ treePlotter <- function(tree,clade_support,tree_support,geom_size,scale_range,us
             Rboretum::new_scale_color() + 
             geom_nodepoint(alpha=geom_alpha,aes(size=size_geom,color=clade_count)) +
             scale_size_identity() + 
-            scale_discrete_manual(aesthetics = c('color'),limits = clade_numbers,values = viridisLite::viridis(length(clade_numbers)),name = "Trees with Split")
+            scale_discrete_manual(aesthetics = c('color'),limits = factor(clade_numbers),values = viridisLite::viridis(length(clade_numbers)),name = "Trees with Split")
         } else{
           return_tree <- return_tree + 
             geom_nodepoint(alpha=geom_alpha,aes(size=size_geom,color=clade_count)) +
             scale_size_identity() + 
-            scale_discrete_manual(aesthetics = c('color'),limits = clade_numbers,values = viridisLite::viridis(length(clade_numbers)),name = "Trees with Split")
+            scale_discrete_manual(aesthetics = c('color'),limits = factor(clade_numbers),values = viridisLite::viridis(length(clade_numbers)),name = "Trees with Split")
         }
       }
     }

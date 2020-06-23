@@ -7,9 +7,14 @@
 #'   \item A rooted multiPhylo object where all trees share 3+ taxa and support a single topology 
 #' }
 #' @param return_summary OPTIONAL: If TRUE and a multiPhylo is provided, return a summary of node ages across trees with mean and median values per clade
+#' @return A dataframe containing (a) node/date information for each tree or (b) clade-level ages summarized across trees in a multiPhlyo if return_summary=TRUE
 #' @export
 
-getNodeAges <- function(tree,return_summary){
+extractNodeAges <- function(tree,return_summary){
+  
+  if(missing(tree)){
+    stop("extractNodeAges requires a rooted phylo object, or a rooted set of multiPhylo trees that all support a common topology.")
+  }
   
   # Ensure tree is valid
   if(!Rboretum::isPhylo(tree,check_rooted = TRUE) & !Rboretum::isMultiPhylo(tree,check_rooted = TRUE,check_three_taxa = TRUE)){
@@ -28,10 +33,11 @@ getNodeAges <- function(tree,return_summary){
     return_summary  <- FALSE
   }
   
+  # Can't summarize a single tree
   if(Rboretum::isPhylo(tree)){
-    tree <- c(tree,tree)
+    return_summary  <- FALSE
+    tree <- c(tree,tree) # Dummy tree for processing
     tree_count <- 1
-    
   } else{
     
     tree_count <- length(tree)
@@ -69,7 +75,6 @@ getNodeAges <- function(tree,return_summary){
   tree_date_df <- tree_df_list %>% bind_rows()
   
   if(return_summary){
-
     tree_date_df <- tree_date_df %>% 
       select(-Node,-Tree_Name) %>% 
       group_by(Clade) %>% 

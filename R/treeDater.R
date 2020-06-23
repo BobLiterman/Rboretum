@@ -51,7 +51,8 @@ treeDater <- function(tree,calibration_df,iterations,return_cladogram){
     stop("'calibration_df' should have 4 columns. (1) Taxon 1 (2) Taxon 2 (3) Min divergence time (4) Max divergence time")
   }
   colnames(calibration_df) <- c('Taxon_1','Taxon_2','Min','Max')
-  calibration_df <- as.data.frame(calibration_df)
+  calibration_df <- as.data.frame(calibration_df) %>%
+    mutate_if(is.factor, as.character)
   
   # Check that calibration taxa exist in tree
   

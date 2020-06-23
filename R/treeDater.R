@@ -38,6 +38,7 @@ treeDater <- function(tree,calibration_df,iterations,return_cladogram){
     if(!Rboretum::isMultiPhylo(tree,check_all_taxa = TRUE)){
       tree <- treeTrimmer(tree,tree_taxa)
       tree_count <- length(tree)
+      return_tree <- tree
     } 
   }
   
@@ -50,6 +51,7 @@ treeDater <- function(tree,calibration_df,iterations,return_cladogram){
     stop("'calibration_df' should have 4 columns. (1) Taxon 1 (2) Taxon 2 (3) Min divergence time (4) Max divergence time")
   }
   colnames(calibration_df) <- c('Taxon_1','Taxon_2','Min','Max')
+  calibration_df <- as.data.frame(calibration_df)
   
   # Check that calibration taxa exist in tree
   
@@ -58,9 +60,9 @@ treeDater <- function(tree,calibration_df,iterations,return_cladogram){
   if(!all(cal_taxa %in% tree_taxa)){
     stop("Calibration data in 'calibration_df' contains information about taxa not present in 'tree'")
   } else{
-    calibration_df <- calibration_df %>% rowwise() %>% mutate(Two_Names = paste(c(Taxon_1,Taxon_2),sep = ";") %>% semiSorter())
+    calibration_df$Two_Names <- as.character(paste(c(calibration_df$Taxon_1,calibration_df$Taxon_2),collapse = ";"))
+    calibration_df <- calibration_df %>% rowwise() %>% mutate(Two_Names = semiSorter(Two_Names))
   }
-  
   # Check that all min divergence times are <= max divergence times
   if(!all(calibration_df$Min <= calibration_df$Max)){
     stop("The minimum divergence time estimates for some calibration data in 'calibration_df' are greater than their associated maximum divergence time estimate")
@@ -134,13 +136,13 @@ treeDater <- function(tree,calibration_df,iterations,return_cladogram){
         return(tree_chronos_export)
       }
     } else{
-      tree[[i]] <- tree_chronos_export
+      return_tree[[i]] <- tree_chronos_export
     }
   }
   
   if(missing(return_cladogram)){
-    return(Rboretum::extractNodeAges(tree,return_summary=TRUE))
+    return(Rboretum::extractNodeAges(return_tree,return_summary=TRUE))
   } else if(return_cladogram){
-    return(tree)
+    return(return_tree)
   }
 }

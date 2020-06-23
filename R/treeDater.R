@@ -135,7 +135,7 @@ treeDater <- function(tree,calibration_df,iterations,return_cladogram){
     
     if(tree_count == 1){
       if(missing(return_cladogram)){
-        return(Rboretum::extractNodeAges(tree))
+        return(Rboretum::extractNodeAges(tree_chronos_export))
       } else if(return_cladogram){
         return(tree_chronos_export)
       }

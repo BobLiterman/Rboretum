@@ -58,10 +58,14 @@ extractNodeAges <- function(tree,return_summary){
   
   for(i in 1:tree_count){
     
-    tree_clades <- Rboretum::getTreeClades(tree[[i]],include_root = TRUE)
+    # If trees have node labels, node IDs can't be used to pull branching times
+    no_bs_tree <- tree[[i]]
+    no_bs_tree$node.label <- NULL
     
-    tree_nodes <- purrr::map(.x=tree_clades,.f=function(x){ape::getMRCA(tree[[i]],semiVector(x))}) %>% unlist() %>% as.character()
-    node_ages <- purrr::map(.x=tree_nodes,.f=function(x){ape::branching.times(tree[[i]])[x] %>% as.numeric()}) %>% unlist()
+    tree_clades <- Rboretum::getTreeClades(no_bs_tree,include_root = TRUE)
+    
+    tree_nodes <- purrr::map(.x=tree_clades,.f=function(x){ape::getMRCA(no_bs_tree,semiVector(x))}) %>% unlist() %>% as.character()
+    node_ages <- purrr::map(.x=tree_nodes,.f=function(x){ape::branching.times(no_bs_tree)[x] %>% as.numeric()}) %>% unlist()
     
     tree_date_df <- tibble(Clade=as.character(tree_clades),Node=as.integer(tree_nodes),Node_Age=as.numeric(node_ages))
     

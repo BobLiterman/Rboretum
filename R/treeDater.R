@@ -88,7 +88,7 @@ treeDater <- function(tree,calibration_df,iterations,return_cladogram){
     
     # Ensure all nodes are unique
     if(any(duplicated(node))){
-      print(node[duplicated[node]])
+      print(node[duplicated(node)])
       stop("The nodes printed above have two different sets of node calibrations")
     }
     

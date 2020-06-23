@@ -39,7 +39,10 @@ treeDater <- function(tree,calibration_df,iterations,return_cladogram){
       tree <- treeTrimmer(tree,tree_taxa)
       tree_count <- length(tree)
       return_tree <- tree
-    } 
+    } else{
+      tree_count <- length(tree)
+      return_tree <- tree
+    }
   }
   
   # Ensure at least one calibration point

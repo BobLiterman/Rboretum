@@ -117,15 +117,15 @@ treeDater <- function(tree,calibration_df,iterations,return_cladogram){
     tree_branches <- colnames(tree_branch_list)
     tree_medians <- c()
     
-    for(i in 1:ncol(tree_branch_list)){
-      tree_medians[colnames(tree_branch_list)[i]] <- median(tree_branch_list[,i])
+    for(j in 1:ncol(tree_branch_list)){
+      tree_medians[colnames(tree_branch_list)[i]] <- median(tree_branch_list[,j])
     }
     
     tree_chronos_export <- compute.brlen(date_tree,1)
     
     tree_median_edge <- c()
-    for(i in 1:ncol(tree_edge_list)){
-      tree_median_edge<-c(tree_median_edge,median(tree_edge_list[,i]))
+    for(j in 1:ncol(tree_edge_list)){
+      tree_median_edge<-c(tree_median_edge,median(tree_edge_list[,j]))
     }
     
     tree_chronos_export$edge.length <- tree_median_edge

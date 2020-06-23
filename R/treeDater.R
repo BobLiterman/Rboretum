@@ -20,7 +20,7 @@ treeDater <- function(tree,calibration_df,iterations,return_cladogram){
   
   # Ensure tree is valid
   if(!Rboretum::isPhylo(tree,check_rooted = TRUE) & !Rboretum::isMultiPhylo(tree,check_rooted = TRUE,check_three_taxa = TRUE)){
-    stop("extractNodeAges requires a rooted phylo or multiPhylo object where all trees share 3+ taxa")  
+    stop("treeDater requires a rooted phylo or multiPhylo object where all trees share 3+ taxa")  
   }
   
   # If multiPhylo, ensure a single topology
@@ -30,7 +30,7 @@ treeDater <- function(tree,calibration_df,iterations,return_cladogram){
   
   # Get tree taxa
   if(Rboretum::isPhylo(tree)){
-    tree_taxa <- tree$tip.labels
+    tree_taxa <- tree$tip.label
     tree <- c(tree,tree) # Create dummy multiPhylo for simple handling
     tree_count <- 1
   } else{
@@ -56,14 +56,14 @@ treeDater <- function(tree,calibration_df,iterations,return_cladogram){
   cal_taxa <- select(calibration_df,starts_with('Taxon')) %>% unlist() %>% unique()
   
   if(!all(cal_taxa %in% tree_taxa)){
-    stop("Calibration data in 'calibration_list' contains information about taxa not present in 'tree'")
+    stop("Calibration data in 'calibration_df' contains information about taxa not present in 'tree'")
   } else{
-    calibration_df <- calibration_df %>% rowwise() %>% mutate(Two_Names = semiSorter(Taxon_1,Taxon_2))
+    calibration_df <- calibration_df %>% rowwise() %>% mutate(Two_Names = paste(c(Taxon_1,Taxon_2),sep = ";") %>% semiSorter())
   }
   
   # Check that all min divergence times are <= max divergence times
   if(!all(calibration_df$Min <= calibration_df$Max)){
-    stop("The minimum divergence time estimates for some calibration data in 'calibration_list' are greater than their associated maximum divergence time estimate")
+    stop("The minimum divergence time estimates for some calibration data in 'calibration_df' are greater than their associated maximum divergence time estimate")
   }
   
   # Set iterations
@@ -79,9 +79,9 @@ treeDater <- function(tree,calibration_df,iterations,return_cladogram){
   for(i in 1:tree_count){
     
     date_tree <- tree[[i]]
-  
+    
     # Get nodes for MRCA for each calibration point
-    node <- purrr::map(.x=calibration_list$Two_Names,.f=function(x){ape::getMRCA(date_tree,tip=semiVector(x))}) %>% unlist()
+    node <- purrr::map(.x=calibration_df$Two_Names,.f=function(x){ape::getMRCA(date_tree,tip=semiVector(x))}) %>% unlist()
     
     # Ensure all nodes are unique
     if(any(duplicated(node))){
@@ -91,8 +91,8 @@ treeDater <- function(tree,calibration_df,iterations,return_cladogram){
     
     age.min <- calibration_df$Min
     age.max <- calibration_df$Max
-    tree_cal <- tibble(node, node_min, node_max) %>% mutate(soft.bounds=FALSE)
-  
+    tree_cal <- data.frame(node, age.min, age.max) %>% mutate(soft.bounds=FALSE)
+    
     # Create dummy rows
     tree_edge_list <- compute.brlen(date_tree,1)$edge.length
     tree_branch_list <- branching.times(compute.brlen(date_tree,1))
@@ -128,20 +128,19 @@ treeDater <- function(tree,calibration_df,iterations,return_cladogram){
     }
     
     if(tree_count == 1){
-      if(return_cladogram){
+      if(missing(return_cladogram)){
+        return(Rboretum::extractNodeAges(tree))
+      } else if(return_cladogram){
         return(tree_chronos_export)
-        } else{
-          return(Rboretum::extractNodeAges(tree_chronos_export))
-        }
-      } else{
-        tree[[i]] <- tree_chronos_export
       }
+    } else{
+      tree[[i]] <- tree_chronos_export
     }
-  
-  if(return_cladogram){
-    return(tree)
-  } else{
-    return(Rboretum::extractNodeAges(tree,return_summary=TRUE))
   }
-
+  
+  if(missing(return_cladogram)){
+    return(Rboretum::extractNodeAges(tree,return_summary=TRUE))
+  } else if(return_cladogram){
+    return(tree)
+  }
 }

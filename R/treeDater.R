@@ -104,7 +104,7 @@ treeDater <- function(tree,calibration_df,iterations,return_cladogram){
     tree_branch_list <- branching.times(compute.brlen(date_tree,1))
     
     # Iterate chronos date estimation
-    for(i in 1:iterations){
+    for(j in 1:iterations){
       tree_chronos_iter <- chronos(date_tree,calibration = tree_cal)
       tree_edge_list <- rbind(tree_edge_list, tree_chronos_iter$edge.length)
       tree_branch_list <- rbind(tree_branch_list, branching.times(tree_chronos_iter))

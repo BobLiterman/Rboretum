@@ -97,7 +97,7 @@ extractNodeAges <- function(tree,return_summary){
   if(return_summary){
     if(summary_col == 'both'){
       tree_date_df <- tree_date_df %>% 
-        select(-Node,-Tree_Name) %>% 
+        select(-Tree_Name) %>% 
         group_by(Clade) %>% 
         summarise(Mean_Node_Age=mean(Node_Age),Median_Node_Age=median(Node_Age),StdDev_Node_Age=sd(Node_Age),MAD_Node_Age=mad(Node_Age))
     } else if(summary_col == 'mean'){

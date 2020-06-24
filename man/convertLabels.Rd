@@ -26,5 +26,5 @@ convertLabels(to_convert, name_df, from, to)
 Matching object with new names in place
 }
 \description{
-This function takes a vector of semicolon-separated clades and changes names based on a supplied dataframe
+This function takes a phylo, multiPhylo, a lits, or a character vector and changes names based on a supplied dataframe
 }

@@ -1,6 +1,6 @@
 #' Rboretum Clade Label Converter
 #'
-#' This function takes a vector of semicolon-separated clades and changes names based on a supplied dataframe
+#' This function takes a phylo, multiPhylo, a lits, or a character vector and changes names based on a supplied dataframe
 #' @param to_convert R object containing taxon labels to be replaced. Options include: 
 #' \itemize{
 #'   \item A phylo object; or,

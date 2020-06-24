@@ -6,8 +6,13 @@
 #'   \item A single, rooted phylo object; or,
 #'   \item A rooted multiPhylo object where all trees share 3+ taxa and support a single topology 
 #' }
-#' @param return_summary OPTIONAL: If TRUE and a multiPhylo is provided, return a summary of node ages across trees with mean and median values per clade
-#' @return A dataframe containing (a) node/date information for each tree or (b) clade-level ages summarized across trees in a multiPhlyo if return_summary=TRUE
+#' @param return_summary OPTIONAL: If a multiPhylo is provided, function will retrurn the mean, median, or both set of node ages across datasets.
+#' \itemize{
+#'   \item mean: Return mean node age for each node
+#'   \item median: Return median node age for each node
+#'   \item both: Return mean, median, and summary statstics for each node
+#' }
+#' @return A dataframe containing (a) node/date information for each tree or (b) clade-level ages summarized across trees in a multiPhlyo if return_summary is set to 'mean',',median', or 'full'
 #' @export
 
 extractNodeAges <- function(tree,return_summary){
@@ -29,8 +34,19 @@ extractNodeAges <- function(tree,return_summary){
   # Return summary data?
   if(missing(return_summary)){
     return_summary <- FALSE
-  } else if(!is.logical(return_summary)){
-    return_summary  <- FALSE
+  } else if(!is.character(return_summary)){
+    stop("'return_summary' should be either 'mean','median',or 'both'")
+  } else if(!return_summary %in% c('mean','median','both')){
+    stop("'return_summary' should be either 'mean','median',or 'both'")
+  } else if(return_summary == 'mean'){
+    summary_col <- 'mean'
+    return_summary <- TRUE
+  } else if(return_summary == 'median'){
+    summary_col <- 'median'
+    return_summary <- TRUE
+  } else{
+    summary_col <- 'both'
+    return_summary <- TRUE
   }
   
   # Can't summarize a single tree
@@ -67,7 +83,7 @@ extractNodeAges <- function(tree,return_summary){
     tree_nodes <- purrr::map(.x=tree_clades,.f=function(x){ape::getMRCA(no_bs_tree,semiVector(x))}) %>% unlist() %>% as.character()
     node_ages <- purrr::map(.x=tree_nodes,.f=function(x){ape::branching.times(no_bs_tree)[x] %>% as.numeric()}) %>% unlist()
     
-    tree_date_df <- tibble(Clade=as.character(tree_clades),Node=as.integer(tree_nodes),Node_Age=as.numeric(node_ages))
+    tree_date_df <- tibble(Clade=as.character(tree_clades),Node_Age=as.numeric(node_ages))
     
     if(tree_count == 1){
       return(tree_date_df)
@@ -79,11 +95,24 @@ extractNodeAges <- function(tree,return_summary){
   tree_date_df <- tree_df_list %>% bind_rows()
   
   if(return_summary){
-    tree_date_df <- tree_date_df %>% 
-      select(-Node,-Tree_Name) %>% 
-      group_by(Clade) %>% 
-      summarise(Mean_Node_Age=mean(Node_Age),Median_Node_Age=median(Node_Age),StdDev_Node_Age=sd(Node_Age),MAD_Node_Age=mad(Node_Age))
+    if(summary_col == 'both'){
+      tree_date_df <- tree_date_df %>% 
+        select(-Node,-Tree_Name) %>% 
+        group_by(Clade) %>% 
+        summarise(Mean_Node_Age=mean(Node_Age),Median_Node_Age=median(Node_Age),StdDev_Node_Age=sd(Node_Age),MAD_Node_Age=mad(Node_Age))
+    } else if(summary_col == 'mean'){
+      tree_date_df <- tree_date_df %>% 
+        select(-Tree_Name) %>% 
+        group_by(Clade) %>% 
+        summarise(Mean_Node_Age=mean(Node_Age)) %>%
+        select(Clade,Mean_Node_Age) %>% `names<-`(c('Clade','Node_Age'))
+    } else if(summary_col == 'median'){
+      tree_date_df <- tree_date_df %>% 
+        select(-Tree_Name) %>% 
+        group_by(Clade) %>% 
+        summarise(Median_Node_Age=median(Node_Age)) %>%
+        select(Clade,Median_Node_Age) %>% `names<-`(c('Clade','Node_Age'))
+    }
   }
-  
   return(tree_date_df)
 }

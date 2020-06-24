@@ -13,10 +13,15 @@ extractNodeAges(tree, return_summary)
   \item A rooted multiPhylo object where all trees share 3+ taxa and support a single topology 
 }}
 
-\item{return_summary}{OPTIONAL: If TRUE and a multiPhylo is provided, return a summary of node ages across trees with mean and median values per clade}
+\item{return_summary}{OPTIONAL: If a multiPhylo is provided, function will retrurn the mean, median, or both set of node ages across datasets.
+\itemize{
+  \item mean: Return mean node age for each node
+  \item median: Return median node age for each node
+  \item both: Return mean, median, and summary statstics for each node
+}}
 }
 \value{
-A dataframe containing (a) node/date information for each tree or (b) clade-level ages summarized across trees in a multiPhlyo if return_summary=TRUE
+A dataframe containing (a) node/date information for each tree or (b) clade-level ages summarized across trees in a multiPhlyo if return_summary is set to 'mean',',median', or 'full'
 }
 \description{
 This function takes a tree(s) where branches are scaled to time and returns the estimated node ages, or a summary of node ages across trees

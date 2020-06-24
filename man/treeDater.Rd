@@ -4,7 +4,7 @@
 \alias{treeDater}
 \title{Rboretum Tree Dater}
 \usage{
-treeDater(tree, calibration_df, iterations, return_cladogram)
+treeDater(tree, calibration_df, iterations)
 }
 \arguments{
 \item{tree}{Tree(s) to extract date information from. Options include:
@@ -16,11 +16,9 @@ treeDater(tree, calibration_df, iterations, return_cladogram)
 \item{calibration_df}{Dataframe with 4 columns: (1) Taxon 1 (2) Taxon 2 (3) Min divergence time (4) Max divergence time}
 
 \item{iterations}{How many times to estimate the age of each node prior to summarizing [Default: 1000]}
-
-\item{return_cladogram}{OPTIONAL: If TRUE, return cladogram [Default: FALSE, return dataframe with node age information]}
 }
 \value{
-
+An ultrametric phylo object with branch lengths corresponding to time, or a multiPhylo of such trees
 }
 \description{
 This function takes a tree(s) with estimated branch lengths, and infers ages for each tree node using the 'chronos' function in 'ape'.

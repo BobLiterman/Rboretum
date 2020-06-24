@@ -8,11 +8,10 @@
 #' }
 #' @param calibration_df Dataframe with 4 columns: (1) Taxon 1 (2) Taxon 2 (3) Min divergence time (4) Max divergence time
 #' @param iterations How many times to estimate the age of each node prior to summarizing [Default: 1000]
-#' @param return_cladogram OPTIONAL: If TRUE, return cladogram [Default: FALSE, return dataframe with node age information]
-#' @return 
+#' @return An ultrametric phylo object with branch lengths corresponding to time, or a multiPhylo of such trees
 #' @export
 
-treeDater <- function(tree,calibration_df,iterations,return_cladogram){
+treeDater <- function(tree,calibration_df,iterations){
   
   if(missing(tree)){
     stop("treeDater requires a rooted phylo object, or a rooted set of multiPhylo trees that all support a common topology.")
@@ -134,19 +133,10 @@ treeDater <- function(tree,calibration_df,iterations,return_cladogram){
     }
     
     if(tree_count == 1){
-      if(missing(return_cladogram)){
-        return(Rboretum::extractNodeAges(tree_chronos_export))
-      } else if(return_cladogram){
-        return(tree_chronos_export)
-      }
+      return(tree_chronos_export)
     } else{
       return_tree[[i]] <- tree_chronos_export
     }
   }
-  
-  if(missing(return_cladogram)){
-    return(Rboretum::extractNodeAges(return_tree,return_summary=TRUE))
-  } else if(return_cladogram){
     return(return_tree)
-  }
 }

@@ -1,4 +1,3 @@
-%matplotlib inline
 from Bio import Phylo
 import numpy as np
 from io import StringIO

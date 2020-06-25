@@ -1,6 +1,24 @@
 from Bio import Phylo
 import numpy as np
 from io import StringIO
+import tempfile
+from rpy2.robjects import r
+
+def to_ape(tree):
+    """Convert a tree to the type used by the R package `ape`, via rpy2.
+
+    Requirements:
+        - Python package `rpy2`
+        - R package `ape`
+    """
+    with tempfile.NamedTemporaryFile() as tmpf:
+        Phylo.write(tree, tmpf, 'newick')
+        tmpf.flush()
+        rtree = r("""
+            library('ape')
+            read.tree('%s')
+            """ % tmpf.name)
+    return rtree
 
 # RelTime and rooting code from https://github.com/adamhockenberry/dca-weighting/tree/master/Code/supporting_functions.py
 def final_root(clade1, clade2, max_distance, tree):
@@ -89,4 +107,4 @@ def getRelTimeTree(tree_string):
         node.branch_length = node.branch_length/node.rate
     rerooted_tree.root.branch_length = None
     
-    return(rerooted_tree)
+    return(to_ape(rerooted_tree))

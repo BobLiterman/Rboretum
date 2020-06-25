@@ -7,6 +7,7 @@
 timePlotter(
   node_age_df,
   tree_support,
+  plot_datasets,
   all_sites_col,
   lm_alpha,
   wrap,
@@ -15,16 +16,24 @@ timePlotter(
 )
 }
 \arguments{
-\item{node_age_df}{}
+\item{node_age_df}{Output from extractNodeAges(phylo) or extractNodeAges(multiPhylo,return_summary = 'mean' or 'median') [Or a two-column dataframe containing (1) semicolon separated clades and (2) estimated node ages]}
 
-\item{tree_support}{}
+\item{tree_support}{Output from getTreeSupport with information about all clades in node_age_df and 2+ alignment support columns}
 
-\item{all_sites_col}{}
+\item{plot_datasets}{OPTIONAL: Character vector specifying the datasets desired for the plot (Must be 2+ and present in 'tree_support')}
 
-\item{lm_alpha}{}
+\item{all_sites_col}{OPTIONAL (Very special case): If the alignments from tree_support contain overlapping sites AND there is is a column in the data corresponding to all non-overlapping sites, specify the column name for all nonoverlapping sites to be used when calculating proportions}
+
+\item{lm_alpha}{OPTIONAL: Run linear models at this alpha level (must be > 0 and < 1; Alpha will be automatically Bonferroni corrected based on dataset count) [Default: Do not run linear models]}
+
+\item{wrap}{OPTIONAL (TRUE/FALSE); Plot datasets in separate facets [Default: FALSE; do not wrap and produce 1 plot]}
+
+\item{wrap_scales}{OPTIONAL ('free'/'fixed'): If wrapping, allow free or fixed scales on each facet [Default: 'fixed']}
+
+\item{return_stats}{OPTIONAL (TRUE/FALSE): In addition to returning the plot, also return the statistical output from linear models in a list}
 }
 \value{
-
+Plot or list (depending on return_stats)
 }
 \description{
 This function takes information about node ages and node support, and plots relative changes in node support over time among datasets.

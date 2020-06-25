@@ -7,9 +7,9 @@
 time_lm(age_support_df, lm_alpha)
 }
 \arguments{
-\item{age_support_df}{}
+\item{age_support_df}{3-column dataframe including (1) Node Age, (2) Dataset Name, and (3) Percent Support}
 
-\item{lm_alpha}{}
+\item{lm_alpha}{Run linear models at this alpha level [Default: 0.05]}
 }
 \value{
 

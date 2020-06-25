@@ -1,17 +1,18 @@
 #' Rboretum Time-Dependent Signal Plotter
 #'
 #' This function takes information about node ages and node support, and plots relative changes in node support over time among datasets. 
-#' @param node_age_df 
-#' @param tree_support 
-#' @param all_sites_col 
-#' @param lm_alpha 
-#' @param wrap
-#' @param wrap_scales
-#' @param return_stats
-#' @return 
+#' @param node_age_df Output from extractNodeAges(phylo) or extractNodeAges(multiPhylo,return_summary = 'mean' or 'median') [Or a two-column dataframe containing (1) semicolon separated clades and (2) estimated node ages]
+#' @param tree_support Output from getTreeSupport with information about all clades in node_age_df and 2+ alignment support columns
+#' @param plot_datasets OPTIONAL: Character vector specifying the datasets desired for the plot (Must be 2+ and present in 'tree_support')
+#' @param all_sites_col OPTIONAL (Very special case): If the alignments from tree_support contain overlapping sites AND there is is a column in the data corresponding to all non-overlapping sites, specify the column name for all nonoverlapping sites to be used when calculating proportions
+#' @param lm_alpha OPTIONAL: Run linear models at this alpha level (must be > 0 and < 1; Alpha will be automatically Bonferroni corrected based on dataset count) [Default: Do not run linear models]
+#' @param wrap OPTIONAL (TRUE/FALSE); Plot datasets in separate facets [Default: FALSE; do not wrap and produce 1 plot]
+#' @param wrap_scales OPTIONAL ('free'/'fixed'): If wrapping, allow free or fixed scales on each facet [Default: 'fixed']
+#' @param return_stats OPTIONAL (TRUE/FALSE): In addition to returning the plot, also return the statistical output from linear models in a list
+#' @return Plot or list (depending on return_stats)
 #' @export
 #' 
-timePlotter <- function(node_age_df,tree_support,all_sites_col,lm_alpha,wrap,wrap_scales,return_stats){
+timePlotter <- function(node_age_df,tree_support,plot_datasets,all_sites_col,lm_alpha,wrap,wrap_scales,return_stats){
   
   # Check node age df (Should have 2 columns with prescribed names)
   if(missing(node_age_df)){
@@ -149,6 +150,19 @@ timePlotter <- function(node_age_df,tree_support,all_sites_col,lm_alpha,wrap,wra
   color_df <- plot_df[!duplicated(plot_df$Dataset),] %>% select(Dataset,Plot_Color)
   plot_colors <- pull(color_df,Plot_Color)
   names(plot_colors) <- pull(color_df,Dataset)
+  
+  # Pull out desired datasets if requested
+  if(missing(plot_datasets)){
+    plot_df <- plot_df
+  } else if(!is.character(plot_datasets)){
+    warning("'plot_datasets' should be a character vector of desired datasets to plot. Plotting all datasets...")
+  } else if(length(plot_datasets)<2){
+    warning("'plot_datasets' should be a character vector of two or more desired datasets to plot. Plotting all datasets...")
+  } else if(!all(plot_datasets %in% support_col_names)){
+    warning("Column names from 'plot_datasets' do not all occur in 'tree_support'. Plotting all datasets...")
+  } else{
+    plot_df <- plot_df %>% filter(Dataset %in% plot_datasets)
+  }
   
   base_plot <- ggplot(plot_df,aes(x=Node_Age,y=Percent_Support,color=Dataset)) +
     geom_jitter(size=4,aes(fill=Plot_Fill,shape=Plot_Shape)) +

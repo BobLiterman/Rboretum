@@ -1,8 +1,8 @@
 #' Rboretum Time Linear Modeler
 #'
 #' This function takes information about node ages and node support, and uses linear models and Bonferroni correction to assess changes in relative phylogenetic utility over time among datasets
-#' @param age_support_df 
-#' @param lm_alpha 
+#' @param age_support_df 3-column dataframe including (1) Node Age, (2) Dataset Name, and (3) Percent Support
+#' @param lm_alpha Run linear models at this alpha level [Default: 0.05]
 #' @return 
 #' @export
 #' 

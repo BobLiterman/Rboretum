@@ -1,25 +1,17 @@
+%matplotlib inline
 from Bio import Phylo
 import numpy as np
 from io import StringIO
+from ete3 import Tree as EteTree
 import tempfile
-from rpy2.robjects import r
 
-def to_ape(tree):
-    """Convert a tree to the type used by the R package `ape`, via rpy2.
-
-    Requirements:
-        - Python package `rpy2`
-        - R package `ape`
-    """
-    with tempfile.NamedTemporaryFile() as tmpf:
-        Phylo.write(tree, tmpf, 'newick')
-        tmpf.flush()
-        rtree = r("""
-            library('ape')
-            read.tree('%s')
-            """ % tmpf.name)
-    return rtree
-
+# From Magazzù Giuseppe (https://github.com/biopython/biopython/issues/1974)
+def to_ete3(tree):
+    with tempfile.NamedTemporaryFile(mode="w") as tmp:
+        Phylo.write(tree, tmp, 'newick')
+        tmp.flush()
+        return EteTree(tmp.name,format=1)
+    
 # RelTime and rooting code from https://github.com/adamhockenberry/dca-weighting/tree/master/Code/supporting_functions.py
 def final_root(clade1, clade2, max_distance, tree):
     """
@@ -106,5 +98,6 @@ def getRelTimeTree(tree_string):
             continue
         node.branch_length = node.branch_length/node.rate
     rerooted_tree.root.branch_length = None
+    ete_tree = to_ete3(rerooted_tree)
     
-    return(to_ape(rerooted_tree))
+    return(ete_tree.write())

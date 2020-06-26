@@ -4,22 +4,30 @@
 \alias{treeDater}
 \title{Rboretum Tree Dater}
 \usage{
-treeDater(tree, calibration_df, iterations)
+treeDater(tree, method, calibration_df, iterations)
 }
 \arguments{
 \item{tree}{Tree(s) to extract date information from. Options include:
 \itemize{
   \item A single, rooted phylo object; or,
-  \item A rooted multiPhylo object where all trees share 3+ taxa and support a single topology 
+  \item A rooted multiPhylo object where all trees support a single topology 
 }}
 
-\item{calibration_df}{Dataframe with 4 columns: (1) Taxon 1 (2) Taxon 2 (3) Min divergence time (4) Max divergence time}
+\item{method}{Method for dating trees
+\itemize{
+  \item 'reltime' [Default]:  Date tree using the RelTime method, calibrating the root node at 1 (Relative dating; adapted from https://github.com/adamhockenberry/dca-weighting/tree/master/Code/supporting_functions.py)
+  \item 'reltime_cal':  Use RelTime, and convert relative dates to absolute dates via one node calibration point (Absolute dating)
+  \item 'chronos': Date tree using 'chronos' function from 'ape', calibrating the root node at 1 (Relative dating)
+  \item 'chronos_cal': Use 'chronos', and convert relative dates to absolute dates via one or more node calibration points (Absolute dating)
+}}
 
-\item{iterations}{How many times to estimate the age of each node prior to summarizing [Default: 1000]}
+\item{calibration_df}{Dataframe with 4 columns: (1) Taxon 1 (2) Taxon 2 (3) Min divergence time (4) Max divergence time; NOTE: If using 'chronos_cal' dating, multiple calibrartion points are allowed, but only the first calibration point for 'reltime_cal', and the min and max estimates will be averaged together}
+
+\item{iterations}{If using 'chronos', how many times to estimate the age of each node prior to summarizing [Default: 1000]}
 }
 \value{
-An ultrametric phylo object with branch lengths corresponding to time, or a multiPhylo of such trees
+An ultrametric phylo object with branch lengths corresponding to time, or a multiPhylo of such trees.
 }
 \description{
-This function takes a tree(s) with estimated branch lengths, and infers ages for each tree node using the 'chronos' function in 'ape'.
+This function takes a tree(s) with estimated branch lengths, and infers ages for each tree node using the 'chronos' function in 'ape', or through an implementation of the 'RelTime' method.
 }

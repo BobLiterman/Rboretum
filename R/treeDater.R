@@ -111,9 +111,9 @@ treeDater <- function(tree,method,calibration_df,iterations){
       
       age.min <- calibration_df$Min
       age.max <- calibration_df$Max
-      tree_cal <- data.frame(node, age.min, age.max) %>% mutate(soft.bounds=FALSE)
+      tree_cal <- data.frame(node, age.min, age.max) %>% mutate(soft.bounds=FALSE) %>% `names<-`(c('node','age.min','age.max','soft.bounds'))
     } else{
-      tree_cal <- data.frame(ape::getMRCA(date_tree,date_tree$tip.label), 1, 1) %>% mutate(soft.bounds=FALSE) # Calibrate at root with value of 1
+      tree_cal <- data.frame(ape::getMRCA(date_tree,date_tree$tip.label), 1, 1) %>% mutate(soft.bounds=FALSE) %>% `names<-`(c('node','age.min','age.max','soft.bounds')) # Calibrate at root with value of 1
     }
 
     # Create dummy rows

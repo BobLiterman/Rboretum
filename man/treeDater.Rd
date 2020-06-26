@@ -15,19 +15,17 @@ treeDater(tree, method, calibration_df, iterations)
 
 \item{method}{Method for dating trees
 \itemize{
-  \item 'reltime' [Default]:  Date tree using the RelTime method, calibrating the root node at 1 (Relative dating; adapted from https://github.com/adamhockenberry/dca-weighting/tree/master/Code/supporting_functions.py)
-  \item 'reltime_cal':  Use RelTime, and convert relative dates to absolute dates via one node calibration point (Absolute dating)
-  \item 'chronos': Date tree using 'chronos' function from 'ape', calibrating the root node at 1 (Relative dating)
+  \item 'chronos' [Default]: Date tree using 'chronos' function from 'ape', calibrating the root node at 1 (Relative dating)
   \item 'chronos_cal': Use 'chronos', and convert relative dates to absolute dates via one or more node calibration points (Absolute dating)
 }}
 
-\item{calibration_df}{Dataframe with 4 columns: (1) Taxon 1 (2) Taxon 2 (3) Min divergence time (4) Max divergence time; NOTE: If using 'chronos_cal' dating, multiple calibrartion points are allowed, but only the first calibration point for 'reltime_cal', and the min and max estimates will be averaged together}
+\item{calibration_df}{Only required if calibrating nodes for relative-to-absoute date conversion; A dataframe with 4 columns: (1) Taxon 1 (2) Taxon 2 (3) Min divergence time (4) Max divergence time; Multiple calibration points are allowed, so long as nodes are only calibrated once}
 
-\item{iterations}{If using 'chronos', how many times to estimate the age of each node prior to summarizing [Default: 1000]}
+\item{iterations}{How many times to estimate the age of each node prior to summarizing [Default: 1000]}
 }
 \value{
 An ultrametric phylo object with branch lengths corresponding to time, or a multiPhylo of such trees.
 }
 \description{
-This function takes a tree(s) with estimated branch lengths, and infers ages for each tree node using the 'chronos' function in 'ape', or through an implementation of the 'RelTime' method.
+This function takes a tree(s) with estimated branch lengths, and returns ultrametric chronograms generated using the 'chronos' function in 'ape'
 }

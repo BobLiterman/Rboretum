@@ -6,17 +6,12 @@
 #'   \item A single, rooted phylo object; or,
 #'   \item A rooted multiPhylo object where all trees support a single topology 
 #' }
-#' @param method Method for dating trees
-#' \itemize{
-#'   \item 'chronos' [Default]: Date tree using 'chronos' function from 'ape', calibrating the root node at 1 (Relative dating)
-#'   \item 'chronos_cal': Use 'chronos', and convert relative dates to absolute dates via one or more node calibration points (Absolute dating)
-#' }
-#' @param calibration_df Only required if calibrating nodes for relative-to-absoute date conversion; A dataframe with 4 columns: (1) Taxon 1 (2) Taxon 2 (3) Min divergence time (4) Max divergence time; Multiple calibration points are allowed, so long as nodes are only calibrated once
+#' @param calibration_df A dataframe with 4 columns: (1) Taxon 1 (2) Taxon 2 (3) Min divergence time (4) Max divergence time; Multiple calibration points are allowed, so long as nodes are only calibrated once
 #' @param iterations How many times to estimate the age of each node prior to summarizing [Default: 1000]
 #' @return An ultrametric phylo object with branch lengths corresponding to time, or a multiPhylo of such trees.
 #' @export
 
-treeDater <- function(tree,method,calibration_df,iterations){
+treeDater <- function(tree,calibration_df,iterations){
   
   # Ensure tree is present and valid
   if(missing(tree)){
@@ -36,19 +31,7 @@ treeDater <- function(tree,method,calibration_df,iterations){
     return_tree <- tree
   }
 
-  # Get tree dating method
-  if(missing(method)){
-    method <- 'chronos'
-  } else if(!is.character(method)){
-    warning("'method' should be 'chronos', or 'chronos_cal'. Proceeding using uncalibrated chronos")
-    method  <- 'chronos'
-  } else if(length(method)>1){
-    warning("'method' should be 'chronos', or 'chronos_cal'. Proceeding using uncalibrated chronos")
-    method  <- 'chronos'
-  } else if(!method %in% c('chronos','chronos_cal')){
-    warning("'method' should be 'chronos', or 'chronos_cal'. Proceeding using uncalibrated chronos")
-    method  <- 'chronos'
-  } else if(method %in% c('chronos','chronos_cal')){
+  if(method %in% c('chronos','chronos_cal')){
     # Set iterations for chronos
     if(missing(iterations)){
       iterations <- 1000
@@ -60,37 +43,35 @@ treeDater <- function(tree,method,calibration_df,iterations){
   } 
   
   # Ensure at least one calibration point if using 'chronos_cal'
-  if(method == 'chronos_cal'){
-    if(missing(calibration_df)){
-      stop("If dating trees with 'chronos_cal', treeDater requires min/max divergence time estimates for at least one node in the tree to convert relative times to absoute times.")
-    } else if(!is.data.frame(calibration_df)){
-      stop("'calibration_df' should be a data frame.")
-    } else if(!ncol(calibration_df)==4){
-      stop("'calibration_df' should have 4 columns. (1) Taxon 1 (2) Taxon 2 (3) Min divergence time (4) Max divergence time")
-    } else{
-      
-      # In case data.frame contains factors
-      calibration_df <- as.data.frame(calibration_df) %>%
-        mutate_if(is.factor, as.character)
-      
-      # Set colnames
-      colnames(calibration_df) <- c('Taxon_1','Taxon_2','Min','Max')
-      
-      # Ensure all min time estimates are <= max time estimates
-      if(!all(calibration_df$Min <= calibration_df$Max)){
-        stop("The minimum divergence time estimates for some calibration data in 'calibration_df' are greater than their associated maximum divergence time estimate")
-      }
-    }
-
-    # Check that calibration taxa exist in tree
-    cal_taxa <- select(calibration_df,starts_with('Taxon')) %>% unlist() %>% unique()
+  if(missing(calibration_df)){
+    stop("If dating trees with 'chronos_cal', treeDater requires min/max divergence time estimates for at least one node in the tree to convert relative times to absoute times.")
+  } else if(!is.data.frame(calibration_df)){
+    stop("'calibration_df' should be a data frame.")
+  } else if(!ncol(calibration_df)==4){
+    stop("'calibration_df' should have 4 columns. (1) Taxon 1 (2) Taxon 2 (3) Min divergence time (4) Max divergence time")
+  } else{
     
-    if(!all(cal_taxa %in% tree_taxa)){
-      stop("Calibration data in 'calibration_df' contains information about taxa not present in 'tree'")
-    } else{
-      calibration_df$Two_Names <- as.character(paste(c(calibration_df$Taxon_1,calibration_df$Taxon_2),collapse = ";"))
-      calibration_df <- calibration_df %>% rowwise() %>% mutate(Two_Names = semiSorter(Two_Names))
+    # In case data.frame contains factors
+    calibration_df <- as.data.frame(calibration_df) %>%
+      mutate_if(is.factor, as.character)
+    
+    # Set colnames
+    colnames(calibration_df) <- c('Taxon_1','Taxon_2','Min','Max')
+    
+    # Ensure all min time estimates are <= max time estimates
+    if(!all(calibration_df$Min <= calibration_df$Max)){
+      stop("The minimum divergence time estimates for some calibration data in 'calibration_df' are greater than their associated maximum divergence time estimate")
     }
+  }
+
+  # Check that calibration taxa exist in tree
+  cal_taxa <- select(calibration_df,starts_with('Taxon')) %>% unlist() %>% unique()
+  
+  if(!all(cal_taxa %in% tree_taxa)){
+    stop("Calibration data in 'calibration_df' contains information about taxa not present in 'tree'")
+  } else{
+    calibration_df$Two_Names <- as.character(paste(c(calibration_df$Taxon_1,calibration_df$Taxon_2),collapse = ";"))
+    calibration_df <- calibration_df %>% rowwise() %>% mutate(Two_Names = semiSorter(Two_Names))
   }
   
   # Process chronos trees
@@ -98,23 +79,18 @@ treeDater <- function(tree,method,calibration_df,iterations){
     
     date_tree <- tree[[i]]
     
-    if(method == 'chronos_cal'){
-      
-      # Get nodes for MRCA for each calibration point
-      node <- purrr::map(.x=calibration_df$Two_Names,.f=function(x){ape::getMRCA(date_tree,tip=semiVector(x))}) %>% unlist()
-      
-      # Ensure all nodes are unique
-      if(any(duplicated(node))){
-        print(node[duplicated(node)])
-        stop("The nodes printed above have two different sets of node calibrations")
-      }
-      
-      age.min <- calibration_df$Min
-      age.max <- calibration_df$Max
-      tree_cal <- data.frame(node, age.min, age.max) %>% mutate(soft.bounds=FALSE) %>% `names<-`(c('node','age.min','age.max','soft.bounds'))
-    } else{
-      tree_cal <- data.frame(ape::getMRCA(date_tree,date_tree$tip.label), 1, 1) %>% mutate(soft.bounds=FALSE) %>% `names<-`(c('node','age.min','age.max','soft.bounds')) # Calibrate at root with value of 1
+    # Get nodes for MRCA for each calibration point
+    node <- purrr::map(.x=calibration_df$Two_Names,.f=function(x){ape::getMRCA(date_tree,tip=semiVector(x))}) %>% unlist()
+    
+    # Ensure all nodes are unique
+    if(any(duplicated(node))){
+      print(node[duplicated(node)])
+      stop("The nodes printed above have two different sets of node calibrations")
     }
+    
+    age.min <- calibration_df$Min
+    age.max <- calibration_df$Max
+    tree_cal <- data.frame(node, age.min, age.max) %>% mutate(soft.bounds=FALSE) %>% `names<-`(c('node','age.min','age.max','soft.bounds'))
 
     # Create dummy rows
     tree_edge_list <- compute.brlen(date_tree,1)$edge.length

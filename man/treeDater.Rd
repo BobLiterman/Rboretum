@@ -4,7 +4,7 @@
 \alias{treeDater}
 \title{Rboretum Tree Dater}
 \usage{
-treeDater(tree, method, calibration_df, iterations)
+treeDater(tree, calibration_df, iterations)
 }
 \arguments{
 \item{tree}{Tree(s) to extract date information from. Options include:
@@ -13,13 +13,7 @@ treeDater(tree, method, calibration_df, iterations)
   \item A rooted multiPhylo object where all trees support a single topology 
 }}
 
-\item{method}{Method for dating trees
-\itemize{
-  \item 'chronos' [Default]: Date tree using 'chronos' function from 'ape', calibrating the root node at 1 (Relative dating)
-  \item 'chronos_cal': Use 'chronos', and convert relative dates to absolute dates via one or more node calibration points (Absolute dating)
-}}
-
-\item{calibration_df}{Only required if calibrating nodes for relative-to-absoute date conversion; A dataframe with 4 columns: (1) Taxon 1 (2) Taxon 2 (3) Min divergence time (4) Max divergence time; Multiple calibration points are allowed, so long as nodes are only calibrated once}
+\item{calibration_df}{A dataframe with 4 columns: (1) Taxon 1 (2) Taxon 2 (3) Min divergence time (4) Max divergence time; Multiple calibration points are allowed, so long as nodes are only calibrated once}
 
 \item{iterations}{How many times to estimate the age of each node prior to summarizing [Default: 1000]}
 }

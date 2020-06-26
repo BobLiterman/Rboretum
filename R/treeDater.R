@@ -31,17 +31,15 @@ treeDater <- function(tree,calibration_df,iterations){
     return_tree <- tree
   }
 
-  if(method %in% c('chronos','chronos_cal')){
-    # Set iterations for chronos
-    if(missing(iterations)){
-      iterations <- 1000
-    } else if(!is.numeric(iterations)){
-      iterations <- 1000    
-    } else if(iterations < 1){
-      iterations <- 1000
-    }
-  } 
-  
+  # Set iterations for chronos
+  if(missing(iterations)){
+    iterations <- 1000
+  } else if(!is.numeric(iterations)){
+    iterations <- 1000    
+  } else if(iterations < 1){
+    iterations <- 1000
+  }
+
   # Ensure at least one calibration point if using 'chronos_cal'
   if(missing(calibration_df)){
     stop("If dating trees with 'chronos_cal', treeDater requires min/max divergence time estimates for at least one node in the tree to convert relative times to absoute times.")

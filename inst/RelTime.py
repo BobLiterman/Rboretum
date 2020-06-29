@@ -27,4 +27,6 @@ def RelTime_AJH(my_tree, modifier=1.):
 def getRelTimeTree(tree_string):
     
     # Read in tree from R as string
-    return(RelTime_AJH(Phylo.read(StringIO(tree_string),format='newick',rooted=True)).write())
+    r_tree = Tree(tree_string)
+    RelTime_AJH(r_tree)
+    return(r_tree.write())

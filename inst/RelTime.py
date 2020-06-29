@@ -46,40 +46,33 @@ def final_root(clade1, clade2, max_distance, tree):
     tree.root.clades[1].branch_length = tree.root.clades[1].branch_length - root_remainder
     return tree
 
-def rel_time_AJH(tree):
+def RelTime_AJH(my_tree, modifier=1.):
     """
-    This closely (exactly?) follows the original implementation but note that the explanation
-    of the original algorithm fails to mention what happens with zero length branches which of course
-    give zero division errors
+    This was my first interpretation of the algorithm and it both works and gives really similar
+    but not quite exact results for the 3-taxon tree. Both algorithms work identically on the tree
+    given here:
+    
+    https://www.pnas.org/content/109/47/19333
     """
-    depth_dict = tree.depths(unit_branch_lengths=True)
-    for key in tree.get_terminals():
-        del depth_dict[key]
-
-    inv_depth_dict = {}
-    for key,val in depth_dict.items():
-        try:
-            inv_depth_dict[val].append(key)
-        except KeyError:
-            inv_depth_dict[val] = [key]
-
-
-    for depth in range(max(list(inv_depth_dict.keys())), -1, -1):
-        for clade in inv_depth_dict[depth]:
-            temp = clade.depths()
-            lens = [temp[term]-clade.branch_length for term in clade.get_terminals()]
-            for ds_clade in clade.clades:
-                ds_lens = [temp[term]-clade.branch_length for term in ds_clade.get_terminals()]
-                if np.mean(lens) > 0:
-                    ds_clade.rate = np.mean(ds_lens) / np.mean(lens)
-                else:
-                    ds_clade.rate = 0.
-                for all_ds in ds_clade.get_terminals() + ds_clade.get_nonterminals():
-                    if all_ds == ds_clade:
-                        pass
-                    else:
-                        all_ds.rate = all_ds.rate*ds_clade.rate
-    return tree
+    my_tree.add_features(rate=modifier)
+    if len(my_tree.get_children()) == 0:
+        return
+    else:
+        l_child = my_tree.children[0]
+        r_child = my_tree.children[1]
+        l_side_dists = [i.dist*len(i.get_leaves()) for i in l_child.traverse()]
+        r_side_dists = [i.dist*len(i.get_leaves()) for i in r_child.traverse()]
+        
+        #########################################################
+        ###Distinction occurs here
+        total_modifier = np.sum(l_side_dists+r_side_dists)/len(my_tree.get_leaves())
+        l_modifier = np.sum(l_side_dists)/len(l_child.get_leaves())/total_modifier * modifier
+        r_modifier = np.sum(r_side_dists)/len(r_child.get_leaves())/total_modifier * modifier
+        #########################################################
+        
+        my_tree = RelTime_AJH(l_child, l_modifier)
+        my_tree = RelTime_AJH(r_child, r_modifier)
+    return
 
 def getRelTimeTree(tree_string):
     
@@ -91,12 +84,7 @@ def getRelTimeTree(tree_string):
     
     # Run RelTime from https://github.com/adamhockenberry/dca-weighting/tree/master/Code/supporting_functions.py
     rerooted_tree.root.branch_length = 0.0
-    rerooted_tree = rel_time_AJH(rerooted_tree)
-    for node in rerooted_tree.get_terminals() + rerooted_tree.get_nonterminals():
-        if node == rerooted_tree.root:
-            continue
-        node.branch_length = node.branch_length/node.rate
-    rerooted_tree.root.branch_length = None
+    RelTime_AJH(rerooted_tree)
     ete_tree = to_ete3(rerooted_tree)
     
     return(ete_tree.write())

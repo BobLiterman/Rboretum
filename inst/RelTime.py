@@ -27,6 +27,6 @@ def RelTime_AJH(my_tree, modifier=1.):
 def getRelTimeTree(tree_string):
     
     # Read in tree from R as string
-    r_tree = Tree(tree_string)
+    r_tree = ete3.Tree(tree_string)
     RelTime_AJH(r_tree)
     return(r_tree.write())

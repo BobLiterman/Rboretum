@@ -4,22 +4,29 @@
 \alias{treeDater}
 \title{Rboretum Tree Dater}
 \usage{
-treeDater(tree, calibration_df, iterations)
+treeDater(tree, method, calibration_df, iterations)
 }
 \arguments{
-\item{tree}{Tree(s) to extract date information from. Options include:
+\item{tree}{Tree(s) from which to extract branch length information. Options include:
 \itemize{
   \item A single, rooted phylo object; or,
-  \item A rooted multiPhylo object where all trees share 3+ taxa and support a single topology 
+  \item A rooted multiPhylo object where all trees share all taxa and support a single topology 
 }}
 
-\item{calibration_df}{Dataframe with 4 columns: (1) Taxon 1 (2) Taxon 2 (3) Min divergence time (4) Max divergence time}
+\item{method}{Estimation of node ages via:
+\itemize{
+  \item 'reltime_uncal'[Default]: A RelTime-like implementation without node age calibration (Relative dating)
+  \item 'reltime': A RelTime-like implementation, allowing for relative-to-absolute age conversion via a single node calibration supplied by 'calibration_df' (if more than one calibration is provided, only the first entry will be processed.)
+  \item 'chronos': Estimate node age using 'chronos' from 'ape', allowing for relative-to-absolute age conversion via multiple node calibrations supplied by 'calibration_df'
+  }}
 
-\item{iterations}{How many times to estimate the age of each node prior to summarizing [Default: 1000]}
+\item{calibration_df}{Required if method is 'reltime' or 'chronos'; Dataframe with 4 columns: (1) Taxon 1 (2) Taxon 2 (3) Min divergence time (4) Max divergence time}
+
+\item{iterations}{If using 'chronos', how many times to estimate the age of each node prior to summarizing [Default: 1000]}
 }
 \value{
 An ultrametric phylo object with branch lengths corresponding to time, or a multiPhylo of such trees
 }
 \description{
-This function takes a tree(s) with estimated branch lengths, and infers ages for each tree node using the 'chronos' function in 'ape'.
+This function takes a tree(s) with estimated branch lengths, and infers either relative or absolute node ages
 }

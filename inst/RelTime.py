@@ -4,7 +4,7 @@ from io import StringIO
 import ete3
 import tempfile
 
-# RelTime-like implementation from https://github.com/adamhockenberry/dca-weighting/tree/master/Code/supporting_functions.py
+# RelTime-like implementation from Dr. Adam J. Hockenberry
 def RelTime_AJH(my_tree, modifier=1.):
     my_tree.add_features(rate=modifier)
     if len(my_tree.get_children()) == 0:

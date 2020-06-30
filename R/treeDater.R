@@ -116,7 +116,7 @@ treeDater <- function(tree,method,calibration_df,iterations){
       
       age.min <- calibration_df$Min
       age.max <- calibration_df$Max
-      tree_cal <- data.frame(node, age.min, age.max) %>% mutate(soft.bounds=FALSE)
+      tree_cal <- data.frame(node, age.min, age.max) %>% mutate(soft.bounds=FALSE) %>% `names<-`(c('node','age.min','age.max','soft.bounds'))
       
       # Create dummy rows
       tree_edge_list <- compute.brlen(date_tree,1)$edge.length
@@ -161,4 +161,27 @@ treeDater <- function(tree,method,calibration_df,iterations){
     }
       return(return_tree)
   }
+
+  # Process if method is 'reltime_uncal' or 'reltime'
+  if(method %in% c('reltime','reltime_uncal')){
+    for(i in 1:tree_count){
+      date_tree <- tree[[i]]
+      
+      # Replace 0 branch lengths with 1E-16 to avoid divide-by-zero errors
+      date_tree$edge.length[date_tree$edge.length < 1E-16] <- 1E-16
+      
+      reltime_tree <- getRelTimeTree(write.tree(date_tree))
+      if(tree_count == 1){
+        return(reltime_tree)
+      } else{
+        return_tree[[i]] <- reltime_tree
+      }
+    }
+    return(return_tree)
+  }
+  
+  # Rescale RelTime-like trees using calibration point if method is 'reltime'
+  
+  
+  
 }

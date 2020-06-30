@@ -46,7 +46,7 @@ treeDater <- function(tree,method,calibration_df,iterations){
   } else if(length(method)!=1){
     warning("'method' should be 'reltime_uncal', 'reltime', or 'chronos'. Proceeding with uncalibrated RelTime...")
     method <- 'reltime_uncal'
-  } else if(!method %in% c('reltime_uncal','reltime','chronos')){
+  } else if(!method %in% c('reltime_uncal','reltime_new','chronos','reltime_orig')){
     warning("'method' should be 'reltime_uncal', 'reltime', or 'chronos'. Proceeding with uncalibrated RelTime...")
     method <- 'reltime_uncal'
   } else if(!missing(calibration_df) & method=='reltime_uncal'){
@@ -54,7 +54,7 @@ treeDater <- function(tree,method,calibration_df,iterations){
   }
   
   # Ensure at least one calibration point if using chronos or reltime
-  if(method %in% c('reltime','chronos')){
+  if(method %in% c('reltime_new','reltime_orig','chronos')){
     
     if(missing(calibration_df)){
       stop("treeDater requires min/max divergence time estimates for at least one node in the tree to convert relative times to absoute times.")
@@ -69,7 +69,7 @@ treeDater <- function(tree,method,calibration_df,iterations){
       mutate_if(is.factor, as.character)
     
     # RelTime-like method can only take a single calibration point
-    if(method == 'reltime'){
+    if(method == 'reltime' | method == 'reltime_new'){
       calibration_df <- calibration_df %>% head(1)
     }
     
@@ -162,8 +162,8 @@ treeDater <- function(tree,method,calibration_df,iterations){
       return(return_tree)
   }
 
-  # Process if method is 'reltime_uncal' or 'reltime'
-  if(method %in% c('reltime','reltime_uncal')){
+  # Process if method is 'reltime_uncal'
+  if(method == 'reltime_uncal'){
     for(i in 1:tree_count){
       date_tree <- tree[[i]]
       
@@ -171,6 +171,12 @@ treeDater <- function(tree,method,calibration_df,iterations){
       date_tree$edge.length[date_tree$edge.length < 1E-16] <- 1E-16
       
       reltime_tree <- getRelTimeTree(write.tree(date_tree)) %>% read.tree(text=.)
+      
+      # Minor adjustments to force ultrametric tree
+      if(!is.ultrametric(reltime_tree)){
+        reltime_tree <- force.ultrametric(reltime_tree,"extend")
+      }
+      
       if(tree_count == 1){
         return(reltime_tree)
       } else{
@@ -181,7 +187,85 @@ treeDater <- function(tree,method,calibration_df,iterations){
   }
   
   # Rescale RelTime-like trees using calibration point if method is 'reltime'
+  if(method == 'reltime_new'){
+    for(i in 1:tree_count){
+      date_tree <- tree[[i]]
+      
+      # Replace 0 branch lengths with 1E-16 to avoid divide-by-zero errors
+      date_tree$edge.length[date_tree$edge.length < 1E-16] <- 1E-16      
+      
+      # Get RelTime-like tree
+      reltime_tree <- getRelTimeTree_New(write.tree(date_tree)) %>% read.tree(text=.)
+      
+      # Minor adjustments to force ultrametric tree
+      if(!is.ultrametric(reltime_tree)){
+        reltime_tree <- force.ultrametric(reltime_tree,"extend")
+      }
+      
+      # Get node ID for calibration node
+      node <- ape::getMRCA(reltime_tree,tip=semiVector(calibration_df$Two_Names[[1]])) %>% unlist()      
+      
+      # Get tip labels
+      tip_logical <- reltime_tree$edge[,2] <= length(reltime_tree$tip.label)
+      tip_labels <- reltime_tree$edge[tip_logical,2]
+      
+      # Find shortest distance between calibration node and the nearest tip
+      tip_distances <- purrr::map(.x = tip_labels,.f = function(x){dist.nodes(reltime_tree)[node, x]}) %>% unlist()
+      shortest_path <- tip_distances[tip_distances==min(tip_distances)][[1]]
+      node_cal_ratio <- shortest_path/node_cal_value
+      
+      # Scale RelTime-like tree to absolute node ages
+      reltime_absolute <- reltime_tree
+      reltime_absolute$node.label <- NULL
+      reltime_absolute$edge.length <- reltime_absolute$edge.length/node_cal_ratio
+
+      if(tree_count == 1){
+        return(reltime_tree)
+      } else{
+        return_tree[[i]] <- reltime_tree
+      }
+    }
+    return(return_tree)
+  }
   
-  
-  
+  if(method == 'reltime_orig'){
+    for(i in 1:tree_count){
+      date_tree <- tree[[i]]
+      
+      # Replace 0 branch lengths with 1E-16 to avoid divide-by-zero errors
+      date_tree$edge.length[date_tree$edge.length < 1E-16] <- 1E-16      
+      
+      # Get RelTime-like tree
+      reltime_tree <- getRelTimeTree_Orig(write.tree(date_tree)) %>% read.tree(text=.)
+      
+      # Minor adjustments to force ultrametric tree
+      if(!is.ultrametric(reltime_tree)){
+        reltime_tree <- force.ultrametric(reltime_tree,"extend")
+      }
+      
+      # Get node ID for calibration node
+      node <- ape::getMRCA(reltime_tree,tip=semiVector(calibration_df$Two_Names[[1]])) %>% unlist()      
+      
+      # Get tip labels
+      tip_logical <- reltime_tree$edge[,2] <= length(reltime_tree$tip.label)
+      tip_labels <- reltime_tree$edge[tip_logical,2]
+      
+      # Find shortest distance between calibration node and the nearest tip
+      tip_distances <- purrr::map(.x = tip_labels,.f = function(x){dist.nodes(reltime_tree)[node, x]}) %>% unlist()
+      shortest_path <- tip_distances[tip_distances==min(tip_distances)][[1]]
+      node_cal_ratio <- shortest_path/node_cal_value
+      
+      # Scale RelTime-like tree to absolute node ages
+      reltime_absolute <- reltime_tree
+      reltime_absolute$node.label <- NULL
+      reltime_absolute$edge.length <- reltime_absolute$edge.length/node_cal_ratio
+      
+      if(tree_count == 1){
+        return(reltime_tree)
+      } else{
+        return_tree[[i]] <- reltime_tree
+      }
+    }
+    return(return_tree)
+  }
 }

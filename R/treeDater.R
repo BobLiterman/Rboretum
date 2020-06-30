@@ -204,6 +204,7 @@ treeDater <- function(tree,method,calibration_df,iterations){
       
       # Get node ID for calibration node
       node <- ape::getMRCA(reltime_tree,tip=semiVector(calibration_df$Two_Names[[1]])) %>% unlist()      
+      node_cal_value <- mean(c(calibration_df$Min[[1]],calibration_df$Max[[1]]))
       
       # Get tip labels
       tip_logical <- reltime_tree$edge[,2] <= length(reltime_tree$tip.label)
@@ -245,6 +246,7 @@ treeDater <- function(tree,method,calibration_df,iterations){
       
       # Get node ID for calibration node
       node <- ape::getMRCA(reltime_tree,tip=semiVector(calibration_df$Two_Names[[1]])) %>% unlist()      
+      node_cal_value <- mean(c(calibration_df$Min[[1]],calibration_df$Max[[1]]))
       
       # Get tip labels
       tip_logical <- reltime_tree$edge[,2] <= length(reltime_tree$tip.label)

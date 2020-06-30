@@ -1,0 +1,43 @@
+#NEXUS
+[R-package APE, Tue Jun 30 13:53:40 2020]
+
+BEGIN TAXA;
+	DIMENSIONS NTAX = 15;
+	TAXLABELS
+		Species_H
+		Species_C
+		Species_A
+		Species_F
+		Species_E
+		Species_M
+		Species_J
+		Species_I
+		Species_N
+		Species_G
+		Species_B
+		Species_O
+		Species_K
+		Species_L
+		Species_D
+	;
+END;
+BEGIN TREES;
+	TRANSLATE
+		1	Species_H,
+		2	Species_C,
+		3	Species_A,
+		4	Species_F,
+		5	Species_E,
+		6	Species_M,
+		7	Species_J,
+		8	Species_I,
+		9	Species_N,
+		10	Species_G,
+		11	Species_B,
+		12	Species_O,
+		13	Species_K,
+		14	Species_L,
+		15	Species_D
+	;
+	TREE * UNTITLED = [&U] (1:0.0843136262,2:0.0694867089,((((3:0.0712509815,4:0.0727217249)100:0.0579983059,5:0.1700726308)100:0.3307015472,((6:0.0757878548,7:0.0693322715)100:0.197453841,(8:0.1385976006,(9:0.0760789638,10:0.0725086042)100:0.0634250223)100:0.1469926684)100:0.2245692474)100:0.4505198231,((11:0.0758469976,12:0.0749198954)100:0.1917113613,((13:0.0681561124,14:0.0662897347)100:0.058368223,15:0.149344753)100:0.1654192853)100:0.4319039225)100:1.033079639);
+END;

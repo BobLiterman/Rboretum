@@ -170,7 +170,7 @@ treeDater <- function(tree,method,calibration_df,iterations){
       # Replace 0 branch lengths with 1E-16 to avoid divide-by-zero errors
       date_tree$edge.length[date_tree$edge.length < 1E-16] <- 1E-16
       
-      reltime_tree <- getRelTimeTree(write.tree(date_tree))
+      reltime_tree <- getRelTimeTree(write.tree(date_tree)) %>% read.tree(text=.)
       if(tree_count == 1){
         return(reltime_tree)
       } else{

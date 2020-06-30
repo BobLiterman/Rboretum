@@ -221,9 +221,9 @@ treeDater <- function(tree,method,calibration_df,iterations){
       reltime_absolute$edge.length <- reltime_absolute$edge.length/node_cal_ratio
 
       if(tree_count == 1){
-        return(reltime_tree)
+        return(reltime_absolute)
       } else{
-        return_tree[[i]] <- reltime_tree
+        return_tree[[i]] <- reltime_absolute
       }
     }
     return(return_tree)
@@ -232,6 +232,11 @@ treeDater <- function(tree,method,calibration_df,iterations){
   if(method == 'reltime_orig'){
     for(i in 1:tree_count){
       date_tree <- tree[[i]]
+      
+      # Create node labels for roots
+      date_tree$node.label <- paste0("Node_", LETTERS[1:length(subtrees(date_tree))])
+      date_tree$node.label[[2]] <- 'Root_A'
+      date_tree$node.label[[11]] <- 'Root_B'
       
       # Replace 0 branch lengths with 1E-16 to avoid divide-by-zero errors
       date_tree$edge.length[date_tree$edge.length < 1E-16] <- 1E-16      
@@ -263,9 +268,9 @@ treeDater <- function(tree,method,calibration_df,iterations){
       reltime_absolute$edge.length <- reltime_absolute$edge.length/node_cal_ratio
       
       if(tree_count == 1){
-        return(reltime_tree)
+        return(reltime_absolute)
       } else{
-        return_tree[[i]] <- reltime_tree
+        return_tree[[i]] <- reltime_absolute
       }
     }
     return(return_tree)

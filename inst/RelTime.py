@@ -22,9 +22,6 @@ def RelTime_AJH(my_tree, modifier=1.):
 
         my_tree = RelTime_AJH(l_child, l_modifier)
         my_tree = RelTime_AJH(r_child, r_modifier)
-    
-    for i in my_tree.get_descendants():
-      i.dist = i.dist/i.rate
 
     return
 
@@ -33,4 +30,9 @@ def getRelTimeTree(tree_string):
     # Read in tree from R as string
     r_tree = ete3.Tree(tree_string,format=1)
     RelTime_AJH(r_tree)
+    
+    # Convert tree to chronogram
+    for i in r_tree.get_descendants():
+      i.dist = i.dist/i.rate
+    
     return(r_tree.write())

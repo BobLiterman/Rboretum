@@ -14,7 +14,15 @@ getTreeSplits <- function(tree){
   if(Rboretum::isPhylo(tree,check_rooted = TRUE)){ # If a phylo object is provided, get splits...
     split_df <- getTreeSplits_Worker(tree)
     return(split_df)
-  } else if(Rboretum::isMultiPhylo(tree,check_named = TRUE,check_rooted = TRUE,check_three_taxa = TRUE,check_all_equal = TRUE)){ # If a valid multiPhylo is provided, but all trees have the same topology, return splits for the first tree
+  } else if(Rboretum::isMultiPhylo(tree,check_rooted = TRUE,check_three_taxa = TRUE)){
+    if(!Rboretum::isMultiPhylo(tree,check_named = TRUE)){
+      tree <- Rboretum::treeNamer(tree)
+    }
+  } else{
+    stop("'tree' does not appear to be a rooted phylo, or a named, rooted multiPhylo object where all trees share 3+ taxa.")
+  }
+  
+  if(Rboretum::isMultiPhylo(tree,check_named = TRUE,check_rooted = TRUE,check_three_taxa = TRUE,check_all_equal = TRUE)){ # If a valid multiPhylo is provided, but all trees have the same topology, return splits for the first tree
     
     common_taxa <- Rboretum::getSharedTaxa(tree)
     first_tree <- treeTrimmer(tree[[1]],common_taxa)
@@ -35,8 +43,5 @@ getTreeSplits <- function(tree){
     split_df <- purrr::map(.x = tree,.f = function(x){getTreeSplits_Worker(x)})
     names(split_df) <- tree_names
     return(split_df)
-    
-  } else{
-    stop("'tree' does not appear to be a rooted phylo, or a named, rooted multiPhylo object where all trees share 3+ taxa.")
   }
 }

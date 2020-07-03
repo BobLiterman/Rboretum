@@ -13,7 +13,7 @@ getTreeClades(tree, include_root, print_counts, return_counts, return_shared)
   \item A rooted, named multiPhylo object where all trees share 3+ taxa
 }}
 
-\item{include_root}{OPTIONAL: If TRUE, return two root clades [Default: FALSE, exlclude root clades]}
+\item{include_root}{OPTIONAL: If TRUE, return two root clades (Disabled if tree is rooted on a single taxon) [Default: FALSE, exlclude root clades]}
 
 \item{print_counts}{OPTIONAL: If TRUE, print a summary table of unique splits and how many/which trees contain them [Default: FALSE, no printing]}
 

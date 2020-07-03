@@ -106,7 +106,8 @@ getTreeClades <- function(tree,include_root,print_counts,return_counts,return_sh
       if(!any(root_check)){
         listed_tree_clades <- purrr::map(.x=1:tree_count,.f=function(x){c(listed_tree_clades[[x]],listed_root_clades[[x]])})
       } else{
-        root_index <- 1:length(tree)[!root_check]
+        tree_pos <- 1:length(tree)
+        root_index <- tree_pos[!root_check]
         for(i in root_index){
           listed_tree_clades[[i]] <- c(listed_tree_clades[[i]],listed_root_clades[[i]])
         }

@@ -1,6 +1,6 @@
 #' Rboretum Tree Splitter
 #'
-#' This function breaks down a rooted phylo or multiPhylo object into its respective set of splits
+#' This function breaks down a rooted phylo into its respective set of splits
 #' @param tree Rooted phylo object
 #' @return Dataframe: Column 1: Semi-colon separated monophyletic clade; Column 2: 'Mirror Clade'; Column 3: Phylo Node ID (NA for root split)
 #' @export
@@ -14,7 +14,7 @@ getTreeSplits_Worker <- function(tree){
   # Get species
   tree_species <- naturalsort(tree$tip.label)
   species_count <- length(tree_species)
-  
+
   mono_clades <- c()
   mirror_clades <- c()
   node_list <- c()

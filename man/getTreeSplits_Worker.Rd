@@ -13,5 +13,5 @@ getTreeSplits_Worker(tree)
 Dataframe: Column 1: Semi-colon separated monophyletic clade; Column 2: 'Mirror Clade'; Column 3: Phylo Node ID (NA for root split)
 }
 \description{
-This function breaks down a rooted phylo or multiPhylo object into its respective set of splits
+This function breaks down a rooted phylo into its respective set of splits
 }

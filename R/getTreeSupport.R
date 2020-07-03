@@ -108,6 +108,17 @@ getTreeSupport <- function(signal,tree,clade,separate_signal,return_integer,incl
       
     } else{ # If no 'clade' argument, process 'tree'
       
+      # Autoname multiPhylo if necessary
+      if(Rboretum::isMultiPhylo(tree)){
+        if(!Rboretum::isMultiPhylo(tree,check_rooted = TRUE,check_three_taxa = TRUE)){
+          stop("MultiPhylo must be a set of rooted trees that share three taxa for 'getTreeSupport'")
+        } else{
+          if(!Rboretum::isMultiPhylo(tree,check_named = TRUE)){
+            tree <- Rboretum::treeNamer(tree)
+          }
+        }
+      }
+      
       if(!Rboretum::isPhylo(tree,check_rooted = TRUE) & !Rboretum::isMultiPhylo(tree,check_named = TRUE,check_rooted = TRUE, check_three_taxa = TRUE)){
         stop("'tree' must be a rooted phylo object, or a named, rooted multiPhylo for getTreeSupport")
       } else if(!Rboretum::isAlignmentSignal(signal,tree)){

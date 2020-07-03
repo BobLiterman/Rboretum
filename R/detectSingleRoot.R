@@ -6,11 +6,12 @@
 #' @return TRUE if 'tree' is rooted on a single taxon; else, FALSE
 #' @export
 #' 
+
 detectSingleRoot <- function(tree,return_root){
   
   # Check valid rooted phylo
   if(!Rboretum::isPhylo(tree,check_rooted = TRUE)){
-    stop("'detect_single_root' requires a rooted phylo objejct.")
+    stop("'detect_single_root' requires a rooted phylo object")
   }
   
   # Check return_root

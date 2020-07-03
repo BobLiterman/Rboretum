@@ -92,13 +92,27 @@ getTreeClades <- function(tree,include_root,print_counts,return_counts,return_sh
     
     # Get tree clades
     listed_tree_clades <- purrr::map(.x = tree ,.f = function(x){ Rboretum::getTreeSplits_Worker(x) %>% filter(!is.na(Split_Node)) %>% pull(Clade) %>% as.character()})
+    
+    # Get root clades
     listed_root_clades <- purrr::map(.x = tree ,.f = function(x){ Rboretum::getTreeSplits_Worker(x) %>% filter(is.na(Split_Node)) %>% select(Clade,Mirror_Clade) %>% slice(1) %>%  unlist() %>% as.character()})
     
-    # Extract root clades if requested, unless tree is rooted on a single taxon
-    if(include_root & !Rboretum::detectSingleRoot(tree)){
+    # Extract root clades if requested, except for trees rooted on a single taxon
+    if(include_root){
+      
+      clade_names <- names(listed_tree_clades)
+      root_check <- purrr::map(.x=tree,.f=function(x){Rboretum::detectSingleRoot(x,return_root = FALSE)}) %>% unlist()
+      
+      # Get root clades if trees aren't rooted on a single taxon
+      if(!any(root_check)){
         listed_tree_clades <- purrr::map(.x=1:tree_count,.f=function(x){c(listed_tree_clades[[x]],listed_root_clades[[x]])})
-        names(listed_tree_clades) <- names(listed_root_clades)
-      } 
+      } else{
+        root_index <- 1:length(tree)[!root_check]
+        for(i in root_index){
+          listed_tree_clades[[i]] <- c(listed_tree_clades[[i]],listed_root_clades[[i]])
+        }
+      }
+      names(listed_tree_clades) <- clade_names
+    } 
     
     clade_table <- table(unlist(listed_tree_clades))
     

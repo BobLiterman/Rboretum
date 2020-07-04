@@ -13,10 +13,16 @@ semiSorter <- function(string_to_sort){
   
   if(missing(string_to_sort)){
     stop("semiSorter expects a character argument")
-  } else if(is.na(string_to_sort)){
-    return(NA)
   } else if(!is.character(string_to_sort)){
-    stop("semiSorter expects a character argument")
+    if(length(string_to_sort)>1){
+      stop("semiSorter expects a character argument")
+    } else{
+      if(is.na(string_to_sort)){
+        return(NA)
+      } else{
+        stop("semiSorter expects a character argument")
+      } 
+    }
   }
   
   if(length(string_to_sort)==1){

@@ -13,10 +13,16 @@ vectorSemi <- function(char_vec){
   
   if(missing(char_vec)){
     stop("vectorSemi expects a character argument")
-  } else if(is.na(char_vec)){
-    return(NA)
   } else if(!is.character(char_vec)){
-    stop("vectorSemi expects a character argument")
+    if(length(char_vec)>1){
+      stop("vectorSemi expects a character argument")
+    } else{
+      if(is.na(char_vec)){
+        return(NA)
+      } else{
+        stop("vectorSemi expects a character argument")
+      } 
+    }
   }
   
   # If vector has only 1 element, return element

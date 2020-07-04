@@ -157,9 +157,9 @@ readRooted_Worker <- function(to_root_worker,root_taxa,disable_bs){
       names(labels) <- clades
       
       # Add mirror root label
-      if(labels[[root_clade]] == ""){
+      if(labels[[root_clade]] == "" | is.na(labels[[root_clade]])){
         labels[[root_clade]] <- labels[[mirror_clade]]
-      } else if(labels[[mirror_clade]] == ""){
+      } else if(labels[[mirror_clade]] == "" | is.na(labels[[mirror_clade]])){
         labels[[mirror_clade]] <- labels[[root_clade]]
       } else{
         return(rooted_tree) # Not sure why this would happen...
@@ -277,9 +277,9 @@ readRooted_Worker <- function(to_root_worker,root_taxa,disable_bs){
       names(labels) <- clades
       
       # Add mirror root label
-      if(labels[[root_clade]] == ""){
+      if(labels[[root_clade]] == "" | is.na(labels[[root_clade]])){
         labels[[root_clade]] <- labels[[mirror_clade]]
-      } else if(labels[[mirror_clade]] == ""){
+      } else if(labels[[mirror_clade]] == "" | is.na(labels[[mirror_clade]])){
         labels[[mirror_clade]] <- labels[[root_clade]]
       } else{
         return(rooted_tree) # Not sure why this would happen...

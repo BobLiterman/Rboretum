@@ -247,9 +247,9 @@ readRooted_Worker <- function(to_root_worker,root_taxa,disable_bs){
       # For trees that are unrooted, root tree and  add a node label for the mirror root split
       
       if(!has_error(silent=TRUE,expr=ape::root.phylo(raw_tree,outgroup = root_taxa,edgelabel = TRUE,resolve.root = TRUE))){
-        return(ape::root.phylo(raw_tree,outgroup = root_taxa,edgelabel = TRUE,resolve.root = TRUE))
+        rooted_tree <- ape::root.phylo(raw_tree,outgroup = root_taxa,edgelabel = TRUE,resolve.root = TRUE)
       } else if(!has_error(silent=TRUE,expr=ape::root.phylo(raw_tree,outgroup = mirror_taxa,edgelabel = TRUE,resolve.root = TRUE))){
-        return(ape::root.phylo(raw_tree,outgroup = mirror_taxa,edgelabel = TRUE,resolve.root = TRUE))
+        rooted_tree <- ape::root.phylo(raw_tree,outgroup = mirror_taxa,edgelabel = TRUE,resolve.root = TRUE)
       } else{ 
         return(NA) # Ape cannot root tree on these taxa, shouldn't be possible
       }

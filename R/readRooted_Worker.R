@@ -195,6 +195,9 @@ readRooted_Worker <- function(to_root_worker,root_taxa,disable_bs){
     bootstrap_names <- pull(bootstrap_tibble,taxa)
     named_bootstraps <- pull(bootstrap_tibble,bootstrap) %>% `names<-`(bootstrap_names)
     
+    all_taxa_clade <- semiSorter(raw_tree$tip.label)
+    named_bootstraps[[all_taxa_clade]] <- "Root"
+    
     # Add node labels to phylo object
     raw_tree$node.label <- purrr::map(.x=raw_clades,.f=function(x){named_bootstraps[x]}) %>% unlist()
     

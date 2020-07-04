@@ -17,9 +17,12 @@
 
 semiVector <- function(string_to_split){
   
-  # Ensure character vector of length 1
-  if(!is.character(string_to_split)){
-    stop("semiVector requires a character argument")
+  if(missing(string_to_split)){
+    stop("semiVector expects a character argument")
+  } else if(is.na(string_to_split)){
+    return(NA)
+  } else if(!is.character(string_to_split)){
+    stop("semiVector expects a character argument")
   }
   
   if(length(string_to_split)==1){

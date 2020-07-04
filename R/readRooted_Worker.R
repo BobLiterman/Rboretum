@@ -195,9 +195,6 @@ readRooted_Worker <- function(to_root_worker,root_taxa,disable_bs){
     bootstrap_names <- pull(bootstrap_tibble,taxa)
     named_bootstraps <- pull(bootstrap_tibble,bootstrap) %>% `names<-`(bootstrap_names)
     
-    all_taxa_clade <- semiSorter(raw_tree$tip.label)
-    named_bootstraps[[all_taxa_clade]] <- "Root"
-    
     # Add node labels to phylo object
     raw_tree$node.label <- purrr::map(.x=raw_clades,.f=function(x){named_bootstraps[x]}) %>% unlist()
     
@@ -223,6 +220,7 @@ readRooted_Worker <- function(to_root_worker,root_taxa,disable_bs){
     # If tree is already rooted at root_taxa, return unchanged
     if(root_status == 'rooted'){
       if(Rboretum::checkTips(raw_tree,root_taxa,check_root=TRUE)){
+        raw_tree$node.label[[1]] <- "Root"
         return(raw_tree)
       }
     }
@@ -249,9 +247,9 @@ readRooted_Worker <- function(to_root_worker,root_taxa,disable_bs){
       # For trees that are unrooted, root tree and  add a node label for the mirror root split
       
       if(!has_error(silent=TRUE,expr=ape::root.phylo(raw_tree,outgroup = root_taxa,edgelabel = TRUE,resolve.root = TRUE))){
-        rooted_tree <- ape::root.phylo(raw_tree,outgroup = root_taxa,edgelabel = TRUE,resolve.root = TRUE)
+        return(ape::root.phylo(raw_tree,outgroup = root_taxa,edgelabel = TRUE,resolve.root = TRUE))
       } else if(!has_error(silent=TRUE,expr=ape::root.phylo(raw_tree,outgroup = mirror_taxa,edgelabel = TRUE,resolve.root = TRUE))){
-        rooted_tree <- ape::root.phylo(raw_tree,outgroup = mirror_taxa,edgelabel = TRUE,resolve.root = TRUE)
+        return(ape::root.phylo(raw_tree,outgroup = mirror_taxa,edgelabel = TRUE,resolve.root = TRUE))
       } else{ 
         return(NA) # Ape cannot root tree on these taxa, shouldn't be possible
       }

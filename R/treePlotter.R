@@ -85,11 +85,15 @@ treePlotter <- function(tree,clade_support,tree_support,geom_size,scale_range,us
   
   # Process trees and plot titles...
   if(Rboretum::isPhylo(tree)){ # If one tree is provided...
+
+    tree_count <- 1
     
     root_status <- Rboretum::isPhylo(tree,check_rooted = TRUE)
     tree_taxa <- sort(tree$tip.label)
-    tree_clades <- Rboretum::getTreeClades(tree)
-    tree_count <- 1
+    
+    if(root_status){
+      tree_clades <- Rboretum::getTreeClades(tree)
+    }
     
     # Default: No title for single trees
     if(missing(plot_title)){
@@ -112,11 +116,18 @@ treePlotter <- function(tree,clade_support,tree_support,geom_size,scale_range,us
     }
     
     if(Rboretum::isMultiPhylo(tree,check_all_equal = TRUE)){
+
+      tree_count <- 1
       
       tree_taxa <- Rboretum::getSharedTaxa(tree)
       tree <- Rboretum::treeTrimmer(tree[[1]],tree_taxa)
-      tree_clades <- Rboretum::getTreeClades(tree)
-      tree_count <- 1
+      
+      # Remove bootstrap labels if combining trees
+      tree$node.label <- NULL
+      
+      if(root_status){
+        tree_clades <- Rboretum::getTreeClades(tree)
+      }
       
       # Default: No title for single trees
       if(missing(plot_title)){
@@ -133,7 +144,11 @@ treePlotter <- function(tree,clade_support,tree_support,geom_size,scale_range,us
       
       tree_taxa <- Rboretum::getSharedTaxa(tree)
       tree <- Rboretum::treeTrimmer(tree,tree_taxa)
-      tree_clades <- Rboretum::getTreeClades(tree)
+      
+      if(root_status){
+        tree_clades <- Rboretum::getTreeClades(tree)
+      }
+      
       tree_count <- length(tree)
       tree_names <- names(tree)
       
@@ -156,7 +171,11 @@ treePlotter <- function(tree,clade_support,tree_support,geom_size,scale_range,us
       tree_taxa <- Rboretum::getSharedTaxa(tree)
       tree_table <- Rboretum::getUniqueTopologies(tree,return_table = TRUE)
       tree <- Rboretum::getUniqueTopologies(tree)
-      tree_clades <- Rboretum::getTreeClades(tree)
+      
+      if(root_status){
+        tree_clades <- Rboretum::getTreeClades(tree)
+      }      
+      
       tree_count <- length(tree)
       tree_names <- as.character(tree_table$Trees_with_Topology)
       

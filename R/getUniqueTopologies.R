@@ -106,6 +106,15 @@ getUniqueTopologies <- function(trees,print_table,return_table){
                            Trees_with_Topology = as.character(top_trees),
                            Tree_Count = as.integer(top_count),
                            Tree_Percent = round((top_count/as.numeric(raw_tree_count)*100),1),stringsAsFactors = FALSE)
+  
+  # Remove bootstrap values from pooled trees
+  pooled_trees <- summary_df %>% filter(Tree_Count > 1) %>% pull(Tree_Name)
+  pooled_count <- length(pooled_trees)
+  
+  for(i in 1:pooled_count){
+    unique_trees[[pooled_trees[i]]]$node.label <- NULL
+  }
+  
   if(print_table){
     print(summary_df)
   }

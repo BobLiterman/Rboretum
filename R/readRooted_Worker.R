@@ -152,7 +152,7 @@ readRooted_Worker <- function(to_root_worker,root_taxa,disable_bs){
       clade_subtrees <- ape::subtrees(rooted_tree)[2:subtree_length]
       
       clades <- purrr::map(.x=clade_subtrees,.f=function(x){semiSorter(x$tip.label)}) %>% unlist()
-      labels <- purrr::map(.x=clade_subtrees,.f=function(x){semiSorter(x$node.label[1])}) %>% unlist()
+      labels <- purrr::map(.x=clade_subtrees,.f=function(x){x$node.label[[1]]}) %>% unlist()
       
       names(labels) <- clades
       
@@ -176,6 +176,26 @@ readRooted_Worker <- function(to_root_worker,root_taxa,disable_bs){
     # Grab embedded Phylo
     raw_tree <- attributes(rax_tree)$phylo
     
+    # Get tree species
+    tree_species <- raw_tree$tip.label
+    
+    # Ensure at least one root taxon is present in the tree
+    if(!any(root_taxa %in% tree_species)){
+      return(NA) # 'root_taxa' completely absent from tree
+    }
+    
+    # Root at all avaiable taxa
+    root_taxa <- root_taxa[root_taxa %in% tree_species]
+    mirror_taxa <- tree_species[!tree_species %in% root_taxa]
+    
+    root_clade <- semiSorter(root_taxa)
+    mirror_clade <- semiSorter(mirror_taxa)
+    
+    # Ensure root_taxa are monophyletic
+    if(!Rboretum::checkTips(ape::unroot.phylo(raw_tree),root_taxa,check_mono=TRUE)){
+      return(NA)
+    }
+    
     # Get subtree order from raw_tree
     raw_subtree <- subtrees(raw_tree)
     raw_subtree_length <- length(raw_subtree)
@@ -197,25 +217,6 @@ readRooted_Worker <- function(to_root_worker,root_taxa,disable_bs){
     
     # Add node labels to phylo object
     raw_tree$node.label <- purrr::map(.x=raw_clades,.f=function(x){named_bootstraps[x]}) %>% unlist()
-    
-    # Get tree species
-    tree_species <- raw_tree$tip.label
-    
-    # Ensure at least one root taxon is present in the tree
-    if(!any(root_taxa %in% tree_species)){
-      return(NA) # 'root_taxa' completely absent from tree
-    }
-    
-    # Root at all avaiable taxa
-    root_taxa <- root_taxa[root_taxa %in% tree_species]
-    
-    # Mirror taxa is all taxa not in 'root_taxa'
-    mirror_taxa <- tree_species[!tree_species %in% root_taxa]
-    
-    # Ensure root_taxa are monophyletic
-    if(!Rboretum::checkTips(ape::unroot.phylo(raw_tree),root_taxa,check_mono=TRUE)){
-      return(NA)
-    }
     
     # If tree is already rooted at root_taxa, return unchanged
     if(root_status == 'rooted'){
@@ -264,15 +265,11 @@ readRooted_Worker <- function(to_root_worker,root_taxa,disable_bs){
         return(rooted_tree)
       }
       
-      # Otherwise, root and add a complementary node label for the newly created node
-      root_clade <- semiSorter(root_taxa)
-      mirror_clade <- semiSorter(mirror_taxa)
-      
       subtree_length <- length(ape::subtrees(rooted_tree))
       clade_subtrees <- ape::subtrees(rooted_tree)[2:subtree_length]
       
       clades <- purrr::map(.x=clade_subtrees,.f=function(x){semiSorter(x$tip.label)}) %>% unlist()
-      labels <- purrr::map(.x=clade_subtrees,.f=function(x){semiSorter(x$node.label[1])}) %>% unlist()
+      labels <- purrr::map(.x=clade_subtrees,.f=function(x){x$node.label[[1]]}) %>% unlist()
       
       names(labels) <- clades
       

@@ -128,12 +128,12 @@ treePlotter(
 
 \item{plot_title}{OPTIONAL: Character vector containing plot titles (1 per tree) [Default: No title for phylo, tree name for multiPhylo]}
 
-\item{plot_title_size}{OPTIONAL: Set ggplot title font size [Default: 10]}
+\item{plot_title_size}{OPTIONAL: Set ggplot title font size [Default: 14]}
 
 \item{plot_title_fontface}{OPTIONAL: Set ggplot title fontface
 \itemize{
-  \item "plain" [Default]
-  \item "bold"
+  \item "plain"
+  \item "bold" [Default]
   \item "italic"
   \item "bold.italic"
 }}

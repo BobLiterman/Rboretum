@@ -60,11 +60,11 @@
 #' @param highlight_legend OPTIONAL: Include a legend for colored tips, given a list; [Default: False: No highlight legend]
 #' @param color_branches OPTIONAL: If TRUE and coloring taxa or clades, color the branches rather than the tip labels [Default: FALSE, colorize tip labels; DEACTIVATED IF clade_support is provided]
 #' @param plot_title OPTIONAL: Character vector containing plot titles (1 per tree) [Default: No title for phylo, tree name for multiPhylo]
-#' @param plot_title_size OPTIONAL: Set ggplot title font size [Default: 10]
+#' @param plot_title_size OPTIONAL: Set ggplot title font size [Default: 14]
 #' @param plot_title_fontface OPTIONAL: Set ggplot title fontface
 #' \itemize{
-#'   \item "plain" [Default]
-#'   \item "bold"
+#'   \item "plain"
+#'   \item "bold" [Default]
 #'   \item "italic"
 #'   \item "bold.italic"
 #' }
@@ -77,14 +77,16 @@
 #' @export
 
 treePlotter <- function(tree,clade_support,tree_support,geom_size,scale_range,use_pies,pie_xnudge,pie_ynudge,pie_legend_position,branch_length,branch_weight,node_label,node_label_font_size,node_label_fontface,node_label_color,node_label_box,node_label_nudge,taxa_font_size,taxa_fontface,taxa_offset,xmax,reverse_x,to_color,colors,highlight_legend,color_branches,plot_title,plot_title_size,plot_title_fontface,legend_shape_size,legend_font_size,legend_title_size,geom_alpha,geom_color){  
+  
   # Ensure tree is valid for plotter
-  if(!Rboretum::isMultiPhylo(tree,check_rooted = TRUE,check_three_taxa = TRUE) & !Rboretum::isPhylo(tree,check_rooted = TRUE)){
-    stop("'tree' must be either a rooted phylo object or a rooted, mulitPhlyo object basicPlotter")
-  }
+  if(!Rboretum::isMultiPhylo(tree,check_three_taxa = TRUE) & !Rboretum::isPhylo(tree)){
+    stop("'tree' must be either a phylo object or a mulitPhlyo object where all trees share 3+ taxa")
+  } 
   
   # Process trees and plot titles...
   if(Rboretum::isPhylo(tree)){ # If one tree is provided...
     
+    root_status <- Rboretum::isPhylo(tree,check_rooted = TRUE)
     tree_taxa <- sort(tree$tip.label)
     tree_clades <- Rboretum::getTreeClades(tree)
     tree_count <- 1
@@ -101,6 +103,8 @@ treePlotter <- function(tree,clade_support,tree_support,geom_size,scale_range,us
     }
     
   } else{ # If a multiPhylo is provided...
+    
+    root_status <- purrr::map(.x=tree,.f=function(x){Rboretum::isPhylo(x,check_rooted = TRUE)}) %>% unlist() %>% all()
     
     # Add dummy tree names if necessary
     if(!Rboretum::isMultiPhylo(tree,check_named = TRUE)){
@@ -179,6 +183,8 @@ treePlotter <- function(tree,clade_support,tree_support,geom_size,scale_range,us
     
   } else if(!Rboretum::isCladeSupport(clade_support,tree,partial = TRUE)){
     stop("'clade_support' does not contain information about all the clades in 'tree'")
+  } else if(!root_status){ # Don't process signal if unrooted trees are present
+    cladeSupport <- FALSE
   } else{
     
     cladeSupport <- TRUE
@@ -203,6 +209,9 @@ treePlotter <- function(tree,clade_support,tree_support,geom_size,scale_range,us
     piePossible <- FALSE
   } else if(!Rboretum::isTreeSupport(tree_support,tree,partial = TRUE)){
     stop("'tree_support' does not contain information about all the clades in 'tree'")
+  }  else if(!root_status){ # Don't process signal if unrooted trees are present
+    treeSupport <- FALSE
+    piePossible <- FALSE
   } else{
     
     treeSupport <- TRUE
@@ -720,18 +729,18 @@ treePlotter <- function(tree,clade_support,tree_support,geom_size,scale_range,us
     
     # Set title size
     if(missing(plot_title_size)){
-      plot_title_size <- 10
+      plot_title_size <- 14
     } else if(!is.numeric(plot_title_size)){
-      plot_title_size <- 10
+      plot_title_size <- 14
     }
     
     # Set title fontface
     if(missing(plot_title_fontface)){
-      plot_title_fontface <- 'plain'
+      plot_title_fontface <- 'bold'
     } else if(!is.character(plot_title_fontface)){
-      plot_title_fontface <- 'plain'
+      plot_title_fontface <- 'bold'
     } else if(!(plot_title_fontface %in% c('plain','bold','italic','bold.italic'))){
-      plot_title_fontface <- 'plain'
+      plot_title_fontface <- 'bold'
     }
     
     

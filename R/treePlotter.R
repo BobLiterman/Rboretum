@@ -577,11 +577,13 @@ treePlotter <- function(tree,clade_support,tree_support,geom_size,scale_range,us
     }
     
     # Create ggtree_df if generating geom_nodepoint labels
-    ggtree_df <- Rboretum::getTreeSplits(temp_tree) %>%
-      filter(!is.na(Split_Node)) %>%
-      select(Split_Node,Clade) %>%
-      rename(node=Split_Node) %>%
-      mutate(node=as.integer(node), Clade = as.character(Clade))
+    if(root_status){
+      ggtree_df <- Rboretum::getTreeSplits(temp_tree) %>%
+        filter(!is.na(Split_Node)) %>%
+        select(Split_Node,Clade) %>%
+        rename(node=Split_Node) %>%
+        mutate(node=as.integer(node), Clade = as.character(Clade))
+    }
     
     if(cladeSupport & !treeSupport){
       

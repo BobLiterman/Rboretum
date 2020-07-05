@@ -555,7 +555,6 @@ treePlotter <- function(tree,clade_support,tree_support,geom_size,scale_range,us
       scaled_totals  <- Rboretum::rescaleTreeSupport(tree_support,scale = geom_size,scale_range=scale_range)
       tree_support_summary <- data.frame(Clade=as.character(tree_support$Clade),total_sites = as.integer(raw_totals),scaled_total = as.numeric(scaled_totals),stringsAsFactors = FALSE)
     }
-
   }
   
   # Create dummy multiPhylo for simple handling
@@ -577,7 +576,12 @@ treePlotter <- function(tree,clade_support,tree_support,geom_size,scale_range,us
     }
     
     # Create ggtree_df if generating geom_nodepoint labels
-    if(root_status){
+    
+    # Unrooted trees are plotted simply
+    if(!root_status){
+      ggtree_df <- tibble(node=integer(),Clade=character())
+    } else{
+      
       ggtree_df <- Rboretum::getTreeSplits(temp_tree) %>%
         filter(!is.na(Split_Node)) %>%
         select(Split_Node,Clade) %>%

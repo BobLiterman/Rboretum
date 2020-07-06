@@ -11,7 +11,6 @@
 #' @param dummy_names OPTIONAL: If TRUE, and multiple tree paths are provdied, trees will be named with placeholder names (e.g. Tree_1, Tree_2, etc.) [Default: Trees will be autonamed based on the filename]
 #' @param prefix OPTIONAL: If 'to_root' is a directory, provide a character vector of file prefixes (e.g. all trees start with "RAxML")
 #' @param suffix OPTIONAL: If 'to_root' is a directory, provide a character vector of file suffixes (e.g. all trees end with ".nwk")
-#' @param disable_bs OPTIONAL: If TRUE, don't add a mirrored node label to unrooted trees [Default: FALSE; if trees are unrooted, mirror the missing node label]
 #' @return A phylo object, rooted at specified taxa, or a named, rooted multiPhlyo
 #' @examples 
 #' # Read in one tree
@@ -31,7 +30,7 @@
 #' 
 #' @export
 
-readRooted <- function(to_root,root_taxa,tree_names,dummy_names,prefix,suffix,disable_bs){
+readRooted <- function(to_root,root_taxa,tree_names,dummy_names,prefix,suffix){
   
   # Ensure that a path and root taxa are provided as character vectors
   if(missing(to_root)){
@@ -61,15 +60,6 @@ readRooted <- function(to_root,root_taxa,tree_names,dummy_names,prefix,suffix,di
   } else{
     suffix <- unlist(purrr::map(.x=suffix,.f=function(x){ifelse(substr(x,start = 1,stop = 1)==".",paste(c("\\",x,"$"),collapse = ''),paste(c(x,"$"),collapse = ''))}))
     suffix <- paste(c("(",paste(suffix,collapse = "|"),")"),collapse = '')
-  }
-  
-  # Set disable_bs
-  if(missing(disable_bs)){
-    disable_bs <- FALSE
-  } else if(!is.logical(disable_bs)){
-    disable_bs <- FALSE
-  } else if(length(disable_bs)!=1){
-    disable_bs <- FALSE
   }
   
   if(length(prefix)==0 & length(suffix)==0){
@@ -134,8 +124,8 @@ readRooted <- function(to_root,root_taxa,tree_names,dummy_names,prefix,suffix,di
  
   # If a single tree path is provided, return a phylo
   if(tree_count == 1){
-    tree <- Rboretum::readRooted_Worker(to_root,root_taxa,disable_bs)
-    if(!Rboretum::isPhylo(tree)){
+    tree <- Rboretum::readRooted_Worker(to_root,root_taxa)
+    if(is.na(tree)){
       stop("'to_root' cannot be rooted with 'root_taxa'")
     } else{
       return(tree)
@@ -149,7 +139,7 @@ readRooted <- function(to_root,root_taxa,tree_names,dummy_names,prefix,suffix,di
       tree_names <- default_name
     }
     
-    trees <- purrr::map(.x = to_root,.f = function(x){Rboretum::readRooted_Worker(x,root_taxa,disable_bs)})
+    trees <- purrr::map(.x = to_root,.f = function(x){Rboretum::readRooted_Worker(x,root_taxa)})
     
     if(any(is.na(unlist(trees)))){
       stop("At least one tree from 'to_root' could not be rooted with 'root_taxa'")

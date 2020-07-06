@@ -7,11 +7,10 @@
 #'   \item A path to a single directory containing all tree files
 #' }
 #' @param root_taxa Character vector containing outgroup species IDs (Must be in tree(s) and monophyletic)
-#' @param disable_bs OPTIONAL: If TRUE, don't add a mirrored node label to unrooted trees [Default: FALSE; if trees are unrooted, mirror the missing node label]
 #' @return A phylo object, rooted at specified taxa
 #' @export
 
-readRooted_Worker <- function(to_root_worker,root_taxa,disable_bs){
+readRooted_Worker <- function(to_root_worker,root_taxa){
   
   # Ensure that a path and root taxa are provided as character vectors
   if(missing(to_root_worker)){
@@ -27,16 +26,7 @@ readRooted_Worker <- function(to_root_worker,root_taxa,disable_bs){
   } else if(!is.character(root_taxa)){
     return(NA) # 'root_taxa' should be a character vector of tip labels
   }
-  
-  # Set disable_bs
-  if(missing(disable_bs)){
-    disable_bs <- FALSE
-  } else if(!is.logical(disable_bs)){
-    disable_bs <- FALSE
-  } else if(length(disable_bs)!=1){
-    disable_bs <- FALSE
-  }
-  
+
   # If file exists and root taxa are provided, assess tree type and root status
   if(!has_error(silent=TRUE,expr=treeio::read.raxml(to_root_worker))){ # Check if tree can be read with treeio::read.raxml. Trees without RAxML-like branch labels will have an error
     tree_type <- 'raxml'
@@ -97,6 +87,7 @@ readRooted_Worker <- function(to_root_worker,root_taxa,disable_bs){
     # If tree is already rooted at root_taxa, return unchanged
     if(root_status == 'rooted'){
       if(Rboretum::checkTips(raw_tree,root_taxa,check_root=TRUE)){
+        raw_tree$node.label[[1]] <- "Root"
         return(raw_tree)
       }
     }
@@ -106,69 +97,23 @@ readRooted_Worker <- function(to_root_worker,root_taxa,disable_bs){
       return(NA) # Ape cannot root tree on these taxa
     }
     
+    # Unroot rooted trees
     if(root_status == 'rooted'){
-      
-      # Unroot tree if rooted at a different node
       raw_tree <- ape::unroot.phylo(raw_tree)
-      
-      if(!has_error(silent=TRUE,expr=ape::root.phylo(raw_tree,outgroup = root_taxa,edgelabel = TRUE,resolve.root = TRUE))){
-        return(ape::root.phylo(raw_tree,outgroup = root_taxa,edgelabel = TRUE,resolve.root = TRUE))
-      } else if(!has_error(silent=TRUE,expr=ape::root.phylo(raw_tree,outgroup = mirror_taxa,edgelabel = TRUE,resolve.root = TRUE))){
-        return(ape::root.phylo(raw_tree,outgroup = mirror_taxa,edgelabel = TRUE,resolve.root = TRUE))
-      } else{ 
-        return(NA) # Ape cannot root tree on these taxa, shouldn't be possible
-      }
-    } else{
-      
-      # For trees that are unrooted, root tree and if node labels exist, add a node label for the mirror root split
-      if(!has_error(silent=TRUE,expr=ape::root.phylo(raw_tree,outgroup = root_taxa,edgelabel = TRUE,resolve.root = TRUE))){
-        rooted_tree <- ape::root.phylo(raw_tree,outgroup = root_taxa,edgelabel = TRUE,resolve.root = TRUE)
-      } else if(!has_error(silent=TRUE,expr=ape::root.phylo(raw_tree,outgroup = mirror_taxa,edgelabel = TRUE,resolve.root = TRUE))){
-        rooted_tree <- ape::root.phylo(raw_tree,outgroup = mirror_taxa,edgelabel = TRUE,resolve.root = TRUE)
-      } else{ 
-        return(NA) # Ape cannot root tree on these taxa, shouldn't be possible
-      }
-      
-      # If no node labels, root and return
-      if(!"node.label" %in% attributes(rooted_tree)$names){
-        return(rooted_tree)
-      }
-      
-      # If rooted on a single taxon, root and return
-      if(length(root_taxa)==1){
-        return(rooted_tree)
-      }
-      
-      # If disable_bs is set to TRUE
-      if(disable_bs){
-        return(rooted_tree)
-      }
-      
-      # Otherwise, root and add a complementary node label for the newly created node
-      root_clade <- semiSorter(root_taxa)
-      mirror_clade <- semiSorter(mirror_taxa)
-      
-      subtree_length <- length(ape::subtrees(rooted_tree))
-      clade_subtrees <- ape::subtrees(rooted_tree)[2:subtree_length]
-      
-      clades <- purrr::map(.x=clade_subtrees,.f=function(x){semiSorter(x$tip.label)}) %>% unlist()
-      labels <- purrr::map(.x=clade_subtrees,.f=function(x){x$node.label[[1]]}) %>% unlist()
-      
-      names(labels) <- clades
-      
-      # Add mirror root label
-      if(labels[[root_clade]] == "" | is.na(labels[[root_clade]])){
-        labels[[root_clade]] <- labels[[mirror_clade]]
-      } else if(labels[[mirror_clade]] == "" | is.na(labels[[mirror_clade]])){
-        labels[[mirror_clade]] <- labels[[root_clade]]
-      } else{
-        return(rooted_tree) # Not sure why this would happen...
-      }
-      
-      # Set root label to "Root", and add a node label to the mirror side of the root split
-      rooted_tree$node.label <- c("Root",labels)
-      return(rooted_tree)
     }
+    
+    if(!has_error(silent=TRUE,expr=ape::root.phylo(raw_tree,outgroup = root_taxa,edgelabel = TRUE,resolve.root = TRUE))){
+      rooted_tree <- ape::root.phylo(raw_tree,outgroup = root_taxa,edgelabel = TRUE,resolve.root = TRUE)
+      rooted_tree$node.label[[1]] <- "Root"
+      return(rooted_tree)
+    } else if(!has_error(silent=TRUE,expr=ape::root.phylo(raw_tree,outgroup = mirror_taxa,edgelabel = TRUE,resolve.root = TRUE))){
+      rooted_tree <- ape::root.phylo(raw_tree,outgroup = mirror_taxa,edgelabel = TRUE,resolve.root = TRUE)
+      rooted_tree$node.label[[1]] <- "Root"
+      return(rooted_tree)
+    } else{ 
+      return(NA) # Ape cannot root tree on these taxa, shouldn't be possible
+    }
+    
   } else{ # Process RAxML Trees
     
     rax_tree <- treeio::read.raxml(to_root_worker)
@@ -226,65 +171,26 @@ readRooted_Worker <- function(to_root_worker,root_taxa,disable_bs){
       }
     }
     
+    # Unroot rooted trees
+    if(root_status == 'rooted'){
+      raw_tree <- ape::unroot.phylo(raw_tree)
+    }
+    
     # Ensure tree can be rooted at root taxa before proceding
     if(has_error(silent=TRUE,expr=ape::root.phylo(raw_tree,outgroup = root_taxa,edgelabel = TRUE,resolve.root = TRUE)) & has_error(silent=TRUE,expr=ape::root.phylo(raw_tree,outgroup = mirror_taxa,edgelabel = TRUE,resolve.root = TRUE))){
       return(NA) # Ape cannot root tree on these taxa
     }
-    
-    if(root_status == 'rooted'){
       
-      # Unroot tree if rooted at a different node
-      raw_tree <- ape::unroot.phylo(raw_tree)
-      
-      if(!has_error(silent=TRUE,expr=ape::root.phylo(raw_tree,outgroup = root_taxa,edgelabel = TRUE,resolve.root = TRUE))){
-        return(ape::root.phylo(raw_tree,outgroup = root_taxa,edgelabel = TRUE,resolve.root = TRUE))
-      } else if(!has_error(silent=TRUE,expr=ape::root.phylo(raw_tree,outgroup = mirror_taxa,edgelabel = TRUE,resolve.root = TRUE))){
-        return(ape::root.phylo(raw_tree,outgroup = mirror_taxa,edgelabel = TRUE,resolve.root = TRUE))
-      } else{ 
-        return(NA) # Ape cannot root tree on these taxa, shouldn't be possible
-      }
-    } else{
-      
-      # For trees that are unrooted, root tree and  add a node label for the mirror root split
-      
-      if(!has_error(silent=TRUE,expr=ape::root.phylo(raw_tree,outgroup = root_taxa,edgelabel = TRUE,resolve.root = TRUE))){
-        rooted_tree <- ape::root.phylo(raw_tree,outgroup = root_taxa,edgelabel = TRUE,resolve.root = TRUE)
-      } else if(!has_error(silent=TRUE,expr=ape::root.phylo(raw_tree,outgroup = mirror_taxa,edgelabel = TRUE,resolve.root = TRUE))){
-        rooted_tree <- ape::root.phylo(raw_tree,outgroup = mirror_taxa,edgelabel = TRUE,resolve.root = TRUE)
-      } else{ 
-        return(NA) # Ape cannot root tree on these taxa, shouldn't be possible
-      }
-      
-      # If rooted on a single taxon, root and return
-      if(length(root_taxa)==1){
-        return(rooted_tree)
-      }
-      
-      # If disable_bs is set to TRUE
-      if(disable_bs){
-        return(rooted_tree)
-      }
-      
-      subtree_length <- length(ape::subtrees(rooted_tree))
-      clade_subtrees <- ape::subtrees(rooted_tree)[2:subtree_length]
-      
-      clades <- purrr::map(.x=clade_subtrees,.f=function(x){semiSorter(x$tip.label)}) %>% unlist()
-      labels <- purrr::map(.x=clade_subtrees,.f=function(x){x$node.label[[1]]}) %>% unlist()
-      
-      names(labels) <- clades
-      
-      # Add mirror root label
-      if(labels[[root_clade]] == "" | is.na(labels[[root_clade]])){
-        labels[[root_clade]] <- labels[[mirror_clade]]
-      } else if(labels[[mirror_clade]] == "" | is.na(labels[[mirror_clade]])){
-        labels[[mirror_clade]] <- labels[[root_clade]]
-      } else{
-        return(rooted_tree) # Not sure why this would happen...
-      }
-      
-      # Set root label to "Root", and add a node label to the mirror side of the root split
-      rooted_tree$node.label <- c("Root",labels)
+    if(!has_error(silent=TRUE,expr=ape::root.phylo(raw_tree,outgroup = root_taxa,edgelabel = TRUE,resolve.root = TRUE))){
+      rooted_tree <- ape::root.phylo(raw_tree,outgroup = root_taxa,edgelabel = TRUE,resolve.root = TRUE)
+      rooted_tree$node.label[[1]] <- "Root"
       return(rooted_tree)
+    } else if(!has_error(silent=TRUE,expr=ape::root.phylo(raw_tree,outgroup = mirror_taxa,edgelabel = TRUE,resolve.root = TRUE))){
+      rooted_tree <- ape::root.phylo(raw_tree,outgroup = mirror_taxa,edgelabel = TRUE,resolve.root = TRUE)
+      rooted_tree$node.label[[1]] <- "Root"
+      return(rooted_tree)
+    } else{ 
+      return(NA) # Ape cannot root tree on these taxa, shouldn't be possible
     }
   }
 }

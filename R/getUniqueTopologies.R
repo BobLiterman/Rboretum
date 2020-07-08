@@ -48,11 +48,11 @@ getUniqueTopologies <- function(trees,print_table,return_table){
   
   # Get unique topologies
   unique_trees <- ape::unique.multiPhylo(trees)
-  unique_count <- ifelse(Rboretum::isPhylo(unique_trees),1,length(unique_trees))
+  unique_count <- length(unique_trees)
   
   # If a single unique topology, strip bootstraps before return
   if(unique_count == 1){
-    return_tree <- unique_trees
+    return_tree <- unique_trees[[1]]
     return_tree$node.label <- NULL
     
     if(print_table | return_summary){

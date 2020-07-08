@@ -55,7 +55,7 @@ getUniqueTopologies <- function(trees,print_table,return_table){
     return_tree <- unique_trees[[1]]
     return_tree$node.label <- NULL
     
-    if(print_table | return_summary){
+    if(print_table | return_table){
       print("Single topology detected. No table/summary to print...")
     }
     

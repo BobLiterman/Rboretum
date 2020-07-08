@@ -11,19 +11,17 @@ getUniqueTopologies <- function(trees,print_table,return_table){
   
   if(!Rboretum::isMultiPhylo(trees,check_rooted = TRUE,check_three_taxa = TRUE)){
     stop("'trees' must be a rooted multiPhylo object where all trees share at least three taxa.")
-  } else if(Rboretum::isMultiPhylo(trees,check_all_equal = TRUE)){ # One unique tree, return first
-    print("Note: All trees have the same topology. Returning first tree...")
-    return(trees[[1]])
-  } else if(Rboretum::isMultiPhylo(trees,check_all_unique = TRUE)){ # Trees are already unique
-    return(trees)
-  } else if(!Rboretum::isMultiPhylo(trees,check_named = TRUE)){ # Trees need names
-    print("Note: Trees being autonamed via treeNamer(trees)...")
-    trees <- Rboretum::treeNamer(trees)
   }
   
+  # Get tree count
+  raw_tree_count <- length(trees)
+  
+  # Check return/print status
   if(missing(print_table)){
     print_table <- FALSE
   } else if(!is.logical(print_table)){
+    print_table <- FALSE
+  } else if(length(print_table)!=1){
     print_table <- FALSE
   }
   
@@ -31,97 +29,93 @@ getUniqueTopologies <- function(trees,print_table,return_table){
     return_table <- FALSE
   } else if(!is.logical(return_table)){
     return_table <- FALSE
+  } else if(length(return_table)!=1){
+    return_table <- FALSE
   }
   
-  tree_taxa <- Rboretum::getSharedTaxa(trees)
-  
-  if(!Rboretum::isMultiPhylo(trees,check_all_taxa = TRUE)){ # Trim to common taxa 
-    trees <- Rboretum::treeTrimmer(trees,tree_taxa)
-  }
-  
-  raw_tree_count <- length(trees)
-  raw_tree_names <- names(trees)
-  
-  # Compare all tree topologies
-  tree_a <- c()
-  tree_b <- c()
-  top_check <- c()
-  
-  for(i in 1:(raw_tree_count-1)){
-    for(j in (i+1):raw_tree_count){
-      tree_a <- c(tree_a,raw_tree_names[[i]])
-      tree_b <- c(tree_b,raw_tree_names[[j]])
-      top_check <- c(top_check,ape::all.equal.phylo(trees[[i]],trees[[j]],use.edge.length = FALSE))
-    }
-  }
-  
-  tree_compare <- data.frame(Tree_1=tree_a,Tree_2=tree_b,Same_Topology=top_check,stringsAsFactors = FALSE) %>% filter(Same_Topology)
-  
-  tree_groups <- list()
-  grouped_trees <- c()
-  rep_trees <- c()
-  
-  for(i in 1:raw_tree_count){
-    
-    next_pos <- length(tree_groups) + 1
-    
-    focal_tree <- raw_tree_names[[i]]
-    if(!focal_tree %in% grouped_trees){
-      
-      rep_trees <- c(rep_trees,i)
-      
-      tree_group <- tree_compare %>% filter(Tree_1 == focal_tree | Tree_2 == focal_tree)
-      
-      if(nrow(tree_group)==0){
-        tree_groups[[next_pos]] <- focal_tree
-        grouped_trees <- c(grouped_trees,focal_tree) %>% unique() %>% sort()
-      }
-      else{
-        tree_groups[[next_pos]] <- as.vector(as.matrix(tree_compare[,c("Tree_1", "Tree_2")])) %>% unique() %>% sort()
-        grouped_trees <- c(grouped_trees,as.vector(as.matrix(tree_compare[,c("Tree_1", "Tree_2")])) %>% unique() %>% sort()) %>% unique() %>% sort()
-      }
-    }
-  }
-  
-  unique_trees_unsorted <- purrr::map(.x = rep_trees,.f = function(x){trees[[x]]})
-  class(unique_trees_unsorted) <- 'multiPhylo'
-  
-  tree_coords <- 1:length(tree_groups)
-  top_count <- purrr::map(.x = tree_coords, .f = function(x){length(tree_groups[[x]])}) %>% unlist() %>% as.integer()
-  top_trees <- purrr::map(.x = tree_coords, .f = function(x){paste(tree_groups[[x]],collapse = ";")}) %>% unlist() %>% as.character()
-  
-  tree_sorter <- data.frame(Tree_ID = as.integer(tree_coords),
-                            Tree_Count = as.integer(top_count),
-                            Tree_Name = as.character(top_trees),stringsAsFactors = FALSE) %>%
-    arrange(desc(Tree_Count),Tree_Name) %>%
-    pull(Tree_ID) %>%
-    as.integer()
-  
-  unique_trees <- unique_trees_unsorted[tree_sorter]
-  names(unique_trees) <- purrr::map(.x=1:length(tree_groups),.f=function(x){paste(c("Topology",x),collapse = '_')})
-  top_count <- top_count[tree_sorter]
-  top_trees <- top_trees[tree_sorter]
-  
-  summary_df <- data.frame(Tree_Name = names(unique_trees),
-                           Trees_with_Topology = as.character(top_trees),
-                           Tree_Count = as.integer(top_count),
-                           Tree_Percent = round((top_count/as.numeric(raw_tree_count)*100),1),stringsAsFactors = FALSE)
-  
-  # Remove bootstrap values from pooled trees
-  pooled_trees <- summary_df %>% filter(Tree_Count > 1) %>% pull(Tree_Name)
-  pooled_count <- length(pooled_trees)
-  
-  for(i in 1:pooled_count){
-    unique_trees[[pooled_trees[i]]]$node.label <- NULL
-  }
-  
-  if(print_table){
-    print(summary_df)
-  }
-  
-  if(return_table){
-    return(summary_df)
+  # Fetch/Add names as needed
+  if(!Rboretum::isMultiPhylo(check_named = TRUE)){
+    trees <- Rboretum::treeNamer(trees)
+    raw_tree_names <- names(trees)
   } else{
-    return(unique_trees)
+    raw_tree_names <- names(trees)
+  }
+  
+  # Reduce multiPhylo to shared taxa
+  if(!Rboretum::isMultiPhylo(trees,check_all_taxa = TRUE)){
+    trees <- Rboretum::treeTrimmer(trees)
+  }
+  
+  # Get unique topologies
+  unique_trees <- ape::unique.multiPhylo(trees)
+  unique_count <- ifelse(Rboretum::isPhylo(unique_trees),1,length(unique_trees))
+  
+  # If a single unique topology, strip bootstraps before return
+  if(unique_count == 1){
+    return_tree <- unique_trees
+    return_tree$node.label <- NULL
+    
+    if(print_table | return_summary){
+      print("Single topology detected. No table/summary to print...")
+    }
+    
+    return(return_tree)
+  } else{
+    
+    # If multiple topologies exist, tally and return
+    unique_tree_names <- paste0("Topology_", 1:unique_count)
+    names(unique_trees) <- unique_tree_names
+    
+    # Create topology list
+    unique_tree_list <- vector("list", unique_count)
+    names(unique_tree_list) <- unique_tree_names
+    
+    # Get tree matches
+    for(tree_num in 1:raw_tree_count){
+      
+      temp_tree <- trees[[tree_num]]
+      temp_name <- raw_tree_names[[tree_num]]
+      
+      for(unique_num in 1:unique_count){
+        temp_unique <- unique_trees[[unique_num]]
+        temp_unique_name <- unique_tree_names[[unique_num]]
+        
+        if(ape::all.equal.phylo(temp_tree,temp_unique,use.edge.length = FALSE)){
+          unique_tree_list[[temp_unique_name]] <- c(unique_tree_list[[temp_unique_name]],temp_name)
+        }
+      }
+    }
+    
+    # Get tree counts for each topolgogy
+    topology_tallies <- purrr::map(.x=unique_tree_names,.f=function(x){length(unique_tree_list[[x]])}) %>% unlist()
+    topology_groups <- purrr::map(.x=unique_tree_names,.f=function(x){Rboretum::semiSorter(unique_tree_list[[x]])}) %>% unlist()
+    
+    summary_df <- data.frame(Tree_Name = names(unique_trees),
+                             Trees_with_Topology = topology_groups,
+                             Tree_Count = as.integer(topology_tallies),
+                             Tree_Percent = round((topology_tallies/as.numeric(raw_tree_count)*100),1),stringsAsFactors = FALSE)
+    
+    # Remove bootstrap values from pooled trees
+    return_tree <- unique_trees
+    names(return_tree) <- unique_tree_names
+    
+    pooled_tree_names <- summary_df %>% filter(Tree_Count > 1) %>% pull(Tree_Name)
+    pooled_count <- length(pooled_tree_names)
+    
+    if(pooled_count>0){
+      for(i in 1:pooled_count){
+        return_tree[[pooled_tree_names[i]]]$node.label <- NULL
+      }
+    }
+    
+    if(print_table){
+      print(summary_df)
+    }
+    
+    if(return_table){
+      return(summary_df)
+    } else{
+      return(return_tree)
+    }
   }
 }

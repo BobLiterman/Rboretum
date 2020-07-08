@@ -125,7 +125,7 @@ readRooted <- function(to_root,root_taxa,tree_names,dummy_names,prefix,suffix){
   # If a single tree path is provided, return a phylo
   if(tree_count == 1){
     tree <- Rboretum::readRooted_Worker(to_root,root_taxa)
-    if(is.na(tree)){
+    if(!Rboretum::isPhylo(tree)){
       stop("'to_root' cannot be rooted with 'root_taxa'")
     } else{
       return(tree)

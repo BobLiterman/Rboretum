@@ -6,7 +6,7 @@
 #'   \item A single, rooted phylo object; or,
 #'   \item A rooted multiPhylo object where all trees share 3+ taxa [Only unique topologies plotted, from most to least common]
 #' }
-#' @param all_trees OPTIONAL: If providing a multiPhylo and TRUE, plot all trees as stored and disable support functions [Default: FALSE, plot unique topologies after pruning to common taxa]
+#' @param basic_plot OPTIONAL: If providing a multiPhylo and TRUE, plot all trees as stored and disable support functions [Default: FALSE, plot unique topologies after pruning to common taxa]
 #' @param tree_support OPTIONAL: Output of getTreeSupport, including data from all clades in 'tree'
 #' @param clade_support OPTIONAL: Output of getTreeClades(return_counts=TRUE), including data from all clades in 'tree'
 #' @param geom_size OPTIONAL: How should geom_nodepoint (or pies) be sized? Options include:	
@@ -77,26 +77,26 @@
 #' @return ggtree object or list of ggtree objects
 #' @export
 
-treePlotter <- function(tree,all_trees,tree_support,clade_support,geom_size,scale_range,use_pies,pie_xnudge,pie_ynudge,pie_legend_position,branch_length,branch_weight,node_label,node_label_font_size,node_label_fontface,node_label_color,node_label_box,node_label_nudge,taxa_font_size,taxa_fontface,taxa_offset,xmax,reverse_x,to_color,colors,highlight_legend,color_branches,plot_title,plot_title_size,plot_title_fontface,legend_shape_size,legend_font_size,legend_title_size,geom_alpha,geom_color){  
+treePlotter <- function(tree,basic_plot,tree_support,clade_support,geom_size,scale_range,use_pies,pie_xnudge,pie_ynudge,pie_legend_position,branch_length,branch_weight,node_label,node_label_font_size,node_label_fontface,node_label_color,node_label_box,node_label_nudge,taxa_font_size,taxa_fontface,taxa_offset,xmax,reverse_x,to_color,colors,highlight_legend,color_branches,plot_title,plot_title_size,plot_title_fontface,legend_shape_size,legend_font_size,legend_title_size,geom_alpha,geom_color){  
   
   # Ensure tree is valid for plotter
   if(!Rboretum::isMultiPhylo(tree) & !Rboretum::isPhylo(tree)){
     stop("'tree' must be either a phylo object or a mulitPhlyo object")
   } 
 
-  # Check all_trees
-  if(missing(all_trees)){
-    all_trees <- FALSE
-  } else if(!is.logical(all_trees)){
-    all_trees <- FALSE
-  } else if(length(all_trees)!=1){
-    all_trees <- FALSE
+  # Check basic_plot
+  if(missing(basic_plot)){
+    basic_plot <- FALSE
+  } else if(!is.logical(basic_plot)){
+    basic_plot <- FALSE
+  } else if(length(basic_plot)!=1){
+    basic_plot <- FALSE
   } else if(Rboretum::isPhylo(tree)){
-    all_trees <- FALSE
+    basic_plot <- FALSE
   }
   
-  if(!all_trees & !Rboretum::isMultiPhylo(tree,check_three_taxa=TRUE)){
-    stop("multiPhylo objects must share 3+ taxa unless 'all_trees' is set to TRUE...")
+  if(!basic_plot & Rboretum::isMultiPhylo(tree) & !Rboretum::isMultiPhylo(tree,check_three_taxa=TRUE)){
+    stop("multiPhylo objects must share 3+ taxa unless 'basic_plot' is set to TRUE...")
   }
   
   # Process trees and plot titles...
@@ -132,7 +132,7 @@ treePlotter <- function(tree,all_trees,tree_support,clade_support,geom_size,scal
     }
     
     # If simply plotting all trees, collect relevant data
-    if(all_trees){
+    if(basic_plot){
       tree_count <- length(tree)
       tree_names <- names(tree)
       
@@ -234,7 +234,7 @@ treePlotter <- function(tree,all_trees,tree_support,clade_support,geom_size,scal
   }
   
   # Is clade prevalence being provided?
-  if(missing(clade_support) | all_trees){
+  if(missing(clade_support) | basic_plot){
     
     cladeSupport <- FALSE
     
@@ -260,7 +260,7 @@ treePlotter <- function(tree,all_trees,tree_support,clade_support,geom_size,scal
   }
   
   # Is alignment signal being mapped onto these trees?
-  if(missing(tree_support) | all_trees){
+  if(missing(tree_support) | basic_plot){
     
     treeSupport <- FALSE
     piePossible <- FALSE
@@ -616,7 +616,7 @@ treePlotter <- function(tree,all_trees,tree_support,clade_support,geom_size,scal
     # Create ggtree_df if generating geom_nodepoint labels
     
     # Unrooted trees are plotted simply
-    if(!root_status | all_trees){
+    if(!root_status | basic_plot){
       ggtree_df <- tibble(node=integer(),Clade=character())
     } else{
       

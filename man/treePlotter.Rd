@@ -6,8 +6,9 @@
 \usage{
 treePlotter(
   tree,
-  clade_support,
+  all_trees,
   tree_support,
+  clade_support,
   geom_size,
   scale_range,
   use_pies,
@@ -48,9 +49,11 @@ treePlotter(
   \item A rooted multiPhylo object where all trees share 3+ taxa [Only unique topologies plotted, from most to least common]
 }}
 
-\item{clade_support}{OPTIONAL: Output of getTreeClades(return_counts=TRUE), including data from all clades in 'tree'}
+\item{all_trees}{OPTIONAL: If providing a multiPhylo and TRUE, plot all trees as stored and disable support functions [Default: FALSE, plot unique topologies after pruning to common taxa]}
 
 \item{tree_support}{OPTIONAL: Output of getTreeSupport, including data from all clades in 'tree'}
+
+\item{clade_support}{OPTIONAL: Output of getTreeClades(return_counts=TRUE), including data from all clades in 'tree'}
 
 \item{geom_size}{OPTIONAL: How should geom_nodepoint (or pies) be sized? Options include:
 \itemize{

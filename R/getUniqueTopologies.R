@@ -34,7 +34,7 @@ getUniqueTopologies <- function(trees,print_table,return_table){
   }
   
   # Fetch/Add names as needed
-  if(!Rboretum::isMultiPhylo(check_named = TRUE)){
+  if(!Rboretum::isMultiPhylo(trees,check_named = TRUE)){
     trees <- Rboretum::treeNamer(trees)
     raw_tree_names <- names(trees)
   } else{

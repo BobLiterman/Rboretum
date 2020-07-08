@@ -24,75 +24,115 @@ treeTrimmer <- function(tree,taxa,remove){
     stop("'tree' does not appear to be a valid phylo or multiPhylo object")
   }
   
-  # Remove 'taxa' or retain 'taxa'?
+  # Get tree taxa and names for multiPhylo
+  if(Rboretum::isPhylo(tree)){
+    tree_taxa <- naturalsort(tree$tip.label)
+    common_taxa <- tree_taxa
+  } else{
+    tree_taxa <- purrr::map(.x=tree,.f=function(x){x$tip.label}) %>% unlist() %>% unique() %>% naturalsort() # Get all unique tip labels among 'trees'
+    common_taxa <- Rboretum::getSharedTaxa(tree)
+    
+    # If trees have names, fetch them
+    if(Rboretum::isMultiPhylo(tree,check_named = TRUE)){
+      tree_names <- names(tree)
+    } else{ # Otherwise,create dummy names
+      tree <- treeNamer(tree)
+      tree_names <- names(tree)
+    }
+  }
+  
+  # Remove or retain 'taxa'?
   if(missing(remove)){
     remove <- FALSE
   } else if(!is.logical(remove)){
     remove <- FALSE
+  } else if(length(remove)!=1){
+    remove <- FALSE
   }
   
-  if(!remove){ # If 'taxa' is the desired list of species to keep...
-    
-    if(length(taxa) < 2){ # Ensure 'taxa' includes 2+ tip labels
-      stop("Can't trim to fewer than two tips.")
+  # Check taxa
+  if(Rboretum::isPhylo(tree)){
+    if(missing(taxa)){
+      stop("'treeTrimmer' requires a character vector of taxa to remove or retain.")
+    } else if(!is.character(taxa)){
+      stop("'treeTrimmer' requires a character vector of taxa to remove or retain.")
     }
+  } else{
     
-    # Prune single tree down to just those tip labels in 'taxa'
+    # If a multiPhylo is provided without taxa, treeTrimmer will trim all trees down to the common set of taxa
+    if(missing(taxa)){
+      taxa <- common_taxa
+      remove <- FALSE
+    } else if(!is.character(taxa)){
+      stop("'treeTrimmer' requires a character vector of taxa to remove or retain.")
+    }
+  }
+
+  # Ensure 'taxa' are in 'tree' if remove=FALSE
+  if(!remove & !all(taxa %in% common_taxa)){
+    stop("Specified 'taxa' are missing from at least one tree.")
+  }
+  
+  # Ensure 2+ 'taxa' if remove=FALSE
+  if(!remove & length(taxa)<2){
+    stop("Can't trim to fewer than two tips.")
+  }
+  
+  # Check that all trees will have 2+ tip labels after pruning if remove=TRUE
+  if(remove){
     if(Rboretum::isPhylo(tree)){
-      if(all(taxa %in% tree$tip.label)){
-        return(ape::drop.tip(tree,tree$tip.label[-match(taxa, tree$tip.label)]))
-      } else{
-        stop("Specified 'taxa' are missing from at least one tree.")
-      }
-    } 
-    
-    if(Rboretum::isMultiPhylo(tree)){ # If a multiPhylo is provided...
-      if(!purrr::map(.x = tree,.f = function(x){all(taxa %in% x$tip.label)}) %>% unlist() %>% all()){ # Check if all 'taxa' are in all trees in 'tree'
-        stop("Specified 'taxa' are missing from at least one tree.")
-      }  
-      # Grab tree names, if named
-      if(!is.null(names(tree))){
-        tree_names <- names(tree)
-        namedTrees <- TRUE
-      } else{ namedTrees <- FALSE }
-      
-      # Prune all trees down to just those tip labels in 'taxa' and rename if necessary.
-      tree <- purrr::map(.x = tree,.f = function(x){ape::drop.tip(x,x$tip.label[-match(taxa, x$tip.label)])})
-      class(tree) <- "multiPhylo"
-      if(namedTrees){ names(tree)  <- tree_names }
-      
-      return(tree)
-    }
-  } else{ # If 'taxa' is the desired list of species to remove...
-    
-    if(Rboretum::isPhylo(tree)){ # If a single tree is provided...
-      
-      keep_taxa <- tree$tip.label[!tree$tip.label %in% taxa] # Get tip labels to keep (those not in 'taxa')
-      
-      if(length(keep_taxa) < 2){ # Ensure final tree includes 2+ tip labels
+      taxa_to_keep <- tree_taxa[!tree_taxa %in% taxa]
+      if(length(taxa_to_keep)<2){
         stop("Can't trim to fewer than two tips.")
       }
-      
-      return(ape::drop.tip(tree,tree$tip.label[match(taxa, tree$tip.label)]))
-      
-    } else if(Rboretum::isMultiPhylo(tree)){ # If a multiPhylo is provided...
-      
-      # Grab tree names, if named
-      if(!is.null(names(tree))){
-        tree_names <- names(tree)
-        namedTrees <- TRUE
-      } else{namedTrees <- FALSE }
-      
-      # Check that all trees will  have 2+ tip labels after pruning  
+    } else{
       if(any(purrr::map(.x = tree,.f = function(x){length(x$tip.label[!x$tip.label %in% taxa])}) %>% unlist() < 2)){
         stop("Can't trim to fewer than two tips.")
-      } else{
-        
-        tree <- purrr::map(.x = tree, .f = function(x){ape::drop.tip(x,x$tip.label[match(taxa, x$tip.label)])}) # Remove 'taxa' from each tree in 'tree'
-        class(tree) <- "multiPhylo"
-        if(namedTrees){ names(tree)  <- tree_names } # Append names if necessary
-        return(tree)
       }
     }
-  } 
+  }
+  
+  # Set taxa to remove
+  if(remove){
+    taxa_to_remove <- taxa
+  } else{
+    if(Rboretum::isPhylo(tree)){
+      taxa_to_remove <- tree_taxa[!tree_taxa %in% taxa]
+    } else{
+      taxa_to_remove <- purrr::map(.x=tree,.f=function(x){x$tip.label[!x$tip.label %in% taxa]})
+    }
+  }
+  
+  # Trim trees and return
+  if(Rboretum::isPhylo(tree)){
+    
+    # If the phylo already contains the desired taxa, return unchanged
+    if(!any(taxa_to_remove %in% tree_taxa)){
+      return(tree)
+    } else{ # If the phylo needs to be pruned, return tree without bootstrap values
+      tree$node.label <- NULL
+      return(ape::drop.tip(tree,taxa_to_remove))
+    }
+  } else{ # Process multiPhylo
+    
+    return_tree <- tree
+    tree_count <- length(return_tree)
+    
+    # Find trees that require pruning (i.e. that contain taxa)
+    for(i in 1:tree_count){
+      
+      temp_tree <- tree[[i]]
+      
+      # If the phylo already contains the desired taxa, return unchanged
+      if(!any(taxa_to_remove[[i]] %in% temp_tree$tip.label)){
+        return_tree[[i]] <- temp_tree
+      } else{ # If the phylo needs to be pruned, return tree without bootstrap values
+        temp_tree$node.label <- NULL
+        return_tree[[i]] <- ape::drop.tip(temp_tree,taxa_to_remove[[i]])
+      }
+    }
+    class(return_tree) <- "multiPhylo"
+    names(return_tree) <- tree_names
+    return(return_tree)
+  }
 }

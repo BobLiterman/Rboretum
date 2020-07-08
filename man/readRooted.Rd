@@ -4,15 +4,7 @@
 \alias{readRooted}
 \title{Rboretum Rooted Tree Reader}
 \usage{
-readRooted(
-  to_root,
-  root_taxa,
-  tree_names,
-  dummy_names,
-  prefix,
-  suffix,
-  disable_bs
-)
+readRooted(to_root, root_taxa, tree_names, dummy_names, prefix, suffix)
 }
 \arguments{
 \item{to_root}{Where to find tree files. Options include:
@@ -30,8 +22,6 @@ readRooted(
 \item{prefix}{OPTIONAL: If 'to_root' is a directory, provide a character vector of file prefixes (e.g. all trees start with "RAxML")}
 
 \item{suffix}{OPTIONAL: If 'to_root' is a directory, provide a character vector of file suffixes (e.g. all trees end with ".nwk")}
-
-\item{disable_bs}{OPTIONAL: If TRUE, don't add a mirrored node label to unrooted trees [Default: FALSE; if trees are unrooted, mirror the missing node label]}
 }
 \value{
 A phylo object, rooted at specified taxa, or a named, rooted multiPhlyo

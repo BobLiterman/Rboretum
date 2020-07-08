@@ -4,12 +4,10 @@
 \alias{readRooted_Worker}
 \title{Rboretum Rooted Tree Reader}
 \usage{
-readRooted_Worker(to_root_worker, root_taxa, disable_bs)
+readRooted_Worker(to_root_worker, root_taxa)
 }
 \arguments{
 \item{root_taxa}{Character vector containing outgroup species IDs (Must be in tree(s) and monophyletic)}
-
-\item{disable_bs}{OPTIONAL: If TRUE, don't add a mirrored node label to unrooted trees [Default: FALSE; if trees are unrooted, mirror the missing node label]}
 
 \item{to_root}{Where to find tree files. Options include:
 \itemize{

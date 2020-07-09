@@ -51,7 +51,7 @@ treeTrimmer <- function(tree,taxa,remove,keep_bs){
     remove <- FALSE
   }
   
-  # String bootstraps after trim?
+  # Strip bootstraps after trim?
   if(missing(keep_bs)){
     keep_bs <- FALSE
   } else if(!is.logical(keep_bs)){

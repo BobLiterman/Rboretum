@@ -2,12 +2,13 @@
 #' 
 #' This function takes a multiPhylo where all trees share 3 or more taxa, and returns the unique topologies after pruning to a common set of taxa
 #' @param trees Named, rooted multiPhylo object where all trees share at least three taxa
+#' @param tree_names: OPTIONAL: If TRUE, name unique trees based off of individual tree names [Default: FALSE, return trees named Topology_1, Topology_2, etc.]
 #' @param print_table OPTIONAL: If TRUE, return trees, and print summary table
 #' @param return_table OPTIONAL: If TRUE, return summary table rather than multiPhylo
 #' @return multiPhylo containing unique topologies
 #' @export
 
-getUniqueTopologies <- function(trees,print_table,return_table){
+getUniqueTopologies <- function(trees,tree_names,print_table,return_table){
   
   if(!Rboretum::isMultiPhylo(trees,check_rooted = TRUE,check_three_taxa = TRUE)){
     stop("'trees' must be a rooted multiPhylo object where all trees share at least three taxa.")
@@ -33,6 +34,14 @@ getUniqueTopologies <- function(trees,print_table,return_table){
     return_table <- FALSE
   }
   
+  if(missing(tree_names)){
+    tree_names <- FALSE
+  } else if(!is.logical(tree_names)){
+    tree_names <- FALSE
+  } else if(length(tree_names)!=1){
+    tree_names <- FALSE
+  }
+  
   # Fetch/Add names as needed
   if(!Rboretum::isMultiPhylo(trees,check_named = TRUE)){
     trees <- Rboretum::treeNamer(trees)
@@ -50,10 +59,9 @@ getUniqueTopologies <- function(trees,print_table,return_table){
   unique_trees <- ape::unique.multiPhylo(trees)
   unique_count <- length(unique_trees)
   
-  # If a single unique topology, strip bootstraps before return
+  # If a single unique topology, combine bootstraps before return
   if(unique_count == 1){
-    return_tree <- unique_trees[[1]]
-    return_tree$node.label <- NULL
+    return_tree <- Rboretum::combineBootstraps(trees)
     
     if(print_table | return_table){
       print("Single topology detected. No table/summary to print...")
@@ -102,10 +110,18 @@ getUniqueTopologies <- function(trees,print_table,return_table){
     pooled_tree_names <- summary_df %>% filter(Tree_Count > 1) %>% pull(Tree_Name)
     pooled_count <- length(pooled_tree_names)
     
+    # Combine bootstrap value for pooled trees
     if(pooled_count>0){
       for(i in 1:pooled_count){
-        return_tree[[pooled_tree_names[i]]]$node.label <- NULL
+        pooled_tree_id <- pooled_tree_names[[i]]
+        pooled_trees <- summary_df %>% filter(Tree_Name==pooled_tree_id) %>% pull(Trees_with_Topology) %>% semiVector()
+        return_tree[[pooled_tree_id]] <- Rboretum::combineBootstraps(trees[pooled_trees])
       }
+    }
+    
+    # Set names if requested
+    if(tree_names){
+      names(return_tree) <- pull(summary_df,Trees_with_Topology)
     }
     
     if(print_table){

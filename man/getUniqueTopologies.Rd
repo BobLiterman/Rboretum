@@ -4,7 +4,7 @@
 \alias{getUniqueTopologies}
 \title{Rboretum Unique Topology Fetcher}
 \usage{
-getUniqueTopologies(trees, print_table, return_table)
+getUniqueTopologies(trees, tree_names, print_table, return_table)
 }
 \arguments{
 \item{trees}{Named, rooted multiPhylo object where all trees share at least three taxa}
@@ -12,6 +12,8 @@ getUniqueTopologies(trees, print_table, return_table)
 \item{print_table}{OPTIONAL: If TRUE, return trees, and print summary table}
 
 \item{return_table}{OPTIONAL: If TRUE, return summary table rather than multiPhylo}
+
+\item{tree_names:}{OPTIONAL: If TRUE, name unique trees based off of individual tree names [Default: FALSE, return trees named Topology_1, Topology_2, etc.]}
 }
 \value{
 multiPhylo containing unique topologies

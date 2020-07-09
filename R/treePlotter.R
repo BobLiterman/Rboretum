@@ -731,17 +731,17 @@ treePlotter <- function(tree,basic_plot,tree_support,clade_support,geom_size,sca
     
     # Process tip labels
     if(!colorTips | color_branches){
-      return_tree <- return_tree + geom_tiplab(size=taxa_font_size,fontface=taxa_fontface,offset = taxa_offset)
+      return_tree <- return_tree + geom_tiplab(size=taxa_font_size,fontface=taxa_fontface,offset = taxa_offset,linesize=0,align=TRUE)
     } else{
       if(is.character(to_color)){
-        return_tree <- return_tree + geom_tiplab(size=taxa_font_size,fontface=taxa_fontface,offset = taxa_offset,aes(color=group),show.legend=FALSE) +
+        return_tree <- return_tree + geom_tiplab(size=taxa_font_size,fontface=taxa_fontface,offset = taxa_offset,linesize=0,align=TRUE,aes(color=group),show.legend=FALSE) +
           scale_color_manual(values = colors)
       } else if(is.list(to_color)){
         if(highlight_legend){
-          return_tree <- return_tree + geom_tiplab(size=taxa_font_size,fontface=taxa_fontface,offset = taxa_offset,aes(color=group)) +
+          return_tree <- return_tree + geom_tiplab(size=taxa_font_size,fontface=taxa_fontface,offset = taxa_offset,linesize=0,align=TRUE,aes(color=group)) +
             scale_color_manual("Focal Clades",breaks = names(to_color),values = colors)          
         } else{
-          return_tree <- return_tree + geom_tiplab(size=taxa_font_size,fontface=taxa_fontface,offset = taxa_offset,aes(color=group),show.legend=FALSE) +
+          return_tree <- return_tree + geom_tiplab(size=taxa_font_size,fontface=taxa_fontface,offset = taxa_offset,linesize=0,align=TRUE,aes(color=group),show.legend=FALSE) +
             scale_color_manual("Focal Clades",breaks = names(to_color),values = colors)
         }
       }
@@ -778,16 +778,16 @@ treePlotter <- function(tree,basic_plot,tree_support,clade_support,geom_size,sca
       }
     }
     
-    # Reverse X-axis?
-    if(reverse_x){
-      return_tree <- return_tree + scale_x_reverse()
-    }
-    
     # Extend X-axis?
     if(extendX){
       if(!reverse_x){
         return_tree <- return_tree + ggplot2::xlim(0,xmax)
       }
+    }
+    
+    # Reverse X-axis?
+    if(reverse_x){
+      return_tree <- return_tree + scale_x_reverse()
     }
     
     # Add titles

@@ -39,7 +39,7 @@
 #'   \item "bold.italic"
 #' }
 #' @param node_label_color OPTIONAL: Set ggtree node label color [Default: 'black']
-#' @param node_label_box OPTIONAL: Set ggtree node label as a label with a white background [Default: FALSE, print as text]
+#' @param node_label_box OPTIONAL: Set ggtree node label as a label with a white background [Default: TRUE]
 #' @param node_label_nudge OPTIONAL: Set ggtree node label nudge_x [Default: 0]
 #' @param taxa_font_size OPTIONAL: Set ggtree tip label font size [Default: 5]
 #' @param taxa_fontface OPTIONAL: Set tip label fontface. Options include:
@@ -412,9 +412,9 @@ treePlotter <- function(tree,basic_plot,tree_support,clade_support,geom_size,sca
   
   # Print geom_nodelab in a box?
   if(missing(node_label_box)){
-    node_label_box <- FALSE
+    node_label_box <- TRUE
   } else if(!is.logical(node_label_box)){
-    node_label_box <- FALSE
+    node_label_box <- TRUE
   }
   
   # Nudge node label?

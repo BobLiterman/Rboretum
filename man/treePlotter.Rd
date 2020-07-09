@@ -97,7 +97,7 @@ treePlotter(
 
 \item{node_label_color}{OPTIONAL: Set ggtree node label color [Default: 'black']}
 
-\item{node_label_box}{OPTIONAL: Set ggtree node label as a label with a white background [Default: FALSE, print as text]}
+\item{node_label_box}{OPTIONAL: Set ggtree node label as a label with a white background [Default: TRUE]}
 
 \item{node_label_nudge}{OPTIONAL: Set ggtree node label nudge_x [Default: 0]}
 

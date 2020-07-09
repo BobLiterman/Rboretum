@@ -731,7 +731,7 @@ treePlotter <- function(tree,basic_plot,tree_support,clade_support,geom_size,sca
     
     # Process tip labels
     if(!colorTips | color_branches){
-      if(return_x){
+      if(reverse_x){
         return_tree <- return_tree + geom_tiplab(size=taxa_font_size,fontface=taxa_fontface,offset = taxa_offset,align=TRUE,linetype=NA,hjust=1)
       } else{
         return_tree <- return_tree + geom_tiplab(size=taxa_font_size,fontface=taxa_fontface,offset = taxa_offset)

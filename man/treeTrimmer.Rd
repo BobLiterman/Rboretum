@@ -4,7 +4,7 @@
 \alias{treeTrimmer}
 \title{Rboretum Tree Trimmer}
 \usage{
-treeTrimmer(tree, taxa, remove)
+treeTrimmer(tree, taxa, remove, keep_bs)
 }
 \arguments{
 \item{tree}{Tree(s) to trim. Options include:
@@ -16,6 +16,8 @@ treeTrimmer(tree, taxa, remove)
 \item{taxa}{Character vector of desired tip labels to keep (or discard if remove=TRUE)}
 
 \item{remove}{OPTIONAL: If TRUE, tip labels specified by 'taxa' are removed from all trees rather than retained [Default: FALSE, prune 'tree' down to 'taxa']}
+
+\item{keep_bs}{OPTIONAL: If TRUE, do not remove bootstrap labels when taxa are trimmed off of tree [Default: FALSE, if tree has taxa removed, also remove node labels]}
 }
 \value{
 Pruned phylo or multiPhylo object

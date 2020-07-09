@@ -71,8 +71,14 @@ combineBootstraps <- function(trees){
   }
   
   # Add new labels to phylo for return
-  base_tree_clades <- purrr::map(.x=subtrees(base_tree),.f=function(x){Rboretum::semiSorter(x$tip.label)}) %>% unlist()
-  base_tree$node.label <- c('Root',purrr::map(.x=base_tree_clades,.f=function(x){bootstrap_list[[x]]}) %>% unlist())
+  base_subtree <- ape::subtrees(base_tree)
+
+  base_tree_clades <- purrr::map(.x=base_subtree,.f=function(x){Rboretum::semiSorter(x$tip.label)}) %>% unlist()
+  base_tree_labels <- purrr::map(.x=base_tree_clades,.f=function(x){bootstrap_list[[x]]}) %>% unlist()
+  
+  # Set root label to 'Root' and set node labels
+  base_tree_labels[[1]] <- 'Root'
+  base_tree$node.label <- base_tree_labels
   
   return(base_tree)
 }

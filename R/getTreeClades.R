@@ -75,6 +75,8 @@ getTreeClades <- function(tree,include_root,print_counts,return_counts,return_sh
         select(Clade,Mirror_Clade) %>% slice(1) %>% 
         unlist() %>% as.character()
       
+      tree_clades <- c(tree_clades,root_clades)
+      
       num_spp <- unlist(tree_clades %>% map(str_count, pattern = ";"))
       tree_clades <- tree_clades[order(num_spp,decreasing = FALSE)] #sort by num spp
       }

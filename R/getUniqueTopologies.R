@@ -122,6 +122,7 @@ getUniqueTopologies <- function(trees,tree_names,print_table,return_table){
     # Set names if requested
     if(tree_names){
       names(return_tree) <- pull(summary_df,Trees_with_Topology)
+      summary_df$Tree_Name <- summary_df$Trees_with_Topology
     }
     
     if(print_table){

@@ -731,18 +731,39 @@ treePlotter <- function(tree,basic_plot,tree_support,clade_support,geom_size,sca
     
     # Process tip labels
     if(!colorTips | color_branches){
-      return_tree <- return_tree + geom_tiplab(size=taxa_font_size,fontface=taxa_fontface,offset = taxa_offset,align=TRUE,linetype=NA)
+      if(return_x){
+        return_tree <- return_tree + geom_tiplab(size=taxa_font_size,fontface=taxa_fontface,offset = taxa_offset,align=TRUE,linetype=NA,hjust=1)
+      } else{
+        return_tree <- return_tree + geom_tiplab(size=taxa_font_size,fontface=taxa_fontface,offset = taxa_offset)
+      }
     } else{
       if(is.character(to_color)){
-        return_tree <- return_tree + geom_tiplab(size=taxa_font_size,fontface=taxa_fontface,offset = taxa_offset,aes(color=group),show.legend=FALSE,align=TRUE,linetype=NA) +
-          scale_color_manual(values = colors)
+        if(reverse_x){
+          return_tree <- return_tree + geom_tiplab(size=taxa_font_size,fontface=taxa_fontface,offset = taxa_offset,aes(color=group),show.legend=FALSE,align=TRUE,linetype=NA,hjust=1) +
+            scale_color_manual(values = colors)
+        } else{
+          return_tree <- return_tree + geom_tiplab(size=taxa_font_size,fontface=taxa_fontface,offset = taxa_offset,aes(color=group),show.legend=FALSE) +
+            scale_color_manual(values = colors)          
+        }
+
       } else if(is.list(to_color)){
         if(highlight_legend){
-          return_tree <- return_tree + geom_tiplab(size=taxa_font_size,fontface=taxa_fontface,offset = taxa_offset,aes(color=group),align=TRUE,linetype=NA) +
-            scale_color_manual("Focal Clades",breaks = names(to_color),values = colors)          
+          if(reverse_x){
+            return_tree <- return_tree + geom_tiplab(size=taxa_font_size,fontface=taxa_fontface,offset = taxa_offset,aes(color=group),align=TRUE,linetype=NA,hjust=1) +
+              scale_color_manual("Focal Clades",breaks = names(to_color),values = colors)               
+          } else{
+            return_tree <- return_tree + geom_tiplab(size=taxa_font_size,fontface=taxa_fontface,offset = taxa_offset,aes(color=group)) +
+              scale_color_manual("Focal Clades",breaks = names(to_color),values = colors)   
+          }
         } else{
-          return_tree <- return_tree + geom_tiplab(size=taxa_font_size,fontface=taxa_fontface,offset = taxa_offset,aes(color=group),show.legend=FALSE,align=TRUE,linetype=NA) +
-            scale_color_manual("Focal Clades",breaks = names(to_color),values = colors)
+          if(reverse_x){
+            return_tree <- return_tree + geom_tiplab(size=taxa_font_size,fontface=taxa_fontface,offset = taxa_offset,aes(color=group),show.legend=FALSE,align=TRUE,linetype=NA,hjust=1) +
+              scale_color_manual("Focal Clades",breaks = names(to_color),values = colors)
+          } else{
+            return_tree <- return_tree + geom_tiplab(size=taxa_font_size,fontface=taxa_fontface,offset = taxa_offset,aes(color=group),show.legend=FALSE) +
+              scale_color_manual("Focal Clades",breaks = names(to_color),values = colors)            
+          }
+
         }
       }
     }

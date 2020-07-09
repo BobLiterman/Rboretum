@@ -802,7 +802,7 @@ treePlotter <- function(tree,basic_plot,tree_support,clade_support,geom_size,sca
     # Reverse X-axis? Extend X-axis?
     
     if(reverse_x & extendX){
-      return_tree <- return_tree + scale_x_reverse(xmax,0)
+      return_tree <- return_tree + scale_x_reverse(limits = c(xmax,0))
     } else if(reverse_x & !extendX){
       return_tree <- return_tree + scale_x_reverse()
     } else if(!reverse_x & extendX){

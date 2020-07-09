@@ -72,7 +72,7 @@ combineBootstraps <- function(trees){
   
   # Add new labels to phylo for return
   base_tree_clades <- purrr::map(.x=subtrees(base_tree),.f=function(x){Rboretum::semiSorter(x$tip.label)}) %>% unlist()
-  base_tree$node.label <- purrr::map(.x=base_tree_clades,.f=function(x){bootstrap_list[[x]]}) %>% unlist()
+  base_tree$node.label <- c('Root',purrr::map(.x=base_tree_clades,.f=function(x){bootstrap_list[[x]]}) %>% unlist())
   
   return(base_tree)
 }

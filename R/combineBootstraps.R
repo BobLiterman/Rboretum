@@ -35,7 +35,7 @@ combineBootstraps <- function(trees){
     tree <- trees[[i]]
     tree_name <- tree_names[[i]]
     
-    subtree <- ape::subtrees(base_tree)
+    subtree <- ape::subtrees(tree)
     subtree_length <- length(subtree)
     
     # If tree lacks node labels, add "-"
@@ -67,17 +67,19 @@ combineBootstraps <- function(trees){
     # Replace NA with "-"
     node_labels[is.na(node_labels)]  <- "-"
     
-    bootstrap_list[[clade]] <- ifelse(all(node_labels=="-"),"-",paste(node_labels,collapse = "/"))
+    bootstrap_list[[clade]] <- ifelse(all(node_labels=="-"),NA,paste(node_labels,collapse = "/"))
   }
   
   # Add new labels to phylo for return
   base_subtree <- ape::subtrees(base_tree)
+  subtree_length <- length(base_subtree)
+  clade_subtree <- base_subtree[2:subtree_length]
 
   base_tree_clades <- purrr::map(.x=base_subtree,.f=function(x){Rboretum::semiSorter(x$tip.label)}) %>% unlist()
   base_tree_labels <- purrr::map(.x=base_tree_clades,.f=function(x){bootstrap_list[[x]]}) %>% unlist()
   
   # Set root label to 'Root' and set node labels
-  base_tree_labels[[1]] <- 'Root'
+  base_tree_labels <- c('Root',base_tree_labels)
   base_tree$node.label <- base_tree_labels
   
   return(base_tree)

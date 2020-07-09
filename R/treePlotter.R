@@ -99,13 +99,38 @@ treePlotter <- function(tree,basic_plot,tree_support,clade_support,geom_size,sca
     stop("multiPhylo objects must share 3+ taxa unless 'basic_plot' is set to TRUE...")
   }
   
+  # Get tree root status and tree taxa
+  if(Rboretum::isPhylo(tree)){ # If one tree is provided...
+    
+    root_status <- Rboretum::isPhylo(tree,check_rooted = TRUE)
+    tree_taxa <- naturalsort(tree$tip.label)
+  
+  } else{ # If a multiPhylo is provided...
+    
+    # Add dummy tree names if necessary
+    if(!Rboretum::isMultiPhylo(tree,check_named = TRUE)){
+      tree <- Rboretum::treeNamer(tree)
+    }
+    
+    raw_tree_names <- names(tree)
+    root_status <- purrr::map(.x=tree,.f=function(x){Rboretum::isPhylo(x,check_rooted = TRUE)}) %>% unlist() %>% all()
+    
+    # If not doing basic plotting, reduce multiPhylo to common taxa
+    if(!basic_plot){
+      tree_taxa <- Rboretum::getSharedTaxa(tree)
+      
+      # If trimming of some trees is required, trim
+      if(!Rboretum::isMultiPhylo(tree,check_all_taxa = TRUE)){
+        tree <- Rboretum::treeTrimmer(tree)
+      }
+      names(tree) <-  raw_tree_names
+    }
+  }
+  
   # Process trees and plot titles...
   if(Rboretum::isPhylo(tree)){ # If one tree is provided...
 
     tree_count <- 1
-    
-    root_status <- Rboretum::isPhylo(tree,check_rooted = TRUE)
-    tree_taxa <- naturalsort(tree$tip.label)
     
     if(root_status){
       tree_clades <- Rboretum::getTreeClades(tree)
@@ -124,15 +149,8 @@ treePlotter <- function(tree,basic_plot,tree_support,clade_support,geom_size,sca
     
   } else{ # If a multiPhylo is provided...
     
-    root_status <- purrr::map(.x=tree,.f=function(x){Rboretum::isPhylo(x,check_rooted = TRUE)}) %>% unlist() %>% all()
-
-    # Add dummy tree names if necessary
-    if(!Rboretum::isMultiPhylo(tree,check_named = TRUE)){
-      tree <- Rboretum::treeNamer(tree)
-    }
-    
-    # If simply plotting all trees, collect relevant data
-    if(basic_plot){
+    # If simply plotting all trees, or if trees contain unrooted trees, collect relevant data
+    if(basic_plot | !root_status){
       tree_count <- length(tree)
       tree_names <- names(tree)
       
@@ -152,20 +170,12 @@ treePlotter <- function(tree,basic_plot,tree_support,clade_support,geom_size,sca
     } else{
       
       # If not plotting all trees, reduce multiPhylo to unique topologies after pruning to common taxa
-    
       if(Rboretum::isMultiPhylo(tree,check_all_equal = TRUE)){
   
         tree_count <- 1
-        tree <- treeTrimmer(tree)[[1]]
-        tree_taxa <- naturalsort(tree$tip.label)
+        tree <- Rboretum::getUniqueTopologies(tree,tree_names = TRUE)
+        tree_clades <- Rboretum::getTreeClades(tree)
 
-        # Remove bootstrap labels if combining trees
-        tree$node.label <- NULL
-        
-        if(root_status){
-          tree_clades <- Rboretum::getTreeClades(tree)
-        }
-        
         # Default: No title for single trees
         if(missing(plot_title)){
           titlePlot <- FALSE
@@ -179,13 +189,8 @@ treePlotter <- function(tree,basic_plot,tree_support,clade_support,geom_size,sca
         
       } else if(Rboretum::isMultiPhylo(tree,check_all_unique = TRUE)){ # If all trees are unique...
         
-        tree_taxa <- Rboretum::getSharedTaxa(tree)
-        tree <- Rboretum::treeTrimmer(tree)
-        
-        if(root_status){
-          tree_clades <- Rboretum::getTreeClades(tree)
-        }
-        
+        tree_clades <- Rboretum::getTreeClades(tree)
+
         tree_count <- length(tree)
         tree_names <- names(tree)
         
@@ -205,16 +210,13 @@ treePlotter <- function(tree,basic_plot,tree_support,clade_support,geom_size,sca
         
       } else if(Rboretum::isMultiPhylo(tree,check_some_equal = TRUE)){ # If trees contains duplicate topologies...
         
-        tree_taxa <- Rboretum::getSharedTaxa(tree)
-        tree_table <- Rboretum::getUniqueTopologies(tree,return_table = TRUE)
-        tree <- Rboretum::getUniqueTopologies(tree)
+        tree_table <- Rboretum::getUniqueTopologies(tree,return_table = TRUE,tree_names = TRUE)
+        tree <- Rboretum::getUniqueTopologies(tree,tree_names = TRUE)
         
-        if(root_status){
-          tree_clades <- Rboretum::getTreeClades(tree)
-        }      
-        
+        tree_clades <- Rboretum::getTreeClades(tree)
+
         tree_count <- length(tree)
-        tree_names <- as.character(tree_table$Trees_with_Topology)
+        tree_names <- names(tree)
         
         if(any(duplicated(tree_names))){
           stop("'tree' multiPhylo contains trees with identical names.")
@@ -891,5 +893,5 @@ treePlotter <- function(tree,basic_plot,tree_support,clade_support,geom_size,sca
       return(return_tree)
     }
   }
-  return(plotList)
+  return(Rboretum::tandemPlotter(plotList))
 }

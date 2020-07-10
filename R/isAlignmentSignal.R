@@ -56,30 +56,28 @@ isAlignmentSignal <- function(test_object,species_info,return_taxa){
     return(FALSE)
   }
   
+  signal_taxa <-semiVector(alignment_taxa) %>% unlist() %>% naturalsort()
+  
+  if(return_taxa){
+    return(signal_taxa)
+  }
+  
   if(missing(species_info)){ # If no species tests are requested,  return TRUE
-    if(return_taxa){
-      return(sort(semiVector(unique(signal_taxa))))
-    } else{
       return(TRUE)
-    }
   } else{ # Ensure species from 'test_object' match species from 'species_info'
-
-    if(Rboretum::isPhylo(species_info)){
-      spp_list = paste(sort(species_info$tip.label),collapse = ";")
-    } else if(Rboretum::isMultiPhylo(species_info,check_three_taxa = TRUE)){
-      spp_list = paste(Rboretum::getSharedTaxa(species_info),collapse = ";")
-    } else if(is.character(species_info) & length(species_info) > 3){
-      spp_list = paste(sort(species_info),collapse = ";")
-    } else { stop("'species_info' is not a valid phylo object, multiPhylo object where all trees share three taxa, or a character vector with 3+ species IDs") }
     
-    if(spp_list != unique(signal_taxa)){
-      return(FALSE)
-    } else{
-      if(return_taxa){
-        return(sort(semiVector(unique(signal_taxa))))
-      } else{
+    if(Rboretum::isPhylo(species_info)){
+      spp_list = species_info$tip.label
+    } else if(Rboretum::isMultiPhylo(species_info,check_three_taxa = TRUE)){
+      spp_list = Rboretum::getSharedTaxa(species_info)
+    } else if(is.character(species_info) & length(species_info) > 3 & !any(duplicated(species_info))){
+      spp_list = species_info
+    } else { stop("'species_info' is not a valid phylo object, multiPhylo object where all trees share three taxa, or a character vector with 3+ unique species IDs") }
+    
+    if(all(spp_list %in% signal_taxa) & all(signal_taxa %in% spp_list)){
         return(TRUE)
-      }    
-    }
+      } else{
+        return(FALSE)
+      }
   }
 }

@@ -8,10 +8,8 @@ trimmed_tree <- Rboretum::treeTrimmer(test_tree,taxa = 'Species_A',remove=TRUE)
 
 test_that("taxa present as expected", {
   expect_true(checkTips(test_tree,'Species_A'))
-  expect_true(checkTips(test_tree,'Species_C',check_root=TRUE))
-  expect_true(checkTips(test_tree,'Species_H',check_root=TRUE))
   expect_true(checkTips(test_tree,c('Species_C','Species_H'),check_root=TRUE))
-  expect_false(checkTips(test_tree,'Species_Q'))
+  expect_false(checkTips(test_tree,'Species_Q')) # Species not present in tree
   expect_false(checkTips(trimmed_tree,'Species_A'))
 })
 
@@ -25,11 +23,8 @@ three_trees_b[[1]] <- trimmed_tree
 
 test_that("taxa present as expected multiphylo", {
   expect_true(checkTips(three_trees,'Species_A'))
-  expect_false(checkTips(three_trees,'Species_Q'))
-  expect_true(checkTips(three_trees,'Species_C',check_root=TRUE))
-  expect_true(checkTips(three_trees,'Species_H',check_root=TRUE))
+  expect_false(checkTips(three_trees,'Species_Q')) # Species not present in tree
   expect_true(checkTips(three_trees,c('Species_C','Species_H'),check_root=TRUE))
-  expect_false(checkTips(three_trees_b,'Species_A')) #one tree is missing the species
-  expect_true(checkTips(three_trees_b,'Species_C',check_root=TRUE))
-  expect_true(checkTips(three_trees_b,'Species_H',check_root=TRUE))
+  expect_false(checkTips(three_trees_b,'Species_A')) # One tree is missing the species
+  expect_true(checkTips(three_trees_b,c('Species_C','Species_H'),check_root=TRUE))
 })

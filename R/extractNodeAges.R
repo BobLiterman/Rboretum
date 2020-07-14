@@ -1,7 +1,7 @@
 #' Rboretum Node Age Extractor
 #'
 #' This function takes a tree(s) where branches are scaled to time and returns the estimated node ages, or a summary of node ages across trees
-#' @param tree Tree(s) to extract date information from. Options include:
+#' @param tree Tree(s) to extract date information from. Must be ultrametric. Options include:
 #' \itemize{
 #'   \item A single, rooted phylo object; or,
 #'   \item A rooted multiPhylo object where all trees share 3+ taxa and support a single topology 
@@ -12,23 +12,27 @@
 #'   \item median: Return median node age for each node
 #'   \item both: Return mean, median, and summary statstics for each node
 #' }
-#' @return A dataframe containing (a) node/date information for each tree or (b) clade-level ages summarized across trees in a multiPhlyo if return_summary is set to 'mean',',median', or 'full'
+#' @return A dataframe containing (a) node/date information for each tree or (b) clade-level ages summarized across trees in a multiPhlyo if return_summary is set to 'mean',',median', or 'both'
 #' @export
 
 extractNodeAges <- function(tree,return_summary){
   
   if(missing(tree)){
-    stop("extractNodeAges requires a rooted phylo object, or a rooted set of multiPhylo trees that all support a common topology.")
+    stop("extractNodeAges requires a ultrametric, rooted phylo object, or a rooted set of ultrametric multiPhylo trees that all support a common topology.")
   }
   
   # Ensure tree is valid
   if(!Rboretum::isPhylo(tree,check_rooted = TRUE) & !Rboretum::isMultiPhylo(tree,check_rooted = TRUE,check_three_taxa = TRUE)){
-    stop("extractNodeAges requires a rooted phylo or multiPhylo object where all trees share 3+ taxa")  
+    stop("extractNodeAges requires a rooted phylo object...")  
+  } else if(!ape::is.ultrametric.phylo(tree)){
+    stop("extractNodeAges requires an ultrametric phylo object...")
   }
   
   # If multiPhylo, ensure a single topology
   if(Rboretum::isMultiPhylo(tree,check_rooted = TRUE,check_three_taxa = TRUE) & !Rboretum::isMultiPhylo(tree,check_all_equal = TRUE)){
-    stop("Topologies vary among trees in supplied multiPhylo. getNodeAges only accepts a single tree, or a multiPhylo where all trees share a single topology.")
+    stop("Topologies vary among trees in supplied multiPhylo. getNodeAges only accepts a single tree, or a multiPhylo where all trees share a single topology...")
+  } else if(!ape::is.ultrametric.multiPhylo(tree)){
+    stop("extractNodeAges requires an ultrametric multiPhylo object...")
   }
   
   # Return summary data?
@@ -60,8 +64,7 @@ extractNodeAges <- function(tree,return_summary){
     
     # Trim multiPhylo to common taxa if necessary
     if(!Rboretum::isMultiPhylo(tree,check_all_taxa = TRUE)){
-      tree_taxa <- Rboretum::getSharedTaxa(tree)
-      tree <- Rboretum::treeTrimmer(tree,tree_taxa)
+      tree <- Rboretum::treeTrimmer(tree)
     }
     
     # Add dummy names if necessary
@@ -78,9 +81,8 @@ extractNodeAges <- function(tree,return_summary){
     no_bs_tree <- tree[[i]]
     no_bs_tree$node.label <- NULL
     
-    tree_clades <- Rboretum::getTreeClades(no_bs_tree,include_root = TRUE)
-    
-    tree_nodes <- purrr::map(.x=tree_clades,.f=function(x){ape::getMRCA(no_bs_tree,semiVector(x))}) %>% unlist() %>% as.character()
+    tree_nodes <- purrr::map(.x=ape::subtrees(no_bs_tree),.f=function(x){x$node.label[[1]]}) %>% unlist()
+    tree_clades <- purrr::map(.x=ape::subtrees(no_bs_tree),.f=function(x){semiSorter(x$tip.label)}) %>% unlist()
     node_ages <- purrr::map(.x=tree_nodes,.f=function(x){ape::branching.times(no_bs_tree)[x] %>% as.numeric()}) %>% unlist()
     
     tree_date_df <- tibble(Clade=as.character(tree_clades),Node_Age=as.numeric(node_ages))

@@ -7,7 +7,7 @@
 extractNodeAges(tree, return_summary)
 }
 \arguments{
-\item{tree}{Tree(s) to extract date information from. Options include:
+\item{tree}{Tree(s) to extract date information from. Must be ultrametric. Options include:
 \itemize{
   \item A single, rooted phylo object; or,
   \item A rooted multiPhylo object where all trees share 3+ taxa and support a single topology 
@@ -21,7 +21,7 @@ extractNodeAges(tree, return_summary)
 }}
 }
 \value{
-A dataframe containing (a) node/date information for each tree or (b) clade-level ages summarized across trees in a multiPhlyo if return_summary is set to 'mean',',median', or 'full'
+A dataframe containing (a) node/date information for each tree or (b) clade-level ages summarized across trees in a multiPhlyo if return_summary is set to 'mean',',median', or 'both'
 }
 \description{
 This function takes a tree(s) where branches are scaled to time and returns the estimated node ages, or a summary of node ages across trees

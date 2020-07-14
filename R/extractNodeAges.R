@@ -87,7 +87,7 @@ extractNodeAges <- function(tree,return_summary){
     
     tree_nodes <- purrr::map(.x=ape::subtrees(no_bs_tree),.f=function(x){x$node.label[[1]]}) %>% unlist()
     tree_clades <- purrr::map(.x=ape::subtrees(no_bs_tree),.f=function(x){semiSorter(x$tip.label)}) %>% unlist()
-    node_ages <- purrr::map(.x=tree_nodes,.f=function(x){ape::branching.times(no_bs_tree)[x] %>% as.numeric()}) %>% unlist()
+    node_ages <- purrr::map(.x=tree_nodes,.f=function(x){ape::branching.times(no_bs_tree)[as.character(x)] %>% as.numeric()}) %>% unlist()
     
     tree_date_df <- tibble(Clade=as.character(tree_clades),Node_Age=as.numeric(node_ages))
     

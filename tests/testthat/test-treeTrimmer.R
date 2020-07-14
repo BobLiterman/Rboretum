@@ -10,13 +10,14 @@ test_tree_tips <- test_tree$tip.label
 test_tree_noG_tips <- test_tree_noG$tip.label
 test_tree_clade_tips <- test_tree_clade$tip.label
 
-test_that("Tree trimming results in correct tip labels for phylo...", {
-  
-  # Check that treeTrimmer returns a phylo
+# Check that treeTrimmer returns a phylo
+test_that("treeTrimmer returns phylo...", {
   expect_s3_class(test_tree_noG, "phylo")
   expect_s3_class(test_tree_clade, "phylo")
-  
-  # Check tips
+})
+
+# Check tips
+test_that("treeTrimmer removes the correct tips from phylo...", {
   expect_true("Species_G" %in% test_tree_tips)
   expect_false("Species_G" %in% test_tree_noG_tips)
   expect_true("Species_G" %in% test_tree_clade_tips)
@@ -41,14 +42,15 @@ test_trees_noG_tips <- purrr::map(.x=test_trees_noG,.f=function(x){x$tip.label})
 test_trees_clade_tips <- purrr::map(.x=test_trees_clade,.f=function(x){x$tip.label})
 mixed_trimmed_tips <- purrr::map(.x=mixed_trimmed,.f=function(x){x$tip.label})
 
-test_that("Tree trimming results in correct tip labels for multiPhylo...", {
-  
-  # Check that treeTrimmer returns a multiPhylo
+# Check that treeTrimmer returns a multiPhylo
+test_that("treeTrimmer returns multiPhylo...", {
   expect_s3_class(test_trees_noG, "multiPhylo")
   expect_s3_class(test_trees_clade, "multiPhylo")
   expect_s3_class(mixed_trimmed, "multiPhylo")
-  
-  # Check tips
+})
+
+# Check tips
+test_that("treeTrimmer removes the correct tips from multiPhylo...", {
   expect_true(purrr::map(.x=test_trees_tips,.f=function(x){"Species_G" %in% x}) %>% unlist() %>% all()) # Species_G should be in all trees
   expect_false(purrr::map(.x=test_trees_noG_tips,.f=function(x){"Species_G" %in% x}) %>% unlist() %>% any()) # Species_G should be in no trees
   expect_false(purrr::map(.x=mixed_trimmed_tips,.f=function(x){"Species_G" %in% x}) %>% unlist() %>% any()) # Species_G should be in no trees

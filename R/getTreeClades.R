@@ -134,7 +134,7 @@ getTreeClades <- function(tree,include_root,print_counts,return_counts,return_sh
       
       if(nrow(shared_clades)>0){
         shared_clades <- shared_clades %>%
-          pull(Clade) %>% as.character() %>% sort()
+          pull(Clade) %>% as.character() %>% naturalsort()
         return(shared_clades)
       } else{
         stop("Trees in 'trees' share no clades...")
@@ -142,7 +142,7 @@ getTreeClades <- function(tree,include_root,print_counts,return_counts,return_sh
     } else if(return_counts){
       return(clade_sorter)
     } else{
-      sorted_clades <- pull(clade_sorter,Clade) %>% as.character() %>% sort()
+      sorted_clades <- pull(clade_sorter,Clade) %>% as.character() %>% naturalsort()
       return(sorted_clades)
     }
     

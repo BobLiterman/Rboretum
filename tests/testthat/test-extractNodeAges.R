@@ -15,21 +15,21 @@ dates_2 <- extractNodeAges(chronogram_2)
 dates_3 <- extractNodeAges(chronogram_3)
 
 test_that('extractNodeAges is returning expected dataframes for a phylo...', {
-  expect_is(dates_1,'data.frame')
-  expect_is(dates_2,'data.frame')
-  expect_is(dates_3,'data.frame')
+  expect_type(dates_1,'data.frame')
+  expect_type(dates_2,'data.frame')
+  expect_type(dates_3,'data.frame')
   
   expect_true(all(names(dates_1)==c('Clade','Node_Age')))
   expect_true(all(names(dates_2)==c('Clade','Node_Age')))
   expect_true(all(names(dates_3)==c('Clade','Node_Age')))
   
-  expect_is(dates_1$Clade, 'character')
-  expect_is(dates_2$Clade, 'character')
-  expect_is(dates_3$Clade, 'character')
+  expect_type(dates_1$Clade, 'character')
+  expect_type(dates_2$Clade, 'character')
+  expect_type(dates_3$Clade, 'character')
   
-  expect_is(dates_1$Node_Age, 'double')
-  expect_is(dates_2$Node_Age, 'double')
-  expect_is(dates_3$Node_Age, 'double')
+  expect_type(dates_1$Node_Age, 'double')
+  expect_type(dates_2$Node_Age, 'double')
+  expect_type(dates_3$Node_Age, 'double')
 })
 
 test_that('extractNodeAges is returning the correct node ages for a phylo...', {
@@ -80,31 +80,31 @@ both_median_values <- setNames(both_dates$Median_Node_Age, both_dates$Clade)
 
 test_that('extractNodeAges is returning expected dataframes for a multiPhylo...', {
   
-  expect_is(raw_dates,'data.frame')
-  expect_is(mean_dates,'data.frame')
-  expect_is(median_dates,'data.frame')
-  expect_is(both_dates,'data.frame')
+  expect_type(raw_dates,'data.frame')
+  expect_type(mean_dates,'data.frame')
+  expect_type(median_dates,'data.frame')
+  expect_type(both_dates,'data.frame')
   
   expect_true(all(names(raw_dates)==c('Clade','Node_Age','Tree_Name')))
   expect_true(all(names(mean_dates)==c('Clade','Node_Age')))
   expect_true(all(names(median_dates)==c('Clade','Node_Age')))
   expect_true(all(names(both_dates)==c("Clade","Mean_Node_Age","Median_Node_Age","StdDev_Node_Age","MAD_Node_Age")))
   
-  expect_is(raw_dates$Clade, 'character')
-  expect_is(mean_dates$Clade, 'character')
-  expect_is(median_dates$Clade, 'character')
-  expect_is(both_dates$Clade, 'character')
+  expect_type(raw_dates$Clade, 'character')
+  expect_type(mean_dates$Clade, 'character')
+  expect_type(median_dates$Clade, 'character')
+  expect_type(both_dates$Clade, 'character')
   
-  expect_is(raw_dates$Node_Age, 'double')
-  expect_is(mean_dates$Node_Age, 'double')
-  expect_is(median_dates$Node_Age, 'double')
+  expect_type(raw_dates$Node_Age, 'double')
+  expect_type(mean_dates$Node_Age, 'double')
+  expect_type(median_dates$Node_Age, 'double')
 
-  expect_is(raw_dates$Tree_Name, 'character')
+  expect_type(raw_dates$Tree_Name, 'character')
   
-  expect_is(both_dates$Mean_Node_Age, 'double')
-  expect_is(both_dates$Median_Node_Age, 'double')
-  expect_is(both_dates$StdDev_Node_Age, 'double')
-  expect_is(both_dates$MAD_Node_Age, 'double')
+  expect_type(both_dates$Mean_Node_Age, 'double')
+  expect_type(both_dates$Median_Node_Age, 'double')
+  expect_type(both_dates$StdDev_Node_Age, 'double')
+  expect_type(both_dates$MAD_Node_Age, 'double')
 })
 
 test_that('extractNodeAges is returning the correct node ages for a multiPhylo...', {

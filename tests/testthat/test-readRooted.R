@@ -7,14 +7,10 @@ two_root <- readRooted("inst/extdata/unrootedTrees/Gene_1.nwk",root_taxa = c('Sp
 one_mirror <- one_root$tip.label[one_root$tip.label != 'Species_H']
 two_mirror <- two_root$tip.label[!two_root$tip.label %in% c('Species_C','Species_H')]
 
-# Test that readRooted returns a phylo
-test_that("Trees read as phylo...", {
-  expect_s3_class(one_root, "phylo")
-  expect_s3_class(two_root, "phylo")
-})
-
 # Test that readRooted returns a rooted phylo
 test_that("Trees read as rooted phylo...", {
+  expect_type(one_root, "phylo")
+  expect_type(two_root, "phylo")
   expect_true(ape::is.rooted.phylo(one_root))
   expect_true(ape::is.rooted.phylo(two_root))
 })
@@ -34,14 +30,10 @@ file_names <- c('inst/extdata/unrootedTrees/Gene_1.nwk','inst/extdata/unrootedTr
 one_root_trees <- readRooted(to_root = file_names,root_taxa = 'Species_H')
 two_root_trees <- readRooted(to_root = file_names,root_taxa = c('Species_C','Species_H'))
 
-# Test that readRooted returns a multiPhylo
-test_that("Trees read as multiPhylo...", {
-  expect_s3_class(one_root_trees, "multiPhylo")
-  expect_s3_class(two_root_trees, "multiPhylo")
-})
-
 # Test that readRooted returns a rooted multiPhylo
 test_that("Trees read as rooted multiPhylo...", {
+  expect_type(one_root_trees, "multiPhylo")
+  expect_type(two_root_trees, "multiPhylo")
   expect_true(purrr::map(.x=one_root_trees,.f=function(x){ape::is.rooted.phylo(x)}) %>% unlist() %>% all())
   expect_true(purrr::map(.x=two_root_trees,.f=function(x){ape::is.rooted.phylo(x)}) %>% unlist() %>% all())
 })

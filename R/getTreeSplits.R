@@ -28,6 +28,7 @@ getTreeSplits <- function(tree){
     
     # If all topologies in multiPhylo match, return a single dataframe containing the splits
     if(Rboretum::isMultiPhylo(tree,check_all_equal = TRUE)){
+      print("All trees supplied to getTreeSplits share a common topology...returning results from common topology...")
       tree <- tree[[1]]
       split_df <- getTreeSplits_Worker(tree)
       return(split_df)

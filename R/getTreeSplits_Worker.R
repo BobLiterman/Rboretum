@@ -44,7 +44,7 @@ getTreeSplits_Worker <- function(tree){
     }
   }
   
-  split_df <- data.frame("Clade"=as.character(mono_clades),"Mirror_Clade"=as.character(mirror_clades),"Split_Node"=as.integer(node_list)) %>%
+  split_df <- tibble("Clade"=as.character(mono_clades),"Mirror_Clade"=as.character(mirror_clades),"Split_Node"=as.integer(node_list)) %>%
     filter((!duplicated(Split_Node))) # Two entries for root reduced to one
   
   return(split_df)

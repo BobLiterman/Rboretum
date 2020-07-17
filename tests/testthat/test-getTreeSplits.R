@@ -1,4 +1,4 @@
-context("treeTrimmer")
+context("getTreeSplits")
 
 #read tree
 tree2 <- readRooted("inst/extdata/Gene_1.nwk",root_taxa = c('Species_C','Species_H'))

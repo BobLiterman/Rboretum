@@ -15,9 +15,12 @@ dates_2 <- extractNodeAges(chronogram_2)
 dates_3 <- extractNodeAges(chronogram_3)
 
 test_that('extractNodeAges is returning expected dataframes for a phylo...', {
-  expect_type(dates_1,'data.frame')
-  expect_type(dates_2,'data.frame')
-  expect_type(dates_3,'data.frame')
+  expect_s3_class(dates_1,'data.frame')
+  expect_s3_class(dates_2,'data.frame')
+  expect_s3_class(dates_3,'data.frame')
+  expect_type(dates_1,'list')
+  expect_type(dates_2,'list')
+  expect_type(dates_3,'list')
   
   expect_true(all(names(dates_1)==c('Clade','Node_Age')))
   expect_true(all(names(dates_2)==c('Clade','Node_Age')))
@@ -80,10 +83,14 @@ both_median_values <- setNames(both_dates$Median_Node_Age, both_dates$Clade)
 
 test_that('extractNodeAges is returning expected dataframes for a multiPhylo...', {
   
-  expect_type(raw_dates,'data.frame')
-  expect_type(mean_dates,'data.frame')
-  expect_type(median_dates,'data.frame')
-  expect_type(both_dates,'data.frame')
+  expect_s3_class(raw_dates,'data.frame')
+  expect_s3_class(mean_dates,'data.frame')
+  expect_s3_class(median_dates,'data.frame')
+  expect_s3_class(both_dates,'data.frame')
+  expect_type(raw_dates,'list')
+  expect_type(mean_dates,'list')
+  expect_type(median_dates,'list')
+  expect_type(both_dates,'list')
   
   expect_true(all(names(raw_dates)==c('Clade','Node_Age','Tree_Name')))
   expect_true(all(names(mean_dates)==c('Clade','Node_Age')))

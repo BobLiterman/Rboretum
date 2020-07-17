@@ -8,7 +8,7 @@ name_table <- read_tsv('inst/extdata/Name_Conversion_Table.tsv')
 renamed_tree <- Rboretum::convertLabels(to_convert = test_tree,name_df = name_table,from = 'Alignment_IDs',to='Common_Names')
 
 test_that("Renamed tree is a phylo...", {
-  expect_type(renamed_tree, "phylo")
+  expect_s3_class(renamed_tree, "phylo")
 })
 
 test_that("Phylo names substituted correctly...", {
@@ -24,7 +24,7 @@ three_trees <- readRooted(to_root = file_names,root_taxa = c('Species_C','Specie
 renamed_trees <- Rboretum::convertLabels(to_convert = three_trees,name_df = name_table,from = 'Alignment_IDs',to='Common_Names')
 
 test_that("Renamed tree is a multiPhylo...", {
-  expect_type(renamed_tree, "multiPhylo")
+  expect_s3_class(renamed_tree, "multiPhylo")
 })
 
 test_that("multiPhylo names substituted correctly...", {

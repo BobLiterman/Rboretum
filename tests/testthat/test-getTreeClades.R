@@ -56,7 +56,8 @@ all_root_clades <- c(clades_1_root,clades_2_root,clades_3_root) %>% unique() %>%
 test_that('getTreeClades returning character vectors and dataframes for a multiPhylo...', {
   expect_type(clades_with_root, 'character')
   expect_type(clades_without_root, 'character')
-  expect_type(clade_counts, 'data.frame')
+  expect_s3_class(clade_counts, 'data.frame')
+  expect_type(clade_counts, 'list')
   expect_true(all(names(clade_counts) == c('Clade','Count','Trees')))
   expect_type(clade_counts$Clade,'character')
   expect_type(clade_counts$Count,'integer')

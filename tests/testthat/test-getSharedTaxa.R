@@ -21,13 +21,13 @@ shared_33 <- getSharedTaxa(multi_33)
 
 test_that('getSharedTaxa retuns a character vector...', {
   expect_is(shared_12,'vector')
-  expect_is(shared_12, 'character')
+  expect_type(shared_12, 'character')
   expect_is(shared_13,'vector')
-  expect_is(shared_13, 'character')
+  expect_type(shared_13, 'character')
   expect_is(shared_23,'vector')
-  expect_is(shared_23, 'character')
+  expect_type(shared_23, 'character')
   expect_is(shared_33,'vector')
-  expect_is(shared_33, 'character')
+  expect_type(shared_33, 'character')
 })
 
 test_that("getSharedTaxa retuns the correct taxa...", {

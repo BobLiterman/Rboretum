@@ -12,8 +12,8 @@ test_tree_clade_tips <- test_tree_clade$tip.label
 
 # Check that treeTrimmer returns a phylo
 test_that("treeTrimmer returns phylo...", {
-  expect_type(test_tree_noG, "phylo")
-  expect_type(test_tree_clade, "phylo")
+  expect_s3_class(test_tree_noG, "phylo")
+  expect_s3_class(test_tree_clade, "phylo")
 })
 
 # Check tips
@@ -44,9 +44,9 @@ mixed_trimmed_tips <- purrr::map(.x=mixed_trimmed,.f=function(x){x$tip.label})
 
 # Check that treeTrimmer returns a multiPhylo
 test_that("treeTrimmer returns multiPhylo...", {
-  expect_type(test_trees_noG, "multiPhylo")
-  expect_type(test_trees_clade, "multiPhylo")
-  expect_type(mixed_trimmed, "multiPhylo")
+  expect_s3_class(test_trees_noG, "multiPhylo")
+  expect_s3_class(test_trees_clade, "multiPhylo")
+  expect_s3_class(mixed_trimmed, "multiPhylo")
 })
 
 # Check tips

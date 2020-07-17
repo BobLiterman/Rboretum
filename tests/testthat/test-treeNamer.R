@@ -6,7 +6,7 @@ three_trees <- readRooted(to_root = file_names,root_taxa = c('Species_C','Specie
 named_trees <- Rboretum::treeNamer(three_trees)
 
 test_that("treeNamer returns a multiPhylo...", {
-  expect_type(named_trees, "multiPhylo")
+  expect_s3_class(named_trees, "multiPhylo")
 })
 
 test_that("Trees named correctly...", {

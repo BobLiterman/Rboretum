@@ -11,41 +11,30 @@ getTreeSplits_Worker <- function(tree){
     stop("'getTreeSplits_Worker' requires a rooted tree.")
   }
   
-  # Get species
-  tree_species <- naturalsort(tree$tip.label)
-  species_count <- length(tree_species)
-
-  mono_clades <- c()
-  mirror_clades <- c()
-  node_list <- c()
+  # Strip bootsrap values if present
+  tree <- stripNodeLabels(tree)
   
-  # Process subtrees except first entry (entire tree)
-  for(j in ape::subtrees(tree)[-1]){
-    temp_clade <- j$tip.label
-    mirror_clade <- dplyr::setdiff(tree_species, temp_clade)
-    
-    # Find monophyletic group
-    mono_A <- ape::is.monophyletic(tree,temp_clade)
-    mono_B <- ape::is.monophyletic(tree,mirror_clade)
-    
-    # Note actual monophyletic clades
-    if(mono_A & !(mono_B)){
-      mono_clades <- c(mono_clades,Rboretum::vectorSemi(naturalsort(temp_clade)))
-      mirror_clades <- c(mirror_clades,Rboretum::vectorSemi(naturalsort(mirror_clade)))
-      node_list <- c(node_list,ape::getMRCA(tree,temp_clade))
-    } else if(mono_B & !(mono_A)){
-      mono_clades <- c(mono_clades,Rboretum::vectorSemi(naturalsort(mirror_clade)))
-      mirror_clades <- c(mirror_clades,Rboretum::vectorSemi(naturalsort(temp_clade)))
-      node_list <- c(node_list,ape::getMRCA(tree,mirror_clade))
-    } else if(mono_A & mono_B){ # Root clade
-      mono_clades <- c(mono_clades,Rboretum::vectorSemi(naturalsort(temp_clade)))
-      mirror_clades <- c(mirror_clades,Rboretum::vectorSemi(naturalsort(mirror_clade)))
-      node_list <- c(node_list,NA)
-    }
+  # Get species + subtree
+  tree_species <- naturalsort(tree$tip.label)
+  tree_subtree <- subtrees(tree)
+  subtree_length <- length(tree_subtree)
+  
+  # Root detection for clade listing
+  if(detectSingleRoot(tree)){
+    tree_subtree <- subtrees(tree)[2:subtree_length] # Remove top subtree (whole tree)
+  } else{
+    tree_subtree <- subtrees(tree)[3:subtree_length] # Remove top two subtrees (whole tree + other side of root)
   }
   
-  split_df <- tibble("Clade"=as.character(mono_clades),"Mirror_Clade"=as.character(mirror_clades),"Split_Node"=as.integer(node_list)) %>%
-    filter((!duplicated(Split_Node))) # Two entries for root reduced to one
+  # Get clades, mirror clades, and node list
+  tree_clades <- purrr::map(.x=tree_subtree,.f=function(x){semiSorter(x$tip.label)}) %>% unlist()
+  mirror_clades <- purrr::map(.x=tree_clades,.f=function(x){semiSorter(setdiff(tree_species,semiVector(x)))}) %>% unlist()
+  node_list <- purrr::map(.x=tree_subtree,.f=function(x){x$node.label[1]}) %>% unlist()
   
+  split_df <- tibble("Clade"=as.character(tree_clades),"Mirror_Clade"=as.character(mirror_clades),"Split_Node"=as.integer(node_list)) %>%
+    rowwise() %>%
+    mutate(Split_Node = ifelse(ape::is.monophyletic(tree,semiVector(Clade)) & ape::is.monophyletic(tree,semiVector(Mirror_Clade)),NA,Split_Node)) %>%
+    ungroup()
+
   return(split_df)
 }

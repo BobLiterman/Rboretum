@@ -18,11 +18,10 @@ def getAlignmentSpecies(alignment_path):
         # Get alignment species
         align_species = list()
         for seq_record in align:
-            align_species.append(seq_record.id)
-
-        sort_species = [str(i) for i in align_species]
-        sort_species.sort()
-        return sort_species
+            align_species.append(str(seq_record.id))
+        
+        align_species.sort()
+        return align_species
     
     except:
         return []

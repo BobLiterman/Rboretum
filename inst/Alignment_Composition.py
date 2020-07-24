@@ -15,7 +15,7 @@ from operator import itemgetter
 from collections import Counter
 import multiprocessing as mp
 from itertools import chain
-from getAlignmentSpecies import getAlignmentSpecies
+from Alignment_Species import getAlignmentSpecies
 
 def getAlignmentComposition(alignment_path1,alignment_name1,spp_info):
     #ALIGNMENT_NAME########

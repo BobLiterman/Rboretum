@@ -148,6 +148,8 @@ def getSiteSplits(pos):
     else:
         gap_taxa_string = np.nan
 
+    print("GAP")
+    
     # If column contains any non-bases, remove them and reassess pattern unless fewer than three bases remain
     if(not set(allele_list).issubset(set(bases))):
         non_base_list = list(set(seq_string) - set(bases))
@@ -179,6 +181,8 @@ def getSiteSplits(pos):
     else:
         non_base_taxa_string = np.nan
         non_base_count = 0
+
+    print("NONBASE")
         
     # If column contains any singletons, remove them and reassess pattern unless fewer than three bases remain
     if(1 in allele_counts):
@@ -212,6 +216,8 @@ def getSiteSplits(pos):
         singleton_taxa_string = np.nan
         singleton_count = 0
 
+    print("SINGLETON")
+
     # If only a single allele is present, return 'singleton' or 'invariant' result
     if(allele_count == 1):
         if singleton_count > 1:
@@ -232,6 +238,8 @@ def getSiteSplits(pos):
         
         return(pd.DataFrame([[pos,seq_bases,'biallelic',non_base_taxa_string,non_base_count,singleton_taxa_string,singleton_count,gap_taxa_string,base_1_taxa,base_2_taxa,np.nan,np.nan,np.nan]], columns=['Zeroed_Site_Position','All_Site_Bases','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Singleton_Count','Gap_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
 
+    print("BIALLELIC")
+
     # Process triallelic sites
     if(allele_count == 3):
         # Get alleles and their associated taxa
@@ -248,6 +256,8 @@ def getSiteSplits(pos):
         base_3_taxa = ";".join(itemgetter(*base_3_index)(spp_list))
         
         return(pd.DataFrame([[pos,seq_bases,'triallelic',non_base_taxa_string,non_base_count,singleton_taxa_string,singleton_count,gap_taxa_string,base_1_taxa,base_2_taxa,base_3_taxa,np.nan,np.nan]], columns=['Zeroed_Site_Position','All_Site_Bases','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Singleton_Count','Gap_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
+
+    print("TRIALLELIC")
 
     # Process quadallelic sites
     if(allele_count == 4):
@@ -269,6 +279,8 @@ def getSiteSplits(pos):
         base_4_taxa = ";".join(itemgetter(*base_4_index)(spp_list))
         
         return(pd.DataFrame([[pos,seq_bases,'quadallelic',non_base_taxa_string,non_base_count,singleton_taxa_string,singleton_count,gap_taxa_string,base_1_taxa,base_2_taxa,base_3_taxa,base_4_taxa,np.nan]], columns=['Zeroed_Site_Position','All_Site_Bases','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Singleton_Count','Gap_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
+
+    print("QUADALLELIC")
 
     # Process pentallelic sites
     if(allele_count == 5):

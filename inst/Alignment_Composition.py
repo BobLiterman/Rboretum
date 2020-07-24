@@ -15,23 +15,63 @@ from operator import itemgetter
 from collections import Counter
 import multiprocessing as mp
 from itertools import chain
+from getAlignmentSpecies import getAlignmentSpecies
 
-def alignmentPercents(alignment_path1,spp_string):
-
+def getAlignmentComposition(alignment_path1,alignment_name1,spp_info):
+    #ALIGNMENT_NAME########
     global alignment_path
+    global alignment_name
     global info_gap
     global spp_list
     global bases
 
     # Prepare arguments
-    alignment_path = str(alignment_path1)
-    spp_list = sorted(str(spp_string).split(";"))
+    if not alignment_path1:
+        sys.exit("ERROR: No alignment path specified.")
+    else:
+        alignment_path = str(alignment_path1)
+    
+    # Get species list, or process all species
+    if not spp_info:
+        spp_list = sorted(getAlignmentSpecies(alignment_path))
+    else:
+        if len(spp_info) == 1 and ";" in spp_info:
+            spp_list = sorted(str(spp_string).split(";"))
+        else:
+            spp_list = sorted(spp_info)
 
     # If alignment_filename contains all species from spp_list (>= 3 species), continue
     if not getPrunedAlignment():
         sys.exit("ERROR: Cannot process "+os.path.basename(alignment_path)+" with provided species list.")
     
-    return(pd.DataFrame([[os.path.basename(alignment_path),int(pruned_alignment.get_alignment_length()),getPercentGC(),getPercentN(),getPercentGap()]], columns=['Alignment','Alignment_Length','Percent_GC','Percent_N','Percent_Gap']))
+    # Set alignment name
+    if not alignment_name1:
+        alignment_name = str(os.path.basename(alignment_path))
+    else:
+        try:
+            alignment_name = str(alignment_name1)
+        except:
+            alignment_name = str(os.path.basename(alignment_path))
+    
+    alignment_length = int(pruned_alignment.get_alignment_length()
+    
+    a_count = countAs()
+    c_count = countCs()
+    g_count = countGs()
+    t_count = countTs()
+
+    all_base_count = sum(a_count,c_count,g_count,t_count)
+    
+    gc_count = sum(c_count,g_count)
+    percent_gc = gc_count/all_base_count
+
+    n_count = countNs()
+    percent_n = n_count/alignment_length
+
+    gap_count = countGaps()
+    percent_gap = gap_count/alignment_length
+    
+    return(pd.DataFrame([[alignment_name,alignment_length,a_count,c_count,g_count,t_count,percent_gc,percent_n,percent_gap]],columns=['Alignment','Alignment_Length','A_Count','C_Count','G_Count','T_Count','Percent_GC','Percent_N','Percent_Gap']))
 
 def getPrunedAlignment():
     # getPrunedAlignment returns True if:
@@ -77,36 +117,56 @@ def getPrunedAlignment():
         # Return True to indicate a valid alignment was processed
         return True
 
-def getPercentGC():
-    # getPercentGC returns the percent GC content for the entire alignment
-    # Bases that are not A/a, T/t, C/c, or G/g are not considered as part of the total base count (i.e. Ns and gaps are ignored)
+def countAs():
+    # countAs returns the count of A/a in the alignment
     global pruned_alignment
-    all_total = []
-    gc_total = []
+    a_total = []
     for seq in pruned_alignment:
-        all_total.append(seq.seq.count('a')+seq.seq.count('t')+seq.seq.count('A')+seq.seq.count('T')+seq.seq.count('g')+seq.seq.count('c')+seq.seq.count('G')+seq.seq.count('C'))
-        gc_total.append(seq.seq.count('g')+seq.seq.count('c')+seq.seq.count('G')+seq.seq.count('C'))
+        a_total.append(seq.seq.count('a')+seq.seq.count('A'))
 
-    return(sum(gc_total)/sum(all_total))
+    return int(sum(g_total))
 
-def getPercentN():
-    # getPercentN returns percentage of the entire alignment that has N base calls
+def countCs():
+    # countCs returns the count of C/c in the alignment
     global pruned_alignment
-    all_total = []
+    c_total = []
+    for seq in pruned_alignment:
+        c_total.append(seq.seq.count('c')+seq.seq.count('C'))
+    
+    return int(sum(c_total))
+
+def countGs():
+    # countGs returns the count of G/g in the alignment
+    global pruned_alignment
+    g_total = []
+    for seq in pruned_alignment:
+        g_total.append(seq.seq.count('g')+seq.seq.count('G'))
+
+    return int(sum(g_total))
+        
+def countTs():
+    # countTs returns the count of T/t in the alignment
+    global pruned_alignment
+    t_total = []
+    for seq in pruned_alignment:
+        t_total.append(seq.seq.count('t')+seq.seq.count('T'))
+
+    return int(sum(t_total))
+
+def countNs():
+    # countNs returns the count of N/n in the alignment
+    global pruned_alignment
     n_total = []
     for seq in pruned_alignment:
-        all_total.append(seq.seq.count('-')+seq.seq.count('n')+seq.seq.count('N')+seq.seq.count('a')+seq.seq.count('t')+seq.seq.count('A')+seq.seq.count('T')+seq.seq.count('g')+seq.seq.count('c')+seq.seq.count('G')+seq.seq.count('C'))
         n_total.append(seq.seq.count('n')+seq.seq.count('N'))
 
-    return(sum(n_total)/sum(all_total))
+    return sum(n_total)
 
-def getPercentGap():
-    # getPercentGap returns percentage of the entire alignment with indels ('-')
+def countGaps():
+    # countGaps returns the count of "-" in the alignment
     global pruned_alignment
-    all_total = []
     gap_total = []
     for seq in pruned_alignment:
-        all_total.append(seq.seq.count('-')+seq.seq.count('n')+seq.seq.count('N')+seq.seq.count('a')+seq.seq.count('t')+seq.seq.count('A')+seq.seq.count('T')+seq.seq.count('g')+seq.seq.count('c')+seq.seq.count('G')+seq.seq.count('C'))
         gap_total.append(seq.seq.count('-'))
 
-    return(sum(gap_total)/sum(all_total))
+    return sum(gap_total)

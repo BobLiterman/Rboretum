@@ -124,7 +124,7 @@ def countAs():
     for seq in pruned_alignment:
         a_total.append(seq.seq.count('a')+seq.seq.count('A'))
 
-    return int(sum(g_total))
+    return int(sum(a_total))
 
 def countCs():
     # countCs returns the count of C/c in the alignment

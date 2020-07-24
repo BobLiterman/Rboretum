@@ -15,7 +15,6 @@ from operator import itemgetter
 from collections import Counter
 import multiprocessing as mp
 from itertools import chain
-from Alignment_Species import getAlignmentSpecies
 
 def getAlignmentComposition(alignment_path1,alignment_name1,spp_info):
     #ALIGNMENT_NAME########
@@ -33,12 +32,15 @@ def getAlignmentComposition(alignment_path1,alignment_name1,spp_info):
     
     # Get species list, or process all species
     if not spp_info:
-        spp_list = sorted(getAlignmentSpecies(alignment_path))
+        spp_list = getAlignmentSpecies(alignment_path)
+        if len(spp_list)==0:
+            sys.exit("ERROR: Cannot extract species from "+os.path.basename(alignment_path))
     else:
-        if len(spp_info) == 1 and ";" in spp_info:
+        try:
             spp_list = sorted(str(spp_string).split(";"))
-        else:
-            spp_list = sorted(spp_info)
+        except:
+            sys.exit("ERROR: Cannot extract species from 'spp_info'")
+            
 
     # If alignment_filename contains all species from spp_list (>= 3 species), continue
     if not getPrunedAlignment():
@@ -72,6 +74,28 @@ def getAlignmentComposition(alignment_path1,alignment_name1,spp_info):
     percent_gap = gap_count/alignment_length
     
     return(pd.DataFrame([[alignment_name,alignment_length,a_count,c_count,g_count,t_count,percent_gc,percent_n,percent_gap]],columns=['Alignment','Alignment_Length','A_Count','C_Count','G_Count','T_Count','Percent_GC','Percent_N','Percent_Gap']))
+
+def getAlignmentSpecies(alignment_path):
+    
+    formats = {'nex': 'nexus', 'nexus': 'nexus',
+               'phy': 'phylip', 'phylip-relaxed': 'phylip-relaxed', 'phylip': 'phylip',
+               'fa': 'fasta', 'fasta': 'fasta'}
+
+    fformat = formats[alignment_path.split('.')[-1]]
+    
+    try:
+        align = AlignIO.read(alignment_path, fformat)
+
+        # Get alignment species
+        align_species = list()
+        for seq_record in align:
+            align_species.append(str(seq_record.id))
+        
+        align_species.sort()
+        return align_species
+    
+    except:
+        return []
 
 def getPrunedAlignment():
     # getPrunedAlignment returns True if:

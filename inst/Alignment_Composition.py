@@ -53,7 +53,7 @@ def getAlignmentComposition(alignment_path1,alignment_name1,spp_info):
         except:
             alignment_name = str(os.path.basename(alignment_path))
     
-    alignment_length = int(pruned_alignment.get_alignment_length()
+    alignment_length = int(pruned_alignment.get_alignment_length())
     
     a_count = countAs()
     c_count = countCs()

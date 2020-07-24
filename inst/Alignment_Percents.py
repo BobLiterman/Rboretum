@@ -43,7 +43,7 @@ def alignmentPercents(alignment_path1,info_gap1,spp_string):
     if not getPrunedAlignment():
         sys.exit("ERROR: Cannot process "+os.path.basename(alignment_path)+" with provided species list.")
     
-    return(pd.DataFrame([[os.path.basename(alignment_path),pathgetPercentGC(),getPercentN(),getPercentGap()]], columns=['Alignment','Percent_GC','Percent_N','Percent_Gap']))
+    return(pd.DataFrame([[os.path.basename(alignment_path),int(pruned_alignment.get_alignment_length()),pathgetPercentGC(),getPercentN(),getPercentGap()]], columns=['Alignment','Alignment_Length','Percent_GC','Percent_N','Percent_Gap']))
 
 def getPrunedAlignment():
     # getPrunedAlignment returns True if:

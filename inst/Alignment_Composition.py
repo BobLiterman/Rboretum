@@ -37,7 +37,7 @@ def getAlignmentComposition(alignment_path1,alignment_name1,spp_info):
             sys.exit("ERROR: Cannot extract species from "+os.path.basename(alignment_path))
     else:
         try:
-            spp_list = sorted(str(spp_string).split(";"))
+            spp_list = sorted(str(spp_info).split(";"))
         except:
             sys.exit("ERROR: Cannot extract species from spp_info")
             

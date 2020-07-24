@@ -90,7 +90,7 @@ def getPrunedAlignment():
 
     # Get alignment species
     raw_spp = list()
-    for seq_record in pruned_alignment:
+    for seq_record in raw_alignment:
         raw_spp.append(str(seq_record.id))
     
     # Get sorted species list

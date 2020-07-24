@@ -60,9 +60,9 @@ def getAlignmentComposition(alignment_path1,alignment_name1,spp_info):
     g_count = countGs()
     t_count = countTs()
 
-    all_base_count = sum(a_count,c_count,g_count,t_count)
+    all_base_count = sum([a_count,c_count,g_count,t_count])
     
-    gc_count = sum(c_count,g_count)
+    gc_count = sum([c_count,g_count])
     percent_gc = gc_count/all_base_count
 
     n_count = countNs()
@@ -160,7 +160,7 @@ def countNs():
     for seq in pruned_alignment:
         n_total.append(seq.seq.count('n')+seq.seq.count('N'))
 
-    return sum(n_total)
+    return int(sum(n_total))
 
 def countGaps():
     # countGaps returns the count of "-" in the alignment
@@ -169,4 +169,4 @@ def countGaps():
     for seq in pruned_alignment:
         gap_total.append(seq.seq.count('-'))
 
-    return sum(gap_total)
+    return int(sum(gap_total))

@@ -122,6 +122,7 @@ def getSiteSplits(pos):
     
     global pruned_alignment
     global bases
+    global spp_list
     
     seq_string = pruned_alignment[:, pos]
             

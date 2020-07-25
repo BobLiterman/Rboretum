@@ -20,9 +20,7 @@ def getAlignmentSpecies(alignment_path):
         for seq_record in align:
             align_species.append(str(seq_record.id))
         
-        align_species.sort()
-        semi_species = ";".join(align_species)
-        return semi_species
+        return align_species
     
     except:
         return []

@@ -33,7 +33,7 @@ def fetchSpeciesComposition(path_to_align,align_name):
     
     # Get counts
     a_totals = []
-    c_tocals = []
+    c_totals = []
     t_totals = []
     g_totals = []
     n_totals = []

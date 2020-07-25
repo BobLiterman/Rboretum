@@ -19,19 +19,11 @@ def getAlignmentComposition(path_to_align,spp_info,align_name):
     
     # Set path to alignment
     global alignment_path
-    if os.path.isfile(str(path_to_align))
-        alignment_path = str(path_to_align)
-    else:
-        sys.exit("ERROR: No file found at "+path_to_align)
+    alignment_path = str(path_to_align)
     
     # Get species list from semicolon-separated string
     global spp_list
-    try:
-        spp_list = sorted(str(spp_info).split(";"))
-        if len(spp_list) < 3:
-            sys.exit("ERROR: spp_info contains fewer than three taxa (or is not semicolon-separated")
-    except:
-        sys.exit("ERROR: Cannot process spp_info. Is it a semicolon-separated string?")
+    spp_list = sorted(str(spp_info).split(";"))
 
     # Set alignment name
     global alignment_name

@@ -46,12 +46,12 @@ def fetchAlignmentComposition(path_to_align,spp_info,align_name):
 
     # Sum ACTG + GC bases and get percent GC
     all_base_count = sum([a_count,c_count,g_count,t_count])
-    gc_count = sum([c_count,g_count])
+    gc_count = float(sum([c_count,g_count]))
     percent_gc = gc_count/all_base_count
 
     # Calculate percent N/gap
-    percent_n = n_count/alignment_length
-    percent_gap = gap_count/alignment_length
+    percent_n = float(n_count)/alignment_length
+    percent_gap = float(gap_count)/alignment_length
     
     return(pd.DataFrame([[alignment_name,alignment_length,percent_gc,percent_n,percent_gap]],columns=['Alignment_Name','Alignment_Length','Percent_GC','Percent_N','Percent_Gap']))
 

@@ -57,15 +57,15 @@ def fetchSpeciesComposition(path_to_align,align_name):
         gc_counts.append(g_i+c_i)
         percent_gc_zip = zip(gc_counts,total_base_counts)
         for gc_i,total_i in percent_gc_zip:
-            percent_gc.append(gc_i/total_i)
+            percent_gc.append(gc_i/float(total_i))
     
     # Get percent N and percent gap
     percent_n = []
     percent_gap = []
     for n_i in n_totals:
-        percent_n.append(n_i/alignment_length)
+        percent_n.append(float(n_i)/alignment_length)
     for gap_i in gap_totals:
-        percent_gap.append(gap_i/alignment_length)
+        percent_gap.append(float(gap_i)/alignment_length)
     
     df = pd.DataFrame(list(zip(raw_spp,percent_gc,percent_n,percent_gap)), 
                columns =['Taxon','Percent_GC','Percent_N','Percent_Gap'])

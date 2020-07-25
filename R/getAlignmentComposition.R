@@ -60,13 +60,10 @@ getAlignmentComposition <- function(alignment_path,species_info,alignment_name,p
   # Ensure files all exist
   if(length(alignment_path)==1){
     
-    isFile <- file.exists(alignment_path) & !dir.exists(alignment_path)
-    isDir <- dir.exists(alignment_path) & !isFile
-    
-    if(isFile){ # 'alignment_path' points to a single valid file
+    if(Rboretum::checkValidFiles(alignment_path)){ # 'alignment_path' points to a single valid file
       
       alignment_count <- 1
-      alignment_path <- file_path_as_absolute(alignment_path)
+      alignment_path <- Rboretum::checkValidFiles(alignment_path,return_full_path = TRUE)
       default_name <- basename(alignment_path)
       
     } else if(isDir){ # 'alignment_path' points to a valid directory
@@ -91,12 +88,14 @@ getAlignmentComposition <- function(alignment_path,species_info,alignment_name,p
     
   } else{ # 'alignment_path' is a list of file paths
     
-    file_check <- purrr::map(.x = alignment_path,.f=function(x){ file.exists(x) & !dir.exists(x)}) %>% unlist() %>% all() # Check that all paths in 'alignment_path' point to valid files
+    file_check <- Rboretum::checkValidFiles(alignment_path) # Check that all paths in 'alignment_path' point to valid files
     
     if(!file_check){
-      stop("At least one file from 'alignment_path' points to an invalid path.")
+      invalid_paths <- Rboretum::checkValidFiles(alignment_path,return_invalid = TRUE)
+      print(invalid_paths)
+      stop("The above paths from 'alignment_path' do not point to a valid file...")
     } else{
-      alignment_path <- purrr::map(.x=alignment_path,.f=function(x){file_path_as_absolute(x)}) %>% unlist()
+      alignment_path <- Rboretum::checkValidFiles(alignment_path,return_full_path = TRUE)
       alignment_count <- length(alignment_path)
       default_name <- purrr::map(alignment_path,.f = function(x){basename(x)}) %>% unlist() %>% as.character()
     }

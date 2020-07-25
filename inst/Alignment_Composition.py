@@ -32,7 +32,7 @@ def getAlignmentComposition(alignment_path1,alignment_name1,spp_info):
     
     # Get species list, or process all species
     if not spp_info:
-        spp_list = getAlignmentSpecies(alignment_path)
+        spp_list = getAlignmentSpecies2(alignment_path)
         if len(spp_list)==0:
             sys.exit("ERROR: Cannot extract species from "+os.path.basename(alignment_path))
     else:
@@ -75,7 +75,7 @@ def getAlignmentComposition(alignment_path1,alignment_name1,spp_info):
     
     return(pd.DataFrame([[alignment_name,alignment_length,a_count,c_count,g_count,t_count,percent_gc,percent_n,percent_gap]],columns=['Alignment','Alignment_Length','A_Count','C_Count','G_Count','T_Count','Percent_GC','Percent_N','Percent_Gap']))
 
-def getAlignmentSpecies(alignment_path):
+def getAlignmentSpecies2(alignment_path):
     
     formats = {'nex': 'nexus', 'nexus': 'nexus',
                'phy': 'phylip', 'phylip-relaxed': 'phylip-relaxed', 'phylip': 'phylip',

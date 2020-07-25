@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-    This script will take an alignment file (NEXUS, FASTA, or Phylip-relaxed) and return the sequence names
+    This script will take an alignment file (NEXUS, FASTA, or Phylip-relaxed) and return the sequence names as a semicolon-separated string
 """
 from Bio import AlignIO, SeqIO
 

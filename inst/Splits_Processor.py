@@ -76,14 +76,13 @@ def getPrunedAlignment():
         # (2) Three or more species are present.
     # If True,sets global pruned_alignment is pruned and alphabetized match tree species
 
-    formats = {'nex': 'nexus', 'nexus': 'nexus',
-               'phy': 'phylip', 'phylip-relaxed': 'phylip-relaxed', 'phylip': 'phylip',
-               'fa': 'fasta', 'fasta': 'fasta'}
-    
-    fformat = formats[alignment_path.split('.')[-1]]
-    
     # Read in alignment
     try:
+        formats = {'nex': 'nexus', 'nexus': 'nexus',
+                   'phy': 'phylip', 'phylip-relaxed': 'phylip-relaxed', 'phylip': 'phylip',
+                   'fa': 'fasta', 'fasta': 'fasta'}
+        
+        fformat = formats[alignment_path.split('.')[-1]]
         raw_alignment = AlignIO.read(alignment_path, fformat)
     except:
         return False
@@ -108,7 +107,7 @@ def getPrunedAlignment():
         pruned_alignment = raw_alignment[0:0]
         
         # Populate alignment by adding taxa sorted by taxon ID
-        for i in sort_species:
+        for i in spp_list:
             pruned_alignment.add_sequence(str(raw_alignment[raw_spp.index(i)].id), str(raw_alignment[raw_spp.index(i)].seq))
         
         # Return True to indicate a valid alignment was processed

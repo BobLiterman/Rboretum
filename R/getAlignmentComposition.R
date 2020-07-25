@@ -11,6 +11,7 @@
 #'   \item phylo object from which species will be extracted; or
 #'   \item multiPhylo object from which common species will be extracted; or
 #'   \item Character vector with 3+ taxon IDs
+#'   \item Semicolon-separated list of taxon IDs
 #' }
 #' @param alignment_name OPTIONAL: Chacter vector of names for each alignment. If missing or incomplete, the base filename is used
 #' @param prefix OPTIONAL: If 'alignment_path' is a directory, provide a character vector of file prefixes (e.g. all alignment files start with "Mafft_")
@@ -122,11 +123,17 @@ getAlignmentComposition <- function(alignment_path,species_info,alignment_name,p
     species_info <- rep(Rboretum::semiSorter(species_info$tip.label),alignment_count)
   } else if(Rboretum::isMultiPhylo(species_info,check_three_taxa=TRUE)){ # Get shared species from multiPhylo
     species_info <- rep(Rboretum::semiSorter(Rboretum::getSharedTaxa(species_info)),alignment_count)
-  } else if(is.character(species_info)){
-    if(length(species_info)<3){
-      stop("Fewer than three taxa requested by 'species_info'...")
+  } else if(is.character(species_info)){ # Get species from character vectors
+    if(!Rboretum::semiChecker(species_info)){
+      if(length(species_info)>=3){
+        species_info <- semiSorter(species_info)
+      } else{ 
+        stop("'species_info' contains fewer than 3 taxa...")
+        }
     } else{
-      species_info <- rep(Rboretum::semiSorter(species_info),alignment_count)
+      if(length(semiVector(species_info))<3){
+        stop("'species_info' contains fewer than 3 taxa...")
+      }
     }
   } else{
     stop("'species_info' should be a phylo, multiPhylo where trees share 3+ taxa, or a character vector with 3+ taxa")

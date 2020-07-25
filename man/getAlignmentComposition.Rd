@@ -24,6 +24,7 @@ getAlignmentComposition(
   \item phylo object from which species will be extracted; or
   \item multiPhylo object from which common species will be extracted; or
   \item Character vector with 3+ taxon IDs
+  \item Semicolon-separated list of taxon IDs
 }}
 
 \item{alignment_name}{OPTIONAL: Chacter vector of names for each alignment. If missing or incomplete, the base filename is used}

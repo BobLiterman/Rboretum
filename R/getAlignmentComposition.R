@@ -125,13 +125,15 @@ getAlignmentComposition <- function(alignment_path,species_info,alignment_name,p
   } else if(is.character(species_info)){ # Get species from character vectors
     if(!Rboretum::semiChecker(species_info)){
       if(length(species_info)>=3){
-        species_info <- semiSorter(species_info)
+        species_info <- rep(semiSorter(species_info),alignment_count)
       } else{ 
         stop("'species_info' contains fewer than 3 taxa...")
         }
     } else{
       if(length(semiVector(species_info))<3){
         stop("'species_info' contains fewer than 3 taxa...")
+      } else{
+        species_info <- rep(semiSorter(species_info),alignment_count)
       }
     }
   } else{

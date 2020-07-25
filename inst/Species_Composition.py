@@ -26,7 +26,7 @@ def fetchSpeciesComposition(path_to_align,align_name):
 
     # If alignment at path_to_align contains all species from spp_list (>= 3 species), continue
     if not getPrunedAlignment():
-        sys.exit("ERROR: Cannot process "+os.path.basename(alignment_path)+" with provided species list.")
+        sys.exit("ERROR: Cannot process "+os.path.basename(alignment_path))
     
     # Get alignment length
     alignment_length = int(pruned_alignment.get_alignment_length())
@@ -67,11 +67,9 @@ def fetchSpeciesComposition(path_to_align,align_name):
     for gap_i in gap_totals:
         percent_gap.append(float(gap_i)/alignment_length)
     
-    df = pd.DataFrame(list(zip(raw_spp,percent_gc,percent_n,percent_gap)), 
-               columns =['Taxon','Percent_GC','Percent_N','Percent_Gap'])
+    df = pd.DataFrame(list(zip(raw_spp,total_base_counts,n_totals,gap_totals,percent_gc,percent_n,percent_gap)), 
+               columns =['Taxon','Total_Bases','Total_N','Total_Gaps','Percent_GC','Percent_N','Percent_Gap'])
     df['Alignment_Name'] = alignment_name
-    df['Alignment_Length'] = alignment_length
-    
     return df
 
 def getPrunedAlignment():

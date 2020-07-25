@@ -5,14 +5,12 @@
 from Bio import AlignIO, SeqIO
 
 def fetchAlignmentSpecies(alignment_path):
-    
-    formats = {'nex': 'nexus', 'nexus': 'nexus',
-               'phy': 'phylip', 'phylip-relaxed': 'phylip-relaxed', 'phylip': 'phylip',
-               'fa': 'fasta', 'fasta': 'fasta'}
-
-    fformat = formats[alignment_path.split('.')[-1]]
-    
+        
     try:
+        formats = {'nex': 'nexus', 'nexus': 'nexus',
+                   'phy': 'phylip', 'phylip-relaxed': 'phylip-relaxed', 'phylip': 'phylip',
+                   'fa': 'fasta', 'fasta': 'fasta'}
+        fformat = formats[alignment_path.split('.')[-1]]
         align = AlignIO.read(alignment_path, fformat)
 
         # Get alignment species

@@ -23,4 +23,4 @@ def getAlignmentSpecies(alignment_path):
         return align_species
     
     except:
-        return []
+        sys.exit("ERROR: Cannot process file at "+alignment_path)

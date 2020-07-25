@@ -144,7 +144,7 @@ getAlignmentComposition <- function(alignment_path,species_info,alignment_name,p
     composition_df <- fetchAlignmentComposition(alignment_path,species_info,alignment_name)
     return(composition_df)
   } else{
-    composition_df = purrr::map(.x=1:alignment_count,.f=function(x){fetchAlignmentComposition(alignment_path[x],species_info[x],alignment_name[x])}) %>% ldply(., rbind)
+    composition_df = purrr::map(.x=1:alignment_count,.f=function(x){fetchAlignmentComposition(alignment_path[x],species_info[x],alignment_name[x])}) %>% do.call(rbind, .)
     return(composition_df)
   }
 }

@@ -29,7 +29,7 @@ getAlignmentSpecies <- function(alignment_path){
   alignment_species <- fetchAlignmentSpecies(alignment_path)
   
   # Catch errors
-  if(alignment_species == ""){
+  if(length(alignment_species) == 1){
     stop("No species could be extracted from file at 'alignment_path'...")
   } else{
     alignment_species <- Rboretum::semiSorter(alignment_species)

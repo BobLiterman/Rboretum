@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 """
-    This script will take an alignment file (NEXUS, FASTA, or Phylip-relaxed) and:
-
-    1) Prune down to a supplied subset of taxa
-    2) Breakdown the signal at each site
+Arguments:
+(1) path_to_align: Path to alignment file
+(2) spp_info: Semicolon-separated list of taxa to subset from alignment (or '' if all species desired)
+(3) align_name: Label for dataset/subset
 """
-
 import sys
 import os
 import numpy as np
@@ -16,86 +15,53 @@ from collections import Counter
 import multiprocessing as mp
 from itertools import chain
 
-def getAlignmentComposition(alignment_path1,alignment_name1,spp_info):
-    #ALIGNMENT_NAME########
-    global alignment_path
-    global alignment_name
-    global info_gap
-    global spp_list
-    global bases
-
-    # Prepare arguments
-    if not alignment_path1:
-        sys.exit("ERROR: No alignment path specified.")
-    else:
-        alignment_path = str(alignment_path1)
+def getAlignmentComposition(path_to_align,spp_info,align_name):
     
-    # Get species list, or process all species
-    if not spp_info:
-        spp_list = getAlignmentSpecies2(alignment_path)
-        if len(spp_list)==0:
-            sys.exit("ERROR: Cannot extract species from "+os.path.basename(alignment_path))
+    # Set path to alignment
+    global alignment_path
+    if os.path.isfile(str(path_to_align))
+        alignment_path = str(path_to_align)
     else:
-        try:
-            spp_list = sorted(str(spp_info).split(";"))
-        except:
-            sys.exit("ERROR: Cannot extract species from spp_info")
-            
+        sys.exit("ERROR: No file found at "+path_to_align)
+    
+    # Get species list from semicolon-separated string
+    global spp_list
+    try:
+        spp_list = sorted(str(spp_info).split(";"))
+        if len(spp_list) < 3:
+            sys.exit("ERROR: spp_info contains fewer than three taxa (or is not semicolon-separated")
+    except:
+        sys.exit("ERROR: Cannot process spp_info. Is it a semicolon-separated string?")
 
-    # If alignment_filename contains all species from spp_list (>= 3 species), continue
+    # Set alignment name
+    global alignment_name
+    alignment_name = str(align_name)
+
+    # If alignment at path_to_align contains all species from spp_list (>= 3 species), continue
     if not getPrunedAlignment():
         sys.exit("ERROR: Cannot process "+os.path.basename(alignment_path)+" with provided species list.")
     
-    # Set alignment name
-    if not alignment_name1:
-        alignment_name = str(os.path.basename(alignment_path))
-    else:
-        try:
-            alignment_name = str(alignment_name1)
-        except:
-            alignment_name = str(os.path.basename(alignment_path))
-    
+    # Get alignment length
     alignment_length = int(pruned_alignment.get_alignment_length())
     
+    # Count A, C, T, G, N, -
     a_count = countAs()
     c_count = countCs()
     g_count = countGs()
     t_count = countTs()
+    n_count = countNs()
+    gap_count = countGaps()
 
+    # Sum ACTG + GC bases and get percent GC
     all_base_count = sum([a_count,c_count,g_count,t_count])
-    
     gc_count = sum([c_count,g_count])
     percent_gc = gc_count/all_base_count
 
-    n_count = countNs()
+    # Calculate percent N/gap
     percent_n = n_count/alignment_length
-
-    gap_count = countGaps()
     percent_gap = gap_count/alignment_length
     
-    return(pd.DataFrame([[alignment_name,alignment_length,a_count,c_count,g_count,t_count,percent_gc,percent_n,percent_gap]],columns=['Alignment','Alignment_Length','A_Count','C_Count','G_Count','T_Count','Percent_GC','Percent_N','Percent_Gap']))
-
-def getAlignmentSpecies2(alignment_path):
-    
-    formats = {'nex': 'nexus', 'nexus': 'nexus',
-               'phy': 'phylip', 'phylip-relaxed': 'phylip-relaxed', 'phylip': 'phylip',
-               'fa': 'fasta', 'fasta': 'fasta'}
-
-    fformat = formats[alignment_path.split('.')[-1]]
-    
-    try:
-        align = AlignIO.read(alignment_path, fformat)
-
-        # Get alignment species
-        align_species = list()
-        for seq_record in align:
-            align_species.append(str(seq_record.id))
-        
-        align_species.sort()
-        return align_species
-    
-    except:
-        return []
+    return(pd.DataFrame([[alignment_name,alignment_length,percent_gc,percent_n,percent_gap]],columns=['Alignment_Name','Alignment_Length','Percent_GC','Percent_N','Percent_Gap']))
 
 def getPrunedAlignment():
     # getPrunedAlignment returns True if:

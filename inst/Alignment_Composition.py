@@ -15,7 +15,7 @@ from collections import Counter
 import multiprocessing as mp
 from itertools import chain
 
-def getAlignmentComposition(path_to_align,spp_info,align_name):
+def fetchAlignmentComposition(path_to_align,spp_info,align_name):
     
     # Set path to alignment
     global alignment_path

@@ -120,7 +120,7 @@ getAlignmentComposition <- function(alignment_path,species_info,alignment_name,p
     species_info <- purrr::map(.x=alignment_path,.f=function(x){Rboretum::getAlignmentSpecies(x)}) %>% unlist()
   } else if(Rboretum::isPhylo(species_info)){ # Get species from phylo
     species_info <- rep(Rboretum::semiSorter(species_info$tip.label),alignment_count)
-  } else if(Rboretum::isMultiphylo(species_info,check_three_taxa=TRUE)){ # Get shared species from multiPhylo
+  } else if(Rboretum::isMultiPhylo(species_info,check_three_taxa=TRUE)){ # Get shared species from multiPhylo
     species_info <- rep(Rboretum::semiSorter(Rboretum::getSharedTaxa(species_info)),alignment_count)
   } else if(is.character(species_info)){
     if(length(species_info)<3){

@@ -91,11 +91,7 @@ def getPrunedAlignment():
     raw_spp = list()
     for seq_record in raw_alignment:
         raw_spp.append(str(seq_record.id))
-    
-    # Get sorted species list
-    global sort_species
-    sort_species = sorted(raw_spp)
-    
+    raw_spp.sort()
     # If requested species are not in alignment, or species list/alignment contains fewer than 3 species, return False
     if((len(list(set(spp_list)-set(raw_spp))) > 0) or (len(list(set(spp_list))) < 3) or (len(list(set(raw_spp))) < 3)):
         return False

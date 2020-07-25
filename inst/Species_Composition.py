@@ -50,20 +50,22 @@ def fetchSpeciesComposition(path_to_align,align_name):
     # Get total base counts and gc counts
     total_base_counts = []
     gc_counts = []
-    percent_gc = []
     base_zip = zip(a_totals, c_totals,t_totals,g_totals)
     for a_i,c_i,t_i,g_i in base_zip:
         total_base_counts.append(a_i+c_i+t_i+g_i)
         gc_counts.append(g_i+c_i)
-        percent_gc_zip = zip(gc_counts,total_base_counts)
-        for gc_i,total_i in percent_gc_zip:
-            percent_gc.append(gc_i/float(total_i))
     
-    # Get percent N and percent gap
+    # Get percent GC, N, and gap
+    percent_gc = []
+    percent_gc_zip = zip(gc_counts,total_base_counts)
+    for gc_i,total_i in percent_gc_zip:
+        percent_gc.append(gc_i/float(total_i))
+
     percent_n = []
-    percent_gap = []
     for n_i in n_totals:
         percent_n.append(float(n_i)/alignment_length)
+    
+    percent_gap = []
     for gap_i in gap_totals:
         percent_gap.append(float(gap_i)/alignment_length)
     

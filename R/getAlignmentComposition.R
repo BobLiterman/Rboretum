@@ -105,7 +105,7 @@ getAlignmentComposition <- function(alignment_path,species_info,alignment_name,p
   if(missing(alignment_name)){
     alignment_name <- default_name
   } else if(length(alignment_name) != alignment_count){
-    print(paste(c("'alignment_names' (",length(alignment_names),") and number of alignments (",alignment_count,") do not match...using default names..."),collapse = ''))
+    print(paste(c("'alignment_names' (",length(alignment_name),") and number of alignments (",alignment_count,") do not match...using default names..."),collapse = ''))
     alignment_name <- default_name
   }
   

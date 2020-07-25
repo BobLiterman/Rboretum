@@ -4,7 +4,7 @@
 """
 from Bio import AlignIO, SeqIO
 
-def getAlignmentSpecies(alignment_path):
+def fetchAlignmentSpecies(alignment_path):
     
     formats = {'nex': 'nexus', 'nexus': 'nexus',
                'phy': 'phylip', 'phylip-relaxed': 'phylip-relaxed', 'phylip': 'phylip',

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
 Arguments:
-(1) path_to_align: Path to alignment file
-(2) spp_info: Semicolon-separated list of taxa to subset from alignment (or '' if all species desired)
+(1) path_to_align: Absolute path to alignment file
+(2) spp_info: Semicolon-separated list of taxa to subset from alignment
 (3) align_name: Label for dataset/subset
 """
 import sys

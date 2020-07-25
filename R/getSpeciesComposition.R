@@ -107,7 +107,7 @@ getSpeciesComposition <- function(alignment_path,alignment_name,prefix,suffix){
   }
   
   if(alignment_count == 1){
-    composition_df <- fetchSequenceComposition(alignment_path,alignment_name)
+    composition_df <- fetchSpeciesComposition(alignment_path,alignment_name)
     return(composition_df)
   } else{
     composition_df = purrr::map(.x=1:alignment_count,.f=function(x){fetchSpeciesComposition(alignment_path[x],alignment_name[x])}) %>% do.call(rbind, .)

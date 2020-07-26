@@ -17,8 +17,8 @@ vectorSemi <- function(to_semi){
   } 
   
   # If NA is passed, return NA
-  if(length(string_to_split)==1){
-    if(is.na(string_to_split)){
+  if(length(to_semi)==1){
+    if(is.na(to_semi)){
       return(NA)
     }
   }

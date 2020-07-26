@@ -171,14 +171,14 @@ getAlignmentSignal_2 <- function(alignment_path,species_info,use_gaps,alignment_
   if(alignment_count == 1){
     splits_df <- splitsProcessor(alignment_path,gap_list,species_info,alignment_name) %>%
       mutate_if(is.list,as.character) %>%
-      select(-index)
+      select(-index) %>%
+      mutate_all(~na_if(., 'NaN'))
   } else{
     splits_df = purrr::map(.x=1:alignment_count,.f=function(x){splitsProcessor(alignment_path[x],gap_list[x],species_info[x],alignment_name[x])}) %>% do.call(rbind, .) %>%
       mutate_if(is.list,as.character) %>%
-      select(-index)
+      select(-index) %>%
+      mutate_all(~na_if(., 'NaN'))
   }
   
-  # Convert pandas NaN to R NA
-  splits_df[ is.na(splits_df) ] <- NA
   return(splits_df)
 }

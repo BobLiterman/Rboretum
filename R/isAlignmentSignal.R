@@ -19,9 +19,9 @@ isAlignmentSignal <- function(test_object,species_info,return_taxa){
     return(FALSE)
   } else if(nrow(test_object) == 0){
     return(FALSE)
-  } else if(has_error(silent=TRUE,expr=all(names(test_object) == c('Alignment_Name','Alignment_Position','Site_Pattern','Gap','Singleton','Singleton_Taxa','Non_Base_Taxa','Non_Base_Count','Split_1','Split_2','Split_3','Split_4','Split_5')))){
+  } else if(has_error(silent=TRUE,expr=all(names(test_object) == c("Alignment_Position","All_Site_Bases","Site_Pattern","Non_Base_Taxa","Non_Base_Count","Singleton_Taxa","Singleton_Count","Gap_Taxa","Split_1","Split_2","Split_3","Split_4","Split_5","Alignment_Name")))){
     return(FALSE)
-  } else if(!all(names(test_object) == c('Alignment_Name','Alignment_Position','Site_Pattern','Gap','Singleton','Singleton_Taxa','Non_Base_Taxa','Non_Base_Count','Split_1','Split_2','Split_3','Split_4','Split_5'))){
+  } else if(!all(names(test_object) == c("Alignment_Position","All_Site_Bases","Site_Pattern","Non_Base_Taxa","Non_Base_Count","Singleton_Taxa","Singleton_Count","Gap_Taxa","Split_1","Split_2","Split_3","Split_4","Split_5","Alignment_Name"))){
     return(FALSE)
   }
   

@@ -14,7 +14,16 @@ vectorSemi <- function(to_semi){
   # Check argument
   if(missing(to_semi)){
     stop("vectorSemi expects a character or list argument")
-  } else if(!is.list(to_semi) & !(is.character(to_semi))){
+  } 
+  
+  # If NA is passed, return NA
+  if(length(string_to_split)==1){
+    if(is.na(string_to_split)){
+      return(NA)
+    }
+  }
+  
+  if(!is.list(to_semi) & !(is.character(to_semi))){
     stop("vectorSemi expects a character or list argument")
   }
   

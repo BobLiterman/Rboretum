@@ -1,12 +1,12 @@
-#' Rboretum Alignment Composition Fetcher
+#' Rboretum Alignment Signal Fetcher
 #'
-#' Given the path(s) to multiple alignments and an optional list of taxa, this script returns alignment lengths, %GC, %N, and %Gap for the alignment
+#' Given the path(s) to multiple alignments and an optional list of taxa, this script returns split and base information for each site
 #' @param alignment_path Where to find alignment files. Options include:
 #' \itemize{
 #'   \item A character vector of one or more alignment file paths  (relative or absolute)
 #'   \item A path to a single directory containing all alignment files (relative or absolute)
 #' }
-#' @param species_info OPTIONAL: List of taxa to analyze [Default: Process entire alignment]. Can be provided as:
+#' @param species_info OPTIONAL: List of taxa to analyze [Default: Process alignment using all taxa if solo, all shared in multiple]. Can be provided as:
 #' \itemize{
 #'   \item phylo object from which species will be extracted; or
 #'   \item multiPhylo object from which common species will be extracted; or
@@ -17,7 +17,7 @@
 #' @param alignment_name OPTIONAL: Chacter vector of names for each alignment. If missing or incomplete, the base filename is used
 #' @param prefix OPTIONAL: If 'alignment_path' is a directory, provide a character vector of file prefixes (e.g. all alignment files start with "Mafft_")
 #' @param suffix OPTIONAL: If 'alignment_path' is a directory, provide a character vector of file suffixes (e.g. all alignment files end with ".phy")
-#' @return Dataframe containing alignment length, %GC, %N, and %Gap for each alignment
+#' @return Dataframe containing split and base information for each site in the alignment
 #' @export
 
 getAlignmentSignal_2 <- function(alignment_path,species_info,use_gaps,alignment_name,prefix,suffix){
@@ -122,7 +122,7 @@ getAlignmentSignal_2 <- function(alignment_path,species_info,use_gaps,alignment_
       species_info = Rboretum::getAlignmentSpecies(alignment_path)
     } else{
       all_species <- purrr::map(.x=alignment_path,.f=function(x){Rboretum::semiVector(Rboretum::getAlignmentSpecies(x))})
-      species_info <- Reduce(intersect, all_species) %>% Rboretum::vectorSemi()
+      species_info <- Reduce(intersect, all_species) %>% Rboretum::vectorSemi() %>% rep(alignment_count)
     }
   } else if(Rboretum::isPhylo(species_info)){ # Get species from phylo
     species_info <- rep(Rboretum::semiSorter(species_info$tip.label),alignment_count)

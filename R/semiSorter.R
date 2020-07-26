@@ -22,6 +22,10 @@ semiSorter <- function(string_to_sort){
     }
   }
   
+  if(!is.character(string_to_sort)){
+    stop("semiSorter expects a character argument")
+  }
+  
   # If string_to_sort has a single element...
   if(length(string_to_sort)==1){
     

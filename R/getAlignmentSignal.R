@@ -17,10 +17,11 @@
 #' @param alignment_name OPTIONAL: Chacter vector of names for each alignment. If missing or incomplete, the base filename is used
 #' @param prefix OPTIONAL: If 'alignment_path' is a directory, provide a character vector of file prefixes (e.g. all alignment files start with "Mafft_")
 #' @param suffix OPTIONAL: If 'alignment_path' is a directory, provide a character vector of file suffixes (e.g. all alignment files end with ".phy")
+#' @param existing_signal OPTIONAL: Append these results to the output from getAlignmentSignal() run with the same species_info and a different alignment
 #' @return Dataframe containing split and base information for each site in the alignment
 #' @export
 
-getAlignmentSignal <- function(alignment_path,species_info,use_gaps,alignment_name,prefix,suffix){
+getAlignmentSignal <- function(alignment_path,species_info,use_gaps,alignment_name,prefix,suffix,existing_signal){
   
   # Ensure that a path and root taxa are provided as character vectors
   if(missing(alignment_path)){
@@ -136,10 +137,15 @@ getAlignmentSignal <- function(alignment_path,species_info,use_gaps,alignment_na
         stop("'species_info' contains fewer than 3 taxa...")
         }
     } else{
+      if(length(species_info)==1){
+        species_info <- semiSorter(species_info)
+      } else if(length(species_info)>1){
+        species_info <- purrr::map(.x=species_info,.f=function(x){semiVector(x)}) %>% unlist() %>% as.character() %>% unique() %>% naturalsort() %>% semiSorter()
+      }
       if(length(semiVector(species_info))<3){
         stop("'species_info' contains fewer than 3 taxa...")
       } else{
-        species_info <- rep(semiSorter(species_info),alignment_count)
+        species_info <- rep(species_info,alignment_count)
       }
     }
   } else{
@@ -181,5 +187,33 @@ getAlignmentSignal <- function(alignment_path,species_info,use_gaps,alignment_na
   }
   
   splits_df[is.na(splits_df)] <- NA
-  return(splits_df)
+  
+  if(nrow(splits_df)==0){
+    stop("No data returned. Check alignments and taxa?")
+  }
+  
+  if(missing(existing_signal)){ # If  not appending results, return results
+    return(splits_df)
+  } else{
+    
+    # Get current species_info
+    if(alignment_count > 1){
+      current_species <- semiSorter(species_info[[1]])
+    } else{
+      current_species <- semiSorter(species_info)
+    }
+    
+    # Get taxa from existing_signal
+    existing_taxa <- Rboretum::isAlignmentSignal(existing_signal,return_taxa = TRUE) %>% semiSorter()
+    
+    if(current_species != existing_taxa){ # Ensure existing_signal contains information about the same taxa
+      print("Object passed as 'existing_signal' is failing the test isAlignmentSignal(existing_signal,species_info)...Returning results without appending...")
+      return(splits_df)
+    } else if(any(alignment_name %in% existing_signal$Alignment_Name)){ # Ensure that alignment names are all unique
+      print("Object passed as 'existing_signal' contains data on an alignment named identically one processed here...Returning results without appending...")
+      return(splits_df)
+    } else{
+      return(rbind(existing_signal,splits_df))
+    }
+  } 
 }

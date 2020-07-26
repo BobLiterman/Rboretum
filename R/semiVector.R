@@ -40,7 +40,7 @@ semiVector <- function(string_to_split){
   
   # If 'string_to_split' is > one element, return character vectors as a list
   if(length(string_to_split)>1){
-    sep_list = purrr::map(.x=string_to_split,.f=function(x){stringr::str_split(x,pattern = ';')})
+    sep_list = purrr::map(.x=string_to_split,.f=function(x){stringr::str_split(x,pattern = ';')[[1]]})
     return(sep_list)
   }
 }

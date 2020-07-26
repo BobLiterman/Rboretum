@@ -59,6 +59,9 @@ getAlignmentSignal <- function(alignment_path,species_info,use_gaps,alignment_na
     align_regex <- paste(paste(c(prefix,"(.*)",suffix),collapse = ""))
   }
   
+  isFile <- file.exists(alignment_path) & !dir.exists(alignment_path)
+  isDir <- dir.exists(alignment_path) & !isFile
+  
   # Ensure files all exist
   if(length(alignment_path)==1){
     

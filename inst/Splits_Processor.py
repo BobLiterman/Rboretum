@@ -135,7 +135,7 @@ def getSiteSplits(pos):
             
     # Get alleles and their occurrences
     site_set = Counter(seq_string)
-    allele_list = sorted(list(site_set))
+    allele_list = list(site_set)
     seq_bases = ";".join(allele_list)
 
     allele_count = len(allele_list)
@@ -229,11 +229,11 @@ def getSiteSplits(pos):
     # Process biallelic sites
     if(allele_count == 2):
         # Get alleles and their associated taxa
-        split_1_base = allele_list[0]
+        split_1_base = sorted(allele_list)[0]
         base_1_index = findOccurrences(seq_string, split_1_base)
         base_1_taxa = ";".join(itemgetter(*base_1_index)(temp_list))
         
-        split_2_base = allele_list[1]
+        split_2_base = sorted(allele_list)[1]
         base_2_index = findOccurrences(seq_string, split_2_base)
         base_2_taxa = ";".join(itemgetter(*base_2_index)(temp_list))
         
@@ -242,15 +242,15 @@ def getSiteSplits(pos):
     # Process triallelic sites
     if(allele_count == 3):
         # Get alleles and their associated taxa
-        split_1_base = allele_list[0]
+        split_1_base = sorted(allele_list)[0]
         base_1_index = findOccurrences(seq_string, split_1_base)
         base_1_taxa = ";".join(itemgetter(*base_1_index)(temp_list))
         
-        split_2_base = allele_list[1]
+        split_2_base = sorted(allele_list)[1]
         base_2_index = findOccurrences(seq_string, split_2_base)
         base_2_taxa = ";".join(itemgetter(*base_2_index)(temp_list))
         
-        split_3_base = allele_list[2]
+        split_3_base = sorted(allele_list)[2]
         base_3_index = findOccurrences(seq_string, split_3_base)
         base_3_taxa = ";".join(itemgetter(*base_3_index)(temp_list))
         
@@ -259,19 +259,19 @@ def getSiteSplits(pos):
     # Process quadallelic sites
     if(allele_count == 4):
         # Get alleles and their associated taxa
-        split_1_base = allele_list[0]
+        split_1_base = sorted(allele_list)[0]
         base_1_index = findOccurrences(seq_string, split_1_base)
         base_1_taxa = ";".join(itemgetter(*base_1_index)(temp_list))
         
-        split_2_base = allele_list[1]
+        split_2_base = sorted(allele_list)[1]
         base_2_index = findOccurrences(seq_string, split_2_base)
         base_2_taxa = ";".join(itemgetter(*base_2_index)(temp_list))
         
-        split_3_base = allele_list[2]
+        split_3_base = sorted(allele_list)[2]
         base_3_index = findOccurrences(seq_string, split_3_base)
         base_3_taxa = ";".join(itemgetter(*base_3_index)(temp_list))
         
-        split_4_base = allele_list[3]
+        split_4_base = sorted(allele_list)[3]
         base_4_index = findOccurrences(seq_string, split_4_base)
         base_4_taxa = ";".join(itemgetter(*base_4_index)(temp_list))
         
@@ -280,23 +280,23 @@ def getSiteSplits(pos):
     # Process pentallelic sites
     if(allele_count == 5):
         # Get alleles and their associated taxa
-        split_1_base = allele_list[0]
+        split_1_base = sorted(allele_list)[0]
         base_1_index = findOccurrences(seq_string, split_1_base)
         base_1_taxa = ";".join(itemgetter(*base_1_index)(temp_list))
         
-        split_2_base = allele_list[1]
+        split_2_base = sorted(allele_list)[1]
         base_2_index = findOccurrences(seq_string, split_2_base)
         base_2_taxa = ";".join(itemgetter(*base_2_index)(temp_list))
         
-        split_3_base = allele_list[2]
+        split_3_base = sorted(allele_list)[2]
         base_3_index = findOccurrences(seq_string, split_3_base)
         base_3_taxa = ";".join(itemgetter(*base_3_index)(temp_list))
         
-        split_4_base = allele_list[3]
+        split_4_base = sorted(allele_list)[3]
         base_4_index = findOccurrences(seq_string, split_4_base)
         base_4_taxa = ";".join(itemgetter(*base_4_index)(temp_list))
         
-        split_5_base = allele_list[4]
+        split_5_base = sorted(allele_list)[4]
         base_5_index = findOccurrences(seq_string, split_5_base)
         base_5_taxa = ";".join(itemgetter(*base_5_index)(temp_list))
         

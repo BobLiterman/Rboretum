@@ -232,7 +232,7 @@ getTreeSupport <- function(signal,tree,include_root,clade,dataset_name,max_missi
     stop("No data fits the filtering criteria.")
   } else{
     final_signal_name <- unique(signal$Alignment_Name)
-    final_signal_count <- length(signal_name)
+    final_signal_count <- length(final_signal_name)
   }
 
   if(!separate_signal){

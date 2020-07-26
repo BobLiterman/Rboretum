@@ -69,11 +69,10 @@ def splitsProcessor(align_path,use_gaps,spp_info,align_name):
         split_results = pool.map(getSiteSplits, alignment_positions)
     
     print("Signal processed...compiling final dataframe...")
-    split_results = pd.concat(split_results).sort_values(by=['Zeroed_Site_Position']).reset_index()
+    split_results = pd.concat(split_results).sort_values(by=['Alignment_Position']).reset_index()
     
     # Add 1 to site position to convert from 0 to 1-based
-    split_results.Zeroed_Site_Position = split_results.Zeroed_Site_Position + 1
-    split_results.rename(columns={"Zeroed_Site_Position": "Alignment_Position"})
+    split_results.Alignment_Position = split_results.Alignment_Position + 1
     split_results['Alignment_Name'] = alignment_name
 
     return split_results
@@ -170,7 +169,7 @@ def getSiteSplits(pos):
         
         # If fewer than three bases remain after removing non-bases, return 'non_base'result
         if len(temp_list) - non_base_count < 3:
-            return(pd.DataFrame([[pos,seq_bases,'non_base',non_base_taxa_string,non_base_count,np.nan,np.nan,gap_taxa_string,np.nan,np.nan,np.nan,np.nan,np.nan]], columns=['Zeroed_Site_Position','All_Site_Bases','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Singleton_Count','Gap_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
+            return(pd.DataFrame([[pos,seq_bases,'non_base',non_base_taxa_string,non_base_count,np.nan,np.nan,gap_taxa_string,np.nan,np.nan,np.nan,np.nan,np.nan]], columns=['Alignment_Position','All_Site_Bases','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Singleton_Count','Gap_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
         
         else:
             # Get species list and sequence data from taxa with appropriate bases
@@ -202,7 +201,7 @@ def getSiteSplits(pos):
 
         # If fewer than three bases remain after removing singletons, return 'non_base'result
         if len(temp_list) - singleton_count < 3:
-            return(pd.DataFrame([[pos,seq_bases,'non_base',non_base_taxa_string,non_base_count,singleton_taxa_string,singleton_count,gap_taxa_string,np.nan,np.nan,np.nan,np.nan,np.nan]], columns=['Zeroed_Site_Position','All_Site_Bases','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Singleton_Count','Gap_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
+            return(pd.DataFrame([[pos,seq_bases,'non_base',non_base_taxa_string,non_base_count,singleton_taxa_string,singleton_count,gap_taxa_string,np.nan,np.nan,np.nan,np.nan,np.nan]], columns=['Alignment_Position','All_Site_Bases','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Singleton_Count','Gap_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
         
         else:
             # Get species list and sequence data from taxa with appropriate bases
@@ -223,9 +222,9 @@ def getSiteSplits(pos):
     # If only a single allele is present, return 'singleton' or 'invariant' result
     if(allele_count == 1):
         if singleton_count > 1:
-            return(pd.DataFrame([[pos,seq_bases,'singleton',non_base_taxa_string,non_base_count,singleton_taxa_string,singleton_count,gap_taxa_string,np.nan,np.nan,np.nan,np.nan,np.nan]], columns=['Zeroed_Site_Position','All_Site_Bases','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Singleton_Count','Gap_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
+            return(pd.DataFrame([[pos,seq_bases,'singleton',non_base_taxa_string,non_base_count,singleton_taxa_string,singleton_count,gap_taxa_string,np.nan,np.nan,np.nan,np.nan,np.nan]], columns=['Alignment_Position','All_Site_Bases','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Singleton_Count','Gap_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
         else:
-            return(pd.DataFrame([[pos,seq_bases,'invariant',non_base_taxa_string,non_base_count,singleton_taxa_string,singleton_count,gap_taxa_string,np.nan,np.nan,np.nan,np.nan,np.nan]], columns=['Zeroed_Site_Position','All_Site_Bases','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Singleton_Count','Gap_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
+            return(pd.DataFrame([[pos,seq_bases,'invariant',non_base_taxa_string,non_base_count,singleton_taxa_string,singleton_count,gap_taxa_string,np.nan,np.nan,np.nan,np.nan,np.nan]], columns=['Alignment_Position','All_Site_Bases','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Singleton_Count','Gap_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
     
     # Process biallelic sites
     if(allele_count == 2):
@@ -238,7 +237,7 @@ def getSiteSplits(pos):
         base_2_index = findOccurrences(seq_string, split_2_base)
         base_2_taxa = ";".join(itemgetter(*base_2_index)(temp_list))
         
-        return(pd.DataFrame([[pos,seq_bases,'biallelic',non_base_taxa_string,non_base_count,singleton_taxa_string,singleton_count,gap_taxa_string,base_1_taxa,base_2_taxa,np.nan,np.nan,np.nan]], columns=['Zeroed_Site_Position','All_Site_Bases','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Singleton_Count','Gap_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
+        return(pd.DataFrame([[pos,seq_bases,'biallelic',non_base_taxa_string,non_base_count,singleton_taxa_string,singleton_count,gap_taxa_string,base_1_taxa,base_2_taxa,np.nan,np.nan,np.nan]], columns=['Alignment_Position','All_Site_Bases','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Singleton_Count','Gap_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
 
     # Process triallelic sites
     if(allele_count == 3):
@@ -255,7 +254,7 @@ def getSiteSplits(pos):
         base_3_index = findOccurrences(seq_string, split_3_base)
         base_3_taxa = ";".join(itemgetter(*base_3_index)(temp_list))
         
-        return(pd.DataFrame([[pos,seq_bases,'triallelic',non_base_taxa_string,non_base_count,singleton_taxa_string,singleton_count,gap_taxa_string,base_1_taxa,base_2_taxa,base_3_taxa,np.nan,np.nan]], columns=['Zeroed_Site_Position','All_Site_Bases','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Singleton_Count','Gap_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
+        return(pd.DataFrame([[pos,seq_bases,'triallelic',non_base_taxa_string,non_base_count,singleton_taxa_string,singleton_count,gap_taxa_string,base_1_taxa,base_2_taxa,base_3_taxa,np.nan,np.nan]], columns=['Alignment_Position','All_Site_Bases','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Singleton_Count','Gap_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
 
     # Process quadallelic sites
     if(allele_count == 4):
@@ -276,7 +275,7 @@ def getSiteSplits(pos):
         base_4_index = findOccurrences(seq_string, split_4_base)
         base_4_taxa = ";".join(itemgetter(*base_4_index)(temp_list))
         
-        return(pd.DataFrame([[pos,seq_bases,'quadallelic',non_base_taxa_string,non_base_count,singleton_taxa_string,singleton_count,gap_taxa_string,base_1_taxa,base_2_taxa,base_3_taxa,base_4_taxa,np.nan]], columns=['Zeroed_Site_Position','All_Site_Bases','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Singleton_Count','Gap_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
+        return(pd.DataFrame([[pos,seq_bases,'quadallelic',non_base_taxa_string,non_base_count,singleton_taxa_string,singleton_count,gap_taxa_string,base_1_taxa,base_2_taxa,base_3_taxa,base_4_taxa,np.nan]], columns=['Alignment_Position','All_Site_Bases','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Singleton_Count','Gap_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
 
     # Process pentallelic sites
     if(allele_count == 5):
@@ -301,5 +300,5 @@ def getSiteSplits(pos):
         base_5_index = findOccurrences(seq_string, split_5_base)
         base_5_taxa = ";".join(itemgetter(*base_5_index)(temp_list))
         
-        return(pd.DataFrame([[pos,seq_bases,'pentallelic',non_base_taxa_string,non_base_count,singleton_taxa_string,singleton_count,gap_taxa_string,base_1_taxa,base_2_taxa,base_3_taxa,base_4_taxa,base_5_taxa]], columns=['Zeroed_Site_Position','All_Site_Bases','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Singleton_Count','Gap_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
+        return(pd.DataFrame([[pos,seq_bases,'pentallelic',non_base_taxa_string,non_base_count,singleton_taxa_string,singleton_count,gap_taxa_string,base_1_taxa,base_2_taxa,base_3_taxa,base_4_taxa,base_5_taxa]], columns=['Alignment_Position','All_Site_Bases','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Singleton_Count','Gap_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
 

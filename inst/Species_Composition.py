@@ -95,13 +95,13 @@ def getPrunedAlignment():
         
         for seq_record in raw_alignment:
             raw_spp.append(str(seq_record.id))
-        raw_spp.sort()
-        
+        sort_species = sorted(raw_spp)
+                
         global pruned_alignment
         pruned_alignment = raw_alignment[0:0]
         
         # Populate alignment by adding taxa sorted by taxon ID
-        for i in raw_spp:
+        for i in sort_species:
             pruned_alignment.add_sequence(str(raw_alignment[raw_spp.index(i)].id), str(raw_alignment[raw_spp.index(i)].seq))
         
         # Return True to indicate a valid alignment was processed

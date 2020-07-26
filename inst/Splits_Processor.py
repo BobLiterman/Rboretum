@@ -40,7 +40,7 @@ def splitsProcessor(align_path,use_gaps,spp_info,align_name):
     else:
         bases = ['A', 'C', 'T', 'G', 'a', 'g', 't', 'c','-']
         
-    spp_list = str(spp_info).split(";").sort()
+    spp_list = sorted((spp_info).split(";"))
     
     # Set alignment name
     global alignment_name
@@ -100,7 +100,7 @@ def getPrunedAlignment():
         raw_spp.append(str(seq_record.id))
     
     # If species list/alignment contains fewer than 3 species, return False
-    if len(spp_list) < 3 or len(raw_spp) <3:
+    if len(spp_list) < 3 or len(raw_spp) < 3:
         return False
     
     # If any species from spp_list are not present in raw_spp, return False

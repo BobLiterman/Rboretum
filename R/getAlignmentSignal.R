@@ -1,42 +1,33 @@
 #' Rboretum Alignment Signal Fetcher
 #'
-#' Given the path(s) to multiple alignments and a common list of taxa, this script returns site patterns for each site, in each alignment (after pruning if needed)
+#' Given the path(s) to multiple alignments and an optional list of taxa, this script returns split and base information for each site
 #' @param alignment_path Where to find alignment files. Options include:
 #' \itemize{
 #'   \item A character vector of one or more alignment file paths  (relative or absolute)
 #'   \item A path to a single directory containing all alignment files (relative or absolute)
 #' }
-#' @param species_info List of taxa to analyze. Can be provided as:
+#' @param species_info OPTIONAL: List of taxa to analyze [Default: Process alignment using all taxa if solo, all shared in multiple]. Can be provided as:
 #' \itemize{
 #'   \item phylo object from which species will be extracted; or
 #'   \item multiPhylo object from which common species will be extracted; or
 #'   \item Character vector with 3+ taxon IDs
+#'   \item Semicolon-separated list of taxon IDs
 #' }
-#' @param use_gaps OPTIONAL: Options include:
-#' \itemize{
-#'   \item FALSE (Default: Treat all gaps (-) in all alignments as missing data)
-#'   \item TRUE (Treat all gaps in all alignments as potentially informative signal)
-#'   \item Logical vecor indicating TRUE or FALSE for each alignment
-#' }
-#' @param alignment_name Chacter vector of names for each alignment. If missing or incomplete, the base filename is used
+#' @param use_gaps OPTIONAL: If FALSE, treat gaps as missing data (like N) [Default: TRUE, treat gaps as indel data]
+#' @param alignment_name OPTIONAL: Chacter vector of names for each alignment. If missing or incomplete, the base filename is used
 #' @param prefix OPTIONAL: If 'alignment_path' is a directory, provide a character vector of file prefixes (e.g. all alignment files start with "Mafft_")
 #' @param suffix OPTIONAL: If 'alignment_path' is a directory, provide a character vector of file suffixes (e.g. all alignment files end with ".phy")
-#' @param existing_signal OPTIONAL: Append these results to the output from getAlignmentSignal() run with the same species_info and a different alignment
-#' @return Dataframe containing split pattern for each site, in each alignment, relative to the given set of taxa
+#' @return Dataframe containing split and base information for each site in the alignment
 #' @export
 
-getAlignmentSignal <- function(alignment_path,species_info,use_gaps,alignment_name,prefix,suffix,existing_signal){
+getAlignmentSignal <- function(alignment_path,species_info,use_gaps,alignment_name,prefix,suffix){
   
   # Ensure that a path and root taxa are provided as character vectors
   if(missing(alignment_path)){
     stop("No alignment file or directories indicated with 'alignment_path'")
   } else if(!is.character(alignment_path)){
     stop("'alignment_path' should be a character vector of file paths or the path to an alignment directory.")
-  } else if(missing(species_info)){
-    stop("No 'species_info' provided")
-  } else if(!is.character(species_info) & !Rboretum::isPhylo(species_info) & !Rboretum::isMultiPhylo(species_info,check_three_taxa = TRUE)){
-    stop("'species_info' should be a character vector of tip labels, a phylo object, or a multiPhylo where all trees share three taxa.")
-  }
+  } 
   
   # Create regex search pattern in case a directory is given
   if(missing(prefix)){
@@ -67,16 +58,13 @@ getAlignmentSignal <- function(alignment_path,species_info,use_gaps,alignment_na
     align_regex <- paste(paste(c(prefix,"(.*)",suffix),collapse = ""))
   }
   
-  # Figure out how many files are being read in
+  # Ensure files all exist
   if(length(alignment_path)==1){
     
-    isFile <- file.exists(alignment_path) & !dir.exists(alignment_path)
-    isDir <- dir.exists(alignment_path) & !isFile
-    
-    if(isFile){ # 'alignment_path' points to a single valid file
+    if(Rboretum::checkValidFiles(alignment_path)){ # 'alignment_path' points to a single valid file
       
       alignment_count <- 1
-      alignment_path <- file_path_as_absolute(alignment_path)
+      alignment_path <- Rboretum::checkValidFiles(alignment_path,return_full_path = TRUE)
       default_name <- basename(alignment_path)
       
     } else if(isDir){ # 'alignment_path' points to a valid directory
@@ -101,43 +89,24 @@ getAlignmentSignal <- function(alignment_path,species_info,use_gaps,alignment_na
     
   } else{ # 'alignment_path' is a list of file paths
     
-    file_check <- purrr::map(.x = alignment_path,.f=function(x){ file.exists(x) & !dir.exists(x)}) %>% unlist() %>% all() # Check that all paths in 'alignment_path' point to valid files
+    file_check <- Rboretum::checkValidFiles(alignment_path) # Check that all paths in 'alignment_path' point to valid files
     
     if(!file_check){
-      stop("At least one file from 'alignment_path' points to an invalid path.")
+      invalid_paths <- Rboretum::checkValidFiles(alignment_path,return_invalid = TRUE)
+      print(invalid_paths)
+      stop("The above paths from 'alignment_path' do not point to a valid file...")
     } else{
-      alignment_path <- purrr::map(.x=alignment_path,.f=function(x){file_path_as_absolute(x)}) %>% unlist()
+      alignment_path <- Rboretum::checkValidFiles(alignment_path,return_full_path = TRUE)
       alignment_count <- length(alignment_path)
       default_name <- purrr::map(alignment_path,.f = function(x){basename(x)}) %>% unlist() %>% as.character()
     }
   }
   
-  # Get gap data
-  if(missing(use_gaps)){
-    gap_list <- rep(FALSE,alignment_count)
-  } else if(is.logical(use_gaps)){
-    if(length(use_gaps)==1){
-      if(use_gaps){
-        gap_list <- rep(TRUE,alignment_count)
-      }else{
-        gap_list <- rep(FALSE,alignment_count)
-      }
-    } else{
-      if(length(use_gaps)!=alignment_count){
-        print(paste(c("'use_gaps' (",length(use_gaps),") and number of alignments (",alignment_count,") do not match...using default setting of ignoring gaps..."),collapse = ''))
-        gap_list <- rep(FALSE,alignment_count)
-      } else{
-        gap_list <- use_gaps
-      }
-    } 
-  } else{
-    stop("'use_gaps' must be logical (single value or vector)")
-  }
-  
+  # Set alignment names if requested, otherwise use default basenames
   if(missing(alignment_name)){
     alignment_name <- default_name
   } else if(length(alignment_name) != alignment_count){
-    print(paste(c("'alignment_names' (",length(alignment_names),") and number of alignments (",alignment_count,") do not match...using default names..."),collapse = ''))
+    print(paste(c("'alignment_names' (",length(alignment_name),") and number of alignments (",alignment_count,") do not match...using default names..."),collapse = ''))
     alignment_name <- default_name
   }
   
@@ -145,30 +114,72 @@ getAlignmentSignal <- function(alignment_path,species_info,use_gaps,alignment_na
     stop("'alignment_name' cannot contain duplicate values")
   }
   
-  if(alignment_count == 1){
-    signal_df <- Rboretum::getAlignmentSignal_Worker(alignment_path,species_info,gap_list,alignment_name)
-  } else if(alignment_count > 1){
-    
-    signal_df <- tibble(Alignment_Name=character(),Alignment_Position=integer(),Site_Pattern=character(),Gap=logical(),Singleton=logical(),Singleton_Taxa=character(),Non_Base_Taxa=character(),Non_Base_Count=integer(),Split_1=character(),Split_2=character(),Split_3=character(),Split_4=character(),Split_5=character())
-    for(i in 1:alignment_count){
-      temp_df <- Rboretum::getAlignmentSignal_Worker(alignment_path[i],species_info,gap_list[i],alignment_name[i])
-      if(nrow(temp_df)>0){
-        signal_df <- rbind(signal_df,temp_df)
+  # Establish species of interest
+  
+  # If no species_info is provided, process alignments with taxa shared among all alignments
+  if(missing(species_info)){
+    if(alignment_count == 1){
+      species_info = Rboretum::getAlignmentSpecies(alignment_path)
+    } else{
+      all_species <- purrr::map(.x=alignment_path,.f=function(x){Rboretum::semiVector(Rboretum::getAlignmentSpecies(x))})
+      species_info <- Reduce(intersect, all_species) %>% Rboretum::vectorSemi() %>% rep(alignment_count)
+    }
+  } else if(Rboretum::isPhylo(species_info)){ # Get species from phylo
+    species_info <- rep(Rboretum::semiSorter(species_info$tip.label),alignment_count)
+  } else if(Rboretum::isMultiPhylo(species_info,check_three_taxa=TRUE)){ # Get shared species from multiPhylo
+    species_info <- rep(Rboretum::semiSorter(Rboretum::getSharedTaxa(species_info)),alignment_count)
+  } else if(is.character(species_info)){ # Get species from character vectors
+    if(!Rboretum::semiChecker(species_info)){
+      if(length(species_info)>=3){
+        species_info <- rep(semiSorter(species_info),alignment_count)
+      } else{ 
+        stop("'species_info' contains fewer than 3 taxa...")
+        }
+    } else{
+      if(length(semiVector(species_info))<3){
+        stop("'species_info' contains fewer than 3 taxa...")
+      } else{
+        species_info <- rep(semiSorter(species_info),alignment_count)
       }
     }
+  } else{
+    stop("'species_info' should be a phylo, multiPhylo where trees share 3+ taxa, or a character vector with 3+ taxa")
   }
   
-  if(nrow(signal_df)==0){
-    stop("No data returned. Check alignments and taxa?")
-  } else if(missing(existing_signal)){ # If  not appending results, return results
-    return(signal_df)
-  } else if(!Rboretum::isAlignmentSignal(existing_signal,species_info)){ # Ensure existing_signal contains information about the same taxa
-      print("Object passed as 'existing_signal' is failing the test isAlignmentSignal(existing_signal,species_info)...Returning results without appending...")
-      return(signal_df)
-  } else if(any(alignment_name %in% existing_signal$Alignment_Name)){ # Ensure that alignment names are all unique
-    print("Object passed as 'existing_signal' contains data on an alignment named identically one processed here...Returning results without appending...")
-    return(signal_df)
+  # Get gap data
+  if(missing(use_gaps)){
+    gap_list <- rep("0",alignment_count)
+  } else if(is.logical(use_gaps)){
+    if(length(use_gaps)==1){
+      if(use_gaps){
+        gap_list <- rep("1",alignment_count)
+      }else{
+        gap_list <- rep("0",alignment_count)
+      }
+    } else{
+      if(length(use_gaps)!=alignment_count){
+        print(paste(c("'use_gaps' (",length(use_gaps),") and number of alignments (",alignment_count,") do not match...using default setting of ignoring gaps..."),collapse = ''))
+        gap_list <- rep("0",alignment_count)
+      } else{
+        gap_list <- purrr::map(.x=use_gaps,.f=function(x){ifelse(x,"1","0")}) %>% unlist()
+      }
+    } 
   } else{
-    return(rbind(existing_signal,signal_df))
+    stop("'use_gaps' must be logical (single value or vector)")
   }
+  
+  if(alignment_count == 1){
+    splits_df <- splitsProcessor(alignment_path,gap_list,species_info,alignment_name) %>%
+      mutate_if(is.list,as.character) %>%
+      select(-index) %>%
+      mutate_all(~na_if(., 'NaN'))
+  } else{
+    splits_df = purrr::map(.x=1:alignment_count,.f=function(x){splitsProcessor(alignment_path[x],gap_list[x],species_info[x],alignment_name[x])}) %>% do.call(rbind, .) %>%
+      mutate_if(is.list,as.character) %>%
+      select(-index) %>%
+      mutate_all(~na_if(., 'NaN'))
+  }
+  
+  splits_df[is.na(splits_df)] <- NA
+  return(splits_df)
 }

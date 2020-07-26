@@ -74,6 +74,7 @@ def splitsProcessor(align_path,use_gaps,spp_info,align_name):
     # Add 1 to site position to convert from 0 to 1-based
     split_results.Zeroed_Site_Position = split_results.Zeroed_Site_Position + 1
     split_results.rename(columns={"Zeroed_Site_Position": "Alignment_Position"})
+    split_results['Alignment_Name'] = alignment_name
 
     return split_results
 

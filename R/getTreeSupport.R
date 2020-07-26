@@ -27,9 +27,39 @@
 
 getTreeSupport <- function(signal,tree,include_root,clade,dataset_name,max_missing,separate_signal,include_singleton,include_gap,only_gap,only_biallelic,only_triallelic,only_quadallelic,only_pentallelic,return_integer,return_table,existing_support){
 
+  # Process signal
+  if(missing(signal)){
+    stop("'getTreeSupport' requires 'signal' arguement.")
+  } else if(!Rboretum::isAlignmentSignal(signal)){
+    stop("'signal' is not the output of getAlignmentSignal.")
+  } else{
+    
+    # Get taxa from signal
+    signal_taxa <- Rboretum::isAlignmentSignal(signal,return_taxa = TRUE)
+    
+    # Set maximum number of missing taxa allowed
+    max_possible_missing <- length(signal_taxa) - 3
+    
+    # Get max missing
+    if(missing(max_missing)){
+      max_missing <- max_possible_missing
+    } else if(has_error(silent=TRUE,expr=as.integer(max_missing))){
+      stop("'max_missing' should be an integer value")
+    } else{
+      max_missing <- as.integer(max_missing)
+      
+      # Ensure max_missing doesn't leave fewer than 3 taxa
+      if(max_missing > max_possible_missing){
+        max_missing <- max_possible_missing
+      }
+    }
+  }
+  
   # Check for tree or clade arguments
-  if(missing(tree) & missing(clade) & missing(return_table)){
-    stop("Must provide either a 'tree' or 'clade' argument, or ask that 'return_table' = TRUE")
+  if(missing(return_table)){
+    if(missing(tree) & missing(clade)){
+      stop("Must provide either a 'tree' or 'clade' argument, or ask that 'return_table' = TRUE")
+    }
   }
 
   # Process toggle arguments
@@ -107,7 +137,7 @@ getTreeSupport <- function(signal,tree,include_root,clade,dataset_name,max_missi
       if(!Rboretum::semiChecker(clade)){
         stop("'clade' argument should be a charcter vector of taxa separated by semicolons...")
       } else{
-        test_clade <- clade
+        test_clade <- semiSorter(clade)
       }
     } else{ # If no 'clade' argument, process 'tree'
       
@@ -145,35 +175,71 @@ getTreeSupport <- function(signal,tree,include_root,clade,dataset_name,max_missi
     test_taxa <- purrr::map(.x=test_clade,.f=function(x){semiVector(x)}) %>% unlist() %>% as.character() %>% unique() %>% naturalsort()
     
     # Validate signal and get signal taxa
-    if(!Rboretum::isAlignmentSignal(signal,test_taxa)){
+    if(!all(test_taxa %in% signal_taxa)){
       stop("'signal' is either not the output from getAlignmentSignal() for the supplied clades/trees")
-    } else{
-      signal_taxa <- Rboretum::isAlignmentSignal(signal,return_taxa = TRUE)
-      signal_name <- unique(signal$Alignment_Name)
     }
   }
   
-  # Set maximum number of missing taxa allowed
-  max_possible_missing <- length(signal_taxa) - 3
-
-  if(missing(max_missing)){
-    max_missing <- max_possible_missing
-  } else if(has_error(silent=TRUE,expr=as.integer(max_missing))){
-    stop("'max_missing' should be an integer value")
+  # Extract informative sites
+  informative_patterns <- c('biallelic','triallelic','quadallelic','pentallelic')
+  signal <- signal %>%
+    filter(Non_Base_Count <= max_missing) %>%
+    filter(Site_Pattern %in% informative_patterns)
+  
+  # Ensure filtering has left some data
+  if(nrow(signal)==0){
+    stop("No data fits the filtering criteria.")
+  }
+  
+  if(!include_singleton){
+    signal <- signal %>%
+      filter(is.na(Singleton_Taxa))
+  }
+  
+  if(!include_gap){
+    signal <- signal %>%
+      filter(!str_detect("-",All_Site_Bases))
+  }
+  
+  if(only_gap){
+    signal <- signal %>%
+      filter(str_detect("-",All_Site_Bases))
+    include_gap <- TRUE
+  }
+  
+  if(only_biallelic){
+    signal <- signal %>%
+      filter(Site_Pattern=='biallelic')
+  }
+  
+  if(only_triallelic){
+    signal <- signal %>%
+      filter(Site_Pattern=='triallelic')
+  }
+  
+  if(only_quadallelic){
+    signal <- signal %>%
+      filter(Site_Pattern=='quadallelic')
+  }
+  
+  if(only_pentallelic){
+    signal <- signal %>%
+      filter(Site_Pattern=='pentallelic')
+  }
+  
+  # Ensure filtering has left some data
+  if(nrow(signal)==0){
+    stop("No data fits the filtering criteria.")
   } else{
-    max_missing <- as.integer(max_missing)
-
-    # Ensure max_missing doesn't leave fewer than 3 taxa
-    if(max_missing > max_possible_missing){
-      max_missing <- max_possible_missing
-    }
+    final_signal_name <- unique(signal$Alignment_Name)
+    final_signal_count <- length(signal_name)
   }
 
   if(!separate_signal){
     default_name <- paste(c('Total_m',max_missing),collapse = '')
   } else{
     # Generate default names based on signal object and number of missing taxa allowed (replaced by supplying dataset_name vector)
-    default_name <- purrr::map(.x=signal_name,.f=function(x){paste(c(x,'_m',max_missing),collapse = '')}) %>% unlist() %>% as.character()
+    default_name <- purrr::map(.x=final_signal_name,.f=function(x){paste(c(x,'_m',max_missing),collapse = '')}) %>% unlist() %>% as.character()
   }
 
   # Set alignment names to defaults if necessary
@@ -187,60 +253,12 @@ getTreeSupport <- function(signal,tree,include_root,clade,dataset_name,max_missi
   } else if(separate_signal & length(dataset_name) != length(signal_name)){ # If number of alignments in 'signal' are different from the number of new names provided, use default names
     print("'signal' contains a different number of alignments than names provided by 'dataset_name'. Using default names...")
     dataset_name <- default_name
+  } else{
+    dataset_name <- dataset_name[final_signal_name %in% signal_name]
   }
 
-  informative_patterns <- c('biallelic','triallelic','quadallelic','pentallelic')
-
-  signal <- signal %>%
-    filter(Non_Base_Count <= max_missing) %>%
-    filter(Site_Pattern %in% informative_patterns)
-
-  if(!include_singleton){
-    signal <- signal %>%
-      filter(is.na(Singleton_Taxa))
-  }
-  
-  if(only_gap){
-    signal <- signal %>%
-      filter(str_detect("-",All_Site_Bases))
-    include_gap <- TRUE
-  }
-  
-  if(!include_gap){
-    signal <- signal %>%
-      filter(!str_detect("-",All_Site_Bases))
-  }
-  
-  if(only_biallelic){
-    signal <- signal %>%
-      filter(Site_Pattern=='biallelic')
-  }
-
-  if(only_triallelic){
-    signal <- signal %>%
-      filter(Site_Pattern=='triallelic')
-  }
-
-  if(only_quadallelic){
-    signal <- signal %>%
-      filter(Site_Pattern=='quadallelic')
-  }
-
-  if(only_pentallelic){
-    signal <- signal %>%
-      filter(Site_Pattern=='pentallelic')
-  }
-
-  # Ensure filtering has left some data
-  if(nrow(signal)==0){
-    stop("No data fits the filtering criteria.")
-  }
-
-  surviving_alignments <- unique(signal$Alignment_Name)
-  surviving_names <- dataset_name[signal_name %in% surviving_alignments]
-  
   # Generate support tables
-  if(!separate_signal | length(signal_name)==1){ # If return results as a summation, or if only one alignment is present...
+  if(!separate_signal | final_signal_count==1){ # If return results as a summation, or if only one alignment is present...
 
     support_table <- signal %>% select(starts_with('Split_')) %>% unlist() %>% table()
 
@@ -248,14 +266,14 @@ getTreeSupport <- function(signal,tree,include_root,clade,dataset_name,max_missi
 
     support_table <- list()
     
-    for(i in 1:length(surviving_alignments)){
+    for(i in 1:final_signal_count){
       support_table[[i]] <- signal %>%
-        filter(Alignment_Name == surviving_alignments[i]) %>%
+        filter(Alignment_Name == final_signal_name[i]) %>%
         select(starts_with('Split_')) %>%
         unlist() %>% table()
     }
     
-    names(support_table) <- surviving_names
+    names(support_table) <- dataset_name
   }
 
   if(return_table){
@@ -267,8 +285,8 @@ getTreeSupport <- function(signal,tree,include_root,clade,dataset_name,max_missi
   # Add to existing support?
   if(missing(existing_support)){
     add_support <- FALSE
-  } else if(!Rboretum::isTreeSupport(existing_support,test_clade)){
-    print("'existing_support' is either not the output from getTreeSupport(), or does not contain the same clade information as requested from 'tree' or 'clade'. Returning unappended...")
+  } else if(!Rboretum::isTreeSupport(existing_support,test_clade,partial = TRUE)){
+    print("'existing_support' is either not the output from getTreeSupport(), or does not contain clade information as requested from 'tree' or 'clade'. Returning unappended...")
     add_support <- FALSE
   } else{
     if(any(names(existing_support) %in% dataset_name)){
@@ -281,7 +299,7 @@ getTreeSupport <- function(signal,tree,include_root,clade,dataset_name,max_missi
   }
   
   # Generate support counts
-  if(!separate_signal | length(surviving_alignments)==1){ # If returning results as a summation, or if only one alignment is present...
+  if(!separate_signal | final_signal_count==1){ # If returning results as a summation, or if only one alignment is present...
     
     clade_support <- purrr::map(.x=test_clade,.f=function(x){Rboretum::tableCount(support_table,x)}) %>% unlist() %>% as.integer()
     
@@ -295,18 +313,18 @@ getTreeSupport <- function(signal,tree,include_root,clade,dataset_name,max_missi
     
   } else{ # If splitting results up by dataset...
     
-    clade_support <- purrr::map(.x=surviving_names,.f=function(x){lapply(test_clade,function(y) Rboretum::tableCount(support_table[[x]],as.character(y))) %>% unlist() %>% as.integer()})
-    names(clade_support) <- surviving_names
+    clade_support <- purrr::map(.x=final_signal_name,.f=function(x){lapply(test_clade,function(y) Rboretum::tableCount(support_table[[x]],as.character(y))) %>% unlist() %>% as.integer()})
+    names(clade_support) <- final_signal_name
     
     if(return_integer){
       return(clade_support)
     }
     
-    for(i in 1:(length(surviving_names))){
+    for(i in 1:final_signal_count){
       clade_df[,(i+1)] <- as.integer(clade_support[[i]])
     }
     
-    names(clade_df) <- c('Clade',surviving_names)
+    names(clade_df) <- c('Clade',final_signal_name)
   }
   
   if(add_support){

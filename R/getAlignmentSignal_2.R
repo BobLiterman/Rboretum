@@ -180,5 +180,6 @@ getAlignmentSignal_2 <- function(alignment_path,species_info,use_gaps,alignment_
       mutate_all(~na_if(., 'NaN'))
   }
   
+  splits_df[is.na(splits_df)] <- NA
   return(splits_df)
 }

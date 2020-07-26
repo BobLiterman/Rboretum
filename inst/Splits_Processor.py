@@ -135,7 +135,7 @@ def getSiteSplits(pos):
             
     # Get alleles and their occurrences
     site_set = Counter(seq_string)
-    allele_list = list(site_set)
+    allele_list = sorted(list(site_set))
     seq_bases = ";".join(allele_list)
 
     allele_count = len(allele_list)

@@ -16,7 +16,7 @@ from collections import Counter
 import multiprocessing as mp
 from itertools import chain
 
-def splitsProcessor(alignment_path1,info_gap1,spp_string):
+def splitsProcessor(align_path,use_gaps,spp_info,align_name):
 
     global alignment_path
     global info_gap
@@ -24,21 +24,25 @@ def splitsProcessor(alignment_path1,info_gap1,spp_string):
     global bases
 
     # Prepare arguments
-    alignment_path = str(alignment_path1)
-    info_gap = str(info_gap1)
+    alignment_path = str(align_path)
+    info_gap = str(use_gaps)
     
     # Set valid bases based on info_gap
-    if info_gap != "0" and info_gap != "1":
+    if use_gaps != "0" and use_gaps != "1":
         sys.exit("ERROR: info_gap must be '0' or '1'")
     
-    if info_gap == "0":
+    if use_gaps == "0":
         bases = ['A', 'C', 'T', 'G', 'a', 'g', 't', 'c']
     
     else:
         bases = ['A', 'C', 'T', 'G', 'a', 'g', 't', 'c','-']
         
-    spp_list = sorted(str(spp_string).split(";"))
-
+    spp_list = sorted(str(spp_info).split(";"))
+    
+    # Set alignment name
+    global alignment_name
+    alignment_name = str(align_name)
+    
     # If alignment_filename contains all species from spp_list (>= 3 species), continue
     if not getPrunedAlignment():
         sys.exit("ERROR: Cannot process "+os.path.basename(alignment_path)+" with provided species list.")

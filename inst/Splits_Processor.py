@@ -4,6 +4,8 @@
 
     1) Prune down to a supplied subset of taxa
     2) Breakdown the signal at each site
+    
+    NOT PULLING RIGHT TIP LABELS FOR SPLITS!
 """
 
 import sys
@@ -15,6 +17,7 @@ from operator import itemgetter
 from collections import Counter
 import multiprocessing as mp
 from itertools import chain
+import copy
 
 def splitsProcessor(align_path,use_gaps,spp_info,align_name):
 
@@ -123,8 +126,7 @@ def getSiteSplits(pos):
     global bases
     global spp_list
     
-    temp_list = spp_list
-    
+    temp_list = copy.deepcopy(spp_list)
     seq_string = pruned_alignment[:, pos]
             
     # Get alleles and their occurrences
@@ -153,7 +155,7 @@ def getSiteSplits(pos):
     if(not set(allele_list).issubset(set(bases))):
         non_base_list = list(set(seq_string) - set(bases))
         non_base_index = findOccurrences(seq_string, non_base_list)
-        non_base_taxa = itemgetter(*non_base_index)(sorted(temp_list))
+        non_base_taxa = itemgetter(*non_base_index)(temp_list)
         non_base_count = int(len(non_base_index))
 
         if non_base_count == 1:

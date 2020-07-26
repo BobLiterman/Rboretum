@@ -26,7 +26,7 @@
 #' @export
 
 getTreeSupport <- function(signal,tree,include_root,clade,dataset_name,max_missing,separate_signal,include_singleton,include_gap,only_gap,only_biallelic,only_triallelic,only_quadallelic,only_pentallelic,return_integer,return_table,existing_support){
-
+  
   # Process signal
   if(missing(signal)){
     stop("'getTreeSupport' requires 'signal' arguement.")
@@ -61,7 +61,7 @@ getTreeSupport <- function(signal,tree,include_root,clade,dataset_name,max_missi
       stop("Must provide either a 'tree' or 'clade' argument, or ask that 'return_table' = TRUE")
     }
   }
-
+  
   # Process toggle arguments
   if(missing(separate_signal)){
     separate_signal <- TRUE
@@ -234,14 +234,14 @@ getTreeSupport <- function(signal,tree,include_root,clade,dataset_name,max_missi
     final_signal_name <- unique(signal$Alignment_Name)
     final_signal_count <- length(final_signal_name)
   }
-
+  
   if(!separate_signal){
     default_name <- paste(c('Total_m',max_missing),collapse = '')
   } else{
     # Generate default names based on signal object and number of missing taxa allowed (replaced by supplying dataset_name vector)
     default_name <- purrr::map(.x=final_signal_name,.f=function(x){paste(c(x,'_m',max_missing),collapse = '')}) %>% unlist() %>% as.character()
   }
-
+  
   # Set alignment names to defaults if necessary
   if(missing(dataset_name)){
     dataset_name <- default_name
@@ -256,14 +256,13 @@ getTreeSupport <- function(signal,tree,include_root,clade,dataset_name,max_missi
   } else{
     dataset_name <- dataset_name[final_signal_name %in% signal_name]
   }
-
+  
   # Generate support tables
   if(!separate_signal | final_signal_count==1){ # If return results as a summation, or if only one alignment is present...
-
     support_table <- signal %>% select(starts_with('Split_')) %>% unlist() %>% table()
-
+    
   } else{ # If splitting results up by dataset...
-
+    
     support_table <- list()
     
     for(i in 1:final_signal_count){
@@ -275,11 +274,11 @@ getTreeSupport <- function(signal,tree,include_root,clade,dataset_name,max_missi
     
     names(support_table) <- dataset_name
   }
-
+  
   if(return_table){
     return(support_table)
   }
-
+  
   clade_df <- data.frame(Clade = test_clade)
   
   # Add to existing support?
@@ -297,7 +296,6 @@ getTreeSupport <- function(signal,tree,include_root,clade,dataset_name,max_missi
       add_support <- TRUE
     }
   }
-  
   # Generate support counts
   if(!separate_signal | final_signal_count==1){ # If returning results as a summation, or if only one alignment is present...
     
@@ -313,8 +311,8 @@ getTreeSupport <- function(signal,tree,include_root,clade,dataset_name,max_missi
     
   } else{ # If splitting results up by dataset...
     
-    clade_support <- purrr::map(.x=final_signal_name,.f=function(x){lapply(test_clade,function(y) Rboretum::tableCount(support_table[[x]],as.character(y))) %>% unlist() %>% as.integer()})
-    names(clade_support) <- final_signal_name
+    clade_support <- purrr::map(.x=dataset_name,.f=function(x){lapply(test_clade,function(y) Rboretum::tableCount(support_table[[x]],as.character(y))) %>% unlist() %>% as.integer()})
+    names(clade_support) <- dataset_name
     
     if(return_integer){
       return(clade_support)
@@ -324,7 +322,7 @@ getTreeSupport <- function(signal,tree,include_root,clade,dataset_name,max_missi
       clade_df[,(i+1)] <- as.integer(clade_support[[i]])
     }
     
-    names(clade_df) <- c('Clade',final_signal_name)
+    names(clade_df) <- c('Clade',dataset_name)
   }
   
   if(add_support){

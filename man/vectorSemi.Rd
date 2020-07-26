@@ -4,16 +4,16 @@
 \alias{vectorSemi}
 \title{Rboretum Vector Semicolonizer}
 \usage{
-vectorSemi(char_vec)
+vectorSemi(to_semi)
 }
 \arguments{
-\item{char_vec}{Character vector}
+\item{char_vec}{Character vector or list of character vectors}
 }
 \value{
-Semicolon-separated character vector of length 1
+Semicolon-separated strings for each passed vector
 }
 \description{
-This function takes a character vector and retuns a string separated by semicolons (;)
+This function takes a character vector, or a list of vectors, and retuns a string separated by semicolons (;)
 }
 \examples{
 myVec <- c('a','b','c','d')

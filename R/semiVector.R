@@ -19,22 +19,28 @@ semiVector <- function(string_to_split){
   
   if(missing(string_to_split)){
     stop("semiVector expects a character argument")
-  } else if(!is.character(string_to_split)){
-    if(length(string_to_split)>1){
-      stop("semiVector expects a character argument")
-    } else{
-      if(is.na(string_to_split)){
-        return(NA)
-      } else{
-        stop("semiVector expects a character argument")
-      } 
+  }
+  
+  # If NA is passed, return NA
+  if(length(string_to_split)==1){
+    if(is.na(string_to_split)){
+      return(NA)
     }
   }
   
+  # 'string_to_split' should be a character vector
+  if(!is.character(string_to_split)){
+    stop("semiVector expects a character argument")
+  }
+  
+  # If 'string_to_split' is one element, return bits as a character vector
   if(length(string_to_split)==1){
-      return(stringr::str_split(string_to_split[1],pattern = ';') %>% unlist())
-  } else{
-    sep_list = purrr::map(.x=string_to_split,.f=function(x){stringr::str_split(x,pattern = ';')[[1]]})
+    return(stringr::str_split(string_to_split[1],pattern = ';') %>% unlist())
+  }
+  
+  # If 'string_to_split' is > one element, return character vectors as a list
+  if(length(string_to_split)>1){
+    sep_list = purrr::map(.x=string_to_split,.f=function(x){stringr::str_split(x,pattern = ';')})
     return(sep_list)
   }
 }

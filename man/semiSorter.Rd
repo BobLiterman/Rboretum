@@ -7,13 +7,13 @@
 semiSorter(string_to_sort)
 }
 \arguments{
-\item{string_to_split}{Character vector or unsorted semicolon delimited string}
+\item{string_to_split}{Character vector}
 }
 \value{
-Sorted semicolon delimited string
+Sorted semicolon delimited character vector
 }
 \description{
-This function returns a sorted, semicolon-delimited string from a character vector or an unsorted semicolon-delimited string
+This function returns a sorted, semicolon-delimited character vector from a plain character vector, or a character vector of semicolon-delimited elements
 }
 \examples{
 myShuffledString <- 'c;d;a;b'

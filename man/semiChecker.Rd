@@ -15,5 +15,5 @@ semiChecker(test_object, return_count)
 TRUE if test_object is a semicolon-separated character (or element count if return_count = TRUE), or FALSE
 }
 \description{
-This function returns TRUE if the passed object is a semicolon-separated character with a length = 1. If return_count = TRUE, it will return the number of elements after splitting
+This function returns TRUE if the passed object is a character vector containing semicolon-separated taxa. If return_count = TRUE, it will return the number of elements in each element after splitting
 }

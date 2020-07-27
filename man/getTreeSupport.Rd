@@ -12,7 +12,7 @@ getTreeSupport(
   dataset_name,
   max_missing,
   separate_signal,
-  include_singleton,
+  only_parsinf,
   include_gap,
   only_gap,
   only_biallelic,
@@ -43,7 +43,7 @@ getTreeSupport(
 
 \item{separate_signal}{OPTIONAL: If FALSE, return values as the sum of all datasets [Default: TRUE, return results separated by dataset]}
 
-\item{include_singleton}{OPTIONAL: If FALSE, do not count sites with singletons as part of total support (i.e. parsimony-informative sites) [Default: TRUE]}
+\item{only_parsinf}{OPTIONAL: If TRUE, do not count sites with singletons as part of total support (i.e. parsimony-informative sites) [Default: FALSE, allow sites with singletons to contribute data]}
 
 \item{include_gap}{OPTIONAL: If FALSE, count sites with gap positions ('-') as missing data; otherwise, count gaps as valid indel data [Default: TRUE: Gaps are treated as indel signal]}
 

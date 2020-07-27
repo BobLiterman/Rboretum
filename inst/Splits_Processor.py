@@ -221,7 +221,7 @@ def getSiteSplits(pos):
 
     # If only a single allele is present, return 'singleton' or 'invariant' result
     if(allele_count == 1):
-        if singleton_count > 1:
+        if singleton_count > 0:
             return(pd.DataFrame([[pos,seq_bases,'singleton',non_base_taxa_string,non_base_count,singleton_taxa_string,singleton_count,gap_taxa_string,np.nan,np.nan,np.nan,np.nan,np.nan]], columns=['Alignment_Position','All_Site_Bases','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Singleton_Count','Gap_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
         else:
             return(pd.DataFrame([[pos,seq_bases,'invariant',non_base_taxa_string,non_base_count,singleton_taxa_string,singleton_count,gap_taxa_string,np.nan,np.nan,np.nan,np.nan,np.nan]], columns=['Alignment_Position','All_Site_Bases','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Singleton_Count','Gap_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))

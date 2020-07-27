@@ -282,7 +282,7 @@ getTreeSupport <- function(signal,tree,include_root,clade,dataset_name,max_missi
     return(support_table)
   }
   
-  clade_df <- data.frame(Clade = test_clade)
+  clade_df <- data.frame(Clade = test_clade,stringsAsFactors = FALSE)
   
   # Add to existing support?
   if(missing(existing_support)){

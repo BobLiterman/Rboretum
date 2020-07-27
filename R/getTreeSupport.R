@@ -12,7 +12,7 @@
 #' @param dataset_name OPTIONAL: Character vector containing a new name for each alignment dataset in 'signal',  [Default: Alignment name from signal dataframe + 'm_<MISSING>']
 #' @param max_missing OPTIONAL: Number of missing sites allowed in alignment column before it is not considered [Default: Taxa Count - 3]
 #' @param separate_signal OPTIONAL: If FALSE, return values as the sum of all datasets [Default: TRUE, return results separated by dataset]
-#' @param include_singleton OPTIONAL: If FALSE, do not count sites with singletons as part of total support (i.e. parsimony-informative sites) [Default: TRUE]
+#' @param only_parsinf OPTIONAL: If TRUE, do not count sites with singletons as part of total support (i.e. parsimony-informative sites) [Default: FALSE, allow sites with singletons to contribute data]
 #' @param include_gap OPTIONAL: If FALSE, count sites with gap positions ('-') as missing data; otherwise, count gaps as valid indel data [Default: TRUE: Gaps are treated as indel signal]
 #' @param only_gap OPTIONAL: TRUE or FALSE; Only count sites with gap positions ('-') [Default: FALSE]
 #' @param only_biallelic OPTIONAL: If TRUE, only count sites with biiallelic variation as part of total support [Default: FALSE]
@@ -25,7 +25,7 @@
 #' @return A dataframe containing each monophyletic clade in 'tree', along with site support from all alignments in 'signal' as separate columns
 #' @export
 
-getTreeSupport <- function(signal,tree,include_root,clade,dataset_name,max_missing,separate_signal,include_singleton,include_gap,only_gap,only_biallelic,only_triallelic,only_quadallelic,only_pentallelic,return_integer,return_table,existing_support){
+getTreeSupport <- function(signal,tree,include_root,clade,dataset_name,max_missing,separate_signal,only_parsinf,include_gap,only_gap,only_biallelic,only_triallelic,only_quadallelic,only_pentallelic,return_integer,return_table,existing_support){
   
   # Process signal
   if(missing(signal)){
@@ -87,10 +87,10 @@ getTreeSupport <- function(signal,tree,include_root,clade,dataset_name,max_missi
     include_root <- FALSE
   }
   
-  if(missing(include_singleton)){
-    include_singleton <- TRUE
-  } else if (!is.logical(include_singleton)){
-    include_singleton <- TRUE
+  if(missing(only_parsinf)){
+    only_parsinf <- FALSE
+  } else if (!is.logical(only_parsinf)){
+    only_parsinf <- FALSE
   }
   
   if(missing(include_gap)){
@@ -191,20 +191,20 @@ getTreeSupport <- function(signal,tree,include_root,clade,dataset_name,max_missi
     stop("No data fits the filtering criteria.")
   }
   
-  if(!include_singleton){
+  if(only_parsinf){
     signal <- signal %>%
       filter(is.na(Singleton_Taxa))
-  }
-  
-  if(!include_gap){
-    signal <- signal %>%
-      filter(!str_detect("-",All_Site_Bases))
   }
   
   if(only_gap){
     signal <- signal %>%
       filter(str_detect("-",All_Site_Bases))
     include_gap <- TRUE
+  }
+  
+  if(!include_gap){
+    signal <- signal %>%
+      filter(!str_detect("-",All_Site_Bases))
   }
   
   if(only_biallelic){

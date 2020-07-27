@@ -19,7 +19,7 @@ import multiprocessing as mp
 from itertools import chain
 import copy
 
-def splitsProcessor(align_path,use_gaps,spp_info,align_name):
+def patternProcessor(align_path,use_gaps,spp_info,align_name):
 
     global alignment_path
     global info_gap

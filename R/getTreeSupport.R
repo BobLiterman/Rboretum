@@ -182,6 +182,9 @@ getTreeSupport <- function(signal,tree,include_root,clade,dataset_name,max_missi
   
   # Extract informative sites
   informative_patterns <- c('biallelic','triallelic','quadallelic','pentallelic')
+  
+  signal_name <- unique(signal$Alignment_Name) 
+  
   signal <- signal %>%
     filter(Non_Base_Count <= max_missing) %>%
     filter(Site_Pattern %in% informative_patterns)

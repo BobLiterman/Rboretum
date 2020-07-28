@@ -59,7 +59,10 @@ def fetchSpeciesComposition(path_to_align,align_name):
     percent_gc = []
     percent_gc_zip = zip(gc_counts,total_base_counts)
     for gc_i,total_i in percent_gc_zip:
-        percent_gc.append(gc_i/float(total_i))
+        if total_i == 0:
+            percent_gc.append(np.nan)
+        else:
+            percent_gc.append(gc_i/float(total_i))
 
     percent_n = []
     for n_i in n_totals:

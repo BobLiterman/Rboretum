@@ -50,6 +50,9 @@ getSpeciesComposition <- function(alignment_path,alignment_name,prefix,suffix){
     align_regex <- paste(paste(c(prefix,"(.*)",suffix),collapse = ""))
   }
   
+  isFile <- file.exists(alignment_path) & !dir.exists(alignment_path)
+  isDir <- dir.exists(alignment_path) & !isFile
+  
   # Ensure files all exist
   if(length(alignment_path)==1){
     

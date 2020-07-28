@@ -4,8 +4,6 @@
 
     1) Prune down to a supplied subset of taxa
     2) Breakdown the signal at each site
-    
-    NOT PULLING RIGHT TIP LABELS FOR SPLITS!
 """
 
 import sys

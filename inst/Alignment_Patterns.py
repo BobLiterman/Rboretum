@@ -45,7 +45,7 @@ def patternProcessor(align_path,use_gaps,spp_info,align_name):
     alignment_name = str(align_name)
     
     # If alignment_filename contains all species from spp_list (>= 3 species), continue
-    if not getPrunedAlignment():
+    if not getPrunedAlignment_Patterns():
         sys.exit("ERROR: Cannot process "+os.path.basename(alignment_path)+" with provided species list.")
     
     # For each position, grab bases and describe variation pattern
@@ -75,7 +75,7 @@ def patternProcessor(align_path,use_gaps,spp_info,align_name):
 
     return pattern_results
 
-def getPrunedAlignment():
+def getPrunedAlignment_Patterns():
     # getPrunedAlignment returns True if:
         # (1) All species in tree are in alignment
         # (2) Three or more species are present.

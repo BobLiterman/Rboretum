@@ -30,7 +30,7 @@ def fetchAlignmentComposition(path_to_align,spp_info,align_name):
     alignment_name = str(align_name)
 
     # If alignment at path_to_align contains all species from spp_list (>= 3 species), continue
-    if not getPrunedAlignment():
+    if not getPrunedAlignment_Composition():
         sys.exit("ERROR: Cannot process "+os.path.basename(alignment_path)+" with provided species list.")
     
     # Get alignment length
@@ -59,7 +59,7 @@ def fetchAlignmentComposition(path_to_align,spp_info,align_name):
     
     return(pd.DataFrame([[alignment_name,alignment_length,percent_gc,percent_n,percent_gap]],columns=['Alignment_Name','Alignment_Length','Percent_GC','Percent_N','Percent_Gap']))
 
-def getPrunedAlignment():
+def getPrunedAlignment_Composition():
     # getPrunedAlignment returns True if:
         # (1) All species in tree are in alignment
         # (2) Three or more species are present.

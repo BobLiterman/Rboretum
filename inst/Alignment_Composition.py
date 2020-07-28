@@ -54,8 +54,8 @@ def fetchAlignmentComposition(path_to_align,spp_info,align_name):
         percent_gc = gc_count/all_base_count
 
     # Calculate percent N/gap
-    percent_n = float(n_count)/alignment_length
-    percent_gap = float(gap_count)/alignment_length
+    percent_n = float(n_count)/(alignment_length*len(spp_list))
+    percent_gap = float(gap_count)/(alignment_length*len(spp_list))
     
     return(pd.DataFrame([[alignment_name,alignment_length,percent_gc,percent_n,percent_gap]],columns=['Alignment_Name','Alignment_Length','Percent_GC','Percent_N','Percent_Gap']))
 

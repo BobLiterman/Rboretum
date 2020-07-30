@@ -30,13 +30,13 @@ getAlignmentBreakdown <- function(alignment_path,species_info,use_gaps,alignment
   } 
   
   # Get alignment composition data
-  align_comp_df <- getAlignmentComposition(alignment_path,species_info=ifelse(missing(species_info),missingArg(),species_info),alignment_name=ifelse(missing(alignment_name),missingArg(),alignment_name),prefix=ifelse(missing(prefix),missingArg(),prefix),suffix=ifelse(missing(suffix),missingArg(),suffix))
+  align_comp_df <- getAlignmentComposition(alignment_path,species_info=ifelse(missing(species_info),substitute(),species_info),alignment_name=ifelse(missing(alignment_name),substitute(),alignment_name),prefix=ifelse(missing(prefix),substitute(),prefix),suffix=ifelse(missing(suffix),substitute(),suffix))
   
   # Get species composition data
-  species_comp_df <- getSpeciesComposition(alignment_path,species_info=ifelse(missing(species_info),missingArg(),species_info),alignment_name=ifelse(missing(alignment_name),missingArg(),alignment_name),prefix=ifelse(missing(prefix),missingArg(),prefix),suffix=ifelse(missing(suffix),missingArg(),suffix))
+  species_comp_df <- getSpeciesComposition(alignment_path,species_info=ifelse(missing(species_info),substitute(),species_info),alignment_name=ifelse(missing(alignment_name),substitute(),alignment_name),prefix=ifelse(missing(prefix),substitute(),prefix),suffix=ifelse(missing(suffix),substitute(),suffix))
   
   # Get alignment patterns
-  pattern_df <- getAlignmentPatterns(alignment_path,species_info=ifelse(missing(species_info),missingArg(),species_info),use_gaps=ifelse(missing(use_gaps),missingArg(),use_gaps),alignment_name=ifelse(missing(alignment_name),missingArg(),alignment_name),prefix=ifelse(missing(prefix),missingArg(),prefix),suffix=ifelse(missing(suffix),missingArg(),suffix))
+  pattern_df <- getAlignmentPatterns(alignment_path,species_info=ifelse(missing(species_info),substitute(),species_info),use_gaps=ifelse(missing(use_gaps),substitute(),use_gaps),alignment_name=ifelse(missing(alignment_name),substitute(),alignment_name),prefix=ifelse(missing(prefix),substitute(),prefix),suffix=ifelse(missing(suffix),substitute(),suffix))
 
   # Create breakdown_df
   breakdown_df <- align_comp_df %>% 

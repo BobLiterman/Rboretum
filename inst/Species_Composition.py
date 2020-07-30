@@ -76,7 +76,7 @@ def fetchSpeciesComposition(path_to_align,spp_info,align_name):
     for gap_i in gap_totals:
         percent_gap.append(float(gap_i)/alignment_length)
     
-    df = pd.DataFrame(list(zip(raw_spp,total_base_counts,n_totals,gap_totals,percent_gc,percent_n,percent_gap)), 
+    df = pd.DataFrame(list(zip(spp_list,total_base_counts,n_totals,gap_totals,percent_gc,percent_n,percent_gap)), 
                columns =['Taxon','Total_Bases','Total_N','Total_Gaps','Percent_GC','Percent_N','Percent_Gap'])
     df['Alignment_Name'] = alignment_name
     return df

@@ -179,20 +179,22 @@ getAlignmentPatterns <- function(alignment_path,species_info,use_gaps,alignment_
   if(alignment_count == 1){
     pattern_df <- patternProcessor(alignment_path,gap_list,species_info,alignment_name) %>%
       mutate_if(is.list,as.character) %>%
-      select(-index) %>%
-      mutate_all(~na_if(., 'NaN'))
+      select(-index)
   } else{
     pattern_df = purrr::map(.x=1:alignment_count,.f=function(x){patternProcessor(alignment_path[x],gap_list[x],species_info[x],alignment_name[x])}) %>% do.call(rbind, .) %>%
       mutate_if(is.list,as.character) %>%
-      select(-index) %>%
-      mutate_all(~na_if(., 'NaN'))
+      select(-index)
   }
+  
+  # Python NaN
+  pattern_df <- pattern_df %>%
+    mutate_all(~na_if(., 'NaN'))
   
   pattern_df[is.na(pattern_df)] <- NA
   
   if(nrow(pattern_df)==0){
     stop("No data returned. Check alignments and taxa?")
-  }
-  
+  } else{
   return(pattern_df)
+  }
 }

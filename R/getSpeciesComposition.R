@@ -6,13 +6,20 @@
 #'   \item A character vector of one or more alignment file paths  (relative or absolute)
 #'   \item A path to a single directory containing all alignment files (relative or absolute)
 #' }
+#' @param species_info OPTIONAL: List of taxa to analyze [Default: Process entire alignment]. Can be provided as:
+#' \itemize{
+#'   \item phylo object from which species will be extracted; or
+#'   \item multiPhylo object from which common species will be extracted; or
+#'   \item Character vector with one or more taxon IDs
+#'   \item Semicolon-separated list of taxon IDs
+#' }
 #' @param alignment_name OPTIONAL: Chacter vector of names for each alignment. If missing or incomplete, the base filename is used
 #' @param prefix OPTIONAL: If 'alignment_path' is a directory, provide a character vector of file prefixes (e.g. all alignment files start with "Mafft_")
 #' @param suffix OPTIONAL: If 'alignment_path' is a directory, provide a character vector of file suffixes (e.g. all alignment files end with ".phy")
 #' @return Dataframe containing %GC, %N, and %Gap for each taxon in the alignment(s)
 #' @export
 
-getSpeciesComposition <- function(alignment_path,alignment_name,prefix,suffix){
+getSpeciesComposition <- function(alignment_path,species_info,alignment_name,prefix,suffix){
   
   # Ensure that a path and root taxa are provided as character vectors
   if(missing(alignment_path)){
@@ -109,11 +116,58 @@ getSpeciesComposition <- function(alignment_path,alignment_name,prefix,suffix){
     stop("'alignment_name' cannot contain duplicate values")
   }
   
-  if(alignment_count == 1){
-    composition_df <- fetchSpeciesComposition(alignment_path,alignment_name)
-    return(composition_df)
+  # Establish species of interest
+  
+  # If no species_info is provided, process alignments with taxa shared among all alignments
+  if(missing(species_info)){
+    if(alignment_count == 1){
+      species_info = Rboretum::getAlignmentSpecies(alignment_path)
+    } else{
+      all_species <- purrr::map(.x=alignment_path,.f=function(x){Rboretum::semiVector(Rboretum::getAlignmentSpecies(x))})
+      species_info <- Reduce(intersect, all_species) %>% Rboretum::vectorSemi() %>% rep(alignment_count)
+    }
+  } else if(Rboretum::isPhylo(species_info)){ # Get species from phylo
+    species_info <- rep(Rboretum::semiSorter(species_info$tip.label),alignment_count)
+  } else if(Rboretum::isMultiPhylo(species_info,check_three_taxa=TRUE)){ # Get shared species from multiPhylo
+    species_info <- rep(Rboretum::semiSorter(Rboretum::getSharedTaxa(species_info)),alignment_count)
+  } else if(is.character(species_info)){ # Get species from character vectors
+    if(!Rboretum::semiChecker(species_info)){
+      if(length(species_info)>=1){
+        species_info <- rep(semiSorter(species_info),alignment_count)
+      } else{ 
+        stop("'species_info' contains fewer than 1 taxon...")
+      }
+    } else{
+      if(length(species_info)==1){
+        species_info <- semiSorter(species_info)
+      } else if(length(species_info)>1){
+        species_info <- purrr::map(.x=species_info,.f=function(x){semiVector(x)}) %>% unlist() %>% as.character() %>% unique() %>% naturalsort() %>% semiSorter()
+      }
+      if(length(semiVector(species_info))<1){
+        stop("'species_info' contains fewer than 1 taxon...")
+      } else{
+        species_info <- rep(species_info,alignment_count)
+      }
+    }
   } else{
-    composition_df = purrr::map(.x=1:alignment_count,.f=function(x){fetchSpeciesComposition(alignment_path[x],alignment_name[x])}) %>% do.call(rbind, .)
+    stop("'species_info' should be a phylo, multiPhylo where trees share 3+ taxa, or a character vector with 1+ taxa")
+  }
+  
+  if(alignment_count == 1){
+    composition_df <- fetchSpeciesComposition(alignment_path,species_info,alignment_name)
+  } else{
+    composition_df = purrr::map(.x=1:alignment_count,.f=function(x){fetchSpeciesComposition(alignment_path[x],species_info[x],alignment_name[x])}) %>% do.call(rbind, .)
+  }
+  
+  # Python NaN
+  composition_df <- composition_df %>%
+    mutate_all(~na_if(., 'NaN'))
+  
+  composition_df[is.na(composition_df)] <- NA
+  
+  if(nrow(composition_df)==0){
+    stop("No data returned. Check alignments and taxa?")
+  } else{
     return(composition_df)
   }
 }

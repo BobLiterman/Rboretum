@@ -145,9 +145,19 @@ getAlignmentComposition <- function(alignment_path,species_info,alignment_name,p
   
   if(alignment_count == 1){
     composition_df <- fetchAlignmentComposition(alignment_path,species_info,alignment_name)
-    return(composition_df)
   } else{
     composition_df = purrr::map(.x=1:alignment_count,.f=function(x){fetchAlignmentComposition(alignment_path[x],species_info[x],alignment_name[x])}) %>% do.call(rbind, .)
+  }
+  
+  # Python NaN
+  composition_df <- composition_df %>%
+    mutate_all(~na_if(., 'NaN'))
+  
+  composition_df[is.na(composition_df)] <- NA
+  
+  if(nrow(composition_df)==0){
+    stop("No data returned. Check alignments and taxa?")
+  } else{
     return(composition_df)
   }
 }

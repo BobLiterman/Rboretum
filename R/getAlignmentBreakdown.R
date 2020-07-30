@@ -27,16 +27,37 @@ getAlignmentBreakdown <- function(alignment_path,species_info,use_gaps,alignment
     stop("No alignment file or directories indicated with 'alignment_path'")
   } else if(!is.character(alignment_path)){
     stop("'alignment_path' should be a character vector of file paths or the path to an alignment directory.")
-  } 
+  }
+  
+  # Set missing values
+  if(missing(species_info)){
+    species_info <- substitute()
+  }
+  
+  if(missing(use_gaps)){
+    use_gaps <- substitute()
+  }
+  
+  if(missing(alignment_name)){
+    alignment_name <- substitute()
+  }
+  
+  if(missing(prefix)){
+    prefix <- substitute()
+  }
+  
+  if(missing(suffix)){
+    suffix <- substitute()  
+  }
   
   # Get alignment composition data
-  align_comp_df <- getAlignmentComposition(alignment_path,species_info=ifelse(missing(species_info),substitute(),species_info),alignment_name=ifelse(missing(alignment_name),substitute(),alignment_name),prefix=ifelse(missing(prefix),substitute(),prefix),suffix=ifelse(missing(suffix),substitute(),suffix))
+  align_comp_df <- getAlignmentComposition(alignment_path,species_info,alignment_name,prefix,suffix)
   
   # Get species composition data
-  species_comp_df <- getSpeciesComposition(alignment_path,species_info=ifelse(missing(species_info),substitute(),species_info),alignment_name=ifelse(missing(alignment_name),substitute(),alignment_name),prefix=ifelse(missing(prefix),substitute(),prefix),suffix=ifelse(missing(suffix),substitute(),suffix))
+  species_comp_df <- getSpeciesComposition(alignment_path,species_info,alignment_name,suffix)
   
   # Get alignment patterns
-  pattern_df <- getAlignmentPatterns(alignment_path,species_info=ifelse(missing(species_info),substitute(),species_info),use_gaps=ifelse(missing(use_gaps),substitute(),use_gaps),alignment_name=ifelse(missing(alignment_name),substitute(),alignment_name),prefix=ifelse(missing(prefix),substitute(),prefix),suffix=ifelse(missing(suffix),substitute(),suffix))
+  pattern_df <- getAlignmentPatterns(alignment_path,species_info,use_gaps,alignment_name,prefix,suffix)
 
   # Create breakdown_df
   breakdown_df <- align_comp_df %>% 

@@ -17,17 +17,22 @@ import multiprocessing as mp
 from itertools import chain
 import copy
 
-def splitsProcessor(align_path,use_gaps,spp_info,align_name):
+def splitsProcessor(path_to_align,spp_info,use_gaps,align_name):
 
+    # Set path to alignment
     global alignment_path
-    global info_gap
+    alignment_path = str(path_to_align)
+    
+    # Set species information
     global spp_list
+    spp_list = sorted((spp_info).split(";"))
+
+    # Set gap data
+    global info_gap
     global bases
 
-    # Prepare arguments
-    alignment_path = str(align_path)
     info_gap = str(use_gaps)
-    
+
     # Set valid bases based on info_gap
     if use_gaps != "0" and use_gaps != "1":
         sys.exit("ERROR: info_gap must be '0' or '1'")
@@ -38,8 +43,6 @@ def splitsProcessor(align_path,use_gaps,spp_info,align_name):
     else:
         bases = ['A', 'C', 'T', 'G', 'a', 'g', 't', 'c','-']
         
-    spp_list = sorted((spp_info).split(";"))
-    
     # Set alignment name
     global alignment_name
     alignment_name = str(align_name)

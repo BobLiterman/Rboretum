@@ -14,12 +14,16 @@ from collections import Counter
 import multiprocessing as mp
 from itertools import chain
 
-def fetchSpeciesComposition(path_to_align,align_name):
+def fetchSpeciesComposition(path_to_align,spp_info,align_name):
     
     # Set path to alignment
     global alignment_path
     alignment_path = str(path_to_align)
     
+    # Set species information
+    global spp_list
+    spp_list = sorted((spp_info).split(";"))
+
     # Set alignment name
     global alignment_name
     alignment_name = str(align_name)
@@ -80,7 +84,7 @@ def fetchSpeciesComposition(path_to_align,align_name):
 def getPrunedAlignment_Species():
     # getPrunedAlignment returns True if:
         # (1) All species in tree are in alignment
-        # (2) Three or more species are present.
+        # (2) One or more species are present.
     # If True,sets global pruned_alignment is pruned and alphabetized match tree species
 
     # Read in alignment
@@ -91,23 +95,31 @@ def getPrunedAlignment_Species():
         
         fformat = formats[alignment_path.split('.')[-1]]
         raw_alignment = AlignIO.read(alignment_path, fformat)
-        
-        # Get alignment species
-        global raw_spp
-        raw_spp = list()
-        
-        for seq_record in raw_alignment:
-            raw_spp.append(str(seq_record.id))
-        sort_species = sorted(raw_spp)
-                
+    except:
+        return False
+
+    # Get alignment species
+    raw_spp = []
+    for seq_record in raw_alignment:
+        raw_spp.append(str(seq_record.id))
+    
+    # If species list/alignment contains fewer than 3 species, return False
+    if len(spp_list) < 1 or len(raw_spp) < 1:
+        return False
+    
+    # If any species from spp_list are not present in raw_spp, return False
+    if not all(x in raw_spp for x in spp_list): 
+        return False
+    
+    # Re-order alignment to sorted order of species list
+    else:
+        # Create dummy alignment        
         global pruned_alignment
         pruned_alignment = raw_alignment[0:0]
         
         # Populate alignment by adding taxa sorted by taxon ID
-        for i in sort_species:
+        for i in spp_list:
             pruned_alignment.add_sequence(str(raw_alignment[raw_spp.index(i)].id), str(raw_alignment[raw_spp.index(i)].seq))
         
         # Return True to indicate a valid alignment was processed
         return True
-    except:
-        return False

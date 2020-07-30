@@ -31,16 +31,6 @@ getAlignmentComposition <- function(alignment_path,species_info,alignment_name,p
   # Create regex search pattern in case a directory is given
   if(missing(prefix)){
     prefix <- c()
-  } else if(!is.character(prefix)){
-    stop("'prefix' must be a character vector")
-  } else{
-    prefix <- unlist(purrr::map(.x=prefix,.f=function(x){paste(c("^",x),collapse = '')}))
-    prefix <- paste(c("(",paste(prefix,collapse = "|"),")"),collapse = '')
-  }
-  
-  # Create regex search pattern in case a directory is given
-  if(missing(prefix)){
-    prefix <- c()
   } else if(is.null(prefix)){
     prefix <- c()    
   } else if(!is.character(prefix)){

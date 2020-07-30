@@ -92,7 +92,7 @@ getAlignmentBreakdown <- function(alignment_path,species_info,use_gaps,alignment
       
       pattern_breakdown_df <- pattern_breakdown_df %>% add_row(Alignment_Name = align,
                                                                Percent_Nonbase = tableCount(pattern_table,'non_base')/alignment_length,
-                                                               Percent_Invariant = tableCount(pattern_table,'invaraint')/alignment_length,
+                                                               Percent_Invariant = tableCount(pattern_table,'invariant')/alignment_length,
                                                                Percent_Singleton = tableCount(pattern_table,'singleton')/alignment_length,
                                                                Percent_Parsimony_Informative = nrow(temp_df[temp_df$Parsimony_Informative=="Yes",])/alignment_length,
                                                                Percent_Biallelic = tableCount(pattern_table,'biallelic')/alignment_length,

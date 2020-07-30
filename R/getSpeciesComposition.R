@@ -31,6 +31,8 @@ getSpeciesComposition <- function(alignment_path,species_info,alignment_name,pre
   # Create regex search pattern in case a directory is given
   if(missing(prefix)){
     prefix <- c()
+  } else if(is.null(prefix)){
+    prefix <- c()    
   } else if(!is.character(prefix)){
     stop("'prefix' must be a character vector")
   } else{
@@ -40,6 +42,8 @@ getSpeciesComposition <- function(alignment_path,species_info,alignment_name,pre
   
   if(missing(suffix)){
     suffix <- c()
+  } else if(is.null(suffix)){
+    suffix <- c()    
   } else if(!is.character(suffix)){
     stop("'suffix' must be a character vector")
   } else{

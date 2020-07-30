@@ -33,6 +33,8 @@ getAlignmentSignal <- function(alignment_path,species_info,use_gaps,alignment_na
   # Create regex search pattern in case a directory is given
   if(missing(prefix)){
     prefix <- c()
+  } else if(is.null(prefix)){
+    prefix <- c()    
   } else if(!is.character(prefix)){
     stop("'prefix' must be a character vector")
   } else{
@@ -42,6 +44,8 @@ getAlignmentSignal <- function(alignment_path,species_info,use_gaps,alignment_na
   
   if(missing(suffix)){
     suffix <- c()
+  } else if(is.null(suffix)){
+    suffix <- c()    
   } else if(!is.character(suffix)){
     stop("'suffix' must be a character vector")
   } else{

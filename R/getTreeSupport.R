@@ -156,7 +156,7 @@ getTreeSupport <- function(signal,tree,include_root,clade,dataset_name,max_missi
         }
         
         # Autoname multiPhylo if necessary
-        if(!Rboretum::isMultiPhylo(check_named = TRUE)){
+        if(!Rboretum::isMultiPhylo(tree,check_named = TRUE)){
           tree <- treeNamer(tree)
         }
         

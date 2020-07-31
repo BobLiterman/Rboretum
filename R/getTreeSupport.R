@@ -148,7 +148,7 @@ getTreeSupport <- function(signal,tree,include_root,clade,dataset_name,max_missi
         } else{
           test_clade <- Rboretum::getTreeClades(tree)
         }
-      } else if(Rboretum::isMultiPhylo(check_rooted = TRUE,check_three_taxa = TRUE)){
+      } else if(Rboretum::isMultiPhylo(tree,check_rooted = TRUE,check_three_taxa = TRUE)){
         
         # Ensure all trees have the same taxa
         if(!Rboretum::isMultiPhylo(tree,check_all_taxa = TRUE)){

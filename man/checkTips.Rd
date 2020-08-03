@@ -2,7 +2,7 @@
 % Please edit documentation in R/checkTips.R
 \name{checkTips}
 \alias{checkTips}
-\title{Rboreturm Tip Checker}
+\title{Rboreturm Tip Checker (X)}
 \usage{
 checkTips(tree, taxa, check_mono, check_root)
 }
@@ -10,7 +10,7 @@ checkTips(tree, taxa, check_mono, check_root)
 \item{tree}{Tree(s) to check. Options include:
 \itemize{
   \item A phylo object
-  \item A multiPhylo object
+  \item A multiPhylo object where all trees share 3+ taxa
 }}
 
 \item{taxa}{Character vector containing taxa to query}
@@ -20,14 +20,18 @@ checkTips(tree, taxa, check_mono, check_root)
 \item{check_root}{OPTIONAL: If TRUE, also query whether 'taxa' are monophyletic and make up one of the two root splits in tree(s) [Default: FALSE]}
 }
 \value{
-TRUE if all 'taxa' in 'tree'; else, FALSE
+TRUE if all 'taxa' in 'tree'; else, FALSE (barring other selected options)
 }
 \description{
-This function returns TRUE if all 'taxa' are present in 'tree' (or a multiPhylo of trees); FALSE otherwise. If multiPhylo, monophyly + root comparisons are made on the common set of taxa.
+This function returns TRUE if all 'taxa' are present in 'tree' (or a multiPhylo of trees); FALSE otherwise. If multiPhylo, all comparisons are made on the common set of taxa.
 }
 \examples{
-checkTips(myTree,myTaxa) # Check if all labels in 'myTaxa' are present in phylo object 'myTree'
-checkTips(myTrees,myTaxa) # Check if all labels in 'myTaxa' are present in all trees in multiPhylo object 'myTrees'
-checkTips(myTree,myTaxa,check_mono=TRUE) # Check if clade 'myTaxa' are monophyletic in phylo object 'myTree'
-checkTips(myTree,myTaxa,check_root=TRUE) # Check if clade 'myTaxa' are one of the two root splits in phylo object 'myTree'
+# Check if all labels in 'myTaxa' are present in phylo object 'myTree'
+checkTips(myTree,myTaxa)
+# Check if all labels in 'myTaxa' are present in all trees in multiPhylo object 'myTrees'
+checkTips(myTrees,myTaxa)
+# Check if clade 'myTaxa' are monophyletic in phylo object 'myTree'
+checkTips(myTree,myTaxa,check_mono=TRUE)
+# Check if clade 'myTaxa' are one of the two root splits in phylo object 'myTree' 
+checkTips(myTree,myTaxa,check_root=TRUE)
 }

@@ -1,34 +1,45 @@
-#' Rboreturm Tip Checker
+#' Rboreturm Tip Checker (X)
 #'
-#' This function returns TRUE if all 'taxa' are present in 'tree' (or a multiPhylo of trees); FALSE otherwise. If multiPhylo, monophyly + root comparisons are made on the common set of taxa.
+#' This function returns TRUE if all 'taxa' are present in 'tree' (or a multiPhylo of trees); FALSE otherwise. If multiPhylo, all comparisons are made on the common set of taxa.
 #' @param tree Tree(s) to check. Options include:
 #' \itemize{
 #'   \item A phylo object
-#'   \item A multiPhylo object
+#'   \item A multiPhylo object where all trees share 3+ taxa
 #' }
 #' @param taxa Character vector containing taxa to query
 #' @param check_mono OPTIONAL: If TRUE, also query whether 'taxa' are monophyletic in tree(s) [Default: FALSE]
 #' @param check_root OPTIONAL: If TRUE, also query whether 'taxa' are monophyletic and make up one of the two root splits in tree(s) [Default: FALSE]
-#' @return TRUE if all 'taxa' in 'tree'; else, FALSE
+#' @return TRUE if all 'taxa' in 'tree'; else, FALSE (barring other selected options)
 #' @examples 
-#' checkTips(myTree,myTaxa) # Check if all labels in 'myTaxa' are present in phylo object 'myTree'
-#' checkTips(myTrees,myTaxa) # Check if all labels in 'myTaxa' are present in all trees in multiPhylo object 'myTrees'
-#' checkTips(myTree,myTaxa,check_mono=TRUE) # Check if clade 'myTaxa' are monophyletic in phylo object 'myTree'
-#' checkTips(myTree,myTaxa,check_root=TRUE) # Check if clade 'myTaxa' are one of the two root splits in phylo object 'myTree'
+#' # Check if all labels in 'myTaxa' are present in phylo object 'myTree'
+#' checkTips(myTree,myTaxa)
+#' # Check if all labels in 'myTaxa' are present in all trees in multiPhylo object 'myTrees'
+#' checkTips(myTrees,myTaxa)
+#' # Check if clade 'myTaxa' are monophyletic in phylo object 'myTree'
+#' checkTips(myTree,myTaxa,check_mono=TRUE)
+#' # Check if clade 'myTaxa' are one of the two root splits in phylo object 'myTree' 
+#' checkTips(myTree,myTaxa,check_root=TRUE)
 #' @export
 
 checkTips <- function(tree,taxa,check_mono,check_root){
   
   # Check if 'tree' is valid
-  if(!Rboretum::isMultiPhylo(tree) & !Rboretum::isPhylo(tree)){
-    stop("'tree' does not appear be a valid phylo or multiPhylo object.")
+  if(missing(tree)){
+    stop("'checkTips' requires a 'tree' argument.")
+  } else if(!Rboretum::isMultiPhylo(tree,check_three_taxa = TRUE) & !Rboretum::isPhylo(tree)){
+    stop("'tree' does not appear be a valid phylo or multiPhylo object where all trees share 3+ taxa.")
   }
   
-  # Check if taxa is a character vector
+  # Check if 'taxa' is a character vector
   if(missing(taxa)){
     stop("No 'taxa' to check")
   } else if(!is.character(taxa)){
     stop("'taxa' should be a character vector of tip labels to check.")
+  }
+  
+  # Check if 'taxa' is a semi-colon separated character of length == 1. If so, vectorize
+  if(length(taxa) == 1 & Rboretum::semiChecker(taxa)){
+    taxa <- semiVector(taxa)
   }
   
   # Check monophly?
@@ -68,20 +79,14 @@ checkTips <- function(tree,taxa,check_mono,check_root){
   
   if(Rboretum::isMultiPhylo(tree)){
     
-    if(!Rboretum::isMultiPhylo(tree,check_three_taxa=TRUE)){
-      if(check_mono | check_root){
-        stop("Trees in 'tree' do not share at least three taxa, and cannot be assessed for monophyly or root.")
-      }
+    # Trim to common taxa set prior to testing
+    if(!Rboretum::isMultiPhylo(tree,check_all_taxa=TRUE)){
+      tree <- Rboretum::treeTrimmer(tree) 
     }
 
     if(purrr::map(.x = tree,.f = function(x){all(taxa %in% x$tip.label)}) %>% unlist() %>% all()){ # Check if all 'taxa' are in all trees in 'tree'
       
       tree_taxa <- Rboretum::getSharedTaxa(tree)
-      
-      if(!Rboretum::isMultiPhylo(tree,check_all_taxa=TRUE)){
-        tree <- Rboretum::treeTrimmer(tree,tree_taxa) # Trim to common taxa set prior to assessing monophyly or root
-      }
-      
       mirror_taxa <- sort(dplyr::setdiff(tree_taxa, taxa))
       
       if(check_mono & !purrr::map(.x = tree, .f=function(x){ape::is.monophyletic(x,taxa)}) %>% unlist() %>% all()){

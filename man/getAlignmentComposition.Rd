@@ -27,7 +27,7 @@ getAlignmentComposition(
   \item Semicolon-separated list of taxon IDs
 }}
 
-\item{alignment_name}{OPTIONAL: Chacter vector of names for each alignment. If missing or incomplete, the base filename is used}
+\item{alignment_name}{OPTIONAL: Chacter vector of names for each alignment. If missing or incomplete, the base filename of the alignment is used}
 
 \item{prefix}{OPTIONAL: If 'alignment_path' is a directory, provide a character vector of file prefixes (e.g. all alignment files start with "Mafft_")}
 
@@ -37,5 +37,5 @@ getAlignmentComposition(
 Dataframe containing alignment length, %GC, %N, and %Gap for each alignment
 }
 \description{
-Given the path(s) to multiple alignments and an optional list of taxa, this script returns alignment lengths, %GC, %N, and %Gap for the alignment
+Given the path(s) to one or more alignments (and an optional list of taxa), this script returns alignment lengths, %GC, %N, and %Gap for the alignment
 }

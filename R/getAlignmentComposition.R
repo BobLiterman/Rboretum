@@ -1,6 +1,6 @@
 #' Rboretum Alignment Composition Fetcher
 #'
-#' Given the path(s) to multiple alignments and an optional list of taxa, this script returns alignment lengths, %GC, %N, and %Gap for the alignment
+#' Given the path(s) to one or more alignments (and an optional list of taxa), this script returns alignment lengths, %GC, %N, and %Gap for the alignment
 #' @param alignment_path Where to find alignment files. Options include:
 #' \itemize{
 #'   \item A character vector of one or more alignment file paths  (relative or absolute)
@@ -13,7 +13,7 @@
 #'   \item Character vector with 3+ taxon IDs
 #'   \item Semicolon-separated list of taxon IDs
 #' }
-#' @param alignment_name OPTIONAL: Chacter vector of names for each alignment. If missing or incomplete, the base filename is used
+#' @param alignment_name OPTIONAL: Chacter vector of names for each alignment. If missing or incomplete, the base filename of the alignment is used
 #' @param prefix OPTIONAL: If 'alignment_path' is a directory, provide a character vector of file prefixes (e.g. all alignment files start with "Mafft_")
 #' @param suffix OPTIONAL: If 'alignment_path' is a directory, provide a character vector of file suffixes (e.g. all alignment files end with ".phy")
 #' @return Dataframe containing alignment length, %GC, %N, and %Gap for each alignment

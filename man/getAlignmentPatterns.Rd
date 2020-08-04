@@ -30,7 +30,7 @@ getAlignmentPatterns(
 
 \item{use_gaps}{OPTIONAL: If FALSE, treat gaps as missing data (like N) [Default: TRUE, treat gaps as indel data]}
 
-\item{alignment_name}{OPTIONAL: Chacter vector of names for each alignment. If missing or incomplete, the base filename is used}
+\item{alignment_name}{OPTIONAL: Chacter vector of names for each alignment. If missing or incomplete, the base filename of the alignment is used}
 
 \item{prefix}{OPTIONAL: If 'alignment_path' is a directory, provide a character vector of file prefixes (e.g. all alignment files start with "Mafft_")}
 
@@ -40,5 +40,5 @@ getAlignmentPatterns(
 Dataframe containing variation pattern each site in the alignment
 }
 \description{
-Given the path(s) to multiple alignments and an optional list of taxa, this script returns the site variation pattern for each site (e.g. invariant, biallelic, etc.)
+Given the path(s) to one or more alignments (and an optional list of taxa), this script returns the site variation pattern for each site (e.g. invariant, biallelic, etc.)
 }

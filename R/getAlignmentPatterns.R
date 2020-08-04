@@ -1,6 +1,6 @@
 #' Rboretum Alignment Pattern Fetcher
 #'
-#' Given the path(s) to multiple alignments and an optional list of taxa, this script returns the site variation pattern for each site (e.g. invariant, biallelic, etc.)
+#' Given the path(s) to one or more alignments (and an optional list of taxa), this script returns the site variation pattern for each site (e.g. invariant, biallelic, etc.)
 #' @param alignment_path Where to find alignment files. Options include:
 #' \itemize{
 #'   \item A character vector of one or more alignment file paths  (relative or absolute)
@@ -14,7 +14,7 @@
 #'   \item Semicolon-separated list of taxon IDs
 #' }
 #' @param use_gaps OPTIONAL: If FALSE, treat gaps as missing data (like N) [Default: TRUE, treat gaps as indel data]
-#' @param alignment_name OPTIONAL: Chacter vector of names for each alignment. If missing or incomplete, the base filename is used
+#' @param alignment_name OPTIONAL: Chacter vector of names for each alignment. If missing or incomplete, the base filename of the alignment is used
 #' @param prefix OPTIONAL: If 'alignment_path' is a directory, provide a character vector of file prefixes (e.g. all alignment files start with "Mafft_")
 #' @param suffix OPTIONAL: If 'alignment_path' is a directory, provide a character vector of file suffixes (e.g. all alignment files end with ".phy")
 #' @return Dataframe containing variation pattern each site in the alignment
@@ -177,7 +177,7 @@ getAlignmentPatterns <- function(alignment_path,species_info,use_gaps,alignment_
       }
     } 
   } else{
-    stop("'use_gaps' must be logical (single value or vector)")
+    stop("'use_gaps' should be a single T/F value, or a vector of the same length as the number of alignments provided.")
   }
   
   if(alignment_count == 1){

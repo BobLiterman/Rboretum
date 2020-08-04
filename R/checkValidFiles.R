@@ -9,6 +9,13 @@
 
 checkValidFiles <- function(alignment_path,return_full_path,return_invalid){
   
+  # Ensure alignment_path is provided
+  if(missing(alignment_path)){
+    stop("'checkValidFiles' requires an 'alignment_path' argument...")
+  } else if(!is.character(alignment_path)){
+    stop("'alignment_path' should be a character vector...")
+  }
+  
   # Return logical or full paths?
   if(missing(return_full_path)){
     return_full_path <- FALSE

@@ -19,7 +19,7 @@ convertLabels <- function(to_convert,name_df,from,to){
   
   # Ensure input is valid
   if(!Rboretum::isPhylo(to_convert) & !Rboretum::isMultiPhylo(to_convert) & !is.list(to_convert) & !is.character(to_convert)){
-    stop("'to_convert' must be a phylo, multiPhylo, or character vector")
+    stop("'to_convert' must be a phylo, multiPhylo, list, or character vector")
   }
   
   # Process name dataframe

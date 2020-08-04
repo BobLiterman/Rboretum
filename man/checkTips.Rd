@@ -13,7 +13,11 @@ checkTips(tree, taxa, check_mono, check_root)
   \item A multiPhylo object where all trees share 3+ taxa
 }}
 
-\item{taxa}{Character vector containing taxa to query}
+\item{taxa}{Taxon labels to check. Can be:
+\itemize{
+  \item A character vector of tip labels
+  \item A semicolon-separated list of labels
+}}
 
 \item{check_mono}{OPTIONAL: If TRUE, also query whether 'taxa' are monophyletic in tree(s) [Default: FALSE]}
 
@@ -27,6 +31,7 @@ This function returns TRUE if all 'taxa' are present in 'tree' (or a multiPhylo 
 }
 \examples{
 # Check if all labels in 'myTaxa' are present in phylo object 'myTree'
+myTaxa <- c('Species_1','Species_2','Species_3')
 checkTips(myTree,myTaxa)
 # Check if all labels in 'myTaxa' are present in all trees in multiPhylo object 'myTrees'
 checkTips(myTrees,myTaxa)

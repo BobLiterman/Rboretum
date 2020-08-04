@@ -6,12 +6,17 @@
 #'   \item A phylo object
 #'   \item A multiPhylo object where all trees share 3+ taxa
 #' }
-#' @param taxa Character vector containing taxa to query
+#' @param taxa Taxon labels to check. Can be:
+#' \itemize{
+#'   \item A character vector of tip labels
+#'   \item A semicolon-separated list of labels
+#' }
 #' @param check_mono OPTIONAL: If TRUE, also query whether 'taxa' are monophyletic in tree(s) [Default: FALSE]
 #' @param check_root OPTIONAL: If TRUE, also query whether 'taxa' are monophyletic and make up one of the two root splits in tree(s) [Default: FALSE]
 #' @return TRUE if all 'taxa' in 'tree'; else, FALSE (barring other selected options)
 #' @examples 
 #' # Check if all labels in 'myTaxa' are present in phylo object 'myTree'
+#' myTaxa <- c('Species_1','Species_2','Species_3')
 #' checkTips(myTree,myTaxa)
 #' # Check if all labels in 'myTaxa' are present in all trees in multiPhylo object 'myTrees'
 #' checkTips(myTrees,myTaxa)
@@ -79,6 +84,8 @@ checkTips <- function(tree,taxa,check_mono,check_root){
   
   if(Rboretum::isMultiPhylo(tree)){
     
+    tree_taxa <- Rboretum::getSharedTaxa(tree)
+    
     # Trim to common taxa set prior to testing
     if(!Rboretum::isMultiPhylo(tree,check_all_taxa=TRUE)){
       tree <- Rboretum::treeTrimmer(tree) 
@@ -86,7 +93,6 @@ checkTips <- function(tree,taxa,check_mono,check_root){
 
     if(purrr::map(.x = tree,.f = function(x){all(taxa %in% x$tip.label)}) %>% unlist() %>% all()){ # Check if all 'taxa' are in all trees in 'tree'
       
-      tree_taxa <- Rboretum::getSharedTaxa(tree)
       mirror_taxa <- sort(dplyr::setdiff(tree_taxa, taxa))
       
       if(check_mono & !purrr::map(.x = tree, .f=function(x){ape::is.monophyletic(x,taxa)}) %>% unlist() %>% all()){

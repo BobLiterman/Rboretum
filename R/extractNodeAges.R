@@ -20,23 +20,36 @@ extractNodeAges <- function(tree,return_summary){
   # Ensure tree is valid
   if(missing(tree)){
     stop("extractNodeAges requires a ultrametric, rooted phylo object, or a rooted set of ultrametric multiPhylo trees that all support a common topology.")
-  } else if(!Rboretum::isPhylo(tree,check_rooted = TRUE) & !Rboretum::isMultiPhylo(tree,check_rooted = TRUE,check_three_taxa = TRUE,check_all_equal = TRUE)){
-    stop("extractNodeAges requires a rooted phylo object or a multiPhylo object where all trees share 3+ taxa and a common topology...")  
   }
   
+  # If phylo, ensure ultrametric
   if(Rboretum::isPhylo(tree)){
     if(!ape::is.ultrametric.phylo(tree)){
       stop("extractNodeAges requires an ultrametric phylo object...")
     }
-  }
-  
-  # If multiPhylo, ensure a single topology and ultrametric
-  if(Rboretum::isMultiPhylo(tree)){
-    if(Rboretum::isMultiPhylo(tree,check_rooted = TRUE,check_three_taxa = TRUE) & !Rboretum::isMultiPhylo(tree)){
-      stop("Topologies vary among trees in supplied multiPhylo. getNodeAges only accepts a single tree, or a multiPhylo where all trees share a single topology...")
-    } else if(!purrr::map(.x=tree,.f=function(x){ape::is.ultrametric.phylo(x)}) %>% unlist() %>% all()){
+  } else if(Rboretum::isMultiPhylo(tree,check_three_taxa = TRUE,check_rooted = TRUE)){ # If multiPhylo, ensure ultrametric and single topology
+    
+    # Add dummy names if necessary
+    if(!Rboretum::isMultiPhylo(tree,check_named = TRUE)){
+      tree <- Rboretum::treeNamer(tree)
+    }
+    
+    # Trim multiPhylo to common taxa if necessary
+    if(!Rboretum::isMultiPhylo(tree,check_all_taxa = TRUE)){
+      tree <- Rboretum::treeTrimmer(tree)
+    }
+    
+    # Ensure a single topology after trimming
+    if(!Rboretum::isMultiPhylo(tree,check_all_equal = TRUE)){
+      stop("extractNodeAges requires a rooted phylo object or a multiPhylo object where all trees share 3+ taxa and a common topology...")  
+    }
+    
+    # Ensure all trees are ultrametric
+    if(!purrr::map(.x=tree,.f=function(x){ape::is.ultrametric.phylo(x)}) %>% unlist() %>% all()){
       stop("extractNodeAges requires an ultrametric multiPhylo object...")
     }
+  } else{
+    stop("extractNodeAges requires a rooted phylo object or a multiPhylo object where all trees share 3+ taxa")
   }
   
   # Return summary data?
@@ -65,16 +78,6 @@ extractNodeAges <- function(tree,return_summary){
   } else{
     
     tree_count <- length(tree)
-    
-    # Trim multiPhylo to common taxa if necessary
-    if(!Rboretum::isMultiPhylo(tree,check_all_taxa = TRUE)){
-      tree <- Rboretum::treeTrimmer(tree)
-    }
-    
-    # Add dummy names if necessary
-    if(!Rboretum::isMultiPhylo(tree,check_named = TRUE)){
-      tree <- Rboretum::treeNamer(tree)
-    }
   }
   
   tree_df_list <- list()

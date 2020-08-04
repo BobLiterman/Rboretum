@@ -1,6 +1,6 @@
 #' Rboretum Alignment Breaker Downer
 #'
-#' Given the path(s) to multiple alignments and an optional list of taxa, this script returns a full breakdown of alignment statistics (including %GC, %N, %Invariant, etc.)
+#' Given the path(s) to one or more alignments (and an optional list of taxa), this script returns a full breakdown of alignment statistics (including %GC, %N, %Invariant, etc.)
 #' @param alignment_path Where to find alignment files. Options include:
 #' \itemize{
 #'   \item A character vector of one or more alignment file paths  (relative or absolute)
@@ -14,7 +14,7 @@
 #'   \item Semicolon-separated list of taxon IDs
 #' }
 #' @param use_gaps OPTIONAL: If FALSE, treat gaps as missing data (like N) [Default: TRUE, treat gaps as indel data]
-#' @param alignment_name OPTIONAL: Chacter vector of names for each alignment. If missing or incomplete, the base filename is used
+#' @param alignment_name OPTIONAL: Chacter vector of names for each alignment. If missing or incomplete, the base filename of the alignment is used
 #' @param prefix OPTIONAL: If 'alignment_path' is a directory, provide a character vector of file prefixes (e.g. all alignment files start with "Mafft_")
 #' @param suffix OPTIONAL: If 'alignment_path' is a directory, provide a character vector of file suffixes (e.g. all alignment files end with ".phy")
 #' @return Dataframe containing a breakdown of alignment statistics
@@ -87,14 +87,15 @@ getAlignmentBreakdown <- function(alignment_path,species_info,use_gaps,alignment
       
       alignment_length <- nrow(temp_df)
       
-      
+      # Get table of patterns and parsimony-informative sites
       pattern_table <- pull(temp_df,Site_Pattern) %>% table()
+      pars_inf_table <- pull(temp_df,Parsimony_Informative) %>% table()
       
       pattern_breakdown_df <- pattern_breakdown_df %>% add_row(Alignment_Name = align,
                                                                Percent_Nonbase = tableCount(pattern_table,'non_base')/alignment_length,
                                                                Percent_Invariant = tableCount(pattern_table,'invariant')/alignment_length,
                                                                Percent_Singleton = tableCount(pattern_table,'singleton')/alignment_length,
-                                                               Percent_Parsimony_Informative = (temp_df %>% filter(Parsimony_Informative=="Yes") %>% nrow())/alignment_length,
+                                                               Percent_Parsimony_Informative = tableCount(pars_inf_table,'Yes')/alignment_length,
                                                                Percent_Biallelic = tableCount(pattern_table,'biallelic')/alignment_length,
                                                                Percent_Triallelic = tableCount(pattern_table,'triallelic')/alignment_length,
                                                                Percent_Quadallelic = tableCount(pattern_table,'quadallelic')/alignment_length,

@@ -11,6 +11,10 @@
 
 isPhylo <- function(test_object,check_rooted){
   
+  if(missing(test_object)){
+    stop("'test_object' not provided")
+  }
+  
   if(missing(check_rooted)){
     check_rooted <- FALSE
   } else if(!is.logical(check_rooted)){

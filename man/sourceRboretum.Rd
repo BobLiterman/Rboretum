@@ -7,5 +7,5 @@
 sourceRboretum()
 }
 \description{
-This function sources all Rborteum Python scripts for 'reticulate'
+This function sources all Rborteum Python scripts for 'reticulate', and globally assigns the directory containing the test data to 'test_data_dir'
 }

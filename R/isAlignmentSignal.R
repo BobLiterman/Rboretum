@@ -67,11 +67,11 @@ isAlignmentSignal <- function(test_object,species_info,return_taxa){
   } else{ # Ensure species from 'test_object' match species from 'species_info'
     
     if(Rboretum::isPhylo(species_info)){
-      spp_list = species_info$tip.label
+      spp_list = species_info$tip.label %>% naturalsort()
     } else if(Rboretum::isMultiPhylo(species_info,check_three_taxa = TRUE)){
-      spp_list = Rboretum::getSharedTaxa(species_info)
+      spp_list = Rboretum::getSharedTaxa(species_info) %>% naturalsort()
     } else if(is.character(species_info) & length(species_info) > 3 & !any(duplicated(species_info))){
-      spp_list = species_info
+      spp_list = species_info %>% naturalsort()
     } else { stop("'species_info' is not a valid phylo object, multiPhylo object where all trees share three taxa, or a character vector with 3+ unique species IDs") }
     
     if(all(spp_list %in% signal_taxa) & all(signal_taxa %in% spp_list)){

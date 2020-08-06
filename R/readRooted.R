@@ -37,15 +37,26 @@ readRooted <- function(to_root,root_taxa,tree_names,dummy_names,prefix,suffix){
     stop("No tree file or directories indicated with 'to_root'")
   } else if(!is.character(to_root)){
     stop("'to_root' should be a character vector of file paths or the path to a tree directory.")
-  } else if(missing(root_taxa)){
+  }
+  
+  if(missing(root_taxa)){
     stop("No root taxa provided")
   } else if(!is.character(root_taxa)){
     stop("'root_taxa' should be a character vector of tip labels")
   }
   
+  # Use dummy names for multiPhylo?
+  if(missing(dummy_names)){
+    dummy_names <- FALSE
+  } else if(!is.logical(dummy_names)){
+    dummy_names <- FALSE
+  }
+  
   # Create regex search pattern in case a directory is given
   if(missing(prefix)){
     prefix <- c()
+  } else if(is.null(prefix)){
+    prefix <- c()    
   } else if(!is.character(prefix)){
     stop("'prefix' must be a character vector")
   } else{
@@ -55,6 +66,8 @@ readRooted <- function(to_root,root_taxa,tree_names,dummy_names,prefix,suffix){
   
   if(missing(suffix)){
     suffix <- c()
+  } else if(is.null(suffix)){
+    suffix <- c()    
   } else if(!is.character(suffix)){
     stop("'suffix' must be a character vector")
   } else{
@@ -72,24 +85,18 @@ readRooted <- function(to_root,root_taxa,tree_names,dummy_names,prefix,suffix){
     tree_regex <- paste(paste(c(prefix,"(.*)",suffix),collapse = ""))
   }
   
-  # Use dummy names for multiPhylo?
-  if(missing(dummy_names)){
-    dummy_names <- FALSE
-  } else if(!is.logical(dummy_names)){
-    dummy_names <- FALSE
-  }
+  isFile <- file.exists(to_root) & !dir.exists(to_root)
+  isDir <- dir.exists(to_root) & !isFile
   
-  # Figure out how many files are being read in
+  # Ensure files all exist
   if(length(to_root)==1){
     
-    isFile <- file.exists(to_root) & !dir.exists(to_root)
-    isDir <- dir.exists(to_root) & !isFile
-    
-    if(isFile){ # 'to_root' points to a single valid file
+    if(Rboretum::checkValidFiles(to_root)){ # 'to_root' points to a single valid file
       
       tree_count <- 1
-      to_root <- file_path_as_absolute(to_root)
-
+      to_root <- Rboretum::checkValidFiles(to_root,return_full_path = TRUE)
+      default_name <- basename(to_root)
+      
     } else if(isDir){ # 'to_root' points to a valid directory
       
       if(has_error(silent=TRUE,list.files(path=to_root,pattern=tree_regex,full.names = TRUE,include.dirs = FALSE))){
@@ -102,24 +109,27 @@ readRooted <- function(to_root,root_taxa,tree_names,dummy_names,prefix,suffix){
           stop("Directory found, but no files identified in 'to_root'. Check regex?")
         } else if(length(to_root)==1){
           tree_count <- 1
+          default_name <-  basename(to_root)
         } else{
           tree_count <- length(to_root)
           default_name <- purrr::map(to_root,.f = function(x){basename(x)}) %>% unlist() %>% as.character()
         }
       }
     } else{ stop("'to_root' points to neither a valid file or directory.") }
-  
+    
   } else{ # 'to_root' is a list of file paths
     
-    file_check <- purrr::map(.x = to_root,.f=function(x){ file.exists(x) & !dir.exists(x)}) %>% unlist() %>% all() # Check that all paths in 'to_root' point to valid files
+    file_check <- Rboretum::checkValidFiles(to_root) # Check that all paths in 'to_root' point to valid files
     
     if(!file_check){
-      stop("At least one file from 'to_root' points to an invalid path.")
+      invalid_paths <- Rboretum::checkValidFiles(to_root,return_invalid = TRUE)
+      print(invalid_paths)
+      stop("The above paths from 'to_root' do not point to a valid file...")
     } else{
-      to_root <- purrr::map(.x=to_root,.f=function(x){file_path_as_absolute(x)}) %>% unlist()
+      to_root <- Rboretum::checkValidFiles(to_root,return_full_path = TRUE)
       tree_count <- length(to_root)
       default_name <- purrr::map(to_root,.f = function(x){basename(x)}) %>% unlist() %>% as.character()
-      }
+    }
   }
  
   # If a single tree path is provided, return a phylo

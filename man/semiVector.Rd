@@ -15,3 +15,9 @@ If string_to_split is a single item, semiVector returns a character vector split
 \description{
 This function takes a string separated by semicolons (;) and returns a character vector
 }
+\examples{
+myString <- 'a;b;c;d'
+semiVector(myString)
+myStrings <- c('a;b;c;d','e;f;g;h')
+semiVector(myStrings)
+}

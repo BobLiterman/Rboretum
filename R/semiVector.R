@@ -6,7 +6,7 @@
 #' @examples
 #' myString <- 'a;b;c;d'
 #' semiVector(myString)
-#' myStrings <- c('a;b;c;d','e;f;g;h)
+#' myStrings <- c('a;b;c;d','e;f;g;h')
 #' semiVector(myStrings)
 #' @export
 

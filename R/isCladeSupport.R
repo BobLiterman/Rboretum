@@ -22,12 +22,12 @@ isCladeSupport <- function(test_object,tree,partial){
     return(FALSE) # Check column names
   } else{
     support_clades <- test_object %>% pull(Clade) %>% as.character()
-    support_clades <- purrr::map(.x=support_clades,.f = function(x){Rboretum::semiSorter(x)}) %>% unlist() %>% as.character() %>% sort() # Sort clades
+    support_clades <- purrr::map(.x=support_clades,.f = function(x){Rboretum::semiSorter(x)}) %>% unlist() %>% as.character() %>% naturalsort() # Sort clades
   }
   
   # Get tree clades
-  tree_clades <- getTreeClades(tree) %>% as.character()
-  tree_clades <- purrr::map(.x=tree_clades,.f = function(x){Rboretum::semiSorter(x)}) %>% unlist() %>% as.character() %>% sort() # Sort clades
+  tree_clades <- getTreeClades(tree,include_root = TRUE)
+  tree_clades <- purrr::map(.x=tree_clades,.f = function(x){Rboretum::semiSorter(x)}) %>% unlist() %>% as.character() %>% naturalsort() # Sort clades
   
  
   # Allow partial matches?

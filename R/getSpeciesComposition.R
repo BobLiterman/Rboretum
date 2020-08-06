@@ -1,6 +1,6 @@
 #' Rboretum Species Composition Fetcher
 #'
-#' Given the path(s) to multiple alignments, this script returns  %GC, %N, and %Gap for each taxon
+#' Given the path(s) to one or more alignments (and an optional list of taxa), this script returns  %GC, %N, and %Gap for each taxon
 #' @param alignment_path Where to find alignment files. Options include:
 #' \itemize{
 #'   \item A character vector of one or more alignment file paths  (relative or absolute)

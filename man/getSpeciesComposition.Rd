@@ -37,5 +37,5 @@ getSpeciesComposition(
 Dataframe containing %GC, %N, and %Gap for each taxon in the alignment(s)
 }
 \description{
-Given the path(s) to multiple alignments, this script returns  %GC, %N, and %Gap for each taxon
+Given the path(s) to one or more alignments (and an optional list of taxa), this script returns  %GC, %N, and %Gap for each taxon
 }

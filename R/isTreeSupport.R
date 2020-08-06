@@ -13,43 +13,12 @@
 
 isTreeSupport <- function(test_object,test_clade,partial){
   
-  # Ensure dataframe columns match expected and that data exists
-  if(!is.data.frame(test_object)){
-    return(FALSE) # Tree support is a df
-  } else if(names(test_object)[1] != "Clade"){
-    return(FALSE) # Tree support starts with a clade column
-  } else{
-    
-    # Get sorted clades from getTreeSupport
-    support_clades <- sort(as.character(test_object$Clade))
-    
-    if(!purrr::map(.x=support_clades,.f=function(x){str_detect(x,";")}) %>% unlist() %>% all()){
-      stop("Clades in 'test_object' should be semicolon-separated character strings")
-    } 
-    
-    support_clades <- purrr::map(.x=support_clades,.f = function(x){Rboretum::semiSorter(x)}) %>% unlist() %>% as.character() %>% sort() # Sort clades
-    
+  if(missing(test_object)){
+    stop("'test_object' not provided")
   }
-
+  
   if(missing(test_clade)){
     stop("'test_clade' required")
-  }  
-  
-  # Get test clades 
-  if(Rboretum::isPhylo(test_clade,check_rooted = TRUE)){
-    test_clade <- Rboretum::getTreeClades(test_clade)
-  } else if(Rboretum::isMultiPhylo(test_clade,check_rooted = TRUE,check_three_taxa = TRUE)){
-    test_clade <- Rboretum::getTreeClades(Rboretum::treeTrimmer(test_clade,Rboretum::getSharedTaxa(test_clade)))
-  }
-  
-  
-  # Ensure 'test_clade' is a character vector of semicolon-separated clades
-  if(!is.character(test_clade)){
-    stop("'test_clade' must be a phylo, multiPhylo, or character vector")
-  } else if(!purrr::map(.x=test_clade,.f=function(x){str_detect(x,";")}) %>% unlist() %>% all()){
-    stop("Clades in 'test_clade' should be semicolon-separated character strings")
-  } else{
-    test_clade <- purrr::map(.x=test_clade,.f = function(x){Rboretum::semiSorter(x)}) %>% unlist() %>% as.character() %>% sort() # Sort clades
   }
   
   # Allow partial matches?
@@ -57,6 +26,40 @@ isTreeSupport <- function(test_object,test_clade,partial){
     partial <- FALSE
   } else if(!is.logical(partial)){
     partial <- FALSE
+  }
+  
+  # Ensure dataframe columns match expected and that data exists
+  if(!is.data.frame(test_object)){
+    return(FALSE) # Tree support is a df
+  } else if(names(test_object)[1] != "Clade"){
+    return(FALSE) # Tree support starts with a clade column
+  }
+    
+  # Get sorted clades from getTreeSupport
+  support_clades <- naturalsort(as.character(test_object$Clade))
+  
+  if(!purrr::map(.x=support_clades,.f=function(x){str_detect(x,";")}) %>% unlist() %>% all()){
+    stop("Clades in 'test_object' should be semicolon-separated character strings")
+  } 
+  
+  support_clades <- purrr::map(.x=support_clades,.f = function(x){Rboretum::semiSorter(x)}) %>% unlist() %>% as.character() %>% naturalsort() # Sort clades
+  
+  # Get test clades 
+  if(Rboretum::isPhylo(test_clade,check_rooted = TRUE)){
+    test_clade <- Rboretum::getTreeClades(test_clade,include_root = TRUE)
+  } else if(Rboretum::isMultiPhylo(test_clade,check_rooted = TRUE,check_three_taxa = TRUE)){
+    
+    # Reduce to common taxa if necessary
+    if(!Rboretum::isMultiPhylo(tree,check_all_taxa = TRUE)){
+      tree <- treeTrimmer(tree)
+    }
+    test_clade <- Rboretum::getTreeClades(tree,include_root = TRUE)
+  } else if(!is.character(test_clade)){ # Ensure 'test_clade' is a character vector of semicolon-separated clades
+    stop("'test_clade' must be a phylo, multiPhylo, or character vector")
+  } else if(!purrr::map(.x=test_clade,.f=function(x){str_detect(x,";")}) %>% unlist() %>% all()){
+    stop("Clades in 'test_clade' should be semicolon-separated character strings")
+  } else{
+    test_clade <- purrr::map(.x=test_clade,.f = function(x){Rboretum::semiSorter(x)}) %>% unlist() %>% as.character() %>% naturalsort() # Sort clades
   }
   
   if(partial){ # Partial matches are true if all clades from tree are present in support

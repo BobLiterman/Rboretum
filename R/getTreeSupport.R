@@ -1,13 +1,13 @@
 #' Rboretum Alignment Signal Support Mapper
 #'
-#' This function maps phylogenetic signal from a multiple-sequence alingment onto a rooted phylo or multiPhylo object, or a set of specified clades
-#' @param signal Output table from getAlignmentSignal()
+#' This function maps phylogenetic signal from one or more multiple-sequence alignments onto a rooted phylo or multiPhylo object, or a set of specified clades
+#' @param signal Output from getAlignmentSignal()
 #' @param tree OPTIONAL: Tree(s) onto which alignment signal will be mapped. Not considered if 'clade' argument is used. Tree options include:
 #' \itemize{
 #'   \item A rooted phylo object
 #'   \item A rooted multiPhylo object where all trees share 3+ taxa
 #' }
-#' @param include_root OPTIONAL: If TRUE and using a 'tree',  return alignment support for root clades as well [Default: FALSE, don't include root clades]
+#' @param include_root OPTIONAL: If TRUE and using a 'tree', return alignment support for root clades as well [Default: FALSE, don't include root clades]
 #' @param clade OPTIONAL: Character vector of semicolon-separted taxa specifying specific clades of interest (i.e. get support for specific clade(s) rather than a whole tree). Supercedes 'tree' argument
 #' @param dataset_name OPTIONAL: Character vector containing a new name for each alignment dataset in 'signal',  [Default: Alignment name from signal dataframe + 'm_<MISSING>']
 #' @param max_missing OPTIONAL: Number of missing sites allowed in alignment column before it is not considered [Default: Taxa Count - 3]
@@ -146,7 +146,7 @@ getTreeSupport <- function(signal,tree,include_root,clade,dataset_name,max_missi
         if(include_root){
           test_clade <- Rboretum::getTreeClades(tree,include_root = TRUE)
         } else{
-          test_clade <- Rboretum::getTreeClades(tree)
+          test_clade <- Rboretum::getTreeClades(tree,include_root = FALSE)
         }
       } else if(Rboretum::isMultiPhylo(tree,check_rooted = TRUE,check_three_taxa = TRUE)){
         
@@ -164,7 +164,7 @@ getTreeSupport <- function(signal,tree,include_root,clade,dataset_name,max_missi
         if(include_root){
           test_clade <- Rboretum::getTreeClades(tree,include_root = TRUE)
         } else{
-          test_clade <- Rboretum::getTreeClades(tree)
+          test_clade <- Rboretum::getTreeClades(tree,include_root = FALSE)
         }
       } else{
         stop("'tree' should be a rooted phylo, or a rooted multiPhylo where all trees share 3+ taxa...")

@@ -25,7 +25,7 @@ getTreeSupport(
 )
 }
 \arguments{
-\item{signal}{Output table from getAlignmentSignal()}
+\item{signal}{Output from getAlignmentSignal()}
 
 \item{tree}{OPTIONAL: Tree(s) onto which alignment signal will be mapped. Not considered if 'clade' argument is used. Tree options include:
 \itemize{
@@ -33,7 +33,7 @@ getTreeSupport(
   \item A rooted multiPhylo object where all trees share 3+ taxa
 }}
 
-\item{include_root}{OPTIONAL: If TRUE and using a 'tree',  return alignment support for root clades as well [Default: FALSE, don't include root clades]}
+\item{include_root}{OPTIONAL: If TRUE and using a 'tree', return alignment support for root clades as well [Default: FALSE, don't include root clades]}
 
 \item{clade}{OPTIONAL: Character vector of semicolon-separted taxa specifying specific clades of interest (i.e. get support for specific clade(s) rather than a whole tree). Supercedes 'tree' argument}
 
@@ -67,5 +67,5 @@ getTreeSupport(
 A dataframe containing each monophyletic clade in 'tree', along with site support from all alignments in 'signal' as separate columns
 }
 \description{
-This function maps phylogenetic signal from a multiple-sequence alingment onto a rooted phylo or multiPhylo object, or a set of specified clades
+This function maps phylogenetic signal from one or more multiple-sequence alignments onto a rooted phylo or multiPhylo object, or a set of specified clades
 }

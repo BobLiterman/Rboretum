@@ -1,11 +1,11 @@
 #' Rboretum Unique Topology Fetcher
 #' 
 #' This function takes a multiPhylo where all trees share 3 or more taxa, and returns the unique topologies after pruning to a common set of taxa
-#' @param trees Named, rooted multiPhylo object where all trees share at least three taxa
+#' @param trees Rooted multiPhylo object where all trees share at least three taxa
 #' @param tree_names: OPTIONAL: If TRUE, name unique trees based off of individual tree names [Default: FALSE, return trees named Topology_1, Topology_2, etc.]
 #' @param print_table OPTIONAL: If TRUE, return trees, and print summary table
 #' @param return_table OPTIONAL: If TRUE, return summary table rather than multiPhylo
-#' @return multiPhylo containing unique topologies
+#' @return multiPhylo containing unique topologies, or a phylo if all all trees share a common topology
 #' @export
 
 getUniqueTopologies <- function(trees,tree_names,print_table,return_table){
@@ -45,10 +45,9 @@ getUniqueTopologies <- function(trees,tree_names,print_table,return_table){
   # Fetch/Add names as needed
   if(!Rboretum::isMultiPhylo(trees,check_named = TRUE)){
     trees <- Rboretum::treeNamer(trees)
-    raw_tree_names <- names(trees)
-  } else{
-    raw_tree_names <- names(trees)
   }
+  
+  raw_tree_names <- names(trees)
   
   # Reduce multiPhylo to shared taxa
   if(!Rboretum::isMultiPhylo(trees,check_all_taxa = TRUE)){

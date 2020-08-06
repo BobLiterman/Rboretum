@@ -7,7 +7,7 @@
 getUniqueTopologies(trees, tree_names, print_table, return_table)
 }
 \arguments{
-\item{trees}{Named, rooted multiPhylo object where all trees share at least three taxa}
+\item{trees}{Rooted multiPhylo object where all trees share at least three taxa}
 
 \item{print_table}{OPTIONAL: If TRUE, return trees, and print summary table}
 
@@ -16,7 +16,7 @@ getUniqueTopologies(trees, tree_names, print_table, return_table)
 \item{tree_names:}{OPTIONAL: If TRUE, name unique trees based off of individual tree names [Default: FALSE, return trees named Topology_1, Topology_2, etc.]}
 }
 \value{
-multiPhylo containing unique topologies
+multiPhylo containing unique topologies, or a phylo if all all trees share a common topology
 }
 \description{
 This function takes a multiPhylo where all trees share 3 or more taxa, and returns the unique topologies after pruning to a common set of taxa

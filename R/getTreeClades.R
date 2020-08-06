@@ -1,18 +1,18 @@
 #' Rboretum Clade Fetcher
 #'
-#' This function breaks down a rooted phylo or multiPhylo object into its respective monophyletic clades (root clades excluded unless noted), sorted alphanumerically.
+#' This function breaks down a rooted phylo or multiPhylo object into its respective monophyletic groups, sorted alphanumerically.
 #' @param tree Tree(s) to split. Options include:
 #' \itemize{
 #'   \item A rooted phylo object
 #'   \item A rooted multiPhylo object where all trees share 3+ taxa
 #' }
-#' @param include_root OPTIONAL: If TRUE, include both root clades (Disabled if tree is rooted on a single taxon) [Default: FALSE, exlclude root clades]
+#' @param include_root OPTIONAL: If FALSE, don't include root clades as part of the return (Automatic if tree is rooted on a single taxon) [Default: TRUE, include root clades]
 #' @param print_counts OPTIONAL: If TRUE, print a summary table of unique splits and how many/which trees contain them [Default: FALSE, no printing]
 #' @param return_counts OPTIONAL: If TRUE, instead of returning a vector of clades, return a summary table of unique splits and how many/which trees contain them [Default: FALSE, return clades as sorted vector]
 #' @param return_shared OPTIONAL: If TRUE, instead of returning a vector of clades, return a vector of only those clades present in all trees [Default: FALSE, return all clades]
 #' @return Either:
 #' \itemize{
-#'   \item A character vector of monophyletic clades; or,
+#'   \item A character vector of monophyletic groups; or,
 #'   \item A dataframe containing information about clades and their occurrence among trees
 #' }
 #' @export
@@ -28,9 +28,9 @@ getTreeClades <- function(tree,include_root,print_counts,return_counts,return_sh
 
   # Return information about the two root splits?
   if(missing(include_root)){
-    include_root <- FALSE
+    include_root <- TRUE
   } else if(!is.logical(include_root)){
-    include_root <- FALSE
+    include_root <- TRUE
   } else if(length(include_root)!=1){
     stop("include_root should be TRUE or FALSE")
   }

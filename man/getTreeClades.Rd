@@ -13,7 +13,7 @@ getTreeClades(tree, include_root, print_counts, return_counts, return_shared)
   \item A rooted multiPhylo object where all trees share 3+ taxa
 }}
 
-\item{include_root}{OPTIONAL: If TRUE, include both root clades (Disabled if tree is rooted on a single taxon) [Default: FALSE, exlclude root clades]}
+\item{include_root}{OPTIONAL: If FALSE, don't include root clades as part of the return (Automatic if tree is rooted on a single taxon) [Default: TRUE, include root clades]}
 
 \item{print_counts}{OPTIONAL: If TRUE, print a summary table of unique splits and how many/which trees contain them [Default: FALSE, no printing]}
 
@@ -24,10 +24,10 @@ getTreeClades(tree, include_root, print_counts, return_counts, return_shared)
 \value{
 Either:
 \itemize{
-  \item A character vector of monophyletic clades; or,
+  \item A character vector of monophyletic groups; or,
   \item A dataframe containing information about clades and their occurrence among trees
 }
 }
 \description{
-This function breaks down a rooted phylo or multiPhylo object into its respective monophyletic clades (root clades excluded unless noted), sorted alphanumerically.
+This function breaks down a rooted phylo or multiPhylo object into its respective monophyletic groups, sorted alphanumerically.
 }

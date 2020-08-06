@@ -10,7 +10,7 @@ getTreeSplits(tree)
 \item{tree}{Tree(s) to split. Options include:
 \itemize{
   \item A rooted phylo object
-  \item A rooted, named multiPhylo object where all trees share 3+ taxa
+  \item A rooted multiPhylo object where all trees share 3+ taxa
 }}
 }
 \value{

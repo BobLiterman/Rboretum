@@ -4,14 +4,17 @@
 #' @param tree Tree(s) to split. Options include:
 #' \itemize{
 #'   \item A rooted phylo object
-#'   \item A rooted, named multiPhylo object where all trees share 3+ taxa
+#'   \item A rooted multiPhylo object where all trees share 3+ taxa
 #' }
 #' @return Dataframe (or a list of dataframes for each topology): Column 1: Semi-colon separated monophyletic clade; Column 2: 'Mirror Clade'; Column 3: Phylo Node ID (NA for root split)
 #' @export
 
 getTreeSplits <- function(tree){
   
-  if(Rboretum::isPhylo(tree,check_rooted = TRUE)){ # If a phylo object is provided, get splits...
+  # Ensure tree is valid
+  if(missing(tree)){
+    stop("'getTreeSplits' requires a phylo or multiPhylo argument...")
+  } else if(Rboretum::isPhylo(tree,check_rooted = TRUE)){ # If a phylo object is provided, get splits...
     split_df <- getTreeSplits_Worker(tree)
     return(split_df)
   } else if(Rboretum::isMultiPhylo(tree,check_rooted = TRUE,check_three_taxa = TRUE)){ # If a multiPhylo, trim to common species and get splits...
@@ -38,6 +41,6 @@ getTreeSplits <- function(tree){
       return(split_df)
     }
   } else{
-    stop("'tree' does not appear to be a rooted phylo, or a named, rooted multiPhylo object where all trees share 3+ taxa.")
+    stop("'tree' does not appear to be a rooted phylo, or a rooted multiPhylo object where all trees share 3+ taxa.")
   }
 }

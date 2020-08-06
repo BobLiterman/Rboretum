@@ -6,13 +6,8 @@
 #' @examples
 #' myString <- 'a;b;c;d'
 #' semiVector(myString)
-#' > ["a","b","c","d"]
 #' myStrings <- c('a;b;c;d','e;f;g;h)
 #' semiVector(myStrings)
-#' > [[1]]
-#' > [1] ["a","b","c","d"]
-#' > [[2]]
-#' > [1] ["e","f","g","h"]
 #' @export
 
 semiVector <- function(string_to_split){

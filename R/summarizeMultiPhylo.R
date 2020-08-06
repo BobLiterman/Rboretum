@@ -29,7 +29,7 @@ summarizeMultiPhylo <- function(trees){
   if(!Rboretum::isMultiPhylo(trees,check_all_taxa = TRUE)){
     print('Trees do not have the same taxa, trimming to common tip labels...')
     print('Command: treeTrimmer(trees,getSharedTaxa(trees)')
-    trees <- Rboretum::treeTrimmer(trees,common_taxa)
+    trees <- Rboretum::treeTrimmer(trees)
   } else{
     print('All trees contain identical tip labels...')
   }

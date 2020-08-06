@@ -91,7 +91,7 @@ isMultiPhylo <- function(test_object,check_named,check_rooted,check_three_taxa,c
     } else{
       
       # Summarize taxa in multiPhylo 'test_object'
-      tree_taxa <- purrr::map(.x = test_object,.f = function(x){x$tip.label}) %>% unlist() %>% unique() %>% sort() # Get all unique tip labels among 'trees'
+      tree_taxa <- purrr::map(.x = test_object,.f = function(x){x$tip.label}) %>% unlist() %>% unique() %>% naturalsort() # Get all unique tip labels among 'trees'
       taxa_count <- length(tree_taxa)
       tree_count <- length(test_object)
       

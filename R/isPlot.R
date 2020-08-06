@@ -6,6 +6,11 @@
 #' @export
 #'
 isPlot <- function(test_object){
+  
+  if(missing(test_object)){
+    stop("'test_object' not provided")
+  }
+  
   if(has_error(silent=TRUE,expr=unlist(attributes(test_object)))){
     return(FALSE)
   } else{

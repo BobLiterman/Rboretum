@@ -1,6 +1,6 @@
 #' Rboretum Alignment Signal Fetcher
 #'
-#' Given the path(s) to multiple alignments and an optional list of taxa, this script returns split and base information for each site
+#' Given the path(s) to one or more alignments (and an optional list of taxa), this script returns split and base information for each site
 #' @param alignment_path Where to find alignment files. Options include:
 #' \itemize{
 #'   \item A character vector of one or more alignment file paths  (relative or absolute)

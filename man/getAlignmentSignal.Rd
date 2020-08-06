@@ -43,5 +43,5 @@ getAlignmentSignal(
 Dataframe containing split and base information for each site in the alignment
 }
 \description{
-Given the path(s) to multiple alignments and an optional list of taxa, this script returns split and base information for each site
+Given the path(s) to one or more alignments (and an optional list of taxa), this script returns split and base information for each site
 }

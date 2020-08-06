@@ -43,12 +43,12 @@ tandemPlotter <- function(...,vertical){
   start_coord <- 0
 
   if(vertical){
-    for(i in 1:plot_count){
+    for(i in plot_count:1){
       return_plot <- return_plot + draw_plot(plotList[[i]],x=0,y=start_coord,height = plot_step)
       start_coord <- start_coord + plot_step
     }
   } else{
-    for(i in 1:plot_count){
+    for(i in plot_count:1){
       return_plot <- return_plot + draw_plot(plotList[[i]],x=start_coord,y=0,width = plot_step)
       start_coord <- start_coord + plot_step
     }

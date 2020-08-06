@@ -106,10 +106,6 @@ rescaleTreeSupport <- function(tree_support,scale,scale_range,return_total){
     }
   }
   
-
-  
-
-  
   if(is.character(scale)){ # If 'scale' is a chaaracter, it should be 'log'
     if(length(scale)!=1){
       stop("'scale' should be 'log' if a character is given")

@@ -1,10 +1,19 @@
 .. _readRooted:
-===============
-**readRooted**
-===============
 
-==================
-Function Overview
-==================
+###############
+**readRooted**
+###############
 
 Reads in trees as rooted
+
+=========================
+Usage and Option Summary
+=========================
+
+**Usage**:
+::
+
+  readRooted(PATH,ROOT)
+
+
+

@@ -8,7 +8,6 @@
 #' }
 #' @param taxa Character vector of desired tip labels to keep (or discard if remove=TRUE)
 #' @param remove OPTIONAL: If TRUE, tip labels specified by 'taxa' are removed from all trees rather than retained [Default: FALSE, prune 'tree' down to 'taxa']
-#' @param keep_bs OPTIONAL: If TRUE, do not remove bootstrap labels when taxa are trimmed off of tree [Default: FALSE, if tree has taxa removed, also remove node labels]
 #' @return Pruned phylo or multiPhylo object
 #' @examples 
 #' # myTree is a phylo object with 4 tips
@@ -18,7 +17,7 @@
 #' trimmedTree <- treeTrimmer(myTree,undesiredTaxa,remove=TRUE) # Remove 'undesiredTaxa' from myTree
 #' @export
 
-treeTrimmer <- function(tree,taxa,remove,keep_bs){
+treeTrimmer <- function(tree,taxa,remove){
   
   # Check if 'tree' is a valid object
   if(!Rboretum::isMultiPhylo(tree) & !Rboretum::isPhylo(tree)){
@@ -49,15 +48,6 @@ treeTrimmer <- function(tree,taxa,remove,keep_bs){
     remove <- FALSE
   } else if(length(remove)!=1){
     remove <- FALSE
-  }
-  
-  # Strip bootstraps after trim?
-  if(missing(keep_bs)){
-    keep_bs <- FALSE
-  } else if(!is.logical(keep_bs)){
-    keep_bs <- FALSE
-  } else if(length(keep_bs)!=1){
-    keep_bs <- FALSE
   }
   
   # Check taxa
@@ -120,10 +110,6 @@ treeTrimmer <- function(tree,taxa,remove,keep_bs){
     if(!any(taxa_to_remove %in% tree_taxa)){
       return(tree)
     } else{ # If the phylo needs to be pruned, return tree without bootstrap values
-      
-      if(!keep_bs){
-        tree$node.label <- NULL
-      }
       return(ape::drop.tip(tree,taxa_to_remove))
     }
   } else{ # Process multiPhylo
@@ -140,11 +126,6 @@ treeTrimmer <- function(tree,taxa,remove,keep_bs){
       if(!any(taxa_to_remove[[i]] %in% temp_tree$tip.label)){
         return_tree[[i]] <- temp_tree
       } else{ # If the phylo needs to be pruned, return tree without bootstrap values
-        
-        if(!keep_bs){
-          temp_tree$node.label <- NULL
-        }
-        
         return_tree[[i]] <- ape::drop.tip(temp_tree,taxa_to_remove[[i]])
       }
     }

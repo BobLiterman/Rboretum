@@ -74,8 +74,9 @@ pygments_style = 'sphinx'
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'agogo'
-
+html_theme = 'msmb_theme'
+import msmb_theme
+html_theme_path = [msmb_theme.get_html_theme_path()]
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
@@ -98,12 +99,12 @@ html_static_path = ['_static']
 # html_sidebars = {}
 # The name of an image file (relative to this directory) to place at the top
 # of the sidebar.
-# html_logo = 'content/images/Rboretum_Logo.png'
+html_logo = 'content/images/Rboretum_Logo.png'
 
 # The name of an image file (within the static path) to use as favicon of the
 # docs.  This file should be a Windows icon file (.ico) being 16x16 or 32x32
 # pixels large.
-# html_favicon = 'content/images/Rboretum_Logo.png'
+html_favicon = 'content/images/Rboretum_Logo.png'
 
 # -- Options for HTMLHelp output ---------------------------------------------
 

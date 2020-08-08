@@ -13,7 +13,7 @@ treeTrimmer(tree, taxa, remove)
   \item A multiPhylo object
 }}
 
-\item{taxa}{Character vector of desired tip labels to keep (or discard if remove=TRUE)}
+\item{taxa}{Character vector (or semicolon-separated list) of desired tip labels to keep (or discard if remove=TRUE)}
 
 \item{remove}{OPTIONAL: If TRUE, tip labels specified by 'taxa' are removed from all trees rather than retained [Default: FALSE, prune 'tree' down to 'taxa']}
 }

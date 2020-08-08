@@ -6,7 +6,7 @@
 #'   \item A phylo object
 #'   \item A multiPhylo object
 #' }
-#' @param taxa Character vector of desired tip labels to keep (or discard if remove=TRUE)
+#' @param taxa Character vector (or semicolon-separated list) of desired tip labels to keep (or discard if remove=TRUE)
 #' @param remove OPTIONAL: If TRUE, tip labels specified by 'taxa' are removed from all trees rather than retained [Default: FALSE, prune 'tree' down to 'taxa']
 #' @return Pruned phylo or multiPhylo object
 #' @examples 
@@ -65,6 +65,8 @@ treeTrimmer <- function(tree,taxa,remove){
       remove <- FALSE
     } else if(!is.character(taxa)){
       stop("'treeTrimmer' requires a character vector of taxa to remove or retain.")
+    } else if(length(taxa)==1 & semiChecker(taxa)){ # If taxa are provided as a semicolon-separated list
+      taxa <- semiVector(taxa)
     }
   }
 

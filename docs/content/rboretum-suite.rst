@@ -14,6 +14,7 @@ User Functions
   :maxdepth: 1
   
   user_functions/readRooted
+  user_functions/treeTrimmer
 
 ===================
 Internal Functions

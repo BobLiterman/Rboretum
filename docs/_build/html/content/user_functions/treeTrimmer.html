@@ -1,0 +1,364 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>treeTrimmer &mdash; Rboretum 1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/Rboretum_Logo.png"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="Rboretum 1.0 documentation" href="../../index.html"/>
+        <link rel="up" title="Rboretum Functions" href="../rboretum-suite.html"/>
+        <link rel="next" title="semiVector" href="../internal_functions/semiVector.html"/>
+        <link rel="prev" title="readRooted" href="readRooted.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Rboretum
+          
+
+          
+            
+            <img src="../../_static/Rboretum_Logo.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html"><strong>Installing Rboretum</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../loading.html"><strong>Loading Rboretum</strong></a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../rboretum-suite.html"><strong>Rboretum Functions</strong></a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="readRooted.html"><strong>readRooted</strong></a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><strong>treeTrimmer</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../internal_functions/semiVector.html"><strong>semiVector</strong></a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Rboretum</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../rboretum-suite.html"><strong>Rboretum Functions</strong></a> &raquo;</li>
+        
+      <li><strong>treeTrimmer</strong></li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/content/user_functions/treeTrimmer.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="treetrimmer">
+<span id="id1"></span><h1><strong>treeTrimmer</strong><a class="headerlink" href="#treetrimmer" title="Permalink to this headline">¶</a></h1>
+<p><em>treeTrimmer</em> is an ape wrapper, equivalent to:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ape</span><span class="p">::</span><span class="n">drop</span><span class="o">.</span><span class="n">tip</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span><span class="n">taxa_to_remove</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><em>treeTrimmer</em>  can accept a phylo or multiPhylo argument for pruning</li>
+<li>User can set whether to keep or remove specified taxa</li>
+<li>With a multiPhylo <strong>tree</strong> and no other arguments, the default behavior is to trim all trees down to those taxa shared among all trees</li>
+</ul>
+<div class="section" id="function-and-arguments">
+<h2>Function and Arguments<a class="headerlink" href="#function-and-arguments" title="Permalink to this headline">¶</a></h2>
+<p><strong>Usage</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">treeTrimmer</span> <span class="o">&lt;-</span> <span class="n">function</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span><span class="n">taxa</span><span class="p">,</span><span class="n">remove</span><span class="p">)</span>
+</pre></div>
+</div>
+<table border="1" class="docutils">
+<colgroup>
+<col width="12%" />
+<col width="88%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Argument</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><strong>tree</strong></td>
+<td>Tree(s) to trim. Options include: (1) A phylo or (2) a multiPhylo object where all trees share 3+ tip labels</td>
+</tr>
+<tr class="row-odd"><td><strong>taxa</strong></td>
+<td>Character vector (or semicolon-separated list) of desired tip labels to keep (or discard if remove=TRUE)</td>
+</tr>
+<tr class="row-even"><td><strong>remove</strong></td>
+<td>OPTIONAL: If TRUE, tip labels specified by <strong>taxa</strong> are removed from trees rather than retained [Default: FALSE, prune <strong>tree</strong> down to <strong>taxa</strong>]</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="function-return">
+<h2>Function Return<a class="headerlink" href="#function-return" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>If a single tree is provided via <strong>tree</strong>, <em>treeTrimmer</em> returns a phylo object pruned down to the desired taxa specified by <strong>taxa</strong> and <strong>remove</strong></li>
+<li>If multiple trees are provided via <strong>tree</strong>, <em>treeTrimmer</em> returns a multiPhylo where all trees are pruned down to the desired taxa specified by <strong>taxa</strong> and <strong>remove</strong></li>
+<li>Function will throw an error if:<ul>
+<li>Fewer than 3 species are specified for retention in any tree</li>
+<li>Any trees cannot be trimmed down to the final species lists (e.g. taxa are missing)</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="example-usage">
+<h2>Example Usage<a class="headerlink" href="#example-usage" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>library(Rboretum)
+
+# Set test data directory
+
+sourceRboretum()
+
+# Read in a single tree and multiple trees, rooted at the clade of Species C + Species H
+
+myTree &lt;- readRooted(to_root = rb_tree1_path, root_taxa = c(&#39;Species_C&#39;,&#39;Species_H&#39;))
+naturalsort(myTree$tip.label)
+
+myTrees &lt;- readRooted(to_root = rb_unroot_dir, root_taxa = c(&#39;Species_C&#39;,&#39;Species_H&#39;),suffix=&quot;.nwk&quot;)
+
+# Trim myTree down to Species A - I
+
+taxa_to_keep &lt;- c(&quot;Species_A&quot;,&quot;Species_B&quot;,&quot;Species_C&quot;,&quot;Species_D&quot;,&quot;Species_E&quot;,&quot;Species_F&quot;,&quot;Species_G&quot;,&quot;Species_H&quot;,&quot;Species_I&quot;)
+taxa_to_remove &lt;- c(&quot;Species_J&quot;,&quot;Species_K&quot;,&quot;Species_L&quot;,&quot;Species_M&quot;,&quot;Species_N&quot;,&quot;Species_O&quot;)
+
+# Trim myTree by supplying a list of taxa to keep
+
+myTrimmedTree_keep &lt;- treeTrimmer(tree = myTree,taxa = taxa_to_keep)
+naturalsort(myTrimmedTree_keep$tip.label)
+[1] &quot;Species_A&quot; &quot;Species_B&quot; &quot;Species_C&quot; &quot;Species_D&quot; &quot;Species_E&quot; &quot;Species_F&quot; &quot;Species_G&quot; &quot;Species_H&quot; &quot;Species_I&quot; &quot;Species_J&quot; &quot;Species_K&quot; &quot;Species_L&quot; &quot;Species_M&quot; &quot;Species_N&quot; &quot;Species_O&quot;
+
+# Trim myTree by supplying a list of taxa to remove
+
+myTrimmedTree_remove &lt;- treeTrimmer(tree = myTree,taxa = taxa_to_remove,remove = TRUE)
+naturalsort(myTrimmedTree_remove$tip.label)
+[1] &quot;Species_A&quot; &quot;Species_B&quot; &quot;Species_C&quot; &quot;Species_D&quot; &quot;Species_E&quot; &quot;Species_F&quot; &quot;Species_G&quot; &quot;Species_H&quot; &quot;Species_I&quot;
+
+# Test default behavior with mutltiPhylo (trim to common taxa)
+
+mixed_trees &lt;- c(myTrees,myTrimmedTree_keep)
+myTrimmedTrees_mixed &lt;- treeTrimmer(tree=mixed_trees)
+[1] &quot;Species_A&quot; &quot;Species_B&quot; &quot;Species_C&quot; &quot;Species_D&quot; &quot;Species_E&quot; &quot;Species_F&quot; &quot;Species_G&quot; &quot;Species_H&quot; &quot;Species_I&quot;
+
+# Check multiPhylo trimming
+
+purrr::map(.x = myTrimmedTrees_mixed, .f = function(x){naturalsort(x$tip.label)})
+$Tree_1
+[1] &quot;Species_A&quot; &quot;Species_B&quot; &quot;Species_C&quot; &quot;Species_D&quot; &quot;Species_E&quot; &quot;Species_F&quot; &quot;Species_G&quot; &quot;Species_H&quot; &quot;Species_I&quot;
+
+$Tree_2
+[1] &quot;Species_A&quot; &quot;Species_B&quot; &quot;Species_C&quot; &quot;Species_D&quot; &quot;Species_E&quot; &quot;Species_F&quot; &quot;Species_G&quot; &quot;Species_H&quot; &quot;Species_I&quot;
+
+$Tree_3
+[1] &quot;Species_A&quot; &quot;Species_B&quot; &quot;Species_C&quot; &quot;Species_D&quot; &quot;Species_E&quot; &quot;Species_F&quot; &quot;Species_G&quot; &quot;Species_H&quot; &quot;Species_I&quot;
+
+$Tree_4
+[1] &quot;Species_A&quot; &quot;Species_B&quot; &quot;Species_C&quot; &quot;Species_D&quot; &quot;Species_E&quot; &quot;Species_F&quot; &quot;Species_G&quot; &quot;Species_H&quot; &quot;Species_I&quot;
+
+$Tree_5
+[1] &quot;Species_A&quot; &quot;Species_B&quot; &quot;Species_C&quot; &quot;Species_D&quot; &quot;Species_E&quot; &quot;Species_F&quot; &quot;Species_G&quot; &quot;Species_H&quot; &quot;Species_I&quot;
+
+$Tree_6
+[1] &quot;Species_A&quot; &quot;Species_B&quot; &quot;Species_C&quot; &quot;Species_D&quot; &quot;Species_E&quot; &quot;Species_F&quot; &quot;Species_G&quot; &quot;Species_H&quot; &quot;Species_I&quot;
+
+# Trim multiPhylo given a list of taxa
+
+myTrimmedTrees &lt;- treeTrimmer(tree=myTrees,taxa=taxa_to_keep)
+
+# Check multiPhylo trimming
+
+purrr::map(.x = myTrimmedTrees, .f = function(x){naturalsort(x$tip.label)})
+$Gene_1.nwk
+[1] &quot;Species_A&quot; &quot;Species_B&quot; &quot;Species_C&quot; &quot;Species_D&quot; &quot;Species_E&quot; &quot;Species_F&quot; &quot;Species_G&quot; &quot;Species_H&quot; &quot;Species_I&quot;
+
+$Gene_2.nwk
+[1] &quot;Species_A&quot; &quot;Species_B&quot; &quot;Species_C&quot; &quot;Species_D&quot; &quot;Species_E&quot; &quot;Species_F&quot; &quot;Species_G&quot; &quot;Species_H&quot; &quot;Species_I&quot;
+
+$Gene_3.nwk
+[1] &quot;Species_A&quot; &quot;Species_B&quot; &quot;Species_C&quot; &quot;Species_D&quot; &quot;Species_E&quot; &quot;Species_F&quot; &quot;Species_G&quot; &quot;Species_H&quot; &quot;Species_I&quot;
+
+$Gene_4.nwk
+[1] &quot;Species_A&quot; &quot;Species_B&quot; &quot;Species_C&quot; &quot;Species_D&quot; &quot;Species_E&quot; &quot;Species_F&quot; &quot;Species_G&quot; &quot;Species_H&quot; &quot;Species_I&quot;
+
+$Gene_5.nwk
+[1] &quot;Species_A&quot; &quot;Species_B&quot; &quot;Species_C&quot; &quot;Species_D&quot; &quot;Species_E&quot; &quot;Species_F&quot; &quot;Species_G&quot; &quot;Species_H&quot; &quot;Species_I&quot;
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../internal_functions/semiVector.html" class="btn btn-neutral float-right" title="semiVector" accesskey="n">Next →</a>
+      
+      
+        <a href="readRooted.html" class="btn btn-neutral" title="readRooted" accesskey="p">← Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Robert Literman.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE: 'true'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

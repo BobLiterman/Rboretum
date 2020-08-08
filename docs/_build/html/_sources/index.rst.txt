@@ -27,6 +27,7 @@ Table of contents
   :maxdepth: 1
   
   content/installation
+  content/loading
   content/rboretum-suite   
 
 =========

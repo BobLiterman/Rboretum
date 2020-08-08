@@ -89,6 +89,7 @@
             
                 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html"><strong>Installing Rboretum</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../loading.html"><strong>Loading Rboretum</strong></a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../rboretum-suite.html"><strong>Rboretum Functions</strong></a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#"><strong>readRooted</strong></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../internal_functions/semiVector.html"><strong>semiVector</strong></a></li>
@@ -163,6 +164,7 @@
 <ul class="simple">
 <li><em>readRooted</em> can read in Newick and Nexus trees, as well as trees with booststrap values stored as RAxML-style branch labels</li>
 <li><em>readRooted</em> can be run in with a single file or in batch mode (simultaneously reading in and rooting multiple trees with the same outgroup taxa).</li>
+<li>When reading in multiple trees, <em>readRooted</em> will name trees based on the file basename, but this can be overridden by supplying names via the <strong>tree_names</strong> arguments, or by setting <strong>dummy_names</strong> to TRUE.</li>
 </ul>
 <div class="section" id="function-and-arguments">
 <h2>Function and Arguments<a class="headerlink" href="#function-and-arguments" title="Permalink to this headline">¶</a></h2>
@@ -191,7 +193,7 @@
 <td>OPTIONAL: If multiple tree paths are provided, a character vector of names to assign to trees. Length must equal the number of trees. [<strong>Default:</strong> Use basename of tree file as the tree name]</td>
 </tr>
 <tr class="row-odd"><td><strong>dummy_names</strong></td>
-<td>OPTIONAL: If TRUE, and multiple tree paths are provdied, trees will be named with placeholder names (e.g. Tree_1, Tree_2, etc.)</td>
+<td>OPTIONAL: If TRUE, and multiple tree paths are provdied, trees will be named with placeholder names (e.g. Tree_1, Tree_2, etc.) [<strong>Default:</strong> FALSE, use file basenames]</td>
 </tr>
 <tr class="row-even"><td><strong>prefix</strong></td>
 <td>OPTIONAL: If ‘to_root’ is a directory, provide a character vector of file prefixes (e.g. all trees start with “RAxML”)</td>
@@ -207,32 +209,35 @@
 <ul class="simple">
 <li>If a single tree is provided via <strong>to_root</strong>, <em>readRooted</em> returns a phylo object rooted at <strong>root_taxa</strong></li>
 <li>If multiple trees are provided via <strong>to_root</strong>, <em>readRooted</em> returns a named multiPhylo object, with all trees rooted at <strong>root_taxa</strong></li>
+<li>Function will throw an error if:
+- Any tree cannot be found based on the path given
+- Any tree cannot be rooted on the specified taxa</li>
 </ul>
 </div>
 <div class="section" id="example-usage">
 <h2>Example Usage<a class="headerlink" href="#example-usage" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set test data directory</span>
-<span class="n">sourceRboretum</span><span class="p">()</span>
-<span class="n">unrooted_tree_dir</span> <span class="o">&lt;-</span> <span class="n">paste0</span><span class="p">(</span><span class="n">rboretum_example_data_dir</span><span class="p">,</span><span class="s1">&#39;/unrootedTrees&#39;</span><span class="p">)</span>
-<span class="n">tree_1_path</span> <span class="o">&lt;-</span> <span class="n">paste0</span><span class="p">(</span><span class="n">rboretum_example_data_dir</span><span class="p">,</span><span class="s1">&#39;/unrootedTrees/Gene_1.nwk&#39;</span><span class="p">)</span>
-
-<span class="c1"># Read in a single tree, rooted at the clade of Species C + Species H</span>
-<span class="n">myTree</span> <span class="o">&lt;-</span> <span class="n">readRooted</span><span class="p">(</span><span class="n">to_root</span> <span class="o">=</span> <span class="n">tree_1_path</span><span class="p">,</span> <span class="n">root_taxa</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="s1">&#39;Species_C&#39;</span><span class="p">,</span><span class="s1">&#39;Species_H&#39;</span><span class="p">))</span>
-
-<span class="c1"># Read in a single tree, rooted at the clade of Species C + Species H</span>
-<span class="n">myTree</span> <span class="o">&lt;-</span> <span class="n">readRooted</span><span class="p">(</span><span class="n">to_root</span> <span class="o">=</span> <span class="n">tree_1_path</span><span class="p">,</span> <span class="n">root_taxa</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="s1">&#39;Species_C&#39;</span><span class="p">,</span><span class="s1">&#39;Species_H&#39;</span><span class="p">))</span>
-
-<span class="c1"># From a directory containing multiple trees, read in all &#39;*.nwk&#39; files and root at the clade of Species C + Species H</span>
-<span class="n">myTrees</span> <span class="o">&lt;-</span> <span class="n">readRooted</span><span class="p">(</span><span class="n">to_root</span> <span class="o">=</span> <span class="n">unrooted_tree_dir</span><span class="p">,</span> <span class="n">root_taxa</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="s1">&#39;Species_C&#39;</span><span class="p">,</span><span class="s1">&#39;Species_H&#39;</span><span class="p">),</span><span class="n">suffix</span><span class="o">=</span><span class="s2">&quot;.nwk&quot;</span><span class="p">)</span>
-
-<span class="c1"># Same as above, but add user-defined tree tree_names as opposed to tree file basenames</span>
-<span class="n">myTreeNames</span> <span class="o">&lt;-</span> <span class="n">c</span><span class="p">(</span><span class="s1">&#39;Gene_A&#39;</span><span class="p">,</span><span class="s1">&#39;Gene_B&#39;</span><span class="p">,</span><span class="s1">&#39;Gene_C&#39;</span><span class="p">,</span><span class="s1">&#39;Gene_D&#39;</span><span class="p">,</span><span class="s1">&#39;Gene_E&#39;</span><span class="p">)</span>
-<span class="n">myTrees</span> <span class="o">&lt;-</span> <span class="n">readRooted</span><span class="p">(</span><span class="n">to_root</span> <span class="o">=</span> <span class="n">unrooted_tree_dir</span><span class="p">,</span> <span class="n">root_taxa</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="s1">&#39;Species_C&#39;</span><span class="p">,</span><span class="s1">&#39;Species_H&#39;</span><span class="p">),</span><span class="n">suffix</span><span class="o">=</span><span class="s2">&quot;.nwk&quot;</span><span class="p">,</span><span class="n">tree_names</span><span class="o">=</span><span class="n">myTreeNames</span><span class="p">)</span>
-
-<span class="c1"># Same as above, but add placeholder tree_names (&#39;Tree_1&#39; - &#39;Tree_5&#39;) as opposed to tree file basenames</span>
-<span class="n">myTrees</span> <span class="o">&lt;-</span> <span class="n">readRooted</span><span class="p">(</span><span class="n">to_root</span> <span class="o">=</span> <span class="n">unrooted_tree_dir</span><span class="p">,</span> <span class="n">root_taxa</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="s1">&#39;Species_C&#39;</span><span class="p">,</span><span class="s1">&#39;Species_H&#39;</span><span class="p">),</span><span class="n">suffix</span><span class="o">=</span><span class="s2">&quot;.nwk&quot;</span><span class="p">,</span><span class="n">dummy_names</span><span class="o">=</span><span class="n">TRUE</span><span class="p">)</span>
-</pre></div>
-</div>
+<dl class="docutils">
+<dt>::</dt>
+<dd><p class="first">library(Rboretum)</p>
+<p># Set test data directory
+sourceRboretum()</p>
+<p># Read in a single tree, rooted at the clade of Species C + Species H
+myTree &lt;- readRooted(to_root = rb_tree1_path, root_taxa = c(‘Species_C’,’Species_H’))</p>
+<p># From a directory containing multiple trees, read in all ‘.nwk’ files and root at the clade of Species C + Species H
+myTrees &lt;- readRooted(to_root = rb_unroot_dir, root_taxa = c(‘Species_C’,’Species_H’),suffix=”.nwk”)</p>
+<p># Same as above, but add user-defined tree tree_names as opposed to tree file basenames
+myTreeNames &lt;- c(‘Gene_A’,’Gene_B’,’Gene_C’,’Gene_D’,’Gene_E’)
+myNamedTrees &lt;- readRooted(to_root = rb_unroot_dir, root_taxa = c(‘Species_C’,’Species_H’),suffix=”.nwk”,tree_names=myTreeNames)</p>
+<p># Same as above, but add placeholder tree_names (‘Tree_1’ - ‘Tree_5’) as opposed to tree file basenames
+myDummyTrees &lt;- readRooted(to_root = rb_unroot_dir, root_taxa = c(‘Species_C’,’Species_H’),suffix=”.nwk”,dummy_names=TRUE)</p>
+<p>names(myTrees)
+[1] “Gene_1.nwk” “Gene_2.nwk” “Gene_3.nwk” “Gene_4.nwk” “Gene_5.nwk”</p>
+<p>names(myNamedTrees)
+[1] “Gene_A” “Gene_B” “Gene_C” “Gene_D” “Gene_E”</p>
+<p class="last">names(myDummyTrees)
+[1] “Tree_1” “Tree_2” “Tree_3” “Tree_4” “Tree_5”</p>
+</dd>
+</dl>
 </div>
 </div>
 

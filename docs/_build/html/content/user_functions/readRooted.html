@@ -216,28 +216,42 @@
 </div>
 <div class="section" id="example-usage">
 <h2>Example Usage<a class="headerlink" href="#example-usage" title="Permalink to this headline">¶</a></h2>
-<dl class="docutils">
-<dt>::</dt>
-<dd><p class="first">library(Rboretum)</p>
-<p># Set test data directory
-sourceRboretum()</p>
-<p># Read in a single tree, rooted at the clade of Species C + Species H
-myTree &lt;- readRooted(to_root = rb_tree1_path, root_taxa = c(‘Species_C’,’Species_H’))</p>
-<p># From a directory containing multiple trees, read in all ‘.nwk’ files and root at the clade of Species C + Species H
-myTrees &lt;- readRooted(to_root = rb_unroot_dir, root_taxa = c(‘Species_C’,’Species_H’),suffix=”.nwk”)</p>
-<p># Same as above, but add user-defined tree tree_names as opposed to tree file basenames
-myTreeNames &lt;- c(‘Gene_A’,’Gene_B’,’Gene_C’,’Gene_D’,’Gene_E’)
-myNamedTrees &lt;- readRooted(to_root = rb_unroot_dir, root_taxa = c(‘Species_C’,’Species_H’),suffix=”.nwk”,tree_names=myTreeNames)</p>
-<p># Same as above, but add placeholder tree_names (‘Tree_1’ - ‘Tree_5’) as opposed to tree file basenames
-myDummyTrees &lt;- readRooted(to_root = rb_unroot_dir, root_taxa = c(‘Species_C’,’Species_H’),suffix=”.nwk”,dummy_names=TRUE)</p>
-<p>names(myTrees)
-[1] “Gene_1.nwk” “Gene_2.nwk” “Gene_3.nwk” “Gene_4.nwk” “Gene_5.nwk”</p>
-<p>names(myNamedTrees)
-[1] “Gene_A” “Gene_B” “Gene_C” “Gene_D” “Gene_E”</p>
-<p class="last">names(myDummyTrees)
-[1] “Tree_1” “Tree_2” “Tree_3” “Tree_4” “Tree_5”</p>
-</dd>
-</dl>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">library</span><span class="p">(</span><span class="n">Rboretum</span><span class="p">)</span>
+
+<span class="c1"># Set test data directory</span>
+
+<span class="n">sourceRboretum</span><span class="p">()</span>
+
+<span class="c1"># Read in a single tree, rooted at the clade of Species C + Species H</span>
+
+<span class="n">myTree</span> <span class="o">&lt;-</span> <span class="n">readRooted</span><span class="p">(</span><span class="n">to_root</span> <span class="o">=</span> <span class="n">rb_tree1_path</span><span class="p">,</span> <span class="n">root_taxa</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="s1">&#39;Species_C&#39;</span><span class="p">,</span><span class="s1">&#39;Species_H&#39;</span><span class="p">))</span>
+
+<span class="c1"># From a directory containing multiple trees, read in all &#39;.nwk&#39; files and root at the clade of Species C + Species H</span>
+
+<span class="n">myTrees</span> <span class="o">&lt;-</span> <span class="n">readRooted</span><span class="p">(</span><span class="n">to_root</span> <span class="o">=</span> <span class="n">rb_unroot_dir</span><span class="p">,</span> <span class="n">root_taxa</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="s1">&#39;Species_C&#39;</span><span class="p">,</span><span class="s1">&#39;Species_H&#39;</span><span class="p">),</span><span class="n">suffix</span><span class="o">=</span><span class="s2">&quot;.nwk&quot;</span><span class="p">)</span>
+
+<span class="c1"># Same as above, but add user-defined tree tree_names as opposed to tree file basenames</span>
+
+<span class="n">myTreeNames</span> <span class="o">&lt;-</span> <span class="n">c</span><span class="p">(</span><span class="s1">&#39;Gene_A&#39;</span><span class="p">,</span><span class="s1">&#39;Gene_B&#39;</span><span class="p">,</span><span class="s1">&#39;Gene_C&#39;</span><span class="p">,</span><span class="s1">&#39;Gene_D&#39;</span><span class="p">,</span><span class="s1">&#39;Gene_E&#39;</span><span class="p">)</span>
+<span class="n">myNamedTrees</span> <span class="o">&lt;-</span> <span class="n">readRooted</span><span class="p">(</span><span class="n">to_root</span> <span class="o">=</span> <span class="n">rb_unroot_dir</span><span class="p">,</span> <span class="n">root_taxa</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="s1">&#39;Species_C&#39;</span><span class="p">,</span><span class="s1">&#39;Species_H&#39;</span><span class="p">),</span><span class="n">suffix</span><span class="o">=</span><span class="s2">&quot;.nwk&quot;</span><span class="p">,</span><span class="n">tree_names</span><span class="o">=</span><span class="n">myTreeNames</span><span class="p">)</span>
+
+<span class="c1"># Same as above, but add placeholder tree_names (&#39;Tree_1&#39; - &#39;Tree_5&#39;) as opposed to tree file basenames</span>
+
+<span class="n">myDummyTrees</span> <span class="o">&lt;-</span> <span class="n">readRooted</span><span class="p">(</span><span class="n">to_root</span> <span class="o">=</span> <span class="n">rb_unroot_dir</span><span class="p">,</span> <span class="n">root_taxa</span> <span class="o">=</span> <span class="n">c</span><span class="p">(</span><span class="s1">&#39;Species_C&#39;</span><span class="p">,</span><span class="s1">&#39;Species_H&#39;</span><span class="p">),</span><span class="n">suffix</span><span class="o">=</span><span class="s2">&quot;.nwk&quot;</span><span class="p">,</span><span class="n">dummy_names</span><span class="o">=</span><span class="n">TRUE</span><span class="p">)</span>
+
+<span class="n">names</span><span class="p">(</span><span class="n">myTrees</span><span class="p">)</span>
+
+<span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="s2">&quot;Gene_1.nwk&quot;</span> <span class="s2">&quot;Gene_2.nwk&quot;</span> <span class="s2">&quot;Gene_3.nwk&quot;</span> <span class="s2">&quot;Gene_4.nwk&quot;</span> <span class="s2">&quot;Gene_5.nwk&quot;</span>
+
+<span class="n">names</span><span class="p">(</span><span class="n">myNamedTrees</span><span class="p">)</span>
+
+<span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="s2">&quot;Gene_A&quot;</span> <span class="s2">&quot;Gene_B&quot;</span> <span class="s2">&quot;Gene_C&quot;</span> <span class="s2">&quot;Gene_D&quot;</span> <span class="s2">&quot;Gene_E&quot;</span>
+
+<span class="n">names</span><span class="p">(</span><span class="n">myDummyTrees</span><span class="p">)</span>
+
+<span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="s2">&quot;Tree_1&quot;</span> <span class="s2">&quot;Tree_2&quot;</span> <span class="s2">&quot;Tree_3&quot;</span> <span class="s2">&quot;Tree_4&quot;</span> <span class="s2">&quot;Tree_5&quot;</span>
+</pre></div>
+</div>
 </div>
 </div>
 

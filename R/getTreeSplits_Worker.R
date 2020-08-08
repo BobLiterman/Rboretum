@@ -31,9 +31,11 @@ getTreeSplits_Worker <- function(tree){
   mirror_clades <- purrr::map(.x=tree_clades,.f=function(x){semiSorter(setdiff(tree_species,semiVector(x)))}) %>% unlist()
   node_list <- purrr::map(.x=tree_subtree,.f=function(x){x$node.label[1]}) %>% unlist()
   
-  split_df <- tibble("Clade"=as.character(tree_clades),"Mirror_Clade"=as.character(mirror_clades),"Split_Node"=as.integer(node_list)) %>%
+  # Set root node to tree root
+  split_df <- tibble("Clade"=as.character(tree_clades),"Mirror_Clade"=as.character(mirror_clades),"Split_Node"=as.integer(node_list),"Root"=FALSE) %>%
     rowwise() %>%
-    mutate(Split_Node = ifelse(ape::is.monophyletic(tree,semiVector(Clade)) & ape::is.monophyletic(tree,semiVector(Mirror_Clade)),NA,Split_Node)) %>%
+    mutate(Split_Node = ifelse(ape::is.monophyletic(tree,semiVector(Clade)) & ape::is.monophyletic(tree,semiVector(Mirror_Clade)),ape::getMRCA(tree,tree_species),Split_Node),
+           Root = ifelse(ape::is.monophyletic(tree,semiVector(Clade)) & ape::is.monophyletic(tree,semiVector(Mirror_Clade)),TRUE,FALSE)) %>%
     ungroup()
 
   return(split_df)

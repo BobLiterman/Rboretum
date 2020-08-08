@@ -623,7 +623,7 @@ treePlotter <- function(tree,basic_plot,tree_support,clade_support,geom_size,sca
     } else{
       
       ggtree_df <- Rboretum::getTreeSplits(temp_tree) %>%
-        filter(!is.na(Split_Node)) %>%
+        filter(!Root) %>%
         select(Split_Node,Clade) %>%
         rename(node=Split_Node) %>%
         mutate(node=as.integer(node), Clade = as.character(Clade))
@@ -657,7 +657,7 @@ treePlotter <- function(tree,basic_plot,tree_support,clade_support,geom_size,sca
       
       # Generate pie chart from tree support and make dummy legend	
       pie_df <- Rboretum::getTreeSplits(temp_tree) %>%	
-        filter(!is.na(Split_Node)) %>%	
+        filter(!Root) %>%	
         select(Split_Node,Clade) %>%	
         rename(node=Split_Node) %>%	
         mutate(node=as.integer(node), Clade = as.character(Clade)) %>%	

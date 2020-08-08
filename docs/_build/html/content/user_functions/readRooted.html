@@ -156,13 +156,55 @@
             
   <div class="section" id="readrooted">
 <span id="id1"></span><h1><strong>readRooted</strong><a class="headerlink" href="#readrooted" title="Permalink to this headline">¶</a></h1>
-<p>Reads in trees as rooted</p>
-<div class="section" id="usage-and-option-summary">
-<h2>Usage and Option Summary<a class="headerlink" href="#usage-and-option-summary" title="Permalink to this headline">¶</a></h2>
-<p><strong>Usage</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">readRooted</span><span class="p">(</span><span class="n">PATH</span><span class="p">,</span><span class="n">ROOT</span><span class="p">)</span>
+<p><em>readRooted</em> is an ape wrapper, equivalent to:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ape</span><span class="p">::</span><span class="n">read</span><span class="o">.</span><span class="n">tree</span><span class="p">(</span><span class="n">TREE</span><span class="p">)</span> <span class="o">%&gt;%</span> <span class="n">ape</span><span class="p">::</span><span class="n">unroot</span><span class="o">.</span><span class="n">phylo</span><span class="p">(</span><span class="o">.</span><span class="p">)</span> <span class="o">%&gt;%</span> <span class="n">ape</span><span class="p">::</span><span class="n">root</span><span class="o">.</span><span class="n">phylo</span><span class="p">(</span><span class="o">.</span><span class="p">,</span><span class="n">ROOT_TAXA</span><span class="p">,</span><span class="n">resolve_root</span><span class="o">=</span><span class="n">TRUE</span><span class="p">)</span>
 </pre></div>
 </div>
+<p><em>readRooted</em> can be run in with a single file path, or in batch mode (simultaneously reading in and rooting multiple trees with the same outgroup taxa).</p>
+<div class="section" id="function-and-arguments">
+<h2>Function and Arguments<a class="headerlink" href="#function-and-arguments" title="Permalink to this headline">¶</a></h2>
+<p><strong>Usage</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">readRooted</span><span class="p">(</span><span class="n">to_root</span><span class="p">,</span><span class="n">root_taxa</span><span class="p">,</span><span class="n">tree_names</span><span class="p">,</span><span class="n">dummy_names</span><span class="p">,</span><span class="n">prefix</span><span class="p">,</span><span class="n">suffix</span><span class="p">)</span>
+</pre></div>
+</div>
+<table border="1" class="docutils">
+<colgroup>
+<col width="12%" />
+<col width="88%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Argument</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><strong>to_root</strong></td>
+<td>Where to find tree files. Options include: (1) A character vector of one or more tree file paths; or (2) A path to a single directory containing all tree files</td>
+</tr>
+<tr class="row-odd"><td><strong>root_taxa</strong></td>
+<td>Outgroup species IDs. Must be in tree(s) and monophyletic. Can be provided as: (1) A character vector of one or more tip labels; or (2) A semicolon-separated list of tip labels</td>
+</tr>
+<tr class="row-even"><td><strong>tree_names</strong></td>
+<td>OPTIONAL: If multiple tree paths are provided, a character vector of names to assign to trees. Length must equal the number of trees. [<strong>Default:</strong> Use basename of tree file as the tree name]</td>
+</tr>
+<tr class="row-odd"><td><strong>dummy_names</strong></td>
+<td>OPTIONAL: If TRUE, and multiple tree paths are provdied, trees will be named with placeholder names (e.g. Tree_1, Tree_2, etc.)</td>
+</tr>
+<tr class="row-even"><td><strong>prefix</strong></td>
+<td>OPTIONAL: If ‘to_root’ is a directory, provide a character vector of file prefixes (e.g. all trees start with “RAxML”)</td>
+</tr>
+<tr class="row-odd"><td><strong>suffix</strong></td>
+<td>OPTIONAL: If ‘to_root’ is a directory, provide a character vector of file suffixes (e.g. all trees end with “.nwk”)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="function-return">
+<h2>Function Return<a class="headerlink" href="#function-return" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>If a single tree is provided via <strong>to_root</strong>, <em>readRooted</em> returns a phylo object rooted at <strong>root_taxa</strong></li>
+<li>If multiple trees are provided via <strong>to_root</strong>, <em>readRooted</em> returns a named multiPhylo object, with all trees rooted at <strong>root_taxa</strong></li>
+</ul>
 </div>
 </div>
 

@@ -10,7 +10,8 @@ Overview
 User Functions
 ===============
 .. toctree::
-  :maxdepth: 2
+  :titlesonly:
+  :maxdepth: 1
   
   user_functions/readRooted
   user_functions/treeTrimmer
@@ -19,7 +20,8 @@ User Functions
 Internal Functions
 ===================
 .. toctree::
-  :maxdepth: 2
+  :titlesonly:
+  :maxdepth: 1
   
   internal_functions/semiVector
 

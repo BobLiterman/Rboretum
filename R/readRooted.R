@@ -6,7 +6,11 @@
 #'   \item A character vector of one or more tree file paths
 #'   \item A path to a single directory containing all tree files
 #' }
-#' @param root_taxa Character vector containing outgroup species IDs (Must be in tree(s) and monophyletic)
+#' @param root_taxa Outgroup species IDs. Must be in tree(s) and monophyletic. Can be provided as:
+#' \itemize{
+#'   \item A character vector of one or more tip labels
+#'   \item A semicolon-separated list of tip labels
+#' }
 #' @param tree_names OPTIONAL: If multiple tree paths are provided, a character vector of names to assign to trees. Length must equal the number of trees. [Default: Trees will be autonamed based on the filename]
 #' @param dummy_names OPTIONAL: If TRUE, and multiple tree paths are provdied, trees will be named with placeholder names (e.g. Tree_1, Tree_2, etc.) [Default: Trees will be autonamed based on the filename]
 #' @param prefix OPTIONAL: If 'to_root' is a directory, provide a character vector of file prefixes (e.g. all trees start with "RAxML")
@@ -43,6 +47,8 @@ readRooted <- function(to_root,root_taxa,tree_names,dummy_names,prefix,suffix){
     stop("No root taxa provided")
   } else if(!is.character(root_taxa)){
     stop("'root_taxa' should be a character vector of tip labels")
+  } else if(length(root_taxa)==1 & semiChecker(root_taxa)){ # If root taxa are provided as a semi-colon separated list
+    root_taxa <- semiVector(root_taxa)
   }
   
   # Use dummy names for multiPhylo?

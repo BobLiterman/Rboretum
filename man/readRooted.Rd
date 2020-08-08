@@ -13,7 +13,11 @@ readRooted(to_root, root_taxa, tree_names, dummy_names, prefix, suffix)
   \item A path to a single directory containing all tree files
 }}
 
-\item{root_taxa}{Character vector containing outgroup species IDs (Must be in tree(s) and monophyletic)}
+\item{root_taxa}{Outgroup species IDs. Must be in tree(s) and monophyletic. Can be provided as:
+\itemize{
+  \item A character vector of one or more tip labels
+  \item A semicolon-separated list of tip labels
+}}
 
 \item{tree_names}{OPTIONAL: If multiple tree paths are provided, a character vector of names to assign to trees. Length must equal the number of trees. [Default: Trees will be autonamed based on the filename]}
 

@@ -5,8 +5,8 @@ sourceRboretum()
 
 # Read in a single tree and multiple trees, rooted at the clade of Species C + Species H
 myTree <- readRooted(to_root = rb_tree1_path, root_taxa = c('Species_C','Species_H'))
-naturalsort(myTree$tip.label)
 
+# From a directory containing multiple trees, read in all '.nwk' files and root at the clade of Species C + Species H
 myTrees <- readRooted(to_root = rb_unroot_dir, root_taxa = c('Species_C','Species_H'),suffix=".nwk")
 
 # Trim myTree down to Species A - I 

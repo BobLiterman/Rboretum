@@ -3,6 +3,8 @@ library(Rboretum)
 # Set test data directory
 sourceRboretum()
 
+### SINGLE TREE ###
+
 # Read in a single tree rooted at the clade of Species C + Species H
 myTree <- readRooted(to_root = rb_tree1_path, root_taxa = c('Species_C','Species_H'))
 
@@ -18,13 +20,17 @@ myTrimmedTree_remove <- treeTrimmer(tree = myTree,taxa = taxa_to_remove,remove =
 
 # Check tip labels
 naturalsort(myTrimmedTree_keep$tip.label)
-
 naturalsort(myTrimmedTree_remove$tip.label)
 
-# Read in a a multiPhylo of trees rooted at the clade of Species C + Species H
-myTrees <- readRooted(to_root = rb_unroot_dir, root_taxa = c('Species_C','Species_H'),suffix=".nwk")
+### 2+ TREES ###
 
-# Make a multiPhlyo where trees do not share all taxa
+# Read in a a multiPhylo of trees rooted at the clade of Species C + Species H
+myTrees <- readRooted(to_root = rb_unroot_dir, root_taxa = c('Species_C','Species_H'),suffix=".nwk",dummy_names = TRUE)
+
+# Check raw tip labels
+purrr::map(.x = myTrees, .f = function(x){naturalsort(x$tip.label)})
+
+# Make a multiPhlyo where trees do not share all taxa (one tree only has Species_A - Species_I)
 mixed_trees <- c(myTrees,myTrimmedTree_keep)
 
 # Default behavior is to trim down to common taxa
@@ -34,6 +40,8 @@ myTrimmedTrees_mixed <- treeTrimmer(tree=mixed_trees)
 purrr::map(.x = myTrimmedTrees_mixed, .f = function(x){naturalsort(x$tip.label)})
 
 # Trim multiPhylo given a list of taxa
+myTrees <- readRooted(to_root = rb_unroot_dir, root_taxa = c('Species_C','Species_H'),suffix=".nwk",dummy_names = TRUE)
+
 myTrimmedTrees <- treeTrimmer(tree=myTrees,taxa=taxa_to_keep)
 
 # Check multiPhylo trimming

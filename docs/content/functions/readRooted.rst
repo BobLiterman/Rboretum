@@ -41,6 +41,7 @@ Function Return
 - If a single tree is provided via **"to_root"**, *readRooted* returns a phylo object rooted at **"root_taxa"**
 - If multiple trees are provided via **to_root**, *readRooted* returns a named multiPhylo object, with all trees rooted at **root_taxa**
 - Function will throw an error if:
+
   - Any tree cannot be found based on the path given
   - Any tree cannot be rooted on the specified taxa
   

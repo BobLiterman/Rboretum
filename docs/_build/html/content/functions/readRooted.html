@@ -210,9 +210,11 @@
 <ul class="simple">
 <li>If a single tree is provided via <strong>“to_root”</strong>, <em>readRooted</em> returns a phylo object rooted at <strong>“root_taxa”</strong></li>
 <li>If multiple trees are provided via <strong>to_root</strong>, <em>readRooted</em> returns a named multiPhylo object, with all trees rooted at <strong>root_taxa</strong></li>
-<li>Function will throw an error if:
-- Any tree cannot be found based on the path given
-- Any tree cannot be rooted on the specified taxa</li>
+<li>Function will throw an error if:<ul>
+<li>Any tree cannot be found based on the path given</li>
+<li>Any tree cannot be rooted on the specified taxa</li>
+</ul>
+</li>
 </ul>
 </div>
 <div class="section" id="example-usage">

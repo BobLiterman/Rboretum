@@ -28,7 +28,7 @@ Function and Arguments
  Argument                         Description
 ===========================      ===============================================================================================================================================================================================================
 **tree**				                  Tree(s) to trim. Options include: (1) A phylo or (2) a multiPhylo object where all trees share 3+ tip labels 
-**taxa**					                Character vector (or semicolon-separated list) of desired tip labels to keep (or discard if remove=TRUE)
+**taxa**					                Character vector (or semicolon-separated list) of desired tip labels to keep [default] or discard [if remove=TRUE]
 **remove**                        OPTIONAL: If TRUE, tip labels specified by **taxa** are removed from trees rather than retained [Default: FALSE, prune **tree** down to **taxa**]
 ===========================      ===============================================================================================================================================================================================================
 
@@ -57,7 +57,9 @@ Example Usage
   # Set test data directory
   sourceRboretum()
 
-  # Read in a single tree containing Species_A - Species_O
+  ### SINGLE TREE ###
+
+  # Read in a single tree rooted at the clade of Species C + Species H
   myTree <- readRooted(to_root = rb_tree1_path, root_taxa = c('Species_C','Species_H'))
 
   # Trim myTree down to Species A - I   
@@ -66,50 +68,49 @@ Example Usage
 
   # Trim myTree by supplying a list of taxa to keep
   myTrimmedTree_keep <- treeTrimmer(tree = myTree,taxa = taxa_to_keep)
-  
+
   # Trim myTree by supplying a list of taxa to remove
   myTrimmedTree_remove <- treeTrimmer(tree = myTree,taxa = taxa_to_remove,remove = TRUE)
-  
+
   # Check tip labels
   naturalsort(myTrimmedTree_keep$tip.label)
-  [1] "Species_A" "Species_B" "Species_C" "Species_D" "Species_E" "Species_F" "Species_G" "Species_H" "Species_I" "Species_J" "Species_K" "Species_L" "Species_M" "Species_N" "Species_O"
+  [1] "Species_A" "Species_B" "Species_C" "Species_D" "Species_E" "Species_F" "Species_G" "Species_H" "Species_I"
 
   naturalsort(myTrimmedTree_remove$tip.label)
-  [1] "Species_A" "Species_B" "Species_C" "Species_D" "Species_E" "Species_F" "Species_G" "Species_H" "Species_I" "Species_J" "Species_K" "Species_L" "Species_M" "Species_N" "Species_O"
-
-  # Read in a a multiPhylo of trees that all contain Species_A - Species_O
-  myTrees <- readRooted(to_root = rb_unroot_dir, root_taxa = c('Species_C','Species_H'),suffix=".nwk")
-
-  # Trim multiPhylo given a list of taxa
-  myTrimmedTrees <- treeTrimmer(tree=myTrees,taxa=taxa_to_keep)
-
-  # Check multiPhylo trimming
-  purrr::map(.x = myTrimmedTrees, .f = function(x){naturalsort(x$tip.label)})
-
-  $Gene_1.nwk
   [1] "Species_A" "Species_B" "Species_C" "Species_D" "Species_E" "Species_F" "Species_G" "Species_H" "Species_I"
 
-  $Gene_2.nwk
-  [1] "Species_A" "Species_B" "Species_C" "Species_D" "Species_E" "Species_F" "Species_G" "Species_H" "Species_I"
+  ### 2+ TREES ###
 
-  $Gene_3.nwk
-  [1] "Species_A" "Species_B" "Species_C" "Species_D" "Species_E" "Species_F" "Species_G" "Species_H" "Species_I"
+  # Read in a a multiPhylo of trees rooted at the clade of Species C + Species H
+  myTrees <- readRooted(to_root = rb_unroot_dir, root_taxa = c('Species_C','Species_H'),suffix=".nwk",dummy_names = TRUE)
 
-  $Gene_4.nwk
-  [1] "Species_A" "Species_B" "Species_C" "Species_D" "Species_E" "Species_F" "Species_G" "Species_H" "Species_I"
-
-  $Gene_5.nwk
-  [1] "Species_A" "Species_B" "Species_C" "Species_D" "Species_E" "Species_F" "Species_G" "Species_H" "Species_I"
-
-  # Make a multiPhlyo where trees do not share all taxa
-  mixed_trees <- c(myTrees,myTrimmedTree_keep)
+  # Check raw tip labels
+  purrr::map(.x = myTrees, .f = function(x){naturalsort(x$tip.label)})
   
+  $Tree_1
+ [1] "Species_A" "Species_B" "Species_C" "Species_D" "Species_E" "Species_F" "Species_G" "Species_H" "Species_I" "Species_J" "Species_K" "Species_L" "Species_M" "Species_N" "Species_O"
+
+  $Tree_2
+   [1] "Species_A" "Species_B" "Species_C" "Species_D" "Species_E" "Species_F" "Species_G" "Species_H" "Species_I" "Species_J" "Species_K" "Species_L" "Species_M" "Species_N" "Species_O"
+
+  $Tree_3
+   [1] "Species_A" "Species_B" "Species_C" "Species_D" "Species_E" "Species_F" "Species_G" "Species_H" "Species_I" "Species_J" "Species_K" "Species_L" "Species_M" "Species_N" "Species_O"
+
+  $Tree_4
+   [1] "Species_A" "Species_B" "Species_C" "Species_D" "Species_E" "Species_F" "Species_G" "Species_H" "Species_I" "Species_J" "Species_K" "Species_L" "Species_M" "Species_N" "Species_O"
+
+  $Tree_5
+   [1] "Species_A" "Species_B" "Species_C" "Species_D" "Species_E" "Species_F" "Species_G" "Species_H" "Species_I" "Species_J" "Species_K" "Species_L" "Species_M" "Species_N" "Species_O"
+
+  # Make a multiPhlyo where trees do not share all taxa (one tree only has Species_A - Species_I)
+  mixed_trees <- c(myTrees,myTrimmedTree_keep)
+
   # Default behavior is to trim down to common taxa
   myTrimmedTrees_mixed <- treeTrimmer(tree=mixed_trees)
-  
+
   # Check multiPhylo trimming
   purrr::map(.x = myTrimmedTrees_mixed, .f = function(x){naturalsort(x$tip.label)})
-  
+
   $Tree_1
   [1] "Species_A" "Species_B" "Species_C" "Species_D" "Species_E" "Species_F" "Species_G" "Species_H" "Species_I"
 
@@ -126,6 +127,29 @@ Example Usage
   [1] "Species_A" "Species_B" "Species_C" "Species_D" "Species_E" "Species_F" "Species_G" "Species_H" "Species_I"
 
   $Tree_6
+  [1] "Species_A" "Species_B" "Species_C" "Species_D" "Species_E" "Species_F" "Species_G" "Species_H" "Species_I"
+  
+  # Trim multiPhylo given a list of taxa
+  myTrees <- readRooted(to_root = rb_unroot_dir, root_taxa = c('Species_C','Species_H'),suffix=".nwk",dummy_names = TRUE)
+
+  myTrimmedTrees <- treeTrimmer(tree=myTrees,taxa=taxa_to_keep)
+
+  # Check multiPhylo trimming
+  purrr::map(.x = myTrimmedTrees, .f = function(x){naturalsort(x$tip.label)})
+  
+  $Tree_1
+  [1] "Species_A" "Species_B" "Species_C" "Species_D" "Species_E" "Species_F" "Species_G" "Species_H" "Species_I"
+
+  $Tree_2
+  [1] "Species_A" "Species_B" "Species_C" "Species_D" "Species_E" "Species_F" "Species_G" "Species_H" "Species_I"
+
+  $Tree_3
+  [1] "Species_A" "Species_B" "Species_C" "Species_D" "Species_E" "Species_F" "Species_G" "Species_H" "Species_I"
+
+  $Tree_4
+  [1] "Species_A" "Species_B" "Species_C" "Species_D" "Species_E" "Species_F" "Species_G" "Species_H" "Species_I"
+
+  $Tree_5
   [1] "Species_A" "Species_B" "Species_C" "Species_D" "Species_E" "Species_F" "Species_G" "Species_H" "Species_I"
   
   

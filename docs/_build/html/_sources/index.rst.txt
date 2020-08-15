@@ -25,10 +25,11 @@ Table of contents
 .. toctree::
   :titlesonly:
   :maxdepth: 1
-  
+    
   content/installation
   content/loading
-  content/rboretum-suite   
+  content/rboretum-suite
+  
 
 =========
 License

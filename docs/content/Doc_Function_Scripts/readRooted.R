@@ -3,27 +3,31 @@ library(Rboretum)
 # Set test data directory
 sourceRboretum()
 
-# View raw tree
+# Read in a single tree and root at the clade of Species C + Species H
+rb_tree1_path
 raw_tree <- ape::read.tree(rb_tree1_path)
-treePlotter(tree=raw_tree,xmax=10)
+ape::is.rooted(raw_tree)
 
-# Read in a single tree, rooted at the clade of Species C + Species H
 myTree <- readRooted(to_root = rb_tree1_path, root_taxa = c('Species_C','Species_H'))
-treePlotter(tree=myTree,xmax=10)
+ape::is.rooted(myTree)
 
-# From a directory containing multiple trees, read in all '.nwk' files and root at the clade of Species C + Species H
+# Read in a multiple unrooted trees and root at the clade of Species C + Species H
+rb_all_unrooted
+purrr::map(.x=rb_all_unrooted,.f=function(x){ape::read.tree(x) %>% ape::is.rooted(.)}) %>% unlist()
+
+myTrees <- readRooted(to_root = rb_all_unrooted, root_taxa = c('Species_C','Species_H'))
+purrr::map(.x=myTrees,.f=function(x){ape::is.rooted(x)}) %>% unlist()
+
+# From a directory containing multiple unrooted trees, read in all '.nwk' files and root at the clade of Species C + Species H
+rb_unroot_dir
 myTrees <- readRooted(to_root = rb_unroot_dir, root_taxa = c('Species_C','Species_H'),suffix=".nwk")
-treePlotter(tree=myTrees,xmax=10)
+purrr::map(.x=myTrees,.f=function(x){ape::is.rooted(x)}) %>% unlist()
+
+# Same as above, but add placeholder tree_names ('Tree_1' - 'Tree_5') as opposed to tree file basenames
+myDummyTrees <- readRooted(to_root = rb_unroot_dir, root_taxa = c('Species_C','Species_H'),suffix=".nwk",dummy_names=TRUE)
+purrr::map(.x=myDummyTrees,.f=function(x){ape::is.rooted(x)}) %>% unlist()
 
 # Same as above, but add user-defined tree tree_names as opposed to tree file basenames
 myTreeNames <- c('Gene_A','Gene_B','Gene_C','Gene_D','Gene_E')
 myNamedTrees <- readRooted(to_root = rb_unroot_dir, root_taxa = c('Species_C','Species_H'),suffix=".nwk",tree_names=myTreeNames)
-treePlotter(tree=myTreeNames,xmax=10)
-
-# Same as above, but add placeholder tree_names ('Tree_1' - 'Tree_5') as opposed to tree file basenames
-myDummyTrees <- readRooted(to_root = rb_unroot_dir, root_taxa = c('Species_C','Species_H'),suffix=".nwk",dummy_names=TRUE)
-treePlotter(tree=myDummyTrees,xmax=10)
-
-names(myTrees)
-names(myNamedTrees)
-names(myDummyTrees)
+purrr::map(.x=myNamedTrees,.f=function(x){ape::is.rooted(x)}) %>% unlist()

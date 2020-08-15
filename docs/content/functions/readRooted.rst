@@ -12,7 +12,7 @@
 
 - *readRooted* can read in Newick and Nexus trees, as well as trees with booststrap values stored as RAxML-style branch labels
 - *readRooted* can be run in with a single file or in batch mode (simultaneously reading in and rooting multiple trees with the same outgroup taxa).
-- When reading in multiple trees, *readRooted* will name trees based on the file basename, but this can be overridden by supplying names via the **tree_names** arguments, or by setting **dummy_names** to TRUE.
+- When reading in multiple trees, *readRooted* will name trees based on the file basename, but this can be overridden by supplying names via the **"tree_names"** arguments, or by setting **"dummy_names"** to TRUE.
 
 =======================
 Function and Arguments
@@ -38,7 +38,7 @@ Function and Arguments
 Function Return
 ================
 
-- If a single tree is provided via **to_root**, *readRooted* returns a phylo object rooted at **root_taxa**
+- If a single tree is provided via **"to_root"**, *readRooted* returns a phylo object rooted at **"root_taxa"**
 - If multiple trees are provided via **to_root**, *readRooted* returns a named multiPhylo object, with all trees rooted at **root_taxa**
 - Function will throw an error if:
   - Any tree cannot be found based on the path given
@@ -49,40 +49,67 @@ Function Return
 Example Usage
 ==============
 
-::
+.. code-block:: r
+  
+  # Script: Rboretum/docs/content/Doc_Function_Scripts/readRooted.R
   
   library(Rboretum)
-
-  # Set test data directory
   
+  # Set test data directory
   sourceRboretum()
-
-  # Read in a single tree, rooted at the clade of Species C + Species H
+  
+  # Read in a single tree and root at the clade of Species C + Species H
+  rb_tree1_path
+  [1] "<PACKAGE_DIR>/Rboretum/extdata/unrootedTrees/Gene_1.nwk"
+  
+  raw_tree <- ape::read.tree(rb_tree1_path)
+  ape::is.rooted(raw_tree)
+  [1] FALSE
   
   myTree <- readRooted(to_root = rb_tree1_path, root_taxa = c('Species_C','Species_H'))
-
-  # From a directory containing multiple trees, read in all '.nwk' files and root at the clade of Species C + Species H
+  ape::is.rooted(myTree
+  [1] TRUE
+  
+  # Read in a multiple unrooted trees and root at the clade of Species C + Species H
+  rb_all_unrooted
+  [1] "<PACKAGE_DIR>/Rboretum/extdata/unrootedTrees/Gene_1.nwk"
+  [2] "<PACKAGE_DIR>/Rboretum/extdata/unrootedTrees/Gene_2.nwk"
+  [3] "<PACKAGE_DIR>/Rboretum/extdata/unrootedTrees/Gene_3.nwk"
+  [4] "<PACKAGE_DIR>/Rboretum/extdata/unrootedTrees/Gene_4.nwk"
+  [5] "<PACKAGE_DIR>/Rboretum/extdata/unrootedTrees/Gene_5.nwk"
+  
+  purrr::map(.x=rb_all_unrooted,.f=function(x){ape::read.tree(x) %>% ape::is.rooted(.)}) %>% unlist()
+  [1] FALSE FALSE FALSE FALSE FALSE
+  
+  myTrees <- readRooted(to_root = rb_all_unrooted, root_taxa = c('Species_C','Species_H'))
+  purrr::map(.x=myTrees,.f=function(x){ape::is.rooted(x)}) %>% unlist()
+  
+  Gene_1.nwk Gene_2.nwk Gene_3.nwk Gene_4.nwk Gene_5.nwk 
+        TRUE       TRUE       TRUE       TRUE       TRUE 
+  
+  # From a directory containing multiple unrooted trees, read in all '.nwk' files and root at the clade of Species C + Species H
+  rb_unroot_dir
+  [1] "<PACKAGE_DIR>/Rboretum/extdata/unrootedTrees"
   
   myTrees <- readRooted(to_root = rb_unroot_dir, root_taxa = c('Species_C','Species_H'),suffix=".nwk")
-
-  # Same as above, but add user-defined tree tree_names as opposed to tree file basenames
+  purrr::map(.x=myTrees,.f=function(x){ape::is.rooted(x)}) %>% unlist()
   
-  myTreeNames <- c('Gene_A','Gene_B','Gene_C','Gene_D','Gene_E')
-  myNamedTrees <- readRooted(to_root = rb_unroot_dir, root_taxa = c('Species_C','Species_H'),suffix=".nwk",tree_names=myTreeNames)
-
+  Gene_1.nwk Gene_2.nwk Gene_3.nwk Gene_4.nwk Gene_5.nwk 
+        TRUE       TRUE       TRUE       TRUE       TRUE 
+  
   # Same as above, but add placeholder tree_names ('Tree_1' - 'Tree_5') as opposed to tree file basenames
-  
   myDummyTrees <- readRooted(to_root = rb_unroot_dir, root_taxa = c('Species_C','Species_H'),suffix=".nwk",dummy_names=TRUE)
-
-  names(myTrees)
+  purrr::map(.x=myDummyTrees,.f=function(x){ape::is.rooted(x)}) %>% unlist()
   
-  [1] "Gene_1.nwk" "Gene_2.nwk" "Gene_3.nwk" "Gene_4.nwk" "Gene_5.nwk"
-
-  names(myNamedTrees)
+  Tree_1 Tree_2 Tree_3 Tree_4 Tree_5 
+    TRUE   TRUE   TRUE   TRUE   TRUE 
   
-  [1] "Gene_A" "Gene_B" "Gene_C" "Gene_D" "Gene_E"
+  # Same as above, but add user-defined tree tree_names as opposed to tree file basenames
+  myTreeNames <- c('Gene_A','Gene_B','Gene_C','Gene_D','Gene_E')
   
-  names(myDummyTrees)
+  myNamedTrees <- readRooted(to_root = rb_unroot_dir, root_taxa = c('Species_C','Species_H'),suffix=".nwk",tree_names=myTreeNames)
+  purrr::map(.x=myNamedTrees,.f=function(x){ape::is.rooted(x)}) %>% unlist()
   
-  [1] "Tree_1" "Tree_2" "Tree_3" "Tree_4" "Tree_5"
+  Gene_A Gene_B Gene_C Gene_D Gene_E 
+  TRUE   TRUE   TRUE   TRUE   TRUE 
   

@@ -681,6 +681,13 @@ treePlotter <- function(tree,basic_plot,tree_support,clade_support,geom_size,sca
     
     # Build base tree (Branch lengths? Colored branches?)
     
+    # If group count = tip count, don't add black color label
+    if(colorTips | color_branches){
+      if(group_count == length(temp_tree$tip.labels)){
+        colors <- colors[-1]
+      }
+    }
+    
     if(branch_length){
       if(colorTips & color_branches){
         

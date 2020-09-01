@@ -683,7 +683,7 @@ treePlotter <- function(tree,basic_plot,tree_support,clade_support,geom_size,sca
     
     # If group count = tip count, don't add black color label
     if(colorTips | color_branches){
-      if(group_count == length(temp_tree$tip.labels)){
+      if(group_count == length(temp_tree$tip.label)){
         colors <- colors[-1]
       }
     }

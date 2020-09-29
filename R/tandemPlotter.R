@@ -8,9 +8,7 @@ tandemPlotter <- function(...,vertical){
   
   if(missing(vertical)){
     vertical=FALSE
-  }
-  
-  if(!is.logical(vertical)){
+  } else if(!is.logical(vertical)){
     stop("'vertical' must be TRUE (stack plots vertically) or FALSE (add plots as horizontal side-by-side")
   }
   
@@ -48,7 +46,7 @@ tandemPlotter <- function(...,vertical){
       start_coord <- start_coord + plot_step
     }
   } else{
-    for(i in plot_count:1){
+    for(i in 1:plot_count){
       return_plot <- return_plot + draw_plot(plotList[[i]],x=start_coord,y=0,width = plot_step)
       start_coord <- start_coord + plot_step
     }

@@ -5,3 +5,4 @@
 Rboretum.Rproj
 .Rbuildignore
 docs/make2.bat
+docs/build/html/debug.log

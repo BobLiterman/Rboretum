@@ -643,12 +643,14 @@ treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_sup
     } else{
       
       ggtree_df <- Rboretum::getTreeSplits(temp_tree) %>%
-        select(Split_Node,Clade) %>%
+        select(Split_Node,Clade,Root) %>%
         rename(node=Split_Node) %>%
         mutate(node=as.integer(node), Clade = as.character(Clade))
       
       if(!plot_root_support){
-        ggtree_df <- ggtree_df %>% filter(!Root)
+        ggtree_df <- ggtree_df %>% filter(!Root) %>% select(-Root)
+      } else{
+        ggtree_df <- ggtree_df %>% select(-Root)
       }
     }
     
@@ -680,7 +682,7 @@ treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_sup
       
       # Generate pie chart from tree support and make dummy legend	
       pie_df <- Rboretum::getTreeSplits(temp_tree) %>%	
-        select(Split_Node,Clade) %>%	
+        select(Split_Node,Clade,Root) %>%	
         rename(node=Split_Node) %>%	
         mutate(node=as.integer(node), Clade = as.character(Clade)) %>%	
         left_join(tree_support,by='Clade') %>% 	
@@ -688,7 +690,9 @@ treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_sup
         select(-Clade)
       
       if(!plot_root_support){
-        pie_df <- pie_df %>% filter(!Root)
+        pie_df <- pie_df %>% filter(!Root) %>% select(-Root)
+      } else{
+        pie_df <- pie_df %>% select(-Root)
       }
       
       pies <- nodepie(pie_df,cols=2:ncol(tree_support),alpha = geom_alpha)	

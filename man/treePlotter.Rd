@@ -8,6 +8,7 @@ treePlotter(
   tree,
   basic_plot,
   tree_support,
+  plot_root_support,
   clade_support,
   geom_size,
   scale_range,
@@ -27,6 +28,7 @@ treePlotter(
   taxa_fontface,
   taxa_offset,
   xmax,
+  xmin,
   reverse_x,
   to_color,
   colors,
@@ -53,16 +55,19 @@ treePlotter(
 
 \item{tree_support}{OPTIONAL: Output of getTreeSupport, including data from all clades in 'tree'}
 
+\item{plot_root_support}{OPTIONAL: If TRUE and plotting node support via 'tree_support', include root nodes [Default: FALSE, do not include support for root nodes]}
+
 \item{clade_support}{OPTIONAL: Output of getTreeClades(return_counts=TRUE), including data from all clades in 'tree'}
 
-\item{geom_size}{OPTIONAL: How should geom_nodepoint (or pies) be sized? Options include:
+\item{geom_size}{OPTIONAL: If plotting support via tree_support, how should geom_nodepoint (or pies) be sized? Options include:
 \itemize{
   \item Single numeric value: All geom_nodepoint geoms will be this size [Default: 4]
   \item c(min,max): If used with tree_support, geoms will be sized based on the total support across datasets and rescaled between min and max.
   \item "log": If used with tree_support, geoms will be sized based on the log-transformed total support across datasets
+  \item "none": Do not print geom_nodepoints
 }}
 
-\item{scale_range}{OPTIONAL: If plotting tree_support, supply the range of values to be scaled. Values outside this range will be displayed as the otherwise min/max geom size. [Default: scale all data]}
+\item{scale_range}{OPTIONAL: If plotting tree_support, supply a min and max of values to be scaled. Values outside this range will be displayed as the otherwise min/max geom size. [Default: scale all data]}
 
 \item{use_pies}{OPTIONAL: If TRUE and tree_support contains inforomation from 2+ datasets, data from tree_support will be displayed as an inset pie chart rather than a geom_nodepoint [Default: FALSE, use geom_nodepoint; DEACTIVATED WHEN clade_support IS PROVIDED]}
 
@@ -114,6 +119,8 @@ treePlotter(
 \item{taxa_offset}{OPTIONAL: Set ggtree tip label offset [Default: 0]}
 
 \item{xmax}{OPTIONAL: Set ggplot xlim upper limit (e.g if long tip labels run off plot)}
+
+\item{xmin}{OPTIONAL: Set ggplot xlim lower limit (Must be used along with xmax [Default: 0])}
 
 \item{reverse_x}{OPTIONAL: TRUE [plot tree with tips on left]; FALSE [Default: plot tree with tips on right]}
 

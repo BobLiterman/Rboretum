@@ -82,7 +82,7 @@ Example Usage
   ### 2+ TREES ###
 
   # Read in a a multiPhylo of trees rooted at the clade of Species C + Species H
-  myTrees <- readRooted(to_root = rb_unroot_dir, root_taxa = c('Species_C','Species_H'),suffix=".nwk",dummy_names = TRUE)
+  myTrees <- readRooted(to_root = rb_unroot_dir, root_taxa = c('Species_C','Species_H'),prefix="Gene",suffix=".nwk",dummy_names = TRUE)
 
   # Check raw tip labels
   purrr::map(.x = myTrees, .f = function(x){naturalsort(x$tip.label)})

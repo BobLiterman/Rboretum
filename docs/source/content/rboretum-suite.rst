@@ -16,5 +16,7 @@ Functions
   functions/readRooted
   functions/treeTrimmer
   functions/semiVector
+  functions/vectorSemi
+
   
 

@@ -1,18 +1,18 @@
-.. _semiVector:
+.. _vectorSemi:
 
 ###############
-**semiVector**
+**vectorSemi**
 ###############
 
-*semiVector* is equivalent to:
+*vectorSemi* is equivalent to:
 ::
 
-  str_split(string_to_split,pattern=";")
+  paste(to_semi,collapse=";")
 
-*semiVector* will convert:
+*vectorSemi* will convert:
 
-- A single-element semicolon-delimted character into a character vector split by ";"
-- A multi-element semicolon-delimted character into a list of character vectors split by ";"
+- A multi-element character vector into a single, semicolon-delimted character
+- A list of character vectors into a list of semicolon-delimted characters
 
 =======================
 Function and Arguments
@@ -21,12 +21,12 @@ Function and Arguments
 **Usage**:
 ::
 
-  semiVector(string_to_split)
+  vectorSemi(to_semi)
 
 ===========================      ===============================================================================================================================================================================================================
  Argument                         Description
 ===========================      ===============================================================================================================================================================================================================
-**string_to_split**				        Semicolon-delimited character (can contain 1 or more semicolon-delimited elements)
+**to_semi**				                Charcter vector, or a list of character vectors
 ===========================      ===============================================================================================================================================================================================================
 
 ==============
@@ -35,20 +35,19 @@ Example Usage
 
 .. code-block:: r
   
-  # Script: Rboretum/docs/content/Doc_Function_Scripts/semiVector.R
+  # Script: Rboretum/docs/content/Doc_Function_Scripts/vectorSemi.R
   
   library(Rboretum)
   
-  semicolon_single_char <- 'a;b;c;d;e;f'
-  semiVector(semicolon_single_char)
-  [1] "a" "b" "c" "d" "e" "f"
+  character_vector <- c('a','b','c')
+  vectorSemi(character_vector)
+  [1] "a;b;c"
   
-  semicolon_multi_char <- c('a;b;c','d;e;f')
-  semiVector(semicolon_multi_char)
+  character_list <- list(c('a','b','c'),c('d','e','f'))
+  vectorSemi(character_list)
   [[1]]
-  [1] "a" "b" "c"
+  [1] "a;b;c"
 
   [[2]]
-  [1] "d" "e" "f"
-
+  [1] "d;e;f"
   

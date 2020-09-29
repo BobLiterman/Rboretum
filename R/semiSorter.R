@@ -45,11 +45,11 @@ semiSorter <- function(string_to_sort){
     # If string_to_sort is a vector of semicolon-separated elements, sort all and return
     if(semiChecker(string_to_sort)){
       sorted_string <- purrr::map(.x=string_to_sort,.f=function(x){semiVector(x) %>% naturalsort() %>% vectorSemi()}) %>% unlist()
-      return(sorted_string)
     } else{
       
       # If string_to_sort is a vector of characters, sort, join, and return
       sorted_string <- naturalsort(string_to_sort) %>% vectorSemi()
     }
+    return(sorted_string)
   }
 }

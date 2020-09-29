@@ -15,7 +15,7 @@ biocViews:
 Remotes: GuangchuangYu/ggimage
 Depends:
     R (>= 3.6.1),
-    ape (== 5.3),
+    ape (>= 5.4.1),
     phytools (>= 0.7.47),
     phangorn (>= 2.5.5),
     testit (>= 0.11),

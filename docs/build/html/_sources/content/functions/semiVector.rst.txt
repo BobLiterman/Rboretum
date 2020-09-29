@@ -11,8 +11,8 @@
 
 *semiVector* will convert:
 
-- A single-element semicolon-delimted character into a character vector split by ";"
-- A multi-element semicolon-delimted character into a list of character vectors split by ";"
+  - A single-element semicolon-delimted character into a character vector split by ";"
+  - A multi-element semicolon-delimted character into a list of character vectors split by ";"
 
 =======================
 Function and Arguments

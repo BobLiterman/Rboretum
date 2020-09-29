@@ -17,6 +17,5 @@ Functions
   functions/treeTrimmer
   functions/semiVector
   functions/vectorSemi
-
+  functions/semiSorter
   
-

@@ -1,18 +1,19 @@
-.. _semiVector:
+.. _semiSorter:
 
 ###############
-**semiVector**
+**semiSorter**
 ###############
 
-*semiVector* is equivalent to:
-::
+*semiSorter* can accept: 
 
-  str_split(string_to_split,pattern=";")
+  - A character vector of unjoined elements
+  - A semicolon-delimited character of elements
+  - A character vector of semicolon-delimited elements
 
-*semiVector* will convert:
+In any case, *semiSorter* returns the same elements, sorted via *naturalsort*, and joined by semicolons (";"). 
 
-  - A single-element semicolon-delimted character into a character vector split by ";"
-  - A multi-element semicolon-delimted character into a list of character vectors split by ";"
+  - If a vector of elements is passed, a single character element is returned.
+  - If a set of semicolon-delimted elements are given, a character vector is returned containing each set, sorted
 
 =======================
 Function and Arguments
@@ -21,12 +22,12 @@ Function and Arguments
 **Usage**:
 ::
 
-  semiVector(string_to_split)
+  semiSorter(string_to_sort)
 
 ===========================      ===============================================================================================================================================================================================================
  Argument                         Description
 ===========================      ===============================================================================================================================================================================================================
-**string_to_split**				        Semicolon-delimited character (can contain 1 or more semicolon-delimited elements)
+**string_to_sort**				        Character vector of elements to join, or one or more semicolon-delimited sets
 ===========================      ===============================================================================================================================================================================================================
 
 ==============
@@ -35,20 +36,19 @@ Example Usage
 
 .. code-block:: r
   
-  # Script: Rboretum/docs/content/Doc_Function_Scripts/semiVector.R
+  # Script: Rboretum/docs/content/Doc_Function_Scripts/semiSorter.R
   
   library(Rboretum)
   
-  semicolon_single_char <- 'a;b;c;d;e;f'
-  semiVector(semicolon_single_char)
-  [1] "a" "b" "c" "d" "e" "f"
+  character_vector <- c('c','b','a')
+  semiSorter(character_vector)
+  [1] "a;b;c"
   
-  semicolon_multi_char <- c('a;b;c','d;e;f')
-  semiVector(semicolon_multi_char)
-  [[1]]
-  [1] "a" "b" "c"
-
-  [[2]]
-  [1] "d" "e" "f"
-
+  semicolon_character <- 'c;b;a'
+  semiSorter(semicolon_character)
+  [1] "a;b;c"
   
+  semicolon_characters <- c('c;b;a','f;e;d')
+  semiSorter(semicolon_characters)
+  [1] "a;b;c" "d;e;f"
+

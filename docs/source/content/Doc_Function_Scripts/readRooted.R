@@ -20,14 +20,14 @@ purrr::map(.x=myTrees,.f=function(x){ape::is.rooted(x)}) %>% unlist()
 
 # From a directory containing multiple unrooted trees, read in all '.nwk' files and root at the clade of Species C + Species H
 rb_unroot_dir
-myTrees <- readRooted(to_root = rb_unroot_dir, root_taxa = c('Species_C','Species_H'),suffix=".nwk")
+myTrees <- readRooted(to_root = rb_unroot_dir, root_taxa = c('Species_C','Species_H'),prefix="Gene",suffix=".nwk")
 purrr::map(.x=myTrees,.f=function(x){ape::is.rooted(x)}) %>% unlist()
 
 # Same as above, but add placeholder tree_names ('Tree_1' - 'Tree_5') as opposed to tree file basenames
-myDummyTrees <- readRooted(to_root = rb_unroot_dir, root_taxa = c('Species_C','Species_H'),suffix=".nwk",dummy_names=TRUE)
+myDummyTrees <- readRooted(to_root = rb_unroot_dir, root_taxa = c('Species_C','Species_H'),prefix="Gene",suffix=".nwk",dummy_names = TRUE)
 purrr::map(.x=myDummyTrees,.f=function(x){ape::is.rooted(x)}) %>% unlist()
 
 # Same as above, but add user-defined tree tree_names as opposed to tree file basenames
 myTreeNames <- c('Gene_A','Gene_B','Gene_C','Gene_D','Gene_E')
-myNamedTrees <- readRooted(to_root = rb_unroot_dir, root_taxa = c('Species_C','Species_H'),suffix=".nwk",tree_names=myTreeNames)
+myNamedTrees <- readRooted(to_root = rb_unroot_dir, root_taxa = c('Species_C','Species_H'),prefix="Gene",suffix=".nwk",tree_names=myTreeNames)
 purrr::map(.x=myNamedTrees,.f=function(x){ape::is.rooted(x)}) %>% unlist()

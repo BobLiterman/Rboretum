@@ -10,7 +10,7 @@ v.1.0 (01/01/2020)
 - Python version >= 3.6+ w/[Biopython](https://biopython.org/wiki/Download)  
 ** **
 ### R Package Dependencies  
-- ape (== 5.3)  
+- ape (>= 5.4.1)  
 - phytools (>= 0.6.99)  
 - phangorn (>= 2.5.5)  
 - testit (>= 0.9)  

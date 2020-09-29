@@ -157,11 +157,50 @@
             
   <div class="section" id="semivector">
 <span id="id1"></span><h1><strong>semiVector</strong><a class="headerlink" href="#semivector" title="Permalink to this headline">¶</a></h1>
-<p>Converts semi to vector</p>
-<div class="section" id="usage-and-option-summary">
-<h2>Usage and Option Summary<a class="headerlink" href="#usage-and-option-summary" title="Permalink to this headline">¶</a></h2>
+<p>Rboretum uses semicolon (;) separated characters for many functions.</p>
+<p><em>semiVector</em> converts:
+- A single-element semicolon-separated character into a character vector split by “;”
+- A multi-element semicolon-separated character into list of character vectors split by “;”</p>
+<div class="section" id="function-and-arguments">
+<h2>Function and Arguments<a class="headerlink" href="#function-and-arguments" title="Permalink to this headline">¶</a></h2>
 <p><strong>Usage</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">semiVector</span><span class="p">(</span><span class="n">STRING</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">semiVector</span><span class="p">(</span><span class="n">string_to_split</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 12%" />
+<col style="width: 88%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>string_to_split</strong></p></td>
+<td><p>Semicolon delimited character (can contain 1 or more elements)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="example-usage">
+<h2>Example Usage<a class="headerlink" href="#example-usage" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Script: Rboretum/docs/content/Doc_Function_Scripts/semiVector.R</span>
+
+<span class="nf">library</span><span class="p">(</span><span class="n">Rboretum</span><span class="p">)</span>
+
+<span class="n">semicolon_single_char</span> <span class="o">&lt;-</span> <span class="s">&#39;a;b;c;d;e;f&#39;</span>
+<span class="nf">semiVector</span><span class="p">(</span><span class="n">semicolon_single_char</span><span class="p">)</span>
+<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;a&quot;</span> <span class="s">&quot;b&quot;</span> <span class="s">&quot;c&quot;</span> <span class="s">&quot;d&quot;</span> <span class="s">&quot;e&quot;</span> <span class="s">&quot;f&quot;</span>
+
+<span class="n">semicolon_multi_char</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;a;b;c&#39;</span><span class="p">,</span><span class="s">&#39;d;e;f&#39;</span><span class="p">)</span>
+<span class="nf">semiVector</span><span class="p">(</span><span class="n">semicolon_multi_char</span><span class="p">)</span>
+<span class="p">[[</span><span class="m">1</span><span class="p">]]</span>
+<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;a&quot;</span> <span class="s">&quot;b&quot;</span> <span class="s">&quot;c&quot;</span>
+
+<span class="p">[[</span><span class="m">2</span><span class="p">]]</span>
+<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;d&quot;</span> <span class="s">&quot;e&quot;</span> <span class="s">&quot;f&quot;</span>
 </pre></div>
 </div>
 </div>

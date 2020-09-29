@@ -18,4 +18,5 @@ Functions
   functions/semiVector
   functions/vectorSemi
   functions/semiSorter
+  functions/tandemPlotter
   

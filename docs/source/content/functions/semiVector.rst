@@ -4,11 +4,15 @@
 **semiVector**
 ###############
 
-Rboretum uses semicolon (;) separated characters for many functions. 
+*semiVector* is equivalent to:
+::
 
-*semiVector* converts: 
-- A single-element semicolon-separated character into a character vector split by ";"
-- A multi-element semicolon-separated character into list of character vectors split by ";"
+  str_split(string_to_split,pattern=";")
+
+*semiVector* will convert:
+
+- A single-element semicolon-delimted character into a character vector split by ";"
+- A multi-element semicolon-delimted character into list of character vectors split by ";"
 
 =======================
 Function and Arguments
@@ -22,7 +26,7 @@ Function and Arguments
 ===========================      ===============================================================================================================================================================================================================
  Argument                         Description
 ===========================      ===============================================================================================================================================================================================================
-**string_to_split**				        Semicolon delimited character (can contain 1 or more elements)
+**string_to_split**				        Semicolon-delimited character (can contain 1 or more semicolon-delimited elements)
 ===========================      ===============================================================================================================================================================================================================
 
 ==============

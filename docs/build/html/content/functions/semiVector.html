@@ -157,10 +157,15 @@
             
   <div class="section" id="semivector">
 <span id="id1"></span><h1><strong>semiVector</strong><a class="headerlink" href="#semivector" title="Permalink to this headline">¶</a></h1>
-<p>Rboretum uses semicolon (;) separated characters for many functions.</p>
-<p><em>semiVector</em> converts:
-- A single-element semicolon-separated character into a character vector split by “;”
-- A multi-element semicolon-separated character into list of character vectors split by “;”</p>
+<p><em>semiVector</em> is equivalent to:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">str_split</span><span class="p">(</span><span class="n">string_to_split</span><span class="p">,</span><span class="n">pattern</span><span class="o">=</span><span class="s2">&quot;;&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><em>semiVector</em> will convert:</p>
+<ul class="simple">
+<li><p>A single-element semicolon-delimted character into a character vector split by “;”</p></li>
+<li><p>A multi-element semicolon-delimted character into list of character vectors split by “;”</p></li>
+</ul>
 <div class="section" id="function-and-arguments">
 <h2>Function and Arguments<a class="headerlink" href="#function-and-arguments" title="Permalink to this headline">¶</a></h2>
 <p><strong>Usage</strong>:</p>
@@ -179,7 +184,7 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p><strong>string_to_split</strong></p></td>
-<td><p>Semicolon delimited character (can contain 1 or more elements)</p></td>
+<td><p>Semicolon-delimited character (can contain 1 or more semicolon-delimited elements)</p></td>
 </tr>
 </tbody>
 </table>

@@ -25,7 +25,7 @@ naturalsort(myTrimmedTree_remove$tip.label)
 ### 2+ TREES ###
 
 # Read in a a multiPhylo of trees rooted at the clade of Species C + Species H
-myTrees <- readRooted(to_root = rb_unroot_dir, root_taxa = c('Species_C','Species_H'),suffix=".nwk",dummy_names = TRUE)
+myTrees <- readRooted(to_root = rb_unroot_dir, root_taxa = c('Species_C','Species_H'),prefix="Gene",suffix=".nwk",dummy_names = TRUE)
 
 # Check raw tip labels
 purrr::map(.x = myTrees, .f = function(x){naturalsort(x$tip.label)})
@@ -40,7 +40,7 @@ myTrimmedTrees_mixed <- treeTrimmer(tree=mixed_trees)
 purrr::map(.x = myTrimmedTrees_mixed, .f = function(x){naturalsort(x$tip.label)})
 
 # Trim multiPhylo given a list of taxa
-myTrees <- readRooted(to_root = rb_unroot_dir, root_taxa = c('Species_C','Species_H'),suffix=".nwk",dummy_names = TRUE)
+myTrees <- readRooted(to_root = rb_unroot_dir, root_taxa = c('Species_C','Species_H'),prefix="Gene",suffix=".nwk",dummy_names = TRUE)
 
 myTrimmedTrees <- treeTrimmer(tree=myTrees,taxa=taxa_to_keep)
 

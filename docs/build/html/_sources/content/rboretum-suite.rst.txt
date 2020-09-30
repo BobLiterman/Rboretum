@@ -23,3 +23,4 @@ Functions
   functions/convertLabels
   functions/checkTips
   functions/getSharedTaxa
+  functions/getTreeSplits

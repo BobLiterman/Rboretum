@@ -22,3 +22,4 @@ Functions
   functions/treeNamer
   functions/convertLabels
   functions/checkTips
+  functions/getSharedTaxa

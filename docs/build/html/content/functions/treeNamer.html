@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>vectorSemi &mdash; Rboretum 1.0 documentation</title>
+  <title>treeNamer &mdash; Rboretum 1.0 documentation</title>
   
 
   
@@ -37,8 +37,7 @@
         <link rel="search" title="Search" href="../../search.html"/>
     <link rel="top" title="Rboretum 1.0 documentation" href="../../index.html"/>
         <link rel="up" title="Rboretum Functions" href="../rboretum-suite.html"/>
-        <link rel="next" title="semiSorter" href="semiSorter.html"/>
-        <link rel="prev" title="semiVector" href="semiVector.html"/> 
+        <link rel="prev" title="tandemPlotter" href="tandemPlotter.html"/> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -94,9 +93,10 @@
 <li class="toctree-l2"><a class="reference internal" href="readRooted.html"><strong>readRooted</strong></a></li>
 <li class="toctree-l2"><a class="reference internal" href="treeTrimmer.html"><strong>treeTrimmer</strong></a></li>
 <li class="toctree-l2"><a class="reference internal" href="semiVector.html"><strong>semiVector</strong></a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#"><strong>vectorSemi</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="vectorSemi.html"><strong>vectorSemi</strong></a></li>
 <li class="toctree-l2"><a class="reference internal" href="semiSorter.html"><strong>semiSorter</strong></a></li>
 <li class="toctree-l2"><a class="reference internal" href="tandemPlotter.html"><strong>tandemPlotter</strong></a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><strong>treeNamer</strong></a></li>
 </ul>
 </li>
 </ul>
@@ -142,13 +142,13 @@
         
           <li><a href="../rboretum-suite.html"><strong>Rboretum Functions</strong></a> &raquo;</li>
         
-      <li><strong>vectorSemi</strong></li>
+      <li><strong>treeNamer</strong></li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../../_sources/content/functions/vectorSemi.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/content/functions/treeNamer.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -159,23 +159,13 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="vectorsemi">
-<span id="id1"></span><h1><strong>vectorSemi</strong><a class="headerlink" href="#vectorsemi" title="Permalink to this headline">¶</a></h1>
-<p><em>vectorSemi</em> is equivalent to:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">paste</span><span class="p">(</span><span class="n">to_semi</span><span class="p">,</span><span class="n">collapse</span><span class="o">=</span><span class="s2">&quot;;&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-<p><em>vectorSemi</em> will convert:</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>A multi-element character vector into a single, semicolon-delimted character</p></li>
-<li><p>A list of character vectors into a list of semicolon-delimted characters</p></li>
-</ul>
-</div></blockquote>
+  <div class="section" id="treenamer">
+<span id="id1"></span><h1><strong>treeNamer</strong><a class="headerlink" href="#treenamer" title="Permalink to this headline">¶</a></h1>
+<p><em>treeNamer</em> takes a multiPhylo object, and returns the same trees with ‘dummy names’ (e.g. Tree_1,Tree_2,etc.)</p>
 <div class="section" id="function-and-arguments">
 <h2>Function and Arguments<a class="headerlink" href="#function-and-arguments" title="Permalink to this headline">¶</a></h2>
 <p><strong>Usage</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">vectorSemi</span><span class="p">(</span><span class="n">to_semi</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">treeNamer</span> <span class="o">&lt;-</span> <span class="n">function</span><span class="p">(</span><span class="n">trees</span><span class="p">)</span>
 </pre></div>
 </div>
 <table class="docutils align-default">
@@ -189,29 +179,30 @@
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><strong>to_semi</strong></p></td>
-<td><p>Charcter vector, or a list of character vectors</p></td>
+<tr class="row-even"><td><p><strong>trees</strong></p></td>
+<td><p>A multiPhylo object</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="section" id="example-usage">
 <h2>Example Usage<a class="headerlink" href="#example-usage" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Script: Rboretum/docs/content/Doc_Function_Scripts/vectorSemi.R</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Script: Rboretum/docs/content/Doc_Function_Scripts/treeNamer.R</span>
 
 <span class="nf">library</span><span class="p">(</span><span class="n">Rboretum</span><span class="p">)</span>
 
-<span class="n">character_vector</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;a&#39;</span><span class="p">,</span><span class="s">&#39;b&#39;</span><span class="p">,</span><span class="s">&#39;c&#39;</span><span class="p">)</span>
-<span class="nf">vectorSemi</span><span class="p">(</span><span class="n">character_vector</span><span class="p">)</span>
-<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;a;b;c&quot;</span>
+<span class="c1"># Set test data directory</span>
+<span class="nf">sourceRboretum</span><span class="p">()</span>
 
-<span class="n">character_list</span> <span class="o">&lt;-</span> <span class="nf">list</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s">&#39;a&#39;</span><span class="p">,</span><span class="s">&#39;b&#39;</span><span class="p">,</span><span class="s">&#39;c&#39;</span><span class="p">),</span><span class="nf">c</span><span class="p">(</span><span class="s">&#39;d&#39;</span><span class="p">,</span><span class="s">&#39;e&#39;</span><span class="p">,</span><span class="s">&#39;f&#39;</span><span class="p">))</span>
-<span class="nf">vectorSemi</span><span class="p">(</span><span class="n">character_list</span><span class="p">)</span>
-<span class="p">[[</span><span class="m">1</span><span class="p">]]</span>
-<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;a;b;c&quot;</span>
+<span class="c1"># Read in multiPhylo</span>
+<span class="n">noname_multiPhylo</span> <span class="o">&lt;-</span> <span class="nf">readRooted</span><span class="p">(</span><span class="n">rb_all_unrooted</span><span class="p">,</span><span class="n">root_taxa</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Species_C&#39;</span><span class="p">,</span><span class="s">&#39;Species_H&#39;</span><span class="p">))</span>
+<span class="nf">names</span><span class="p">(</span><span class="n">noname_multiPhylo</span><span class="p">)</span> <span class="c1"># Names are based on filenames by default</span>
+<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;Gene_1.nwk&quot;</span> <span class="s">&quot;Gene_2.nwk&quot;</span> <span class="s">&quot;Gene_3.nwk&quot;</span> <span class="s">&quot;Gene_4.nwk&quot;</span> <span class="s">&quot;Gene_5.nwk&quot;</span>
 
-<span class="p">[[</span><span class="m">2</span><span class="p">]]</span>
-<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;d;e;f&quot;</span>
+<span class="c1"># Add dummy names</span>
+<span class="n">named_multiPhlyo</span> <span class="o">&lt;-</span> <span class="nf">treeNamer</span><span class="p">(</span><span class="n">noname_multiPhylo</span><span class="p">)</span>
+<span class="nf">names</span><span class="p">(</span><span class="n">named_multiPhlyo</span><span class="p">)</span>
+<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;Tree_1&quot;</span> <span class="s">&quot;Tree_2&quot;</span> <span class="s">&quot;Tree_3&quot;</span> <span class="s">&quot;Tree_4&quot;</span> <span class="s">&quot;Tree_5&quot;</span>
 </pre></div>
 </div>
 </div>
@@ -224,10 +215,8 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="semiSorter.html" class="btn btn-neutral float-right" title="semiSorter" accesskey="n">Next →</a>
       
-      
-        <a href="semiVector.html" class="btn btn-neutral" title="semiVector" accesskey="p">← Previous</a>
+        <a href="tandemPlotter.html" class="btn btn-neutral" title="tandemPlotter" accesskey="p">← Previous</a>
       
     </div>
   

@@ -19,4 +19,5 @@ Functions
   functions/vectorSemi
   functions/semiSorter
   functions/tandemPlotter
+  functions/treeNamer
   

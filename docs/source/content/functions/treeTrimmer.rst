@@ -51,7 +51,7 @@ Example Usage
 .. code-block:: r
   
   # Script: Rboretum/docs/content/Doc_Function_Scripts/treeTrimmer.R
-  
+
   library(Rboretum)
 
   # Set test data directory
@@ -86,21 +86,21 @@ Example Usage
 
   # Check raw tip labels
   purrr::map(.x = myTrees, .f = function(x){naturalsort(x$tip.label)})
-  
+
   $Tree_1
- [1] "Species_A" "Species_B" "Species_C" "Species_D" "Species_E" "Species_F" "Species_G" "Species_H" "Species_I" "Species_J" "Species_K" "Species_L" "Species_M" "Species_N" "Species_O"
+  [1] "Species_A" "Species_B" "Species_C" "Species_D" "Species_E" "Species_F" "Species_G" "Species_H" "Species_I" "Species_J" "Species_K" "Species_L" "Species_M" "Species_N" "Species_O"
 
   $Tree_2
-   [1] "Species_A" "Species_B" "Species_C" "Species_D" "Species_E" "Species_F" "Species_G" "Species_H" "Species_I" "Species_J" "Species_K" "Species_L" "Species_M" "Species_N" "Species_O"
+  [1] "Species_A" "Species_B" "Species_C" "Species_D" "Species_E" "Species_F" "Species_G" "Species_H" "Species_I" "Species_J" "Species_K" "Species_L" "Species_M" "Species_N" "Species_O"
 
   $Tree_3
-   [1] "Species_A" "Species_B" "Species_C" "Species_D" "Species_E" "Species_F" "Species_G" "Species_H" "Species_I" "Species_J" "Species_K" "Species_L" "Species_M" "Species_N" "Species_O"
+  [1] "Species_A" "Species_B" "Species_C" "Species_D" "Species_E" "Species_F" "Species_G" "Species_H" "Species_I" "Species_J" "Species_K" "Species_L" "Species_M" "Species_N" "Species_O"
 
   $Tree_4
-   [1] "Species_A" "Species_B" "Species_C" "Species_D" "Species_E" "Species_F" "Species_G" "Species_H" "Species_I" "Species_J" "Species_K" "Species_L" "Species_M" "Species_N" "Species_O"
+  [1] "Species_A" "Species_B" "Species_C" "Species_D" "Species_E" "Species_F" "Species_G" "Species_H" "Species_I" "Species_J" "Species_K" "Species_L" "Species_M" "Species_N" "Species_O"
 
   $Tree_5
-   [1] "Species_A" "Species_B" "Species_C" "Species_D" "Species_E" "Species_F" "Species_G" "Species_H" "Species_I" "Species_J" "Species_K" "Species_L" "Species_M" "Species_N" "Species_O"
+  [1] "Species_A" "Species_B" "Species_C" "Species_D" "Species_E" "Species_F" "Species_G" "Species_H" "Species_I" "Species_J" "Species_K" "Species_L" "Species_M" "Species_N" "Species_O"
 
   # Make a multiPhlyo where trees do not share all taxa (one tree only has Species_A - Species_I)
   mixed_trees <- c(myTrees,myTrimmedTree_keep)
@@ -128,7 +128,7 @@ Example Usage
 
   $Tree_6
   [1] "Species_A" "Species_B" "Species_C" "Species_D" "Species_E" "Species_F" "Species_G" "Species_H" "Species_I"
-  
+
   # Trim multiPhylo given a list of taxa
   myTrees <- readRooted(to_root = rb_unroot_dir, root_taxa = c('Species_C','Species_H'),suffix=".nwk",dummy_names = TRUE)
 
@@ -136,7 +136,7 @@ Example Usage
 
   # Check multiPhylo trimming
   purrr::map(.x = myTrimmedTrees, .f = function(x){naturalsort(x$tip.label)})
-  
+
   $Tree_1
   [1] "Species_A" "Species_B" "Species_C" "Species_D" "Species_E" "Species_F" "Species_G" "Species_H" "Species_I"
 
@@ -151,5 +151,4 @@ Example Usage
 
   $Tree_5
   [1] "Species_A" "Species_B" "Species_C" "Species_D" "Species_E" "Species_F" "Species_G" "Species_H" "Species_I"
-  
   

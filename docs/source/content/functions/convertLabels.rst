@@ -35,12 +35,12 @@ Example Usage
 .. code-block:: r
   
   # Script: Rboretum/docs/content/Doc_Function_Scripts/convertLabels.R
-  
+
   library(Rboretum)
-  
+
   # Set test data directory
   sourceRboretum()
-  
+
   rb_name_file
   [1] "<PACKAGE_DIR>/extdata/Name_Conversion_Table.tsv"
 
@@ -164,7 +164,7 @@ Example Usage
   10 Species_15;Species_2;Species_4                    Species_1;Species_10;Species_11;Species_12;Species_13;Species~         27 FALSE
   11 Species_15;Species_2                              Species_1;Species_10;Species_11;Species_12;Species_13;Species~         28 FALSE
   12 Species_3;Species_8                               Species_1;Species_10;Species_11;Species_12;Species_13;Species~         16 TRUE
-  
+
   # Convert a list of IDs
 
   root_taxa <- alignment_splits %>% filter(Root) %>% pull(Clade) %>% semiVector()
@@ -189,5 +189,4 @@ Example Usage
   $Non_Root
   [1] "Species_1"  "Species_5"  "Species_6"  "Species_7"  "Species_9"  "Species_10" "Species_11" "Species_12" "Species_13"
   [10] "Species_14" "Species_2"  "Species_4"  "Species_15"
-  
   

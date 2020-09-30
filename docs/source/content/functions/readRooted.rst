@@ -53,24 +53,24 @@ Example Usage
 .. code-block:: r
   
   # Script: Rboretum/docs/content/Doc_Function_Scripts/readRooted.R
-  
+
   library(Rboretum)
-  
+
   # Set test data directory
   sourceRboretum()
-  
+
   # Read in a single tree and root at the clade of Species C + Species H
   rb_tree1_path
   [1] "<PACKAGE_DIR>/Rboretum/extdata/unrootedTrees/Gene_1.nwk"
-  
+
   raw_tree <- ape::read.tree(rb_tree1_path)
   ape::is.rooted(raw_tree)
   [1] FALSE
-  
+
   myTree <- readRooted(to_root = rb_tree1_path, root_taxa = c('Species_C','Species_H'))
   ape::is.rooted(myTree
   [1] TRUE
-  
+
   # Read in a multiple unrooted trees and root at the clade of Species C + Species H
   rb_all_unrooted
   [1] "<PACKAGE_DIR>/Rboretum/extdata/unrootedTrees/Gene_1.nwk"
@@ -78,39 +78,39 @@ Example Usage
   [3] "<PACKAGE_DIR>/Rboretum/extdata/unrootedTrees/Gene_3.nwk"
   [4] "<PACKAGE_DIR>/Rboretum/extdata/unrootedTrees/Gene_4.nwk"
   [5] "<PACKAGE_DIR>/Rboretum/extdata/unrootedTrees/Gene_5.nwk"
-  
+
   purrr::map(.x=rb_all_unrooted,.f=function(x){ape::read.tree(x) %>% ape::is.rooted(.)}) %>% unlist()
   [1] FALSE FALSE FALSE FALSE FALSE
-  
+
   myTrees <- readRooted(to_root = rb_all_unrooted, root_taxa = c('Species_C','Species_H'))
   purrr::map(.x=myTrees,.f=function(x){ape::is.rooted(x)}) %>% unlist()
-  
+
   Gene_1.nwk Gene_2.nwk Gene_3.nwk Gene_4.nwk Gene_5.nwk 
-        TRUE       TRUE       TRUE       TRUE       TRUE 
-  
+    TRUE       TRUE       TRUE       TRUE       TRUE 
+
   # From a directory containing multiple unrooted trees, read in all '.nwk' files and root at the clade of Species C + Species H
   rb_unroot_dir
   [1] "<PACKAGE_DIR>/Rboretum/extdata/unrootedTrees"
-  
+
   myTrees <- readRooted(to_root = rb_unroot_dir, root_taxa = c('Species_C','Species_H'),prefix="Gene",suffix=".nwk")
   purrr::map(.x=myTrees,.f=function(x){ape::is.rooted(x)}) %>% unlist()
-  
+
   Gene_1.nwk Gene_2.nwk Gene_3.nwk Gene_4.nwk Gene_5.nwk 
-        TRUE       TRUE       TRUE       TRUE       TRUE 
-  
+    TRUE       TRUE       TRUE       TRUE       TRUE 
+
   # Same as above, but add placeholder tree_names ('Tree_1' - 'Tree_5') as opposed to tree file basenames
   myDummyTrees <- readRooted(to_root = rb_unroot_dir, root_taxa = c('Species_C','Species_H'),prefix="Gene",suffix=".nwk",dummy_names=TRUE)
   purrr::map(.x=myDummyTrees,.f=function(x){ape::is.rooted(x)}) %>% unlist()
-  
+
   Tree_1 Tree_2 Tree_3 Tree_4 Tree_5 
-    TRUE   TRUE   TRUE   TRUE   TRUE 
-  
+  TRUE   TRUE   TRUE   TRUE   TRUE 
+
   # Same as above, but add user-defined tree tree_names as opposed to tree file basenames
   myTreeNames <- c('Gene_A','Gene_B','Gene_C','Gene_D','Gene_E')
-  
+
   myNamedTrees <- readRooted(to_root = rb_unroot_dir, root_taxa = c('Species_C','Species_H'),prefix="Gene",suffix=".nwk",tree_names=myTreeNames)
   purrr::map(.x=myNamedTrees,.f=function(x){ape::is.rooted(x)}) %>% unlist()
-  
+
   Gene_A Gene_B Gene_C Gene_D Gene_E 
   TRUE   TRUE   TRUE   TRUE   TRUE 
   

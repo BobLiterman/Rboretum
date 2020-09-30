@@ -28,14 +28,14 @@ Example Usage
 .. code-block:: r
   
   # Script: Rboretum/docs/content/Doc_Function_Scripts/getSharedTaxa.R
-  
+
   library(Rboretum)
-  
+
   # Set test data directory
   sourceRboretum()
-  
+
   # Create a multiPhylo where all trees share all taxa
-  
+
   tree_1 <- ape::rtree(25)
   tree_2 <- ape::rtree(25)
   tree_3 <- ape::rtree(25)
@@ -62,3 +62,4 @@ Example Usage
   length(getSharedTaxa(c(tree_1,tree_2,tree_3)))
 
   [1] 10
+  

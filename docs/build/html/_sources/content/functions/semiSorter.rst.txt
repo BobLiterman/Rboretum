@@ -37,18 +37,18 @@ Example Usage
 .. code-block:: r
   
   # Script: Rboretum/docs/content/Doc_Function_Scripts/semiSorter.R
-  
+
   library(Rboretum)
-  
+
   character_vector <- c('c','b','a')
   semiSorter(character_vector)
   [1] "a;b;c"
-  
+
   semicolon_character <- 'c;b;a'
   semiSorter(semicolon_character)
   [1] "a;b;c"
-  
+
   semicolon_characters <- c('c;b;a','f;e;d')
   semiSorter(semicolon_characters)
   [1] "a;b;c" "d;e;f"
-
+  

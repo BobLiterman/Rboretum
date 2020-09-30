@@ -36,13 +36,13 @@ Example Usage
 .. code-block:: r
   
   # Script: Rboretum/docs/content/Doc_Function_Scripts/vectorSemi.R
-  
+
   library(Rboretum)
-  
+
   character_vector <- c('a','b','c')
   vectorSemi(character_vector)
   [1] "a;b;c"
-  
+
   character_list <- list(c('a','b','c'),c('d','e','f'))
   vectorSemi(character_list)
   [[1]]

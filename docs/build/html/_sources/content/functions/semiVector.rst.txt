@@ -36,13 +36,13 @@ Example Usage
 .. code-block:: r
   
   # Script: Rboretum/docs/content/Doc_Function_Scripts/semiVector.R
-  
+
   library(Rboretum)
-  
+
   semicolon_single_char <- 'a;b;c;d;e;f'
   semiVector(semicolon_single_char)
   [1] "a" "b" "c" "d" "e" "f"
-  
+
   semicolon_multi_char <- c('a;b;c','d;e;f')
   semiVector(semicolon_multi_char)
   [[1]]
@@ -50,5 +50,4 @@ Example Usage
 
   [[2]]
   [1] "d" "e" "f"
-
   

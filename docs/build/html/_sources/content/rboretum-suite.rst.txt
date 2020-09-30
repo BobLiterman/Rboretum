@@ -2,10 +2,6 @@
 **Rboretum Functions**
 #######################
 
-=========
-Overview
-=========
-
 ===============
 Functions
 ===============
@@ -24,4 +20,5 @@ Functions
   functions/checkTips
   functions/getSharedTaxa
   functions/getTreeSplits
+  functions/summarizeMultiphylo
   functions/getTreeClades

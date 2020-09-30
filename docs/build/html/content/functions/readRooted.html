@@ -103,6 +103,8 @@
 <li class="toctree-l2"><a class="reference internal" href="getSharedTaxa.html"><strong>getSharedTaxa</strong></a></li>
 <li class="toctree-l2"><a class="reference internal" href="getTreeSplits.html"><strong>getTreeSplits</strong></a></li>
 <li class="toctree-l2"><a class="reference internal" href="getTreeClades.html"><strong>getTreeClades</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="summarizeMultiphylo.html">Function and Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="summarizeMultiphylo.html#example-usage">Example Usage</a></li>
 </ul>
 </li>
 </ul>
@@ -263,7 +265,7 @@
 <span class="n">purrr</span><span class="o">::</span><span class="nf">map</span><span class="p">(</span><span class="n">.x</span><span class="o">=</span><span class="n">myTrees</span><span class="p">,</span><span class="n">.f</span><span class="o">=</span><span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">){</span><span class="n">ape</span><span class="o">::</span><span class="nf">is.rooted</span><span class="p">(</span><span class="n">x</span><span class="p">)})</span> <span class="o">%&gt;%</span> <span class="nf">unlist</span><span class="p">()</span>
 
 <span class="n">Gene_1.nwk</span> <span class="n">Gene_2.nwk</span> <span class="n">Gene_3.nwk</span> <span class="n">Gene_4.nwk</span> <span class="n">Gene_5.nwk</span>
-      <span class="kc">TRUE</span>       <span class="kc">TRUE</span>       <span class="kc">TRUE</span>       <span class="kc">TRUE</span>       <span class="kc">TRUE</span>
+  <span class="kc">TRUE</span>       <span class="kc">TRUE</span>       <span class="kc">TRUE</span>       <span class="kc">TRUE</span>       <span class="kc">TRUE</span>
 
 <span class="c1"># From a directory containing multiple unrooted trees, read in all &#39;.nwk&#39; files and root at the clade of Species C + Species H</span>
 <span class="n">rb_unroot_dir</span>
@@ -273,14 +275,14 @@
 <span class="n">purrr</span><span class="o">::</span><span class="nf">map</span><span class="p">(</span><span class="n">.x</span><span class="o">=</span><span class="n">myTrees</span><span class="p">,</span><span class="n">.f</span><span class="o">=</span><span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">){</span><span class="n">ape</span><span class="o">::</span><span class="nf">is.rooted</span><span class="p">(</span><span class="n">x</span><span class="p">)})</span> <span class="o">%&gt;%</span> <span class="nf">unlist</span><span class="p">()</span>
 
 <span class="n">Gene_1.nwk</span> <span class="n">Gene_2.nwk</span> <span class="n">Gene_3.nwk</span> <span class="n">Gene_4.nwk</span> <span class="n">Gene_5.nwk</span>
-      <span class="kc">TRUE</span>       <span class="kc">TRUE</span>       <span class="kc">TRUE</span>       <span class="kc">TRUE</span>       <span class="kc">TRUE</span>
+  <span class="kc">TRUE</span>       <span class="kc">TRUE</span>       <span class="kc">TRUE</span>       <span class="kc">TRUE</span>       <span class="kc">TRUE</span>
 
 <span class="c1"># Same as above, but add placeholder tree_names (&#39;Tree_1&#39; - &#39;Tree_5&#39;) as opposed to tree file basenames</span>
 <span class="n">myDummyTrees</span> <span class="o">&lt;-</span> <span class="nf">readRooted</span><span class="p">(</span><span class="n">to_root</span> <span class="o">=</span> <span class="n">rb_unroot_dir</span><span class="p">,</span> <span class="n">root_taxa</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Species_C&#39;</span><span class="p">,</span><span class="s">&#39;Species_H&#39;</span><span class="p">),</span><span class="n">prefix</span><span class="o">=</span><span class="s">&quot;Gene&quot;</span><span class="p">,</span><span class="n">suffix</span><span class="o">=</span><span class="s">&quot;.nwk&quot;</span><span class="p">,</span><span class="n">dummy_names</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
 <span class="n">purrr</span><span class="o">::</span><span class="nf">map</span><span class="p">(</span><span class="n">.x</span><span class="o">=</span><span class="n">myDummyTrees</span><span class="p">,</span><span class="n">.f</span><span class="o">=</span><span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">){</span><span class="n">ape</span><span class="o">::</span><span class="nf">is.rooted</span><span class="p">(</span><span class="n">x</span><span class="p">)})</span> <span class="o">%&gt;%</span> <span class="nf">unlist</span><span class="p">()</span>
 
 <span class="n">Tree_1</span> <span class="n">Tree_2</span> <span class="n">Tree_3</span> <span class="n">Tree_4</span> <span class="n">Tree_5</span>
-  <span class="kc">TRUE</span>   <span class="kc">TRUE</span>   <span class="kc">TRUE</span>   <span class="kc">TRUE</span>   <span class="kc">TRUE</span>
+<span class="kc">TRUE</span>   <span class="kc">TRUE</span>   <span class="kc">TRUE</span>   <span class="kc">TRUE</span>   <span class="kc">TRUE</span>
 
 <span class="c1"># Same as above, but add user-defined tree tree_names as opposed to tree file basenames</span>
 <span class="n">myTreeNames</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Gene_A&#39;</span><span class="p">,</span><span class="s">&#39;Gene_B&#39;</span><span class="p">,</span><span class="s">&#39;Gene_C&#39;</span><span class="p">,</span><span class="s">&#39;Gene_D&#39;</span><span class="p">,</span><span class="s">&#39;Gene_E&#39;</span><span class="p">)</span>

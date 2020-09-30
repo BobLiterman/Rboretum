@@ -31,12 +31,12 @@ Example Usage
 .. code-block:: r
   
   # Script: Rboretum/docs/content/Doc_Function_Scripts/checkTips.R
-  
+
   library(Rboretum)
-  
+
   # Set test data directory
   sourceRboretum()
-  
+
   myTree_1 <- readRooted(rb_tree1_path,root_taxa = c('Species_C','Species_H'))
   myTree_2 <- readRooted(rb_tree4_path,root_taxa = c('Species_C','Species_H'))
 
@@ -49,9 +49,10 @@ Example Usage
   # Visualize trees
 
   coi_list <- list("One"=coi_1,"Two"=coi_2,"Three"=coi_3)
-  
+
   treePlotter(myTree_1,branch_weight = 1.5,xmax=10,to_color = coi_list,taxa_fontface = "bold")
   treePlotter(myTree_2,branch_weight = 1.5, xmax=10,to_color = coi_list,taxa_fontface = "bold")
+  
 
 .. image:: ../images/checkTips_1.png
   :width: 400

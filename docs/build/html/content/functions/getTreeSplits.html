@@ -37,6 +37,7 @@
         <link rel="search" title="Search" href="../../search.html"/>
     <link rel="top" title="Rboretum 1.0 documentation" href="../../index.html"/>
         <link rel="up" title="Rboretum Functions" href="../rboretum-suite.html"/>
+        <link rel="next" title="getTreeClades" href="getTreeClades.html"/>
         <link rel="prev" title="getSharedTaxa" href="getSharedTaxa.html"/> 
 
   
@@ -101,6 +102,7 @@
 <li class="toctree-l2"><a class="reference internal" href="checkTips.html"><strong>checkTips</strong></a></li>
 <li class="toctree-l2"><a class="reference internal" href="getSharedTaxa.html"><strong>getSharedTaxa</strong></a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#"><strong>getTreeSplits</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="getTreeClades.html"><strong>getTreeClades</strong></a></li>
 </ul>
 </li>
 </ul>
@@ -210,7 +212,11 @@
 <span class="n">myTree_2</span> <span class="o">&lt;-</span> <span class="nf">readRooted</span><span class="p">(</span><span class="n">rb_tree2_path</span><span class="p">,</span><span class="n">root_taxa</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Species_C&#39;</span><span class="p">,</span><span class="s">&#39;Species_H&#39;</span><span class="p">))</span>
 <span class="n">myTree_3</span> <span class="o">&lt;-</span> <span class="nf">readRooted</span><span class="p">(</span><span class="n">rb_tree4_path</span><span class="p">,</span><span class="n">root_taxa</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Species_C&#39;</span><span class="p">,</span><span class="s">&#39;Species_H&#39;</span><span class="p">))</span>
 
-<span class="c1"># Toplogy A</span>
+
+<span class="n">mySameTrees</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="n">myTree_1</span><span class="p">,</span><span class="n">myTree_2</span><span class="p">)</span>
+<span class="n">myDifferentTrees</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="n">myTree_1</span><span class="p">,</span><span class="n">myTree_3</span><span class="p">)</span>
+
+<span class="c1"># Topology A</span>
 
 <span class="nf">getTreeSplits</span><span class="p">(</span><span class="n">myTree_1</span><span class="p">)</span>
 
@@ -270,7 +276,7 @@
 
 <span class="c1"># Get splits when trees are identical</span>
 
-<span class="nf">getTreeSplits</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="n">myTree_1</span><span class="p">,</span><span class="n">myTree_2</span><span class="p">))</span>
+<span class="nf">getTreeSplits</span><span class="p">(</span><span class="n">mySameTrees</span><span class="p">)</span>
 
 <span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;All trees supplied to getTreeSplits share a common topology...returning results from common topology...&quot;</span>
 
@@ -292,7 +298,7 @@
 
 <span class="c1"># Get splits when trees are not identical</span>
 
-<span class="nf">getTreeSplits</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="n">myTree_1</span><span class="p">,</span><span class="n">myTree_3</span><span class="p">))</span>
+<span class="nf">getTreeSplits</span><span class="p">(</span><span class="n">myDifferentTrees</span><span class="p">)</span>
 
 <span class="o">$</span><span class="n">Tree_1</span>
 
@@ -340,6 +346,8 @@
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="getTreeClades.html" class="btn btn-neutral float-right" title="getTreeClades" accesskey="n">Next →</a>
       
       
         <a href="getSharedTaxa.html" class="btn btn-neutral" title="getSharedTaxa" accesskey="p">← Previous</a>

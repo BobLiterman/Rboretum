@@ -24,3 +24,4 @@ Functions
   functions/checkTips
   functions/getSharedTaxa
   functions/getTreeSplits
+  functions/getTreeClades

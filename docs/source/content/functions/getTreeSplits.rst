@@ -42,8 +42,12 @@ Example Usage
   myTree_1 <- readRooted(rb_tree1_path,root_taxa = c('Species_C','Species_H'))
   myTree_2 <- readRooted(rb_tree2_path,root_taxa = c('Species_C','Species_H'))
   myTree_3 <- readRooted(rb_tree4_path,root_taxa = c('Species_C','Species_H'))
-
-  # Toplogy A
+  
+  
+  mySameTrees <- c(myTree_1,myTree_2)
+  myDifferentTrees <- c(myTree_1,myTree_3)
+  
+  # Topology A
 
   getTreeSplits(myTree_1)
 
@@ -103,7 +107,7 @@ Example Usage
 
   # Get splits when trees are identical
 
-  getTreeSplits(c(myTree_1,myTree_2))
+  getTreeSplits(mySameTrees)
 
   [1] "All trees supplied to getTreeSplits share a common topology...returning results from common topology..."
 
@@ -125,7 +129,7 @@ Example Usage
 
   # Get splits when trees are not identical
 
-  getTreeSplits(c(myTree_1,myTree_3))
+  getTreeSplits(myDifferentTrees)
 
   $Tree_1
 

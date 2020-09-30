@@ -466,13 +466,14 @@ treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_sup
     extendX <- FALSE
   } else if(missing(xmax) & !missing(xmin)){
     extendX <- FALSE
+  } else if(!is.numeric(xmax)){
+    extendX <- FALSE
   } else if(missing(xmin)){
+    extendX <- TRUE
     xmin <- 0
   } else if(!is.numeric(xmin)){
     extendX <- FALSE
-  } else if(!is.numeric(xmax)){
-    extendX <- FALSE
-  } else if(xmin >= xmax){
+  }  else if(xmin >= xmax){
     extendX <- FALSE
   } else{ extendX <- TRUE }
   

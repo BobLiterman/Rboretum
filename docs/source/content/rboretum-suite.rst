@@ -21,4 +21,4 @@ Functions
   functions/tandemPlotter
   functions/treeNamer
   functions/convertLabels
-  
+  functions/checkTips

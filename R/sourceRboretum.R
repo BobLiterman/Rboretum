@@ -16,6 +16,7 @@ sourceRboretum <- function(){
   rb_unroot_dir <<- paste0(rboretum_example_data_dir,'/unrootedTrees')
   rb_alignment_dir <<- paste0(rboretum_example_data_dir,'/alignments')
   rb_timeTree_dir <<- paste0(rboretum_example_data_dir,'/timeTrees')
+  rb_name_file <<- paste0(rboretum_example_data_dir,'/Name_Conversion_Table.tsv')
   
   rb_tree1_path <<- paste0(rb_unroot_dir,'/Gene_1.nwk')
   rb_tree2_path <<- paste0(rb_unroot_dir,'/Gene_2.nwk')

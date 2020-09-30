@@ -20,4 +20,5 @@ Functions
   functions/semiSorter
   functions/tandemPlotter
   functions/treeNamer
+  functions/convertLabels
   

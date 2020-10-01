@@ -13,11 +13,11 @@ extractNodeAges(tree, return_summary)
   \item A rooted multiPhylo object where all trees share 3+ taxa and support a single topology 
 }}
 
-\item{return_summary}{OPTIONAL: If a multiPhylo is provided, function will retrurn the mean, median, or both set of node ages across datasets.
+\item{return_summary}{OPTIONAL: If a multiPhylo is provided, function will return the mean, median, or both set of node ages across datasets.
 \itemize{
   \item mean: Return mean node age for each node
   \item median: Return median node age for each node
-  \item both: Return mean, median, and summary statstics for each node
+  \item both: Return mean, median, and summary statistics for each node
 }}
 }
 \value{

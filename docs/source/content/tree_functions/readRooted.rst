@@ -61,7 +61,7 @@ Example Usage
 
   # Read in a single tree and root at the clade of Species C + Species H
   rb_tree1_path
-  [1] "<PACKAGE_DIR>/Rboretum/extdata/unrootedTrees/Gene_1.nwk"
+  [1] "<PACKAGE_DIR>/inst/extdata/unrootedTrees/Gene_1.nwk"
 
   raw_tree <- ape::read.tree(rb_tree1_path)
   ape::is.rooted(raw_tree)
@@ -73,11 +73,11 @@ Example Usage
 
   # Read in a multiple unrooted trees and root at the clade of Species C + Species H
   rb_all_unrooted
-  [1] "<PACKAGE_DIR>/Rboretum/extdata/unrootedTrees/Gene_1.nwk"
-  [2] "<PACKAGE_DIR>/Rboretum/extdata/unrootedTrees/Gene_2.nwk"
-  [3] "<PACKAGE_DIR>/Rboretum/extdata/unrootedTrees/Gene_3.nwk"
-  [4] "<PACKAGE_DIR>/Rboretum/extdata/unrootedTrees/Gene_4.nwk"
-  [5] "<PACKAGE_DIR>/Rboretum/extdata/unrootedTrees/Gene_5.nwk"
+  [1] "<PACKAGE_DIR>/inst/extdata/unrootedTrees/Gene_1.nwk"
+  [2] "<PACKAGE_DIR>/inst/extdata/unrootedTrees/Gene_2.nwk"
+  [3] "<PACKAGE_DIR>/inst/extdata/unrootedTrees/Gene_3.nwk"
+  [4] "<PACKAGE_DIR>/inst/extdata/unrootedTrees/Gene_4.nwk"
+  [5] "<PACKAGE_DIR>/inst/extdata/unrootedTrees/Gene_5.nwk"
 
   purrr::map(.x=rb_all_unrooted,.f=function(x){ape::read.tree(x) %>% ape::is.rooted(.)}) %>% unlist()
   [1] FALSE FALSE FALSE FALSE FALSE
@@ -90,7 +90,7 @@ Example Usage
 
   # From a directory containing multiple unrooted trees, read in all '.nwk' files and root at the clade of Species C + Species H
   rb_unroot_dir
-  [1] "<PACKAGE_DIR>/Rboretum/extdata/unrootedTrees"
+  [1] "<PACKAGE_DIR>/inst/extdata/unrootedTrees"
 
   myTrees <- readRooted(to_root = rb_unroot_dir, root_taxa = c('Species_C','Species_H'),prefix="Gene",suffix=".nwk")
   purrr::map(.x=myTrees,.f=function(x){ape::is.rooted(x)}) %>% unlist()

@@ -6,11 +6,11 @@
 #'   \item A single, rooted phylo object; or,
 #'   \item A rooted multiPhylo object where all trees share 3+ taxa and support a single topology 
 #' }
-#' @param return_summary OPTIONAL: If a multiPhylo is provided, function will retrurn the mean, median, or both set of node ages across datasets.
+#' @param return_summary OPTIONAL: If a multiPhylo is provided, function will return the mean, median, or both set of node ages across datasets.
 #' \itemize{
 #'   \item mean: Return mean node age for each node
 #'   \item median: Return median node age for each node
-#'   \item both: Return mean, median, and summary statstics for each node
+#'   \item both: Return mean, median, and summary statistics for each node
 #' }
 #' @return A dataframe containing (a) node/date information for each tree or (b) clade-level ages summarized across trees in a multiPhlyo if return_summary is set to 'mean',',median', or 'both'
 #' @export
@@ -110,13 +110,21 @@ extractNodeAges <- function(tree,return_summary){
       tree_date_df <- tree_date_df %>% 
         select(-Tree_Name) %>% 
         group_by(Clade) %>% 
-        summarise(Mean_Node_Age=mean(Node_Age),Median_Node_Age=median(Node_Age),StdDev_Node_Age=sd(Node_Age),MAD_Node_Age=mad(Node_Age))
+        summarise(Mean_Node_Age=mean(Node_Age),Median_Node_Age=median(Node_Age),StdDev_Node_Age=sd(Node_Age),MAD_Node_Age=mad(Node_Age),Count=tally(Clade)) %>%
+        rowwise() %>%
+        mutate(CI_95_Low = Mean_Node_Age - ((qnorm(0.975)*StdDev_Node_Age)/sqrt(Count)),
+               CI_95_High = Mean_Node_Age + ((qnorm(0.975)*StdDev_Node_Age)/sqrt(Count))) %>%
+        select(-Count)
+        
     } else if(summary_col == 'mean'){
       tree_date_df <- tree_date_df %>% 
         select(-Tree_Name) %>% 
         group_by(Clade) %>% 
-        summarise(Mean_Node_Age=mean(Node_Age)) %>%
-        select(Clade,Mean_Node_Age) %>% `names<-`(c('Clade','Node_Age'))
+        summarise(Mean_Node_Age=mean(Node_Age),StdDev_Node_Age = sd(Node_Age),Count=tally(Clade)) %>%
+        rowwise() %>%
+        mutate(CI_95_Low = Mean_Node_Age - ((qnorm(0.975)*StdDev_Node_Age)/sqrt(Count)),
+               CI_95_High = Mean_Node_Age + ((qnorm(0.975)*StdDev_Node_Age)/sqrt(Count))) %>%
+        select(Clade,Mean_Node_Age,CI_95_Low,CI_95_High) %>% `names<-`(c('Clade','Node_Age','CI_95_Low','CI_95_High'))
     } else if(summary_col == 'median'){
       tree_date_df <- tree_date_df %>% 
         select(-Tree_Name) %>% 

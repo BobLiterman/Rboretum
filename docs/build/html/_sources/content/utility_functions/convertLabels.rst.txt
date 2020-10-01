@@ -42,7 +42,7 @@ Example Usage
   sourceRboretum()
 
   rb_name_file
-  [1] "<PACKAGE_DIR>/extdata/Name_Conversion_Table.tsv"
+  [1] "<PACKAGE_DIR>/inst/extdata/Name_Conversion_Table.tsv"
 
   # Read in table of name equivalencies
 

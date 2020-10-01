@@ -16,6 +16,7 @@ Tree Functions
   tree_functions/getTreeSplits
   tree_functions/summarizeMultiphylo
   tree_functions/getTreeClades
+  tree_functions/extractNodeAges
 
 Utility Functions
 ------------------

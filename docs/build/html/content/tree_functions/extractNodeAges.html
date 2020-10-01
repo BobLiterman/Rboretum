@@ -1,0 +1,466 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>extractNodeAges &mdash; Rboretum 1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/Rboretum_Logo.png"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="Rboretum 1.0 documentation" href="../../index.html"/>
+        <link rel="up" title="Rboretum Functions" href="../rboretum-suite.html"/>
+        <link rel="next" title="semiVector" href="../utility_functions/semiVector.html"/>
+        <link rel="prev" title="getTreeClades" href="getTreeClades.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Rboretum
+          
+
+          
+            
+            <img src="../../_static/Rboretum_Logo.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html"><strong>Installing Rboretum</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../loading.html"><strong>Loading Rboretum</strong></a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../rboretum-suite.html"><strong>Rboretum Functions</strong></a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="readRooted.html"><strong>readRooted</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="treeTrimmer.html"><strong>treeTrimmer</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="treeNamer.html"><strong>treeNamer</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="checkTips.html"><strong>checkTips</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="getSharedTaxa.html"><strong>getSharedTaxa</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="getTreeSplits.html"><strong>getTreeSplits</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="summarizeMultiphylo.html"><strong>summarizeMultiphylo</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="getTreeClades.html"><strong>getTreeClades</strong></a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><strong>extractNodeAges</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utility_functions/semiVector.html"><strong>semiVector</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utility_functions/vectorSemi.html"><strong>vectorSemi</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utility_functions/semiSorter.html"><strong>semiSorter</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utility_functions/tandemPlotter.html"><strong>tandemPlotter</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utility_functions/convertLabels.html"><strong>convertLabels</strong></a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Rboretum</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../rboretum-suite.html"><strong>Rboretum Functions</strong></a> &raquo;</li>
+        
+      <li><strong>extractNodeAges</strong></li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/content/tree_functions/extractNodeAges.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="extractnodeages">
+<span id="id1"></span><h1><strong>extractNodeAges</strong><a class="headerlink" href="#extractnodeages" title="Permalink to this headline">¶</a></h1>
+<p><em>extractNodeAges</em> takes ultrametric phylo or multiPhylo objects and returns information about branching times.</p>
+<div class="section" id="function-and-arguments">
+<h2>Function and Arguments<a class="headerlink" href="#function-and-arguments" title="Permalink to this headline">¶</a></h2>
+<p><strong>Usage</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">extractNodeAges</span> <span class="o">&lt;-</span> <span class="n">function</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span><span class="n">return_summary</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 12%" />
+<col style="width: 88%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>tree</strong></p></td>
+<td><p>A rooted, ultrametric phylo object, or a rooted, ultrametric multiPhylo object where all trees share 3+ taxa and a common topology (after pruning if necessary)</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>return_summary</strong></p></td>
+<td><p><strong>mean</strong>, <strong>median</strong>, or <strong>both</strong>; If  and a multiPhylo is provided, return dates summarized across trees using the mean, median, or a full summary (‘both’) [Default: Return raw results from each tree]</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="example-usage">
+<h2>Example Usage<a class="headerlink" href="#example-usage" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Script: Rboretum/docs/content/Doc_Function_Scripts/extractNodeAges.R</span>
+
+<span class="nf">library</span><span class="p">(</span><span class="n">Rboretum</span><span class="p">)</span>
+
+<span class="c1"># Set test data directory</span>
+<span class="nf">sourceRboretum</span><span class="p">()</span>
+
+<span class="c1"># Read in ultrametric timetrees (branch lengths ~ time)</span>
+<span class="n">rb_timeTree1_path</span>
+<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;C:/Users/Robert.Literman/Documents/Git/Rboretum/inst/extdata/timeTrees/Chronogram_1.nwk&quot;</span>
+
+<span class="n">rb_timeTree2_path</span>
+<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;C:/Users/Robert.Literman/Documents/Git/Rboretum/inst/extdata/timeTrees/Chronogram_2.nwk&quot;</span>
+
+<span class="n">rb_timeTree3_path</span>
+<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;C:/Users/Robert.Literman/Documents/Git/Rboretum/inst/extdata/timeTrees/Chronogram_3.nwk&quot;</span>
+
+<span class="n">timeTree_1</span> <span class="o">&lt;-</span> <span class="nf">readRooted</span><span class="p">(</span><span class="n">to_root</span> <span class="o">=</span> <span class="n">rb_timeTree1_path</span><span class="p">,</span><span class="n">root_taxa</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Species_C&#39;</span><span class="p">,</span><span class="s">&#39;Species_H&#39;</span><span class="p">))</span>
+<span class="n">timeTree_2</span> <span class="o">&lt;-</span> <span class="nf">readRooted</span><span class="p">(</span><span class="n">to_root</span> <span class="o">=</span> <span class="n">rb_timeTree2_path</span><span class="p">,</span><span class="n">root_taxa</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Species_C&#39;</span><span class="p">,</span><span class="s">&#39;Species_H&#39;</span><span class="p">))</span>
+<span class="n">timeTree_3</span> <span class="o">&lt;-</span> <span class="nf">readRooted</span><span class="p">(</span><span class="n">to_root</span> <span class="o">=</span> <span class="n">rb_timeTree3_path</span><span class="p">,</span><span class="n">root_taxa</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Species_C&#39;</span><span class="p">,</span><span class="s">&#39;Species_H&#39;</span><span class="p">))</span>
+
+<span class="c1"># Create multiPhylo of trees</span>
+<span class="n">timeTrees</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="n">timeTree_1</span><span class="p">,</span><span class="n">timeTree_2</span><span class="p">,</span><span class="n">timeTree_3</span><span class="p">)</span>
+
+<span class="nf">extractNodeAges</span><span class="p">(</span><span class="n">timeTree_1</span><span class="p">)</span>
+
+<span class="c1"># A tibble: 14 x 2</span>
+   <span class="n">Clade</span>                                                                                                                    <span class="n">Node_Age</span>
+   <span class="o">&lt;</span><span class="n">chr</span><span class="o">&gt;</span>                                                                                                                       <span class="o">&lt;</span><span class="n">dbl</span><span class="o">&gt;</span>
+ <span class="m">1</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_B</span><span class="p">;</span><span class="n">Species_C</span><span class="p">;</span><span class="n">Species_D</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_G</span><span class="p">;</span><span class="n">Species_H</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_J</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span><span class="o">~</span>    <span class="m">60.0</span>
+ <span class="m">2</span> <span class="n">Species_C</span><span class="p">;</span><span class="n">Species_H</span>                                                                                                         <span class="m">27.8</span>
+ <span class="m">3</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_B</span><span class="p">;</span><span class="n">Species_D</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_J</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span><span class="p">;</span><span class="n">Species_M</span><span class="p">;</span><span class="n">Species_N</span><span class="o">~</span>    <span class="m">24.4</span>
+ <span class="m">4</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_J</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span><span class="p">;</span><span class="n">Species_M</span><span class="p">;</span><span class="n">Species_N</span>                         <span class="m">20.1</span>
+ <span class="m">5</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span>                                                                            <span class="m">7.97</span>
+ <span class="m">6</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span>                                                                                      <span class="m">5.95</span>
+ <span class="m">7</span> <span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span>                                                                                                          <span class="m">2.09</span>
+ <span class="m">8</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_F</span>                                                                                                          <span class="m">1.71</span>
+ <span class="m">9</span> <span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_J</span><span class="p">;</span><span class="n">Species_M</span><span class="p">;</span><span class="n">Species_N</span>                                                                           <span class="m">11.0</span>
+<span class="m">10</span> <span class="n">Species_J</span><span class="p">;</span><span class="n">Species_M</span>                                                                                                          <span class="m">2.91</span>
+<span class="m">11</span> <span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_N</span>                                                                                                <span class="m">5.68</span>
+<span class="m">12</span> <span class="n">Species_G</span><span class="p">;</span><span class="n">Species_N</span>                                                                                                          <span class="m">3.42</span>
+<span class="m">13</span> <span class="n">Species_B</span><span class="p">;</span><span class="n">Species_D</span><span class="p">;</span><span class="n">Species_O</span>                                                                                                <span class="m">4.23</span>
+<span class="m">14</span> <span class="n">Species_B</span><span class="p">;</span><span class="n">Species_O</span>                                                                                                          <span class="m">2.24</span>
+
+<span class="nf">extractNodeAges</span><span class="p">(</span><span class="n">timeTree_2</span><span class="p">)</span>
+
+<span class="c1"># A tibble: 14 x 2</span>
+   <span class="n">Clade</span>                                                                                                                    <span class="n">Node_Age</span>
+   <span class="o">&lt;</span><span class="n">chr</span><span class="o">&gt;</span>                                                                                                                       <span class="o">&lt;</span><span class="n">dbl</span><span class="o">&gt;</span>
+ <span class="m">1</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_B</span><span class="p">;</span><span class="n">Species_C</span><span class="p">;</span><span class="n">Species_D</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_G</span><span class="p">;</span><span class="n">Species_H</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_J</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span><span class="o">~</span>    <span class="m">60.0</span>
+ <span class="m">2</span> <span class="n">Species_C</span><span class="p">;</span><span class="n">Species_H</span>                                                                                                         <span class="m">27.8</span>
+ <span class="m">3</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_B</span><span class="p">;</span><span class="n">Species_D</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_J</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span><span class="p">;</span><span class="n">Species_M</span><span class="p">;</span><span class="n">Species_N</span><span class="o">~</span>    <span class="m">26.8</span>
+ <span class="m">4</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_J</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span><span class="p">;</span><span class="n">Species_M</span><span class="p">;</span><span class="n">Species_N</span>                         <span class="m">19.7</span>
+ <span class="m">5</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span>                                                                            <span class="m">9.38</span>
+ <span class="m">6</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span>                                                                                      <span class="m">6.83</span>
+ <span class="m">7</span> <span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span>                                                                                                          <span class="m">2.61</span>
+ <span class="m">8</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_F</span>                                                                                                          <span class="m">2.24</span>
+ <span class="m">9</span> <span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_J</span><span class="p">;</span><span class="n">Species_M</span><span class="p">;</span><span class="n">Species_N</span>                                                                            <span class="m">8.38</span>
+<span class="m">10</span> <span class="n">Species_J</span><span class="p">;</span><span class="n">Species_M</span>                                                                                                          <span class="m">2.54</span>
+<span class="m">11</span> <span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_N</span>                                                                                                <span class="m">4.28</span>
+<span class="m">12</span> <span class="n">Species_G</span><span class="p">;</span><span class="n">Species_N</span>                                                                                                          <span class="m">2.01</span>
+<span class="m">13</span> <span class="n">Species_B</span><span class="p">;</span><span class="n">Species_D</span><span class="p">;</span><span class="n">Species_O</span>                                                                                                <span class="m">4.42</span>
+<span class="m">14</span> <span class="n">Species_B</span><span class="p">;</span><span class="n">Species_O</span>                                                                                                          <span class="m">2.53</span>
+
+<span class="nf">extractNodeAges</span><span class="p">(</span><span class="n">timeTree_3</span><span class="p">)</span>
+
+<span class="c1"># A tibble: 14 x 2</span>
+   <span class="n">Clade</span>                                                                                                                    <span class="n">Node_Age</span>
+   <span class="o">&lt;</span><span class="n">chr</span><span class="o">&gt;</span>                                                                                                                       <span class="o">&lt;</span><span class="n">dbl</span><span class="o">&gt;</span>
+ <span class="m">1</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_B</span><span class="p">;</span><span class="n">Species_C</span><span class="p">;</span><span class="n">Species_D</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_G</span><span class="p">;</span><span class="n">Species_H</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_J</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span><span class="o">~</span>    <span class="m">60.0</span>
+ <span class="m">2</span> <span class="n">Species_C</span><span class="p">;</span><span class="n">Species_H</span>                                                                                                         <span class="m">27.8</span>
+ <span class="m">3</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_B</span><span class="p">;</span><span class="n">Species_D</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_J</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span><span class="p">;</span><span class="n">Species_M</span><span class="p">;</span><span class="n">Species_N</span><span class="o">~</span>    <span class="m">22.6</span>
+ <span class="m">4</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_J</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span><span class="p">;</span><span class="n">Species_M</span><span class="p">;</span><span class="n">Species_N</span>                         <span class="m">19.4</span>
+ <span class="m">5</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span>                                                                            <span class="m">8.41</span>
+ <span class="m">6</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span>                                                                                      <span class="m">6.05</span>
+ <span class="m">7</span> <span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span>                                                                                                          <span class="m">1.95</span>
+ <span class="m">8</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_F</span>                                                                                                          <span class="m">2.24</span>
+ <span class="m">9</span> <span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_J</span><span class="p">;</span><span class="n">Species_M</span><span class="p">;</span><span class="n">Species_N</span>                                                                            <span class="m">9.24</span>
+<span class="m">10</span> <span class="n">Species_J</span><span class="p">;</span><span class="n">Species_M</span>                                                                                                          <span class="m">2.82</span>
+<span class="m">11</span> <span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_N</span>                                                                                                <span class="m">4.27</span>
+<span class="m">12</span> <span class="n">Species_G</span><span class="p">;</span><span class="n">Species_N</span>                                                                                                          <span class="m">2.07</span>
+<span class="m">13</span> <span class="n">Species_B</span><span class="p">;</span><span class="n">Species_D</span><span class="p">;</span><span class="n">Species_O</span>                                                                                                <span class="m">4.05</span>
+<span class="m">14</span> <span class="n">Species_B</span><span class="p">;</span><span class="n">Species_O</span>                                                                                                          <span class="m">1.69</span>
+
+<span class="nf">print</span><span class="p">(</span><span class="nf">extractNodeAges</span><span class="p">(</span><span class="n">timeTrees</span><span class="p">),</span><span class="n">n</span> <span class="o">=</span> <span class="m">42</span><span class="p">)</span>
+
+<span class="c1"># A tibble: 42 x 3</span>
+   <span class="n">Clade</span>                                                                                                          <span class="n">Node_Age</span> <span class="n">Tree_Name</span>
+   <span class="o">&lt;</span><span class="n">chr</span><span class="o">&gt;</span>                                                                                                             <span class="o">&lt;</span><span class="n">dbl</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">chr</span><span class="o">&gt;</span>
+ <span class="m">1</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_B</span><span class="p">;</span><span class="n">Species_C</span><span class="p">;</span><span class="n">Species_D</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_G</span><span class="p">;</span><span class="n">Species_H</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_J</span><span class="p">;</span><span class="n">Species_K</span><span class="o">~</span>    <span class="m">60.0</span>  <span class="n">Tree_1</span>
+ <span class="m">2</span> <span class="n">Species_C</span><span class="p">;</span><span class="n">Species_H</span>                                                                                               <span class="m">27.8</span>  <span class="n">Tree_1</span>
+ <span class="m">3</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_B</span><span class="p">;</span><span class="n">Species_D</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_J</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span><span class="p">;</span><span class="n">Species_M</span><span class="o">~</span>    <span class="m">24.4</span>  <span class="n">Tree_1</span>
+ <span class="m">4</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_J</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span><span class="p">;</span><span class="n">Species_M</span><span class="p">;</span><span class="n">Species_N</span>               <span class="m">20.1</span>  <span class="n">Tree_1</span>
+ <span class="m">5</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span>                                                                  <span class="m">7.97</span> <span class="n">Tree_1</span>
+ <span class="m">6</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span>                                                                            <span class="m">5.95</span> <span class="n">Tree_1</span>
+ <span class="m">7</span> <span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span>                                                                                                <span class="m">2.09</span> <span class="n">Tree_1</span>
+ <span class="m">8</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_F</span>                                                                                                <span class="m">1.71</span> <span class="n">Tree_1</span>
+ <span class="m">9</span> <span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_J</span><span class="p">;</span><span class="n">Species_M</span><span class="p">;</span><span class="n">Species_N</span>                                                                 <span class="m">11.0</span>  <span class="n">Tree_1</span>
+<span class="m">10</span> <span class="n">Species_J</span><span class="p">;</span><span class="n">Species_M</span>                                                                                                <span class="m">2.91</span> <span class="n">Tree_1</span>
+<span class="m">11</span> <span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_N</span>                                                                                      <span class="m">5.68</span> <span class="n">Tree_1</span>
+<span class="m">12</span> <span class="n">Species_G</span><span class="p">;</span><span class="n">Species_N</span>                                                                                                <span class="m">3.42</span> <span class="n">Tree_1</span>
+<span class="m">13</span> <span class="n">Species_B</span><span class="p">;</span><span class="n">Species_D</span><span class="p">;</span><span class="n">Species_O</span>                                                                                      <span class="m">4.23</span> <span class="n">Tree_1</span>
+<span class="m">14</span> <span class="n">Species_B</span><span class="p">;</span><span class="n">Species_O</span>                                                                                                <span class="m">2.24</span> <span class="n">Tree_1</span>
+<span class="m">15</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_B</span><span class="p">;</span><span class="n">Species_C</span><span class="p">;</span><span class="n">Species_D</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_G</span><span class="p">;</span><span class="n">Species_H</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_J</span><span class="p">;</span><span class="n">Species_K</span><span class="o">~</span>    <span class="m">60.0</span>  <span class="n">Tree_2</span>
+<span class="m">16</span> <span class="n">Species_C</span><span class="p">;</span><span class="n">Species_H</span>                                                                                               <span class="m">27.8</span>  <span class="n">Tree_2</span>
+<span class="m">17</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_B</span><span class="p">;</span><span class="n">Species_D</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_J</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span><span class="p">;</span><span class="n">Species_M</span><span class="o">~</span>    <span class="m">26.8</span>  <span class="n">Tree_2</span>
+<span class="m">18</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_J</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span><span class="p">;</span><span class="n">Species_M</span><span class="p">;</span><span class="n">Species_N</span>               <span class="m">19.7</span>  <span class="n">Tree_2</span>
+<span class="m">19</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span>                                                                  <span class="m">9.38</span> <span class="n">Tree_2</span>
+<span class="m">20</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span>                                                                            <span class="m">6.83</span> <span class="n">Tree_2</span>
+<span class="m">21</span> <span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span>                                                                                                <span class="m">2.61</span> <span class="n">Tree_2</span>
+<span class="m">22</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_F</span>                                                                                                <span class="m">2.24</span> <span class="n">Tree_2</span>
+<span class="m">23</span> <span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_J</span><span class="p">;</span><span class="n">Species_M</span><span class="p">;</span><span class="n">Species_N</span>                                                                  <span class="m">8.38</span> <span class="n">Tree_2</span>
+<span class="m">24</span> <span class="n">Species_J</span><span class="p">;</span><span class="n">Species_M</span>                                                                                                <span class="m">2.54</span> <span class="n">Tree_2</span>
+<span class="m">25</span> <span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_N</span>                                                                                      <span class="m">4.28</span> <span class="n">Tree_2</span>
+<span class="m">26</span> <span class="n">Species_G</span><span class="p">;</span><span class="n">Species_N</span>                                                                                                <span class="m">2.01</span> <span class="n">Tree_2</span>
+<span class="m">27</span> <span class="n">Species_B</span><span class="p">;</span><span class="n">Species_D</span><span class="p">;</span><span class="n">Species_O</span>                                                                                      <span class="m">4.42</span> <span class="n">Tree_2</span>
+<span class="m">28</span> <span class="n">Species_B</span><span class="p">;</span><span class="n">Species_O</span>                                                                                                <span class="m">2.53</span> <span class="n">Tree_2</span>
+<span class="m">29</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_B</span><span class="p">;</span><span class="n">Species_C</span><span class="p">;</span><span class="n">Species_D</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_G</span><span class="p">;</span><span class="n">Species_H</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_J</span><span class="p">;</span><span class="n">Species_K</span><span class="o">~</span>    <span class="m">60.0</span>  <span class="n">Tree_3</span>
+<span class="m">30</span> <span class="n">Species_C</span><span class="p">;</span><span class="n">Species_H</span>                                                                                               <span class="m">27.8</span>  <span class="n">Tree_3</span>
+<span class="m">31</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_B</span><span class="p">;</span><span class="n">Species_D</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_J</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span><span class="p">;</span><span class="n">Species_M</span><span class="o">~</span>    <span class="m">22.6</span>  <span class="n">Tree_3</span>
+<span class="m">32</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_J</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span><span class="p">;</span><span class="n">Species_M</span><span class="p">;</span><span class="n">Species_N</span>               <span class="m">19.4</span>  <span class="n">Tree_3</span>
+<span class="m">33</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span>                                                                  <span class="m">8.41</span> <span class="n">Tree_3</span>
+<span class="m">34</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span>                                                                            <span class="m">6.05</span> <span class="n">Tree_3</span>
+<span class="m">35</span> <span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span>                                                                                                <span class="m">1.95</span> <span class="n">Tree_3</span>
+<span class="m">36</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_F</span>                                                                                                <span class="m">2.24</span> <span class="n">Tree_3</span>
+<span class="m">37</span> <span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_J</span><span class="p">;</span><span class="n">Species_M</span><span class="p">;</span><span class="n">Species_N</span>                                                                  <span class="m">9.24</span> <span class="n">Tree_3</span>
+<span class="m">38</span> <span class="n">Species_J</span><span class="p">;</span><span class="n">Species_M</span>                                                                                                <span class="m">2.82</span> <span class="n">Tree_3</span>
+<span class="m">39</span> <span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_N</span>                                                                                      <span class="m">4.27</span> <span class="n">Tree_3</span>
+<span class="m">40</span> <span class="n">Species_G</span><span class="p">;</span><span class="n">Species_N</span>                                                                                                <span class="m">2.07</span> <span class="n">Tree_3</span>
+<span class="m">41</span> <span class="n">Species_B</span><span class="p">;</span><span class="n">Species_D</span><span class="p">;</span><span class="n">Species_O</span>                                                                                      <span class="m">4.05</span> <span class="n">Tree_3</span>
+<span class="m">42</span> <span class="n">Species_B</span><span class="p">;</span><span class="n">Species_O</span>                                                                                                <span class="m">1.69</span> <span class="n">Tree_3</span>
+
+<span class="nf">extractNodeAges</span><span class="p">(</span><span class="n">timeTrees</span><span class="p">,</span><span class="n">return_summary</span> <span class="o">=</span> <span class="s">&#39;mean&#39;</span><span class="p">)</span>
+
+<span class="c1"># A tibble: 14 x 2</span>
+   <span class="n">Clade</span>                                                                                                                    <span class="n">Node_Age</span>
+   <span class="o">&lt;</span><span class="n">chr</span><span class="o">&gt;</span>                                                                                                                       <span class="o">&lt;</span><span class="n">dbl</span><span class="o">&gt;</span>
+ <span class="m">1</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_B</span><span class="p">;</span><span class="n">Species_C</span><span class="p">;</span><span class="n">Species_D</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_G</span><span class="p">;</span><span class="n">Species_H</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_J</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span><span class="o">~</span>    <span class="m">60.0</span>
+ <span class="m">2</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_B</span><span class="p">;</span><span class="n">Species_D</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_J</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span><span class="p">;</span><span class="n">Species_M</span><span class="p">;</span><span class="n">Species_N</span><span class="o">~</span>    <span class="m">24.6</span>
+ <span class="m">3</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_J</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span><span class="p">;</span><span class="n">Species_M</span><span class="p">;</span><span class="n">Species_N</span>                         <span class="m">19.8</span>
+ <span class="m">4</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span>                                                                            <span class="m">8.59</span>
+ <span class="m">5</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_F</span>                                                                                                          <span class="m">2.07</span>
+ <span class="m">6</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span>                                                                                      <span class="m">6.28</span>
+ <span class="m">7</span> <span class="n">Species_B</span><span class="p">;</span><span class="n">Species_D</span><span class="p">;</span><span class="n">Species_O</span>                                                                                                <span class="m">4.23</span>
+ <span class="m">8</span> <span class="n">Species_B</span><span class="p">;</span><span class="n">Species_O</span>                                                                                                          <span class="m">2.15</span>
+ <span class="m">9</span> <span class="n">Species_C</span><span class="p">;</span><span class="n">Species_H</span>                                                                                                         <span class="m">27.8</span>
+<span class="m">10</span> <span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_J</span><span class="p">;</span><span class="n">Species_M</span><span class="p">;</span><span class="n">Species_N</span>                                                                            <span class="m">9.54</span>
+<span class="m">11</span> <span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_N</span>                                                                                                <span class="m">4.74</span>
+<span class="m">12</span> <span class="n">Species_G</span><span class="p">;</span><span class="n">Species_N</span>                                                                                                          <span class="m">2.50</span>
+<span class="m">13</span> <span class="n">Species_J</span><span class="p">;</span><span class="n">Species_M</span>                                                                                                          <span class="m">2.76</span>
+<span class="m">14</span> <span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span>                                                                                                          <span class="m">2.22</span>
+
+<span class="nf">extractNodeAges</span><span class="p">(</span><span class="n">timeTrees</span><span class="p">,</span><span class="n">return_summary</span> <span class="o">=</span> <span class="s">&#39;median&#39;</span><span class="p">)</span>
+
+<span class="c1"># A tibble: 14 x 2</span>
+   <span class="n">Clade</span>                                                                                                                    <span class="n">Node_Age</span>
+   <span class="o">&lt;</span><span class="n">chr</span><span class="o">&gt;</span>                                                                                                                       <span class="o">&lt;</span><span class="n">dbl</span><span class="o">&gt;</span>
+ <span class="m">1</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_B</span><span class="p">;</span><span class="n">Species_C</span><span class="p">;</span><span class="n">Species_D</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_G</span><span class="p">;</span><span class="n">Species_H</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_J</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span><span class="o">~</span>    <span class="m">60.0</span>
+ <span class="m">2</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_B</span><span class="p">;</span><span class="n">Species_D</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_J</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span><span class="p">;</span><span class="n">Species_M</span><span class="p">;</span><span class="n">Species_N</span><span class="o">~</span>    <span class="m">24.4</span>
+ <span class="m">3</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_J</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span><span class="p">;</span><span class="n">Species_M</span><span class="p">;</span><span class="n">Species_N</span>                         <span class="m">19.7</span>
+ <span class="m">4</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span>                                                                            <span class="m">8.41</span>
+ <span class="m">5</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_F</span>                                                                                                          <span class="m">2.24</span>
+ <span class="m">6</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span>                                                                                      <span class="m">6.05</span>
+ <span class="m">7</span> <span class="n">Species_B</span><span class="p">;</span><span class="n">Species_D</span><span class="p">;</span><span class="n">Species_O</span>                                                                                                <span class="m">4.23</span>
+ <span class="m">8</span> <span class="n">Species_B</span><span class="p">;</span><span class="n">Species_O</span>                                                                                                          <span class="m">2.24</span>
+ <span class="m">9</span> <span class="n">Species_C</span><span class="p">;</span><span class="n">Species_H</span>                                                                                                         <span class="m">27.8</span>
+<span class="m">10</span> <span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_J</span><span class="p">;</span><span class="n">Species_M</span><span class="p">;</span><span class="n">Species_N</span>                                                                            <span class="m">9.24</span>
+<span class="m">11</span> <span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_N</span>                                                                                                <span class="m">4.28</span>
+<span class="m">12</span> <span class="n">Species_G</span><span class="p">;</span><span class="n">Species_N</span>                                                                                                          <span class="m">2.07</span>
+<span class="m">13</span> <span class="n">Species_J</span><span class="p">;</span><span class="n">Species_M</span>                                                                                                          <span class="m">2.82</span>
+<span class="m">14</span> <span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span>                                                                                                          <span class="m">2.09</span>
+
+<span class="nf">extractNodeAges</span><span class="p">(</span><span class="n">timeTrees</span><span class="p">,</span><span class="n">return_summary</span> <span class="o">=</span> <span class="s">&#39;both&#39;</span><span class="p">)</span>
+
+<span class="c1"># A tibble: 14 x 5</span>
+   <span class="n">Clade</span>                                                                  <span class="n">Mean_Node_Age</span> <span class="n">Median_Node_Age</span> <span class="n">StdDev_Node_Age</span> <span class="n">MAD_Node_Age</span>
+   <span class="o">&lt;</span><span class="n">chr</span><span class="o">&gt;</span>                                                                          <span class="o">&lt;</span><span class="n">dbl</span><span class="o">&gt;</span>           <span class="o">&lt;</span><span class="n">dbl</span><span class="o">&gt;</span>           <span class="o">&lt;</span><span class="n">dbl</span><span class="o">&gt;</span>        <span class="o">&lt;</span><span class="n">dbl</span><span class="o">&gt;</span>
+ <span class="m">1</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_B</span><span class="p">;</span><span class="n">Species_C</span><span class="p">;</span><span class="n">Species_D</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_G</span><span class="o">~</span>         <span class="m">60.0</span>            <span class="m">60.0</span>          <span class="m">0.00841</span>      <span class="m">5.93e-9</span>
+ <span class="m">2</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_B</span><span class="p">;</span><span class="n">Species_D</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="o">~</span>         <span class="m">24.6</span>            <span class="m">24.4</span>          <span class="m">2.10</span>         <span class="m">2.69e+0</span>
+ <span class="m">3</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_J</span><span class="p">;</span><span class="n">Species_K</span><span class="o">~</span>         <span class="m">19.8</span>            <span class="m">19.7</span>          <span class="m">0.349</span>        <span class="m">3.55e-1</span>
+ <span class="m">4</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span>                               <span class="m">8.59</span>            <span class="m">8.41</span>         <span class="m">0.722</span>        <span class="m">6.56e-1</span>
+ <span class="m">5</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_F</span>                                                             <span class="m">2.07</span>            <span class="m">2.24</span>         <span class="m">0.305</span>        <span class="m">3.79e-3</span>
+ <span class="m">6</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span>                                         <span class="m">6.28</span>            <span class="m">6.05</span>         <span class="m">0.482</span>        <span class="m">1.51e-1</span>
+ <span class="m">7</span> <span class="n">Species_B</span><span class="p">;</span><span class="n">Species_D</span><span class="p">;</span><span class="n">Species_O</span>                                                   <span class="m">4.23</span>            <span class="m">4.23</span>         <span class="m">0.189</span>        <span class="m">2.70e-1</span>
+ <span class="m">8</span> <span class="n">Species_B</span><span class="p">;</span><span class="n">Species_O</span>                                                             <span class="m">2.15</span>            <span class="m">2.24</span>         <span class="m">0.427</span>        <span class="m">4.24e-1</span>
+ <span class="m">9</span> <span class="n">Species_C</span><span class="p">;</span><span class="n">Species_H</span>                                                            <span class="m">27.8</span>            <span class="m">27.8</span>          <span class="m">0.0149</span>       <span class="m">1.73e-2</span>
+<span class="m">10</span> <span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_J</span><span class="p">;</span><span class="n">Species_M</span><span class="p">;</span><span class="n">Species_N</span>                               <span class="m">9.54</span>            <span class="m">9.24</span>         <span class="m">1.35</span>         <span class="m">1.27e+0</span>
+<span class="m">11</span> <span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_N</span>                                                   <span class="m">4.74</span>            <span class="m">4.28</span>         <span class="m">0.813</span>        <span class="m">2.48e-2</span>
+<span class="m">12</span> <span class="n">Species_G</span><span class="p">;</span><span class="n">Species_N</span>                                                             <span class="m">2.50</span>            <span class="m">2.07</span>         <span class="m">0.797</span>        <span class="m">1.00e-1</span>
+<span class="m">13</span> <span class="n">Species_J</span><span class="p">;</span><span class="n">Species_M</span>                                                             <span class="m">2.76</span>            <span class="m">2.82</span>         <span class="m">0.191</span>        <span class="m">1.32e-1</span>
+<span class="m">14</span> <span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span>                                                             <span class="m">2.22</span>            <span class="m">2.09</span>         <span class="m">0.350</span>        <span class="m">2.16e-1</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../utility_functions/semiVector.html" class="btn btn-neutral float-right" title="semiVector" accesskey="n">Next →</a>
+      
+      
+        <a href="getTreeClades.html" class="btn btn-neutral" title="getTreeClades" accesskey="p">← Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Robert Literman.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE: 'true'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../_static/language_data.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

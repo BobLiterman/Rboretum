@@ -122,6 +122,6 @@ extractNodeAges <- function(tree,return_summary){
       tree_date_df <- tree_date_df %>% 
         select(Clade,Median_Node_Age,MAD_Node_Age) %>% `names<-`(c('Clade','Median_Node_Age','MAD_Node_Age'))
     }
-    return(tree_date_df)
   }
+  return(tree_date_df)
 }

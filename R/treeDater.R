@@ -63,7 +63,7 @@ treeDater <- function(tree,calibration_df,taxa,min_max,iterations){
       colnames(calibration_df) <- c('Taxon_1','Taxon_2','Min','Max')
       
       # Check coltypes
-      if(!is.character(calibration_df$Taxon_1) | !is.character(calibration_df$Taxon_2) | !is.numeric(Min) | !is.numeric(Max)){
+      if(!is.character(calibration_df$Taxon_1) | !is.character(calibration_df$Taxon_2) | !is.numeric(calibration_df$Min) | !is.numeric(calibration_df$Max)){
         stop("'calibration_df' should have 4 columns. (1) Taxon 1 (2) Taxon 2 (3) Min divergence time (4) Max divergence time")
       }
       

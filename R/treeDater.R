@@ -6,12 +6,14 @@
 #'   \item A single, rooted phylo object; or,
 #'   \item A rooted multiPhylo object where all trees support a single topology 
 #' }
-#' @param calibration_df A dataframe with 4 columns: (1) Taxon 1 (2) Taxon 2 (3) Min divergence time (4) Max divergence time; Multiple calibration points are allowed, so long as nodes are only calibrated once
+#' @param calibration_df A 4-column dataframe/tibble with calibration information: (1) Taxon 1 (2) Taxon 2 [to get MRCA] (3) Min divergence time (4) Max divergence time; Multiple calibration points are allowed, so long as nodes are only calibrated once [Supercedes 'taxa' argument]
+#' @param taxa A character vector (or semicolon-delimited set) of taxon IDs from which to find the MRCA and calibrate [One calibration point allowed; Superceded by 'calibration_df']
+#' @param min_max If using 'node', a two-element numeric vector [e.g. c(50,75)] that provides the minimum and maximum age estimates for the focal calibration node [Superceded by 'calibration_df'; min <= max]
 #' @param iterations How many times to estimate the age of each node prior to summarizing [Default: 1000]
 #' @return An ultrametric phylo object with branch lengths corresponding to time, or a multiPhylo of such trees.
 #' @export
 
-treeDater <- function(tree,calibration_df,iterations){
+treeDater <- function(tree,calibration_df,taxa,min_max,iterations){
   
   # Ensure tree is present and valid
   if(missing(tree)){
@@ -40,36 +42,83 @@ treeDater <- function(tree,calibration_df,iterations){
     iterations <- 1000
   }
 
-  # Ensure at least one calibration point if using 'chronos_cal'
-  if(missing(calibration_df)){
-    stop("If dating trees with 'chronos_cal', treeDater requires min/max divergence time estimates for at least one node in the tree to convert relative times to absoute times.")
-  } else if(!is.data.frame(calibration_df)){
-    stop("'calibration_df' should be a data frame.")
-  } else if(!ncol(calibration_df)==4){
-    stop("'calibration_df' should have 4 columns. (1) Taxon 1 (2) Taxon 2 (3) Min divergence time (4) Max divergence time")
-  } else{
-    
-    # In case data.frame contains factors
-    calibration_df <- as.data.frame(calibration_df) %>%
-      mutate_if(is.factor, as.character)
-    
-    # Set colnames
-    colnames(calibration_df) <- c('Taxon_1','Taxon_2','Min','Max')
-    
-    # Ensure all min time estimates are <= max time estimates
-    if(!all(calibration_df$Min <= calibration_df$Max)){
-      stop("The minimum divergence time estimates for some calibration data in 'calibration_df' are greater than their associated maximum divergence time estimate")
-    }
+  # Get calibration information
+  if(missing(calibration_df) & missing(taxa)){
+    stop("treeDater requires min/max divergence time estimates for at least one node in the tree to convert relative times to absoute times. Use 'calibration_df' or 'taxa'/'min_max'...")
   }
-
-  # Check that calibration taxa exist in tree
-  cal_taxa <- select(calibration_df,starts_with('Taxon')) %>% unlist() %>% unique()
   
-  if(!all(cal_taxa %in% tree_taxa)){
-    stop("Calibration data in 'calibration_df' contains information about taxa not present in 'tree'")
-  } else{
-    calibration_df$Two_Names <- as.character(paste(c(calibration_df$Taxon_1,calibration_df$Taxon_2),collapse = ";"))
-    calibration_df <- calibration_df %>% rowwise() %>% mutate(Two_Names = semiSorter(Two_Names))
+  if(!missing(calibration_df)){
+    
+    if(!is.data.frame(calibration_df)){
+      stop("'calibration_df' should be a data frame.")
+    } else if(!ncol(calibration_df)==4){
+      stop("'calibration_df' should have 4 columns. (1) Taxon 1 (2) Taxon 2 (3) Min divergence time (4) Max divergence time")
+    } else{
+      
+      # In case data.frame contains factors
+      calibration_df <- as.data.frame(calibration_df) %>%
+        mutate_if(is.factor, as.character)
+      
+      # Set colnames
+      colnames(calibration_df) <- c('Taxon_1','Taxon_2','Min','Max')
+      
+      # Check coltypes
+      if(!is.character(calibration_df$Taxon_1) | !is.character(calibration_df$Taxon_2) | !is.numeric(Min) | !is.numeric(Max)){
+        stop("'calibration_df' should have 4 columns. (1) Taxon 1 (2) Taxon 2 (3) Min divergence time (4) Max divergence time")
+      }
+      
+      # Ensure all min time estimates are <= max time estimates
+      if(!all(calibration_df$Min <= calibration_df$Max)){
+        stop("The minimum divergence time estimates for some calibration data in 'calibration_df' are greater than their associated maximum divergence time estimate")
+      }
+    }
+    
+    # Check that calibration taxa exist in tree
+    cal_taxa <- select(calibration_df,starts_with('Taxon')) %>% unlist() %>% unique()
+    
+    if(any(calibration_df$Taxon_1 == calibration_df$Taxon_2)){
+      stop("Taxon_1 and Taxon_2 from 'calibration_df' cannot be identical...")
+    } else if(!all(cal_taxa %in% tree_taxa)){
+      stop("Calibration data in 'calibration_df' contains information about taxa not present in 'tree'")
+    } else{
+      calibration_df <- calibration_df %>% rowwise() %>% mutate(Taxa = semiSorter(c(Taxon_1,Taxon_2))) %>% ungroup() %>% select(Taxa,Min,Max)
+    }
+  } 
+  
+  # If no calibration_df is provided...
+  if(missing(calibration_df)){
+    
+    if(missing(min_max)){ 
+      stop("If using 'taxa' to specify calibration node, you must also supply min and max bounds for node date calibration via min_max")
+    } else if(length(min_max)!=2){
+      stop("'min_max' should be a two-element numeric vector")
+    } else if(!is.numeric(min_max)){
+      stop("'min_max' should be a two-element numeric vector")
+    } else if(!(min_max[[1]]<=min_max[[2]])){
+      stop("min of 'min_max' is > max...")
+    } 
+    
+    if(!is.character(taxa)){
+      stop("'taxa' should be a character vector of taxon IDs (or a semicolon-delimited set)...")
+    } else if(!(length(taxa) >= 1)){
+      stop("'taxa' cannot be 0-length...")
+    } else if(length(taxa)==1){
+      if(!semiChecker(taxa)){
+        stop("Only one taxon ID provided, and it doesn't appear to be semicolon-delimited...")
+      } else{
+        cal_taxa <- unique(semiVector(taxa))
+      }
+    } else if(any(str_detect(taxa,";"))){
+        stop("Multiple 'taxa' provided, but semicolons detected?")
+      } else{
+        cal_taxa <- unique(taxa)
+      }
+
+    if(!all(cal_taxa %in% tree_taxa)){
+      stop("Calibration data provided by 'taxa' contains information about taxa not present in 'tree'")
+    } else{
+      calibration_df <- tibble(Taxa = semiSorter(cal_taxa),Min=min_max[[1]],Max=min_max[[2]])
+    }
   }
   
   # Process chronos trees
@@ -78,7 +127,7 @@ treeDater <- function(tree,calibration_df,iterations){
     date_tree <- tree[[i]]
     
     # Get nodes for MRCA for each calibration point
-    node <- purrr::map(.x=calibration_df$Two_Names,.f=function(x){ape::getMRCA(date_tree,tip=semiVector(x))}) %>% unlist()
+    node <- purrr::map(.x=calibration_df$Taxa,.f=function(x){ape::getMRCA(date_tree,tip=semiVector(x))}) %>% unlist()
     
     # Ensure all nodes are unique
     if(any(duplicated(node))){
@@ -125,7 +174,7 @@ treeDater <- function(tree,calibration_df,iterations){
     }
     
     if(tree_count == 1){
-      return(tree_chronos_export)
+      return_tree <- tree_chronos_export
     } else{
       return_tree[[i]] <- tree_chronos_export
     }

@@ -4,7 +4,7 @@
 \alias{treeDater}
 \title{Rboretum Tree Dater}
 \usage{
-treeDater(tree, calibration_df, iterations)
+treeDater(tree, calibration_df, taxa, min_max, iterations)
 }
 \arguments{
 \item{tree}{Tree(s) to extract date information from. Options include:
@@ -13,7 +13,11 @@ treeDater(tree, calibration_df, iterations)
   \item A rooted multiPhylo object where all trees support a single topology 
 }}
 
-\item{calibration_df}{A dataframe with 4 columns: (1) Taxon 1 (2) Taxon 2 (3) Min divergence time (4) Max divergence time; Multiple calibration points are allowed, so long as nodes are only calibrated once}
+\item{calibration_df}{A 4-column dataframe/tibble with calibration information: (1) Taxon 1 (2) Taxon 2 [to get MRCA] (3) Min divergence time (4) Max divergence time; Multiple calibration points are allowed, so long as nodes are only calibrated once [Supercedes 'taxa' argument]}
+
+\item{taxa}{A character vector (or semicolon-delimited set) of taxon IDs from which to find the MRCA and calibrate [One calibration point allowed; Superceded by 'calibration_df']}
+
+\item{min_max}{If using 'node', a two-element numeric vector [e.g. c(50,75)] that provides the minimum and maximum age estimates for the focal calibration node [Superceded by 'calibration_df'; min <= max]}
 
 \item{iterations}{How many times to estimate the age of each node prior to summarizing [Default: 1000]}
 }

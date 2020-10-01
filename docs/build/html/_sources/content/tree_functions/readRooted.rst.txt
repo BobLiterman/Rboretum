@@ -68,7 +68,7 @@ Example Usage
   [1] FALSE
 
   myTree <- readRooted(to_root = rb_tree1_path, root_taxa = c('Species_C','Species_H'))
-  ape::is.rooted(myTree
+  ape::is.rooted(myTree)
   [1] TRUE
 
   # Read in a multiple unrooted trees and root at the clade of Species C + Species H

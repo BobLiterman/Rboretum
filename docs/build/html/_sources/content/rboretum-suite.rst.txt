@@ -17,6 +17,7 @@ Tree Functions
   tree_functions/summarizeMultiphylo
   tree_functions/getTreeClades
   tree_functions/extractNodeAges
+  tree_functions/getUniqueTopologies
 
 Utility Functions
 ------------------

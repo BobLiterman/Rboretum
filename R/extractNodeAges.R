@@ -106,32 +106,22 @@ extractNodeAges <- function(tree,return_summary){
   tree_date_df <- tree_df_list %>% bind_rows()
   
   if(return_summary){
-    if(summary_col == 'both'){
+    
+    tree_date_df <- tree_date_df %>% 
+      select(-Tree_Name) %>% 
+      group_by(Clade) %>% 
+      summarise(Mean_Node_Age=mean(Node_Age),Median_Node_Age=median(Node_Age),StdDev_Node_Age=sd(Node_Age),MAD_Node_Age=mad(Node_Age)) %>%
+      rowwise() %>%
+      mutate(CI_95_Low = Mean_Node_Age - ((qnorm(0.975)*StdDev_Node_Age)/sqrt(tree_count)),
+             CI_95_High = Mean_Node_Age + ((qnorm(0.975)*StdDev_Node_Age)/sqrt(tree_count)))
+  
+    if(summary_col == 'mean'){
       tree_date_df <- tree_date_df %>% 
-        select(-Tree_Name) %>% 
-        group_by(Clade) %>% 
-        summarise(Mean_Node_Age=mean(Node_Age),Median_Node_Age=median(Node_Age),StdDev_Node_Age=sd(Node_Age),MAD_Node_Age=mad(Node_Age),Count=tally(Clade)) %>%
-        rowwise() %>%
-        mutate(CI_95_Low = Mean_Node_Age - ((qnorm(0.975)*StdDev_Node_Age)/sqrt(Count)),
-               CI_95_High = Mean_Node_Age + ((qnorm(0.975)*StdDev_Node_Age)/sqrt(Count))) %>%
-        select(-Count)
-        
-    } else if(summary_col == 'mean'){
-      tree_date_df <- tree_date_df %>% 
-        select(-Tree_Name) %>% 
-        group_by(Clade) %>% 
-        summarise(Mean_Node_Age=mean(Node_Age),StdDev_Node_Age = sd(Node_Age),Count=tally(Clade)) %>%
-        rowwise() %>%
-        mutate(CI_95_Low = Mean_Node_Age - ((qnorm(0.975)*StdDev_Node_Age)/sqrt(Count)),
-               CI_95_High = Mean_Node_Age + ((qnorm(0.975)*StdDev_Node_Age)/sqrt(Count))) %>%
-        select(Clade,Mean_Node_Age,CI_95_Low,CI_95_High) %>% `names<-`(c('Clade','Node_Age','CI_95_Low','CI_95_High'))
+        select(Clade,Mean_Node_Age,StdDev_Node_Age,CI_95_Low,CI_95_High) %>% `names<-`(c('Clade','Mean_Node_Age','StdDev_Node_Age','CI_95_Low','CI_95_High'))
     } else if(summary_col == 'median'){
       tree_date_df <- tree_date_df %>% 
-        select(-Tree_Name) %>% 
-        group_by(Clade) %>% 
-        summarise(Median_Node_Age=median(Node_Age)) %>%
-        select(Clade,Median_Node_Age) %>% `names<-`(c('Clade','Node_Age'))
+        select(Clade,Median_Node_Age,MAD_Node_Age) %>% `names<-`(c('Clade','Median_Node_Age','MAD_Node_Age'))
     }
+    return(tree_date_df)
   }
-  return(tree_date_df)
 }

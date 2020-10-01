@@ -14,4 +14,4 @@ treePlotter(myUniqueTrees_1,basic_plot = TRUE,xmin=-0.5,xmax=10,taxa_font_size =
 # Reduce to unique topologies, use dummy names for new trees
 myUniqueTrees_2 <- getUniqueTopologies(trees = myMultiPhylo,tree_names = FALSE,print_table = TRUE)
 myUniqueTrees_2
-treePlotter(myUniqueTrees_2,basic_plot = TRUE,xmax=10,taxa_font_size = 3,node_label_font_size = 3)
+treePlotter(myUniqueTrees_2,basic_plot = TRUE,xmin=-0.5,xmax=10,taxa_font_size = 3,node_label_font_size = 3)

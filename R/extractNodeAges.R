@@ -111,14 +111,11 @@ extractNodeAges <- function(tree,return_summary){
       select(-Tree_Name) %>% 
       group_by(Clade) %>% 
       summarise(Mean_Node_Age=mean(Node_Age),Median_Node_Age=median(Node_Age),StdDev_Node_Age=sd(Node_Age),MAD_Node_Age=mad(Node_Age)) %>%
-      rowwise() %>%
-      mutate(CI_95_Low = Mean_Node_Age - ((qnorm(0.975)*StdDev_Node_Age)/sqrt(tree_count)),
-             CI_95_High = Mean_Node_Age + ((qnorm(0.975)*StdDev_Node_Age)/sqrt(tree_count))) %>%
       ungroup()
   
     if(summary_col == 'mean'){
       tree_date_df <- tree_date_df %>% 
-        select(Clade,Mean_Node_Age,StdDev_Node_Age,CI_95_Low,CI_95_High) %>% `names<-`(c('Clade','Mean_Node_Age','StdDev_Node_Age','CI_95_Low','CI_95_High'))
+        select(Clade,Mean_Node_Age,StdDev_Node_Age) %>% `names<-`(c('Clade','Mean_Node_Age','StdDev_Node_Age'))
     } else if(summary_col == 'median'){
       tree_date_df <- tree_date_df %>% 
         select(Clade,Median_Node_Age,MAD_Node_Age) %>% `names<-`(c('Clade','Median_Node_Age','MAD_Node_Age'))

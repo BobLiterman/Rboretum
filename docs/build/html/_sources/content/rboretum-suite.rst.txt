@@ -18,6 +18,7 @@ Tree Functions
   tree_functions/getTreeClades
   tree_functions/extractNodeAges
   tree_functions/getUniqueTopologies
+  tree_functions/treeDater
 
 Utility Functions
 ------------------

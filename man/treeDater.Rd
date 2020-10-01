@@ -17,7 +17,7 @@ treeDater(tree, calibration_df, taxa, min_max, iterations)
 
 \item{taxa}{A character vector (or semicolon-delimited set) of taxon IDs from which to find the MRCA and calibrate [One calibration point allowed; Superceded by 'calibration_df']}
 
-\item{min_max}{If using 'node', a two-element numeric vector [e.g. c(50,75)] that provides the minimum and maximum age estimates for the focal calibration node [Superceded by 'calibration_df'; min <= max]}
+\item{min_max}{If using 'taxa', a two-element numeric vector [e.g. c(50,75)] that provides the minimum and maximum age estimates for the focal calibration node [Superceded by 'calibration_df'; min <= max]}
 
 \item{iterations}{How many times to estimate the age of each node prior to summarizing [Default: 1000]}
 }

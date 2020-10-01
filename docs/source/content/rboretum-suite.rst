@@ -30,5 +30,4 @@ Utility Functions
   utility_functions/semiSorter
   utility_functions/tandemPlotter
   utility_functions/convertLabels
-
-
+  utility_functions/tableCount

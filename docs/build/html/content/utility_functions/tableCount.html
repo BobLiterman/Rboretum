@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>tandemPlotter &mdash; Rboretum 1.0 documentation</title>
+  <title>tableCount &mdash; Rboretum 1.0 documentation</title>
   
 
   
@@ -37,8 +37,7 @@
         <link rel="search" title="Search" href="../../search.html"/>
     <link rel="top" title="Rboretum 1.0 documentation" href="../../index.html"/>
         <link rel="up" title="Rboretum Functions" href="../rboretum-suite.html"/>
-        <link rel="next" title="convertLabels" href="convertLabels.html"/>
-        <link rel="prev" title="semiSorter" href="semiSorter.html"/> 
+        <link rel="prev" title="convertLabels" href="convertLabels.html"/> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -104,9 +103,9 @@
 <li class="toctree-l2"><a class="reference internal" href="semiVector.html"><strong>semiVector</strong></a></li>
 <li class="toctree-l2"><a class="reference internal" href="vectorSemi.html"><strong>vectorSemi</strong></a></li>
 <li class="toctree-l2"><a class="reference internal" href="semiSorter.html"><strong>semiSorter</strong></a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#"><strong>tandemPlotter</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="tandemPlotter.html"><strong>tandemPlotter</strong></a></li>
 <li class="toctree-l2"><a class="reference internal" href="convertLabels.html"><strong>convertLabels</strong></a></li>
-<li class="toctree-l2"><a class="reference internal" href="tableCount.html"><strong>tableCount</strong></a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><strong>tableCount</strong></a></li>
 </ul>
 </li>
 </ul>
@@ -152,13 +151,13 @@
         
           <li><a href="../rboretum-suite.html"><strong>Rboretum Functions</strong></a> &raquo;</li>
         
-      <li><strong>tandemPlotter</strong></li>
+      <li><strong>tableCount</strong></li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../../_sources/content/utility_functions/tandemPlotter.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/content/utility_functions/tableCount.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -169,13 +168,13 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="tandemplotter">
-<span id="id1"></span><h1><strong>tandemPlotter</strong><a class="headerlink" href="#tandemplotter" title="Permalink to this headline">¶</a></h1>
-<p><em>tandemPlotter</em> calls ggdraw, and is a quick way to look at multiple plots.</p>
+  <div class="section" id="tablecount">
+<span id="id1"></span><h1><strong>tableCount</strong><a class="headerlink" href="#tablecount" title="Permalink to this headline">¶</a></h1>
+<p><em>tableCount</em> queries an R table for a specific item, and returns the count of that item. If the item does not occur in the table, tableCount() returns 0.</p>
 <div class="section" id="function-and-arguments">
 <h2>Function and Arguments<a class="headerlink" href="#function-and-arguments" title="Permalink to this headline">¶</a></h2>
 <p><strong>Usage</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tandemPlotter</span><span class="p">(</span><span class="n">plots</span><span class="p">,</span><span class="n">vertical</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">tableCount</span><span class="p">(</span><span class="n">search_table</span><span class="p">,</span><span class="n">name</span><span class="p">)</span>
 </pre></div>
 </div>
 <table class="docutils align-default">
@@ -189,33 +188,49 @@
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><strong>plots</strong></p></td>
-<td><p>Multiple ggplot objects specified separately, or a list of ggplot objects</p></td>
+<tr class="row-even"><td><p><strong>search_table</strong></p></td>
+<td><p>R Table (Result of ‘table()’ call)</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>vertical</strong></p></td>
-<td><p>If TRUE, combine plots vertically [Defualt: FALSE, combine horizontally]</p></td>
+<tr class="row-odd"><td><p><strong>name</strong></p></td>
+<td><p>Name of item you want the count for</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="section" id="example-usage">
 <h2>Example Usage<a class="headerlink" href="#example-usage" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Script: Rboretum/docs/content/Doc_Function_Scripts/tandemPlotter.R</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Script: Rboretum/docs/content/Doc_Function_Scripts/tableCount.R</span>
 
 <span class="nf">library</span><span class="p">(</span><span class="n">Rboretum</span><span class="p">)</span>
 
-<span class="n">plot_1</span> <span class="o">&lt;-</span> <span class="nf">ggtree</span><span class="p">(</span><span class="n">ape</span><span class="o">::</span><span class="nf">rtree</span><span class="p">(</span><span class="m">10</span><span class="p">),</span><span class="n">branch.length</span> <span class="o">=</span> <span class="s">&#39;none&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="nf">geom_tiplab</span><span class="p">(</span><span class="n">offset</span><span class="o">=</span><span class="n">.</span><span class="m">2</span><span class="p">)</span>
-<span class="n">plot_2</span> <span class="o">&lt;-</span> <span class="nf">ggtree</span><span class="p">(</span><span class="n">ape</span><span class="o">::</span><span class="nf">rtree</span><span class="p">(</span><span class="m">10</span><span class="p">),</span><span class="n">branch.length</span> <span class="o">=</span> <span class="s">&#39;none&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="nf">geom_tiplab</span><span class="p">(</span><span class="n">offset</span><span class="o">=</span><span class="m">-.4</span><span class="p">)</span> <span class="o">+</span> <span class="nf">scale_x_reverse</span><span class="p">()</span>
-<span class="n">plot_3</span> <span class="o">&lt;-</span> <span class="nf">ggtree</span><span class="p">(</span><span class="n">ape</span><span class="o">::</span><span class="nf">rtree</span><span class="p">(</span><span class="m">25</span><span class="p">),</span><span class="n">branch.length</span> <span class="o">=</span> <span class="s">&#39;none&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="nf">geom_tiplab</span><span class="p">(</span><span class="n">offset</span><span class="o">=</span><span class="n">.</span><span class="m">2</span><span class="p">)</span>
+<span class="n">myVector</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;a&#39;</span><span class="p">,</span><span class="s">&#39;b&#39;</span><span class="p">,</span><span class="s">&#39;b&#39;</span><span class="p">,</span><span class="s">&#39;c&#39;</span><span class="p">,</span><span class="s">&#39;c&#39;</span><span class="p">,</span><span class="s">&#39;c&#39;</span><span class="p">)</span>
+<span class="n">myTable</span> <span class="o">&lt;-</span> <span class="nf">table</span><span class="p">(</span><span class="n">myVector</span><span class="p">)</span>
 
-<span class="nf">tandemPlotter</span><span class="p">(</span><span class="n">plot_1</span><span class="p">,</span><span class="n">plot_2</span><span class="p">)</span>
-<span class="nf">tandemPlotter</span><span class="p">(</span><span class="n">plot_1</span><span class="p">,</span><span class="n">plot_2</span><span class="p">,</span><span class="n">vertical</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
-<span class="nf">tandemPlotter</span><span class="p">(</span><span class="nf">tandemPlotter</span><span class="p">(</span><span class="n">plot_1</span><span class="p">,</span><span class="n">plot_2</span><span class="p">),</span><span class="n">plot_3</span><span class="p">,</span><span class="n">vertical</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
+<span class="n">myTable</span><span class="p">[[</span><span class="s">&#39;a&#39;</span><span class="p">]]</span>
+<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="m">1</span>
+
+<span class="nf">tableCount</span><span class="p">(</span><span class="n">search_table</span> <span class="o">=</span> <span class="n">myTable</span><span class="p">,</span><span class="n">name</span> <span class="o">=</span> <span class="s">&#39;a&#39;</span><span class="p">)</span>
+<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="m">1</span>
+
+<span class="n">myTable</span><span class="p">[[</span><span class="s">&#39;b&#39;</span><span class="p">]]</span>
+<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="m">2</span>
+
+<span class="nf">tableCount</span><span class="p">(</span><span class="n">myTable</span><span class="p">,</span><span class="s">&#39;b&#39;</span><span class="p">)</span>
+<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="m">2</span>
+
+<span class="n">myTable</span><span class="p">[[</span><span class="s">&#39;c&#39;</span><span class="p">]]</span>
+<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="m">3</span>
+
+<span class="nf">tableCount</span><span class="p">(</span><span class="n">myTable</span><span class="p">,</span><span class="s">&#39;c&#39;</span><span class="p">)</span>
+<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="m">3</span>
+
+<span class="n">myTable</span><span class="p">[[</span><span class="s">&#39;d&#39;</span><span class="p">]]</span>
+<span class="n">Error</span> <span class="n">in</span> <span class="n">myTable</span><span class="p">[[</span><span class="s">&quot;d&quot;</span><span class="p">]]</span> <span class="o">:</span> <span class="n">subscript</span> <span class="n">out</span> <span class="n">of</span> <span class="n">bounds</span>
+
+<span class="nf">tableCount</span><span class="p">(</span><span class="n">myTable</span><span class="p">,</span><span class="s">&#39;d&#39;</span><span class="p">)</span>
+<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="m">0</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/tandemPlotter_1.png"><img alt="tandemPlotter(plot_1,plot_2)" src="../../_images/tandemPlotter_1.png" style="width: 400px;" /></a>
-<a class="reference internal image-reference" href="../../_images/tandemPlotter_2.png"><img alt="tandemPlotter(plot_1,plot_2,vertical=TRUE)" src="../../_images/tandemPlotter_2.png" style="width: 400px;" /></a>
-<a class="reference internal image-reference" href="../../_images/tandemPlotter_3.png"><img alt="tandemPlotter(tandemPlotter(plot_1,plot_2),plot_3,vertical = TRUE)" src="../../_images/tandemPlotter_3.png" style="width: 400px;" /></a>
 </div>
 </div>
 
@@ -226,10 +241,8 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="convertLabels.html" class="btn btn-neutral float-right" title="convertLabels" accesskey="n">Next →</a>
       
-      
-        <a href="semiSorter.html" class="btn btn-neutral" title="semiSorter" accesskey="p">← Previous</a>
+        <a href="convertLabels.html" class="btn btn-neutral" title="convertLabels" accesskey="p">← Previous</a>
       
     </div>
   

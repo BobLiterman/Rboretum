@@ -26,11 +26,11 @@ sourceRboretum <- function(){
   
   rb_all_unrooted <<- c(rb_tree1_path,rb_tree2_path,rb_tree3_path,rb_tree4_path,rb_tree5_path)
   
-  rb_align1_path <<- paste0(rb_unroot_dir,'/Gene_1.phylip')
-  rb_align2_path <<- paste0(rb_unroot_dir,'/Gene_2.phylip')
-  rb_align3_path <<- paste0(rb_unroot_dir,'/Gene_3.phylip')
-  rb_align4_path <<- paste0(rb_unroot_dir,'/Gene_4.phylip')
-  rb_align5_path <<- paste0(rb_unroot_dir,'/Gene_5.phylip')
+  rb_align1_path <<- paste0(rb_alignment_dir,'/Gene_1.phylip')
+  rb_align2_path <<- paste0(rb_alignment_dir,'/Gene_2.phylip')
+  rb_align3_path <<- paste0(rb_alignment_dir,'/Gene_3.phylip')
+  rb_align4_path <<- paste0(rb_alignment_dir,'/Gene_4.phylip')
+  rb_align5_path <<- paste0(rb_alignment_dir,'/Gene_5.phylip')
   
   rb_all_align <<- c(rb_align1_path,rb_align2_path,rb_align3_path,rb_align4_path,rb_align5_path)
   

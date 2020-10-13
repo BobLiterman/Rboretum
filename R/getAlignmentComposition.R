@@ -51,6 +51,16 @@ getAlignmentComposition <- function(alignment_path,species_info,alignment_name,p
     suffix <- paste(c("(",paste(suffix,collapse = "|"),")"),collapse = '')
   }
   
+  if(length(prefix)==0 & length(suffix)==0){
+    align_regex <- ''
+  } else if(length(prefix)>0 & length(suffix)==0){
+    align_regex <- prefix
+  } else if(length(prefix)==0 & length(suffix)>0){
+    align_regex <- suffix
+  } else if(length(prefix)>0 & length(suffix)>0){
+    align_regex <- paste(paste(c(prefix,"(.*)",suffix),collapse = ""))
+  }
+  
   isFile <- file.exists(alignment_path) & !dir.exists(alignment_path)
   isDir <- dir.exists(alignment_path) & !isFile
   

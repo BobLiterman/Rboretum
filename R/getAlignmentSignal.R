@@ -187,7 +187,7 @@ getAlignmentSignal <- function(alignment_path,species_info,use_gaps,alignment_na
       select(-index) %>%
       mutate_all(~na_if(., 'NaN')) %>%
       rowwise() %>%
-      mutate(All_Site_Bases = Rboertum::semiSorter(All_Site_Bases)) %>%
+      mutate(All_Site_Bases = semiSorter(All_Site_Bases)) %>%
       ungroup()
   } else{
     splits_df = purrr::map(.x=1:alignment_count,.f=function(x){splitsProcessor(alignment_path[x],species_info[x],gap_list[x],alignment_name[x])}) %>% do.call(rbind, .) %>%
@@ -195,7 +195,7 @@ getAlignmentSignal <- function(alignment_path,species_info,use_gaps,alignment_na
       select(-index) %>%
       mutate_all(~na_if(., 'NaN')) %>%
       rowwise() %>%
-      mutate(All_Site_Bases = Rboertum::semiSorter(All_Site_Bases)) %>%
+      mutate(All_Site_Bases = semiSorter(All_Site_Bases)) %>%
       ungroup()
   }
   

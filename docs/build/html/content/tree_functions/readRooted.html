@@ -244,7 +244,7 @@
 
 <span class="c1"># Read in a single tree and root at the clade of Species C + Species H</span>
 <span class="n">rb_tree1_path</span>
-<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;&lt;PACKAGE_DIR&gt;/inst/extdata/unrootedTrees/Gene_1.nwk&quot;</span>
+<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;&lt;PACKAGE_DIR&gt;/extdata/unrootedTrees/Gene_1.nwk&quot;</span>
 
 <span class="n">raw_tree</span> <span class="o">&lt;-</span> <span class="n">ape</span><span class="o">::</span><span class="nf">read.tree</span><span class="p">(</span><span class="n">rb_tree1_path</span><span class="p">)</span>
 <span class="n">ape</span><span class="o">::</span><span class="nf">is.rooted</span><span class="p">(</span><span class="n">raw_tree</span><span class="p">)</span>
@@ -256,11 +256,11 @@
 
 <span class="c1"># Read in a multiple unrooted trees and root at the clade of Species C + Species H</span>
 <span class="n">rb_all_unrooted</span>
-<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;&lt;PACKAGE_DIR&gt;/inst/extdata/unrootedTrees/Gene_1.nwk&quot;</span>
-<span class="p">[</span><span class="m">2</span><span class="p">]</span> <span class="s">&quot;&lt;PACKAGE_DIR&gt;/inst/extdata/unrootedTrees/Gene_2.nwk&quot;</span>
-<span class="p">[</span><span class="m">3</span><span class="p">]</span> <span class="s">&quot;&lt;PACKAGE_DIR&gt;/inst/extdata/unrootedTrees/Gene_3.nwk&quot;</span>
-<span class="p">[</span><span class="m">4</span><span class="p">]</span> <span class="s">&quot;&lt;PACKAGE_DIR&gt;/inst/extdata/unrootedTrees/Gene_4.nwk&quot;</span>
-<span class="p">[</span><span class="m">5</span><span class="p">]</span> <span class="s">&quot;&lt;PACKAGE_DIR&gt;/inst/extdata/unrootedTrees/Gene_5.nwk&quot;</span>
+<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;&lt;PACKAGE_DIR&gt;/extdata/unrootedTrees/Gene_1.nwk&quot;</span>
+<span class="p">[</span><span class="m">2</span><span class="p">]</span> <span class="s">&quot;&lt;PACKAGE_DIR&gt;/extdata/unrootedTrees/Gene_2.nwk&quot;</span>
+<span class="p">[</span><span class="m">3</span><span class="p">]</span> <span class="s">&quot;&lt;PACKAGE_DIR&gt;/extdata/unrootedTrees/Gene_3.nwk&quot;</span>
+<span class="p">[</span><span class="m">4</span><span class="p">]</span> <span class="s">&quot;&lt;PACKAGE_DIR&gt;/extdata/unrootedTrees/Gene_4.nwk&quot;</span>
+<span class="p">[</span><span class="m">5</span><span class="p">]</span> <span class="s">&quot;&lt;PACKAGE_DIR&gt;/extdata/unrootedTrees/Gene_5.nwk&quot;</span>
 
 <span class="n">purrr</span><span class="o">::</span><span class="nf">map</span><span class="p">(</span><span class="n">.x</span><span class="o">=</span><span class="n">rb_all_unrooted</span><span class="p">,</span><span class="n">.f</span><span class="o">=</span><span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">){</span><span class="n">ape</span><span class="o">::</span><span class="nf">read.tree</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">%&gt;%</span> <span class="n">ape</span><span class="o">::</span><span class="nf">is.rooted</span><span class="p">(</span><span class="n">.</span><span class="p">)})</span> <span class="o">%&gt;%</span> <span class="nf">unlist</span><span class="p">()</span>
 <span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="kc">FALSE</span> <span class="kc">FALSE</span> <span class="kc">FALSE</span> <span class="kc">FALSE</span> <span class="kc">FALSE</span>

@@ -37,11 +37,11 @@ Example Usage
   
   # Read in ultrametric timetrees (branch lengths ~ time)
   rb_timeTree1_path
-  [1] "C:/Users/Robert.Literman/Documents/R/win-library/4.0/Rboretum/extdata/timeTrees/Chronogram_1.nwk"
+  [1] "<PACKAGE_DIR>/extdata/timeTrees/Chronogram_1.nwk"
   rb_timeTree2_path
-  [1] "C:/Users/Robert.Literman/Documents/R/win-library/4.0/Rboretum/extdata/timeTrees/Chronogram_2.nwk"
+  [1] "<PACKAGE_DIR>/extdata/timeTrees/Chronogram_2.nwk"
   rb_timeTree3_path
-  [1] "C:/Users/Robert.Literman/Documents/R/win-library/4.0/Rboretum/extdata/timeTrees/Chronogram_3.nwk"
+  [1] "<PACKAGE_DIR>/extdata/timeTrees/Chronogram_3.nwk"
 
   timeTree_1 <- readRooted(to_root = rb_timeTree1_path,root_taxa = c('Species_C','Species_H'))
   timeTree_2 <- readRooted(to_root = rb_timeTree2_path,root_taxa = c('Species_C','Species_H'))

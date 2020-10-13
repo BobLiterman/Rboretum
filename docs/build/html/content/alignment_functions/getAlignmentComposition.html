@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>getAlignmentSpecies &mdash; Rboretum 1.0 documentation</title>
+  <title>getAlignmentComposition &mdash; Rboretum 1.0 documentation</title>
   
 
   
@@ -37,8 +37,8 @@
         <link rel="search" title="Search" href="../../search.html"/>
     <link rel="top" title="Rboretum 1.0 documentation" href="../../index.html"/>
         <link rel="up" title="Rboretum Functions" href="../rboretum-suite.html"/>
-        <link rel="next" title="getSpeciesComposition" href="getSpeciesComposition.html"/>
-        <link rel="prev" title="getAlignmentComposition" href="getAlignmentComposition.html"/> 
+        <link rel="next" title="getAlignmentSpecies" href="getAlignmentSpecies.html"/>
+        <link rel="prev" title="Rboretum Functions" href="../rboretum-suite.html"/> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -91,8 +91,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../installation.html"><strong>Installing Rboretum</strong></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../loading.html"><strong>Loading Rboretum</strong></a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../rboretum-suite.html"><strong>Rboretum Functions</strong></a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="getAlignmentComposition.html"><strong>getAlignmentComposition</strong></a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#"><strong>getAlignmentSpecies</strong></a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><strong>getAlignmentComposition</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="getAlignmentSpecies.html"><strong>getAlignmentSpecies</strong></a></li>
 <li class="toctree-l2"><a class="reference internal" href="getSpeciesComposition.html"><strong>getSpeciesComposition</strong></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tree_functions/checkTips.html"><strong>checkTips</strong></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tree_functions/extractNodeAges.html"><strong>extractNodeAges</strong></a></li>
@@ -156,13 +156,13 @@
         
           <li><a href="../rboretum-suite.html"><strong>Rboretum Functions</strong></a> &raquo;</li>
         
-      <li><strong>getAlignmentSpecies</strong></li>
+      <li><strong>getAlignmentComposition</strong></li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../../_sources/content/alignment_functions/getAlignmentSpecies.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/content/alignment_functions/getAlignmentComposition.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -173,13 +173,13 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="getalignmentspecies">
-<span id="id1"></span><h1><strong>getAlignmentSpecies</strong><a class="headerlink" href="#getalignmentspecies" title="Permalink to this headline">¶</a></h1>
-<p><em>getAlignmentSpecies</em> returns the species IDs from an alignment file, specified by <em>alignment_path</em></p>
+  <div class="section" id="getalignmentcomposition">
+<span id="id1"></span><h1><strong>getAlignmentComposition</strong><a class="headerlink" href="#getalignmentcomposition" title="Permalink to this headline">¶</a></h1>
+<p><em>getAlignmentComposition</em> takes one or more alignment files and returns information about the sequence content, including base counts, ‘N’ counts, and gap counts</p>
 <div class="section" id="function-and-arguments">
 <h2>Function and Arguments<a class="headerlink" href="#function-and-arguments" title="Permalink to this headline">¶</a></h2>
 <p><strong>Usage</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">getAlignmentSpecies</span> <span class="o">&lt;-</span> <span class="n">function</span><span class="p">(</span><span class="n">alignment_path</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">getAlignmentComposition</span> <span class="o">&lt;-</span> <span class="n">function</span><span class="p">(</span><span class="n">alignment_path</span><span class="p">,</span><span class="n">species_info</span><span class="p">,</span><span class="n">alignment_name</span><span class="p">,</span><span class="n">prefix</span><span class="p">,</span><span class="n">suffix</span><span class="p">)</span>
 </pre></div>
 </div>
 <table class="docutils align-default">
@@ -194,31 +194,72 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p><strong>alignment_path</strong></p></td>
-<td><p>An absolute or relative path to the alignment file from which you want to extract labels</p></td>
+<td><p>An absolute or relative path to an alignment file or a directory containing multiple alignments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>species_info</strong></p></td>
+<td><p>A list of species to consider, provided as a phylo, multiPhlyo, character vector or labels or a semicolon-delimited string [Default: all species]</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>alignment_name</strong></p></td>
+<td><p>A character vector containing desired alignment IDs [Default: Derive name from filename]</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>prefix</strong></p></td>
+<td><p>If <strong>alignment_path</strong> points to a directory, only query files starting with <strong>prefix</strong> (e.g. ‘Alignment’) [Default: Use all files in directory]</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>suffix</strong></p></td>
+<td><p>If <strong>alignment_path</strong> points to a directory, only query files ending wtih <strong>suffix</strong> (e.g. ‘.nex’) [Default: Use all files in directory]</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="section" id="example-usage">
 <h2>Example Usage<a class="headerlink" href="#example-usage" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Script: Rboretum/docs/content/Doc_Function_Scripts/getAlignmentSpecies.R</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Script: Rboretum/docs/content/Doc_Function_Scripts/getAlignmentComposition.R</span>
 
 <span class="nf">library</span><span class="p">(</span><span class="n">Rboretum</span><span class="p">)</span>
 
 <span class="c1"># Set test data directory</span>
 <span class="nf">sourceRboretum</span><span class="p">()</span>
 
-<span class="c1"># Set alignment path</span>
+<span class="c1"># Set path to alignment data</span>
 <span class="n">myAlignmentFile</span> <span class="o">&lt;-</span> <span class="n">rb_align1_path</span>
+<span class="n">myAlignmentDir</span> <span class="o">&lt;-</span> <span class="n">rb_alignment_dir</span>
 
-<span class="n">myAlignmentFile</span>
-<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;&lt;PACKAGE_DIR&gt;/extdata/alignments/Gene_1.phylip&quot;</span>
+<span class="c1"># Get alignment composition information for a single alignment</span>
+<span class="nf">getAlignmentComposition</span><span class="p">(</span><span class="n">alignment_path</span> <span class="o">=</span> <span class="n">myAlignmentFile</span><span class="p">)</span>
 
+  <span class="n">Alignment_Name</span> <span class="n">Alignment_Length</span> <span class="n">Percent_GC</span> <span class="n">Percent_N</span> <span class="n">Percent_Gap</span>
+<span class="m">1</span>  <span class="n">Gene_1.phylip</span>             <span class="m">2000</span>  <span class="m">0.4940333</span>         <span class="m">0</span>           <span class="m">0</span>
 
-<span class="c1"># Get sample IDs from alignment</span>
-<span class="nf">getAlignmentSpecies</span><span class="p">(</span><span class="n">alignment_path</span> <span class="o">=</span> <span class="n">myAlignmentFile</span><span class="p">)</span>
+<span class="c1"># Get alignment composition information from all .phylip files in a directory, providing new names</span>
+<span class="nf">getAlignmentComposition</span><span class="p">(</span><span class="n">alignment_path</span> <span class="o">=</span> <span class="n">myAlignmentDir</span><span class="p">,</span><span class="n">suffix</span> <span class="o">=</span> <span class="s">&quot;.phylip&quot;</span><span class="p">,</span><span class="n">alignment_name</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Gene_A&#39;</span><span class="p">,</span><span class="s">&#39;Gene_B&#39;</span><span class="p">,</span><span class="s">&#39;Gene_C&#39;</span><span class="p">,</span><span class="s">&#39;Gene_D&#39;</span><span class="p">,</span><span class="s">&#39;Gene_E&#39;</span><span class="p">))</span>
 
-<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_B;Species_C;Species_D;Species_E;Species_F;Species_G;Species_H;Species_I;Species_J;Species_K;Species_L;Species_M;Species_N;Species_O&quot;</span>
+  <span class="n">Alignment_Name</span> <span class="n">Alignment_Length</span> <span class="n">Percent_GC</span> <span class="n">Percent_N</span> <span class="n">Percent_Gap</span>
+<span class="m">1</span>         <span class="n">Gene_A</span>             <span class="m">2000</span>  <span class="m">0.4940333</span>         <span class="m">0</span>           <span class="m">0</span>
+<span class="m">2</span>         <span class="n">Gene_B</span>             <span class="m">2500</span>  <span class="m">0.4978400</span>         <span class="m">0</span>           <span class="m">0</span>
+<span class="m">3</span>         <span class="n">Gene_C</span>             <span class="m">1500</span>  <span class="m">0.4921778</span>         <span class="m">0</span>           <span class="m">0</span>
+<span class="m">4</span>         <span class="n">Gene_D</span>             <span class="m">3000</span>  <span class="m">0.5011556</span>         <span class="m">0</span>           <span class="m">0</span>
+<span class="m">5</span>         <span class="n">Gene_E</span>             <span class="m">2500</span>  <span class="m">0.5003733</span>         <span class="m">0</span>           <span class="m">0</span>
+
+<span class="c1"># Get species composition from dummy alignment</span>
+<span class="nf">getAlignmentComposition</span><span class="p">(</span><span class="n">alignment_path</span> <span class="o">=</span> <span class="n">rb_dummy_align_path</span><span class="p">)</span>
+
+<span class="c1"># Dummy alignment</span>
+
+<span class="o">&gt;</span><span class="n">Species_A_NoGap_NoN_NoGC</span>
+<span class="n">ATATATATATATATATATATATATATATATATATAT</span>
+<span class="o">&gt;</span><span class="n">Species_B_10Gap_NoN_NoGC</span>
+<span class="n">ATATATATATATATATATATATATAT</span><span class="o">----------</span>
+<span class="o">&gt;</span><span class="n">Species_C_10Gap_10N_NoGC</span>
+<span class="n">ATATATATATATATATNNNNNNNNNN</span><span class="o">----------</span>
+<span class="o">&gt;</span><span class="n">Species_D_NoGap_NoN_50GC</span>
+<span class="n">ATATATATATATATATATGCGCGCGCGCGCGCGCGC</span>
+<span class="o">&gt;</span><span class="n">Species_E_10Gap_NoN_50GC</span>
+<span class="n">ATATATATATATA</span><span class="o">----------</span><span class="n">CGCGCGCGCGCGC</span>
+<span class="o">&gt;</span><span class="n">Species_F_10Gap_10N_50GC</span>
+<span class="n">ATATATATNNNNN</span><span class="o">----------</span><span class="n">NNNNNGCGCGCGC</span>
+
+  <span class="n">Alignment_Name</span> <span class="n">Alignment_Length</span> <span class="n">Percent_GC</span>  <span class="n">Percent_N</span> <span class="n">Percent_Gap</span>
+<span class="m">1</span>    <span class="n">Gap_GC_N.fa</span>               <span class="m">36</span>       <span class="m">0.25</span> <span class="m">0.09259259</span>   <span class="m">0.1851852</span>
 </pre></div>
 </div>
 </div>
@@ -231,10 +272,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="getSpeciesComposition.html" class="btn btn-neutral float-right" title="getSpeciesComposition" accesskey="n">Next →</a>
+        <a href="getAlignmentSpecies.html" class="btn btn-neutral float-right" title="getAlignmentSpecies" accesskey="n">Next →</a>
       
       
-        <a href="getAlignmentComposition.html" class="btn btn-neutral" title="getAlignmentComposition" accesskey="p">← Previous</a>
+        <a href="../rboretum-suite.html" class="btn btn-neutral" title="Rboretum Functions" accesskey="p">← Previous</a>
       
     </div>
   

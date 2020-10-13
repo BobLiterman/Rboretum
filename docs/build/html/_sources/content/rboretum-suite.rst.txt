@@ -7,7 +7,8 @@ Alignment Functions
 
 .. toctree::
   :maxdepth: 1
-
+  
+  alignment_functions/getAlignmentComposition
   alignment_functions/getAlignmentSpecies
   alignment_functions/getSpeciesComposition
 

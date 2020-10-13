@@ -91,6 +91,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../installation.html"><strong>Installing Rboretum</strong></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../loading.html"><strong>Loading Rboretum</strong></a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../rboretum-suite.html"><strong>Rboretum Functions</strong></a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="getAlignmentComposition.html"><strong>getAlignmentComposition</strong></a></li>
 <li class="toctree-l2"><a class="reference internal" href="getAlignmentSpecies.html"><strong>getAlignmentSpecies</strong></a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#"><strong>getSpeciesComposition</strong></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../tree_functions/checkTips.html"><strong>checkTips</strong></a></li>
@@ -196,13 +197,13 @@
 <td><p>An absolute or relative path to an alignment file or a directory containing multiple alignments</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>species_info</strong></p></td>
-<td><p>A list of species to consider, provided as a character vector or labels or a semicolon-delimited string [Default: all species]</p></td>
+<td><p>A list of species to consider, provided as a phylo, multiPhlyo, character vector or labels or a semicolon-delimited string [Default: all species]</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>alignment_name</strong></p></td>
 <td><p>A character vector containing desired alignment IDs [Default: Derive name from filename]</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>prefix</strong></p></td>
-<td><p>If <strong>alignment_path</strong> points to a directory, only query files starting with <strong>prefix</strong> (e.g. ‘Alignment’)[Default: Use all files in directory]</p></td>
+<td><p>If <strong>alignment_path</strong> points to a directory, only query files starting with <strong>prefix</strong> (e.g. ‘Alignment’) [Default: Use all files in directory]</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>suffix</strong></p></td>
 <td><p>If <strong>alignment_path</strong> points to a directory, only query files ending wtih <strong>suffix</strong> (e.g. ‘.nex’) [Default: Use all files in directory]</p></td>
@@ -226,7 +227,7 @@
 <span class="c1"># Get species composition information</span>
 <span class="nf">getSpeciesComposition</span><span class="p">(</span><span class="n">alignment_path</span> <span class="o">=</span> <span class="n">myAlignmentFile</span><span class="p">)</span>
 
-<span class="n">Taxon</span> <span class="n">Total_Bases</span> <span class="n">Total_N</span> <span class="n">Total_Gaps</span> <span class="n">Percent_GC</span> <span class="n">Percent_N</span> <span class="n">Percent_Gap</span> <span class="n">Alignment_Name</span>
+       <span class="n">Taxon</span> <span class="n">Total_Bases</span> <span class="n">Total_N</span> <span class="n">Total_Gaps</span> <span class="n">Percent_GC</span> <span class="n">Percent_N</span> <span class="n">Percent_Gap</span> <span class="n">Alignment_Name</span>
 <span class="m">1</span>  <span class="n">Species_A</span>        <span class="m">2000</span>       <span class="m">0</span>          <span class="m">0</span>     <span class="m">0.4780</span>         <span class="m">0</span>           <span class="m">0</span>  <span class="n">Gene_1.phylip</span>
 <span class="m">2</span>  <span class="n">Species_B</span>        <span class="m">2000</span>       <span class="m">0</span>          <span class="m">0</span>     <span class="m">0.4935</span>         <span class="m">0</span>           <span class="m">0</span>  <span class="n">Gene_1.phylip</span>
 <span class="m">3</span>  <span class="n">Species_C</span>        <span class="m">2000</span>       <span class="m">0</span>          <span class="m">0</span>     <span class="m">0.4940</span>         <span class="m">0</span>           <span class="m">0</span>  <span class="n">Gene_1.phylip</span>
@@ -288,7 +289,7 @@
 <span class="o">&gt;</span><span class="n">Species_F_10Gap_10N_50GC</span>
 <span class="n">ATATATATNNNNN</span><span class="o">----------</span><span class="n">NNNNNGCGCGCGC</span>
 
-<span class="n">Taxon</span> <span class="n">Total_Bases</span> <span class="n">Total_N</span> <span class="n">Total_Gaps</span> <span class="n">Percent_GC</span> <span class="n">Percent_N</span> <span class="n">Percent_Gap</span> <span class="n">Alignment_Name</span>
+                     <span class="n">Taxon</span> <span class="n">Total_Bases</span> <span class="n">Total_N</span> <span class="n">Total_Gaps</span> <span class="n">Percent_GC</span> <span class="n">Percent_N</span> <span class="n">Percent_Gap</span> <span class="n">Alignment_Name</span>
 <span class="m">1</span> <span class="n">Species_A_NoGap_NoN_NoGC</span>          <span class="m">36</span>       <span class="m">0</span>          <span class="m">0</span>        <span class="m">0.0</span> <span class="m">0.0000000</span>   <span class="m">0.0000000</span>    <span class="n">Gap_GC_N.fa</span>
 <span class="m">2</span> <span class="n">Species_B_10Gap_NoN_NoGC</span>          <span class="m">26</span>       <span class="m">0</span>         <span class="m">10</span>        <span class="m">0.0</span> <span class="m">0.0000000</span>   <span class="m">0.2777778</span>    <span class="n">Gap_GC_N.fa</span>
 <span class="m">3</span> <span class="n">Species_C_10Gap_10N_NoGC</span>          <span class="m">16</span>      <span class="m">10</span>         <span class="m">10</span>        <span class="m">0.0</span> <span class="m">0.2777778</span>   <span class="m">0.2777778</span>    <span class="n">Gap_GC_N.fa</span>

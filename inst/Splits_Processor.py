@@ -63,6 +63,9 @@ def splitsProcessor(path_to_align,spp_info,use_gaps,align_name):
     else:
         pool_cpu = mp.cpu_count() - 1
     
+    # WINDOWS TEST #
+    pool_cpu = 1
+    
     # Get a 0-based coordinate map for alignment
     alignment_positions = range(0, pruned_alignment.get_alignment_length())
 

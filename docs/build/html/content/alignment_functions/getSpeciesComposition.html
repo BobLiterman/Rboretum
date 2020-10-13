@@ -1,0 +1,345 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>getSpeciesComposition &mdash; Rboretum 1.0 documentation</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/Rboretum_Logo.png"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="Rboretum 1.0 documentation" href="../../index.html"/>
+        <link rel="up" title="Rboretum Functions" href="../rboretum-suite.html"/>
+        <link rel="next" title="checkTips" href="../tree_functions/checkTips.html"/>
+        <link rel="prev" title="getAlignmentSpecies" href="getAlignmentSpecies.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> Rboretum
+          
+
+          
+            
+            <img src="../../_static/Rboretum_Logo.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html"><strong>Installing Rboretum</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../loading.html"><strong>Loading Rboretum</strong></a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../rboretum-suite.html"><strong>Rboretum Functions</strong></a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="getAlignmentSpecies.html"><strong>getAlignmentSpecies</strong></a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><strong>getSpeciesComposition</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/checkTips.html"><strong>checkTips</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/extractNodeAges.html"><strong>extractNodeAges</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/getSharedTaxa.html"><strong>getSharedTaxa</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/getTreeClades.html"><strong>getTreeClades</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/getTreeSplits.html"><strong>getTreeSplits</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/getUniqueTopologies.html"><strong>getUniqueTopologies</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/readRooted.html"><strong>readRooted</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/summarizeMultiphylo.html"><strong>summarizeMultiphylo</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/treeDater.html"><strong>treeDater</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/treeNamer.html"><strong>treeNamer</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/treeTrimmer.html"><strong>treeTrimmer</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utility_functions/convertLabels.html"><strong>convertLabels</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utility_functions/semiSorter.html"><strong>semiSorter</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utility_functions/semiVector.html"><strong>semiVector</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utility_functions/tableCount.html"><strong>tableCount</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utility_functions/tandemPlotter.html"><strong>tandemPlotter</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utility_functions/vectorSemi.html"><strong>vectorSemi</strong></a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Rboretum</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../rboretum-suite.html"><strong>Rboretum Functions</strong></a> &raquo;</li>
+        
+      <li><strong>getSpeciesComposition</strong></li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/content/alignment_functions/getSpeciesComposition.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="getspeciescomposition">
+<span id="id1"></span><h1><strong>getSpeciesComposition</strong><a class="headerlink" href="#getspeciescomposition" title="Permalink to this headline">¶</a></h1>
+<p><em>getSpeciesComposition</em> takes one or more alignment files and returns information about the sequence content by species, including base counts, ‘N’ counts, and gap counts</p>
+<div class="section" id="function-and-arguments">
+<h2>Function and Arguments<a class="headerlink" href="#function-and-arguments" title="Permalink to this headline">¶</a></h2>
+<p><strong>Usage</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">getSpeciesComposition</span> <span class="o">&lt;-</span> <span class="n">function</span><span class="p">(</span><span class="n">alignment_path</span><span class="p">,</span><span class="n">species_info</span><span class="p">,</span><span class="n">alignment_name</span><span class="p">,</span><span class="n">prefix</span><span class="p">,</span><span class="n">suffix</span><span class="p">)</span>
+</pre></div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 12%" />
+<col style="width: 88%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>alignment_path</strong></p></td>
+<td><p>An absolute or relative path to an alignment file or a directory containing multiple alignments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>species_info</strong></p></td>
+<td><p>A list of species to consider, provided as a character vector or labels or a semicolon-delimited string [Default: all species]</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>alignment_name</strong></p></td>
+<td><p>A character vector containing desired alignment IDs [Default: Derive name from filename]</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>prefix</strong></p></td>
+<td><p>If <strong>alignment_path</strong> points to a directory, only query files starting with <strong>prefix</strong> (e.g. ‘Alignment’)[Default: Use all files in directory]</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>suffix</strong></p></td>
+<td><p>If <strong>alignment_path</strong> points to a directory, only query files ending wtih <strong>suffix</strong> (e.g. ‘.nex’) [Default: Use all files in directory]</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="example-usage">
+<h2>Example Usage<a class="headerlink" href="#example-usage" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Script: Rboretum/docs/content/Doc_Function_Scripts/getSpeciesComposition.R</span>
+
+<span class="nf">library</span><span class="p">(</span><span class="n">Rboretum</span><span class="p">)</span>
+
+<span class="c1"># Set test data directory</span>
+<span class="nf">sourceRboretum</span><span class="p">()</span>
+
+<span class="c1"># Set path to alignment data</span>
+<span class="n">myAlignmentFile</span> <span class="o">&lt;-</span> <span class="n">rb_align1_path</span>
+<span class="n">myAlignmentDir</span> <span class="o">&lt;-</span> <span class="n">rb_alignment_dir</span>
+
+<span class="c1"># Get species composition information</span>
+<span class="nf">getSpeciesComposition</span><span class="p">(</span><span class="n">alignment_path</span> <span class="o">=</span> <span class="n">myAlignmentFile</span><span class="p">)</span>
+
+<span class="n">Taxon</span> <span class="n">Total_Bases</span> <span class="n">Total_N</span> <span class="n">Total_Gaps</span> <span class="n">Percent_GC</span> <span class="n">Percent_N</span> <span class="n">Percent_Gap</span> <span class="n">Alignment_Name</span>
+<span class="m">1</span>  <span class="n">Species_A</span>        <span class="m">2000</span>       <span class="m">0</span>          <span class="m">0</span>     <span class="m">0.4780</span>         <span class="m">0</span>           <span class="m">0</span>  <span class="n">Gene_1.phylip</span>
+<span class="m">2</span>  <span class="n">Species_B</span>        <span class="m">2000</span>       <span class="m">0</span>          <span class="m">0</span>     <span class="m">0.4935</span>         <span class="m">0</span>           <span class="m">0</span>  <span class="n">Gene_1.phylip</span>
+<span class="m">3</span>  <span class="n">Species_C</span>        <span class="m">2000</span>       <span class="m">0</span>          <span class="m">0</span>     <span class="m">0.4940</span>         <span class="m">0</span>           <span class="m">0</span>  <span class="n">Gene_1.phylip</span>
+<span class="m">4</span>  <span class="n">Species_D</span>        <span class="m">2000</span>       <span class="m">0</span>          <span class="m">0</span>     <span class="m">0.4880</span>         <span class="m">0</span>           <span class="m">0</span>  <span class="n">Gene_1.phylip</span>
+<span class="m">5</span>  <span class="n">Species_E</span>        <span class="m">2000</span>       <span class="m">0</span>          <span class="m">0</span>     <span class="m">0.4925</span>         <span class="m">0</span>           <span class="m">0</span>  <span class="n">Gene_1.phylip</span>
+<span class="m">6</span>  <span class="n">Species_F</span>        <span class="m">2000</span>       <span class="m">0</span>          <span class="m">0</span>     <span class="m">0.4820</span>         <span class="m">0</span>           <span class="m">0</span>  <span class="n">Gene_1.phylip</span>
+<span class="m">7</span>  <span class="n">Species_G</span>        <span class="m">2000</span>       <span class="m">0</span>          <span class="m">0</span>     <span class="m">0.4905</span>         <span class="m">0</span>           <span class="m">0</span>  <span class="n">Gene_1.phylip</span>
+<span class="m">8</span>  <span class="n">Species_H</span>        <span class="m">2000</span>       <span class="m">0</span>          <span class="m">0</span>     <span class="m">0.4950</span>         <span class="m">0</span>           <span class="m">0</span>  <span class="n">Gene_1.phylip</span>
+<span class="m">9</span>  <span class="n">Species_I</span>        <span class="m">2000</span>       <span class="m">0</span>          <span class="m">0</span>     <span class="m">0.5035</span>         <span class="m">0</span>           <span class="m">0</span>  <span class="n">Gene_1.phylip</span>
+<span class="m">10</span> <span class="n">Species_J</span>        <span class="m">2000</span>       <span class="m">0</span>          <span class="m">0</span>     <span class="m">0.5100</span>         <span class="m">0</span>           <span class="m">0</span>  <span class="n">Gene_1.phylip</span>
+<span class="m">11</span> <span class="n">Species_K</span>        <span class="m">2000</span>       <span class="m">0</span>          <span class="m">0</span>     <span class="m">0.5025</span>         <span class="m">0</span>           <span class="m">0</span>  <span class="n">Gene_1.phylip</span>
+<span class="m">12</span> <span class="n">Species_L</span>        <span class="m">2000</span>       <span class="m">0</span>          <span class="m">0</span>     <span class="m">0.4950</span>         <span class="m">0</span>           <span class="m">0</span>  <span class="n">Gene_1.phylip</span>
+<span class="m">13</span> <span class="n">Species_M</span>        <span class="m">2000</span>       <span class="m">0</span>          <span class="m">0</span>     <span class="m">0.5005</span>         <span class="m">0</span>           <span class="m">0</span>  <span class="n">Gene_1.phylip</span>
+<span class="m">14</span> <span class="n">Species_N</span>        <span class="m">2000</span>       <span class="m">0</span>          <span class="m">0</span>     <span class="m">0.4970</span>         <span class="m">0</span>           <span class="m">0</span>  <span class="n">Gene_1.phylip</span>
+<span class="m">15</span> <span class="n">Species_O</span>        <span class="m">2000</span>       <span class="m">0</span>          <span class="m">0</span>     <span class="m">0.4885</span>         <span class="m">0</span>           <span class="m">0</span>  <span class="n">Gene_1.phylip</span>
+
+<span class="c1"># Get species composition information from all .phylip files in a directory, providing new names</span>
+<span class="nf">getSpeciesComposition</span><span class="p">(</span><span class="n">alignment_path</span> <span class="o">=</span> <span class="n">myAlignmentDir</span><span class="p">,</span><span class="n">suffix</span> <span class="o">=</span> <span class="s">&quot;.phylip&quot;</span><span class="p">,</span><span class="n">alignment_name</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Gene_A&#39;</span><span class="p">,</span><span class="s">&#39;Gene_B&#39;</span><span class="p">,</span><span class="s">&#39;Gene_C&#39;</span><span class="p">,</span><span class="s">&#39;Gene_D&#39;</span><span class="p">,</span><span class="s">&#39;Gene_E&#39;</span><span class="p">))</span>
+
+       <span class="n">Taxon</span> <span class="n">Total_Bases</span> <span class="n">Total_N</span> <span class="n">Total_Gaps</span> <span class="n">Percent_GC</span> <span class="n">Percent_N</span> <span class="n">Percent_Gap</span> <span class="n">Alignment_Name</span>
+<span class="m">1</span>  <span class="n">Species_A</span>        <span class="m">2000</span>       <span class="m">0</span>          <span class="m">0</span>  <span class="m">0.4780000</span>         <span class="m">0</span>           <span class="m">0</span>         <span class="n">Gene_A</span>
+<span class="m">2</span>  <span class="n">Species_B</span>        <span class="m">2000</span>       <span class="m">0</span>          <span class="m">0</span>  <span class="m">0.4935000</span>         <span class="m">0</span>           <span class="m">0</span>         <span class="n">Gene_A</span>
+<span class="m">3</span>  <span class="n">Species_C</span>        <span class="m">2000</span>       <span class="m">0</span>          <span class="m">0</span>  <span class="m">0.4940000</span>         <span class="m">0</span>           <span class="m">0</span>         <span class="n">Gene_A</span>
+<span class="m">4</span>  <span class="n">Species_D</span>        <span class="m">2000</span>       <span class="m">0</span>          <span class="m">0</span>  <span class="m">0.4880000</span>         <span class="m">0</span>           <span class="m">0</span>         <span class="n">Gene_A</span>
+<span class="m">5</span>  <span class="n">Species_E</span>        <span class="m">2000</span>       <span class="m">0</span>          <span class="m">0</span>  <span class="m">0.4925000</span>         <span class="m">0</span>           <span class="m">0</span>         <span class="n">Gene_A</span>
+<span class="m">6</span>  <span class="n">Species_F</span>        <span class="m">2000</span>       <span class="m">0</span>          <span class="m">0</span>  <span class="m">0.4820000</span>         <span class="m">0</span>           <span class="m">0</span>         <span class="n">Gene_A</span>
+<span class="m">7</span>  <span class="n">Species_G</span>        <span class="m">2000</span>       <span class="m">0</span>          <span class="m">0</span>  <span class="m">0.4905000</span>         <span class="m">0</span>           <span class="m">0</span>         <span class="n">Gene_A</span>
+<span class="m">8</span>  <span class="n">Species_H</span>        <span class="m">2000</span>       <span class="m">0</span>          <span class="m">0</span>  <span class="m">0.4950000</span>         <span class="m">0</span>           <span class="m">0</span>         <span class="n">Gene_A</span>
+<span class="m">9</span>  <span class="n">Species_I</span>        <span class="m">2000</span>       <span class="m">0</span>          <span class="m">0</span>  <span class="m">0.5035000</span>         <span class="m">0</span>           <span class="m">0</span>         <span class="n">Gene_A</span>
+<span class="m">10</span> <span class="n">Species_J</span>        <span class="m">2000</span>       <span class="m">0</span>          <span class="m">0</span>  <span class="m">0.5100000</span>         <span class="m">0</span>           <span class="m">0</span>         <span class="n">Gene_A</span>
+<span class="m">11</span> <span class="n">Species_K</span>        <span class="m">2000</span>       <span class="m">0</span>          <span class="m">0</span>  <span class="m">0.5025000</span>         <span class="m">0</span>           <span class="m">0</span>         <span class="n">Gene_A</span>
+<span class="m">12</span> <span class="n">Species_L</span>        <span class="m">2000</span>       <span class="m">0</span>          <span class="m">0</span>  <span class="m">0.4950000</span>         <span class="m">0</span>           <span class="m">0</span>         <span class="n">Gene_A</span>
+<span class="m">13</span> <span class="n">Species_M</span>        <span class="m">2000</span>       <span class="m">0</span>          <span class="m">0</span>  <span class="m">0.5005000</span>         <span class="m">0</span>           <span class="m">0</span>         <span class="n">Gene_A</span>
+<span class="m">14</span> <span class="n">Species_N</span>        <span class="m">2000</span>       <span class="m">0</span>          <span class="m">0</span>  <span class="m">0.4970000</span>         <span class="m">0</span>           <span class="m">0</span>         <span class="n">Gene_A</span>
+<span class="m">15</span> <span class="n">Species_O</span>        <span class="m">2000</span>       <span class="m">0</span>          <span class="m">0</span>  <span class="m">0.4885000</span>         <span class="m">0</span>           <span class="m">0</span>         <span class="n">Gene_A</span>
+<span class="m">16</span> <span class="n">Species_A</span>        <span class="m">2500</span>       <span class="m">0</span>          <span class="m">0</span>  <span class="m">0.4956000</span>         <span class="m">0</span>           <span class="m">0</span>         <span class="n">Gene_B</span>
+<span class="m">17</span> <span class="n">Species_B</span>        <span class="m">2500</span>       <span class="m">0</span>          <span class="m">0</span>  <span class="m">0.4840000</span>         <span class="m">0</span>           <span class="m">0</span>         <span class="n">Gene_B</span>
+<span class="m">18</span> <span class="n">Species_C</span>        <span class="m">2500</span>       <span class="m">0</span>          <span class="m">0</span>  <span class="m">0.4896000</span>         <span class="m">0</span>           <span class="m">0</span>         <span class="n">Gene_B</span>
+<span class="n">.</span>
+<span class="n">.</span>
+<span class="n">.</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../tree_functions/checkTips.html" class="btn btn-neutral float-right" title="checkTips" accesskey="n">Next →</a>
+      
+      
+        <a href="getAlignmentSpecies.html" class="btn btn-neutral" title="getAlignmentSpecies" accesskey="p">← Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2020, Robert Literman.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'1.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE: 'true'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../_static/language_data.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

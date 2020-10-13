@@ -9,6 +9,7 @@ Alignment Functions
   :maxdepth: 1
 
   alignment_functions/getAlignmentSpecies
+  alignment_functions/getSpeciesComposition
 
 Tree Functions
 ---------------

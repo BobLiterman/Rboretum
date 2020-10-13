@@ -2,6 +2,14 @@
 **Rboretum Functions**
 #######################
 
+Alignment Functions
+--------------------
+
+.. toctree::
+  :maxdepth: 1
+
+  alignment_functions/getAlignmentSpecies
+
 Tree Functions
 ---------------
 

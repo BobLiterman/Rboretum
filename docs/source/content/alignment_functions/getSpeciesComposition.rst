@@ -21,7 +21,7 @@ Function and Arguments
 **alignment_path**				        An absolute or relative path to an alignment file or a directory containing multiple alignments
 **species_info**                  A list of species to consider, provided as a character vector or labels or a semicolon-delimited string [Default: all species]
 **alignment_name**                A character vector containing desired alignment IDs [Default: Derive name from filename]
-**prefix**                        If **alignment_path** points to a directory, only query files starting with **prefix** (e.g. 'Alignment')[Default: Use all files in directory]
+**prefix**                        If **alignment_path** points to a directory, only query files starting with **prefix** (e.g. 'Alignment') [Default: Use all files in directory]
 **suffix**                        If **alignment_path** points to a directory, only query files ending wtih **suffix** (e.g. '.nex') [Default: Use all files in directory]
 ===========================      ===============================================================================================================================================================================================================
 
@@ -88,3 +88,30 @@ Example Usage
   .
   .
   
+  
+  # Get species composition from dummy alignment
+  getSpeciesComposition(alignment_path = rb_dummy_align_path)
+  
+  # Dummy alignment
+  
+  >Species_A_NoGap_NoN_NoGC
+  ATATATATATATATATATATATATATATATATATAT
+  >Species_B_10Gap_NoN_NoGC
+  ATATATATATATATATATATATATAT----------
+  >Species_C_10Gap_10N_NoGC
+  ATATATATATATATATNNNNNNNNNN----------
+  >Species_D_NoGap_NoN_50GC
+  ATATATATATATATATATGCGCGCGCGCGCGCGCGC
+  >Species_E_10Gap_NoN_50GC
+  ATATATATATATA----------CGCGCGCGCGCGC
+  >Species_F_10Gap_10N_50GC
+  ATATATATNNNNN----------NNNNNGCGCGCGC
+
+  Taxon Total_Bases Total_N Total_Gaps Percent_GC Percent_N Percent_Gap Alignment_Name
+  1 Species_A_NoGap_NoN_NoGC          36       0          0        0.0 0.0000000   0.0000000    Gap_GC_N.fa
+  2 Species_B_10Gap_NoN_NoGC          26       0         10        0.0 0.0000000   0.2777778    Gap_GC_N.fa
+  3 Species_C_10Gap_10N_NoGC          16      10         10        0.0 0.2777778   0.2777778    Gap_GC_N.fa
+  4 Species_D_NoGap_NoN_50GC          36       0          0        0.5 0.0000000   0.0000000    Gap_GC_N.fa
+  5 Species_E_10Gap_NoN_50GC          26       0         10        0.5 0.0000000   0.2777778    Gap_GC_N.fa
+  6 Species_F_10Gap_10N_50GC          16      10         10        0.5 0.2777778   0.2777778    Gap_GC_N.fa
+    

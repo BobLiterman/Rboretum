@@ -268,6 +268,33 @@
 <span class="n">.</span>
 <span class="n">.</span>
 <span class="n">.</span>
+
+
+<span class="c1"># Get species composition from dummy alignment</span>
+<span class="nf">getSpeciesComposition</span><span class="p">(</span><span class="n">alignment_path</span> <span class="o">=</span> <span class="n">rb_dummy_align_path</span><span class="p">)</span>
+
+<span class="c1"># Dummy alignment</span>
+
+<span class="o">&gt;</span><span class="n">Species_A_NoGap_NoN_NoGC</span>
+<span class="n">ATATATATATATATATATATATATATATATATATAT</span>
+<span class="o">&gt;</span><span class="n">Species_B_10Gap_NoN_NoGC</span>
+<span class="n">ATATATATATATATATATATATATAT</span><span class="o">----------</span>
+<span class="o">&gt;</span><span class="n">Species_C_10Gap_10N_NoGC</span>
+<span class="n">ATATATATATATATATNNNNNNNNNN</span><span class="o">----------</span>
+<span class="o">&gt;</span><span class="n">Species_D_NoGap_NoN_50GC</span>
+<span class="n">ATATATATATATATATATGCGCGCGCGCGCGCGCGC</span>
+<span class="o">&gt;</span><span class="n">Species_E_10Gap_NoN_50GC</span>
+<span class="n">ATATATATATATA</span><span class="o">----------</span><span class="n">CGCGCGCGCGCGC</span>
+<span class="o">&gt;</span><span class="n">Species_F_10Gap_10N_50GC</span>
+<span class="n">ATATATATNNNNN</span><span class="o">----------</span><span class="n">NNNNNGCGCGCGC</span>
+
+<span class="n">Taxon</span> <span class="n">Total_Bases</span> <span class="n">Total_N</span> <span class="n">Total_Gaps</span> <span class="n">Percent_GC</span> <span class="n">Percent_N</span> <span class="n">Percent_Gap</span> <span class="n">Alignment_Name</span>
+<span class="m">1</span> <span class="n">Species_A_NoGap_NoN_NoGC</span>          <span class="m">36</span>       <span class="m">0</span>          <span class="m">0</span>        <span class="m">0.0</span> <span class="m">0.0000000</span>   <span class="m">0.0000000</span>    <span class="n">Gap_GC_N.fa</span>
+<span class="m">2</span> <span class="n">Species_B_10Gap_NoN_NoGC</span>          <span class="m">26</span>       <span class="m">0</span>         <span class="m">10</span>        <span class="m">0.0</span> <span class="m">0.0000000</span>   <span class="m">0.2777778</span>    <span class="n">Gap_GC_N.fa</span>
+<span class="m">3</span> <span class="n">Species_C_10Gap_10N_NoGC</span>          <span class="m">16</span>      <span class="m">10</span>         <span class="m">10</span>        <span class="m">0.0</span> <span class="m">0.2777778</span>   <span class="m">0.2777778</span>    <span class="n">Gap_GC_N.fa</span>
+<span class="m">4</span> <span class="n">Species_D_NoGap_NoN_50GC</span>          <span class="m">36</span>       <span class="m">0</span>          <span class="m">0</span>        <span class="m">0.5</span> <span class="m">0.0000000</span>   <span class="m">0.0000000</span>    <span class="n">Gap_GC_N.fa</span>
+<span class="m">5</span> <span class="n">Species_E_10Gap_NoN_50GC</span>          <span class="m">26</span>       <span class="m">0</span>         <span class="m">10</span>        <span class="m">0.5</span> <span class="m">0.0000000</span>   <span class="m">0.2777778</span>    <span class="n">Gap_GC_N.fa</span>
+<span class="m">6</span> <span class="n">Species_F_10Gap_10N_50GC</span>          <span class="m">16</span>      <span class="m">10</span>         <span class="m">10</span>        <span class="m">0.5</span> <span class="m">0.2777778</span>   <span class="m">0.2777778</span>    <span class="n">Gap_GC_N.fa</span>
 </pre></div>
 </div>
 </div>

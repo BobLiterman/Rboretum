@@ -10,8 +10,8 @@ import sys
 import os
 import numpy as np
 import pandas as pd
-from ./align_subfunc/siteCounter import countAs,countCs,countGs,countTs,countNs,countGaps
-from ./align_subfunc/readAlignment import getPrunedAlignment
+import align_subfunc.siteCounter
+import align_subfunc.readAlignment
 
 def fetchAlignmentComposition(path_to_align,spp_info,align_name):
     

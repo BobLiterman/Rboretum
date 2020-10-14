@@ -26,7 +26,7 @@ def fetchAlignmentComposition(path_to_align,spp_info,align_name):
     alignment_name = str(align_name)
 
     # Read in alignment and prune to desired species if requested
-    if not getPrunedAlignment.getPrunedAlignment():
+    if not Alignment_Reader.getPrunedAlignment():
         sys.exit("ERROR: Cannot process "+os.path.basename(alignment_path)+" with provided species list.")
     
     # Get alignment length

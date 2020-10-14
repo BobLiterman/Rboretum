@@ -9,7 +9,9 @@ import sys
 import os
 import numpy as np
 import pandas as pd
-import align_func
+from __future__ import absolute_import
+from .Site_Counter import countAs,countCs,countGs,countTs,countNs,countGaps
+from .Alignment_Reader import getPrunedAlignment
 
 def fetchAlignmentComposition(path_to_align,spp_info,align_name):
     

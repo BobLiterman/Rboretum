@@ -9,37 +9,41 @@ import sys
 import os
 import numpy as np
 import pandas as pd
+from Bio import AlignIO, SeqIO
 import align_func.siteCounter
 import align_func.readAlignment
 
 def fetchAlignmentComposition(path_to_align,spp_info,align_name):
     
     # Set path to alignment
-    global alignment_path
     alignment_path = str(path_to_align)
+    align_func.readAlignment.alignment_path = alignment_path
     
     # Get species list from semicolon-separated string
-    global spp_list
     spp_list = sorted(str(spp_info).split(";"))
+    align_func.readAlignment.spp_list = spp_list
 
     # Set alignment name
-    global alignment_name
     alignment_name = str(align_name)
 
     # Read in alignment and prune to desired species if requested
-    if not readAlignment.getPrunedAlignment():
+    try:
+        pruned_alignment = align_func.readAlignment.getPrunedAlignment()        
+    except:
         sys.exit("ERROR: Cannot process "+os.path.basename(alignment_path)+" with provided species list.")
-    
+    else:
+        align_func.siteCounter.pruned_alignment = pruned_alignment
+
     # Get alignment length
     alignment_length = int(pruned_alignment.get_alignment_length())
     
     # Count A, C, T, G, N, -
-    a_count = siteCounter.countAs()
-    c_count = siteCounter.countCs()
-    g_count = siteCounter.countGs()
-    t_count = siteCounter.countTs()
-    n_count = siteCounter.countNs()
-    gap_count = siteCounter.countGaps()
+    a_count = align_func.siteCounter.countAs()
+    c_count = align_func.siteCounter.countCs()
+    g_count = align_func.siteCounter.countGs()
+    t_count = align_func.siteCounter.countTs()
+    n_count = align_func.siteCounter.countNs()
+    gap_count = align_func.siteCounter.countGaps()
 
     # Sum ACTG + GC bases and get percent GC
     all_base_count = sum([a_count,c_count,g_count,t_count])
@@ -55,4 +59,8 @@ def fetchAlignmentComposition(path_to_align,spp_info,align_name):
     percent_n = float(n_count)/(alignment_length*len(spp_list))
     percent_gap = float(gap_count)/(alignment_length*len(spp_list))
     
-    return(pd.DataFrame([[alignment_name,alignment_length,percent_gc,percent_n,percent_gap]],columns=['Alignment_Name','Alignment_Length','Percent_GC','Percent_N','Percent_Gap']))
+    return_df = pd.DataFrame([[alignment_name,alignment_length,percent_gc,percent_n,percent_gap]],columns=['Alignment_Name','Alignment_Length','Percent_GC','Percent_N','Percent_Gap'])
+    return(return_df)
+
+if __name__ == "__main__":
+    fetchAlignmentComposition(sys.argv[1],sys.argv[2],sys.argv[3])

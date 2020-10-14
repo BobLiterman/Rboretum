@@ -14,19 +14,20 @@ import align_func.readAlignment
 def fetchSpeciesComposition(path_to_align,spp_info,align_name):
     
     # Set path to alignment
-    global alignment_path
     alignment_path = str(path_to_align)
     
     # Get species list from semicolon-separated string
-    global spp_list
     spp_list = sorted(str(spp_info).split(";"))
 
     # Set alignment name
-    global alignment_name
     alignment_name = str(align_name)
 
     # Read in alignment and prune to desired species if requested
-    if not readAlignment.getPrunedAlignment():
+    try:
+        align_func.readAlignment.alignment_path = alignment_path
+        align_func.readAlignment.spp_list = spp_list
+        pruned_alignment = align_func.readAlignment.getPrunedAlignment()        
+    except:
         sys.exit("ERROR: Cannot process "+os.path.basename(alignment_path)+" with provided species list.")
         
     # Get alignment length
@@ -79,3 +80,6 @@ def fetchSpeciesComposition(path_to_align,spp_info,align_name):
                columns =['Taxon','Total_Bases','Total_N','Total_Gaps','Percent_GC','Percent_N','Percent_Gap'])
     df['Alignment_Name'] = alignment_name
     return df
+
+if __name__ == "__main__":
+    fetchSpeciesComposition(sys.argv[1],sys.argv[2],sys.argv[3])

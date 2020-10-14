@@ -11,7 +11,8 @@ sourceRboretum <- function(){
   source_python(system.file("", "Alignment_Patterns.py", package = "Rboretum"),envir=globalenv())
   source_python(system.file("", "Alignment_Composition.py", package = "Rboretum"),envir=globalenv())
   source_python(system.file("", "Species_Composition.py", package = "Rboretum"),envir=globalenv())
-  
+
+  source_python(system.file("", "align_subfunc/__init__.py", package = "Rboretum"),envir=globalenv())
   source_python(system.file("", "align_subfunc/readAlignment.py", package = "Rboretum"),envir=globalenv())
   source_python(system.file("", "align_subfunc/siteCounter.py", package = "Rboretum"),envir=globalenv())
   

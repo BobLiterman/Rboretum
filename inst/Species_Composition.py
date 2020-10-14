@@ -4,13 +4,12 @@ Arguments:
 (1) path_to_align: Absolute path to alignment file
 (2) align_name: Label for dataset/subset
 """
-from __future__ import absolute_import
 import sys
 import os
 import numpy as np
 import pandas as pd
 from Bio import AlignIO, SeqIO
-import align_subfunc.readAlignment
+import align_func.readAlignment
     
 def fetchSpeciesComposition(path_to_align,spp_info,align_name):
     

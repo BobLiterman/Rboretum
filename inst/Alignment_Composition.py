@@ -5,13 +5,12 @@ Arguments:
 (2) spp_info: Semicolon-separated list of taxa to subset from alignment
 (3) align_name: Label for dataset/subset
 """
-from __future__ import absolute_import
 import sys
 import os
 import numpy as np
 import pandas as pd
-import align_subfunc.siteCounter
-import align_subfunc.readAlignment
+import align_func.siteCounter
+import align_func.readAlignment
 
 def fetchAlignmentComposition(path_to_align,spp_info,align_name):
     

@@ -10,7 +10,7 @@ import os
 import numpy as np
 import pandas as pd
 from Bio import AlignIO, SeqIO
-#from .Alignment_Reader import getPrunedAlignment
+from ./align_subfunc/readAlignment import getPrunedAlignment
     
 def fetchSpeciesComposition(path_to_align,spp_info,align_name):
     
@@ -27,7 +27,7 @@ def fetchSpeciesComposition(path_to_align,spp_info,align_name):
     alignment_name = str(align_name)
 
     # Read in alignment and prune to desired species if requested
-    if not Alignment_Reader.getPrunedAlignment():
+    if not readAlignment.getPrunedAlignment():
         sys.exit("ERROR: Cannot process "+os.path.basename(alignment_path)+" with provided species list.")
         
     # Get alignment length

@@ -10,8 +10,8 @@ import sys
 import os
 import numpy as np
 import pandas as pd
-#from .Site_Counter import countAs,countCs,countGs,countTs,countNs,countGaps
-#from .Alignment_Reader import getPrunedAlignment
+from ./align_subfunc/siteCounter import countAs,countCs,countGs,countTs,countNs,countGaps
+from ./align_subfunc/readAlignment import getPrunedAlignment
 
 def fetchAlignmentComposition(path_to_align,spp_info,align_name):
     
@@ -28,19 +28,19 @@ def fetchAlignmentComposition(path_to_align,spp_info,align_name):
     alignment_name = str(align_name)
 
     # Read in alignment and prune to desired species if requested
-    if not getPrunedAlignment():
+    if not readAlignment.getPrunedAlignment():
         sys.exit("ERROR: Cannot process "+os.path.basename(alignment_path)+" with provided species list.")
     
     # Get alignment length
     alignment_length = int(pruned_alignment.get_alignment_length())
     
     # Count A, C, T, G, N, -
-    a_count = countAs()
-    c_count = countCs()
-    g_count = countGs()
-    t_count = countTs()
-    n_count = countNs()
-    gap_count = countGaps()
+    a_count = siteCounter.countAs()
+    c_count = siteCounter.countCs()
+    g_count = siteCounter.countGs()
+    t_count = siteCounter.countTs()
+    n_count = siteCounter.countNs()
+    gap_count = siteCounter.countGaps()
 
     # Sum ACTG + GC bases and get percent GC
     all_base_count = sum([a_count,c_count,g_count,t_count])

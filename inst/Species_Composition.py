@@ -9,8 +9,11 @@ import os
 import numpy as np
 import pandas as pd
 from Bio import AlignIO, SeqIO
-import getPrunedAlignment
-
+try:
+    import getPrunedAlignment
+except ImportError:
+    import .getPrunedAlignment
+    
 def fetchSpeciesComposition(path_to_align,spp_info,align_name):
     
     # Set path to alignment

@@ -10,8 +10,14 @@ import os
 import numpy as np
 import pandas as pd
 from Bio import AlignIO, SeqIO
-import getPrunedAlignment
-import Site_Counter
+try:
+    import getPrunedAlignment
+except ImportError:
+    import .getPrunedAlignment
+try:
+    import Site_Counter
+except ImportError:
+    import .Site_Counter
 
 def fetchAlignmentComposition(path_to_align,spp_info,align_name):
     

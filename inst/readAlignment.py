@@ -4,7 +4,7 @@ import os
 import numpy as np
 from Bio import AlignIO, SeqIO
 
-def getPrunedAlignment():
+def getPrunedAlignment(alignment_path,spp_list):
     # getPrunedAlignment returns an alignment if:
         # (1) Three or more species are present in the alignment and spp_list [if specified]
         # (2) All species provided by spp_list are present in the alignment [if specified]

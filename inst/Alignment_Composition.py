@@ -10,40 +10,36 @@ import os
 import numpy as np
 import pandas as pd
 from Bio import AlignIO, SeqIO
-import align_func.siteCounter
-import align_func.readAlignment
+from siteCounter import countAs,countCs,countGs,countTs,countNs,countGaps
+from readAlignment import getPrunedAlignment
 
 def fetchAlignmentComposition(path_to_align,spp_info,align_name):
     
     # Set path to alignment
     alignment_path = str(path_to_align)
-    align_func.readAlignment.alignment_path = alignment_path
     
     # Get species list from semicolon-separated string
     spp_list = sorted(str(spp_info).split(";"))
-    align_func.readAlignment.spp_list = spp_list
 
     # Set alignment name
     alignment_name = str(align_name)
 
     # Read in alignment and prune to desired species if requested
     try:
-        pruned_alignment = align_func.readAlignment.getPrunedAlignment()        
+        pruned_alignment = getPrunedAlignment(alignment_path,spp_list)        
     except:
         sys.exit("ERROR: Cannot process "+os.path.basename(alignment_path)+" with provided species list.")
-    else:
-        align_func.siteCounter.pruned_alignment = pruned_alignment
 
     # Get alignment length
     alignment_length = int(pruned_alignment.get_alignment_length())
     
     # Count A, C, T, G, N, -
-    a_count = align_func.siteCounter.countAs()
-    c_count = align_func.siteCounter.countCs()
-    g_count = align_func.siteCounter.countGs()
-    t_count = align_func.siteCounter.countTs()
-    n_count = align_func.siteCounter.countNs()
-    gap_count = align_func.siteCounter.countGaps()
+    a_count = countAs(pruned_alignment)
+    c_count = countCs(pruned_alignment)
+    g_count = countGs(pruned_alignment)
+    t_count = countTs(pruned_alignment)
+    n_count = countNs(pruned_alignment)
+    gap_count = countGaps(pruned_alignment)
 
     # Sum ACTG + GC bases and get percent GC
     all_base_count = sum([a_count,c_count,g_count,t_count])

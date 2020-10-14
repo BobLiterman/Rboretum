@@ -2,14 +2,15 @@
 """
 Arguments:
 (1) path_to_align: Absolute path to alignment file
-(2) align_name: Label for dataset/subset
+(2) spp_info: Semicolon-separated list of taxa to subset from alignment
+(3) align_name: Label for dataset/subset
 """
 import sys
 import os
 import numpy as np
 import pandas as pd
 from Bio import AlignIO, SeqIO
-import align_func.readAlignment
+from readAlignment import getPrunedAlignment
     
 def fetchSpeciesComposition(path_to_align,spp_info,align_name):
     
@@ -24,9 +25,7 @@ def fetchSpeciesComposition(path_to_align,spp_info,align_name):
 
     # Read in alignment and prune to desired species if requested
     try:
-        align_func.readAlignment.alignment_path = alignment_path
-        align_func.readAlignment.spp_list = spp_list
-        pruned_alignment = align_func.readAlignment.getPrunedAlignment()        
+        pruned_alignment = getPrunedAlignment(alignment_path,spp_list)        
     except:
         sys.exit("ERROR: Cannot process "+os.path.basename(alignment_path)+" with provided species list.")
         

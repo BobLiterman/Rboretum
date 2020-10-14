@@ -9,7 +9,7 @@ import os
 import numpy as np
 import pandas as pd
 from Bio import AlignIO, SeqIO
-from align_func import readAlignment
+from .align_func import readAlignment
     
 def fetchSpeciesComposition(path_to_align,spp_info,align_name):
     

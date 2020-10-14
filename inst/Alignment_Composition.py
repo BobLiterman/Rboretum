@@ -28,19 +28,19 @@ def fetchAlignmentComposition(path_to_align,spp_info,align_name):
     alignment_name = str(align_name)
 
     # Read in alignment and prune to desired species if requested
-    if not Alignment_Reader.getPrunedAlignment():
+    if not getPrunedAlignment():
         sys.exit("ERROR: Cannot process "+os.path.basename(alignment_path)+" with provided species list.")
     
     # Get alignment length
     alignment_length = int(pruned_alignment.get_alignment_length())
     
     # Count A, C, T, G, N, -
-    a_count = Site_Counter.countAs()
-    c_count = Site_Counter.countCs()
-    g_count = Site_Counter.countGs()
-    t_count = Site_Counter.countTs()
-    n_count = Site_Counter.countNs()
-    gap_count = Site_Counter.countGaps()
+    a_count = countAs()
+    c_count = countCs()
+    g_count = countGs()
+    t_count = countTs()
+    n_count = countNs()
+    gap_count = countGaps()
 
     # Sum ACTG + GC bases and get percent GC
     all_base_count = sum([a_count,c_count,g_count,t_count])

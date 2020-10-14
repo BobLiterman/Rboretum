@@ -46,16 +46,13 @@ def fetchAlignmentComposition(path_to_align,spp_info,align_name):
     all_base_count = sum([a_count,c_count,g_count,t_count])
     gc_count = float(sum([c_count,g_count]))
     
+    # Calculate Percent GC
     if all_base_count == 0:
         percent_gc = np.nan
     else:
         percent_gc = gc_count/all_base_count
     
-    if alignment_length == 0:
-        percent_n,percent_gap = 0
-    
-    else:
-    # Calculate percent N/gap
+    # Calculate Percent N + Percent Gap
     percent_n = float(n_count)/(alignment_length*len(spp_list))
     percent_gap = float(gap_count)/(alignment_length*len(spp_list))
     

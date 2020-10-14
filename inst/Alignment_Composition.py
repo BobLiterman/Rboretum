@@ -91,7 +91,7 @@ def fetchAlignmentComposition(path_to_align,spp_info,align_name):
     alignment_length = int(pruned_alignment.get_alignment_length())
     
     # Count A, C, T, G, N, -
-    a_count = .countAs()
+    a_count = countAs()
     c_count = countCs()
     g_count = countGs()
     t_count = countTs()

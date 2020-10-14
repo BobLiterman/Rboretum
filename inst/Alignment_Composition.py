@@ -5,11 +5,11 @@ Arguments:
 (2) spp_info: Semicolon-separated list of taxa to subset from alignment
 (3) align_name: Label for dataset/subset
 """
+from __future__ import absolute_import
 import sys
 import os
 import numpy as np
 import pandas as pd
-from __future__ import absolute_import
 from .Site_Counter import countAs,countCs,countGs,countTs,countNs,countGaps
 from .Alignment_Reader import getPrunedAlignment
 

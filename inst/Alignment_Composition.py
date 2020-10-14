@@ -9,8 +9,8 @@ import sys
 import os
 import numpy as np
 import pandas as pd
-import align_func.siteCounter
-import align_func.readAlignment
+from align_func import siteCounter
+from align_func import readAlignment
 
 def fetchAlignmentComposition(path_to_align,spp_info,align_name):
     

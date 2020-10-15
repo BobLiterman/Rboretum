@@ -18,6 +18,7 @@ from itertools import chain
 import copy
 import pickle
 import tempfile
+from functools import partial
 
 def findOccurrences(s, ch):
     # findOccurrences returns indexes of occurrences of list items in a list or string

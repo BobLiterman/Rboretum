@@ -10,6 +10,8 @@ import os
 import numpy as np
 import pandas as pd
 from Bio import AlignIO, SeqIO
+import tempfile
+import pickle
     
 def fetchSpeciesComposition(path_to_align,spp_info,align_name):
         
@@ -116,10 +118,18 @@ def fetchSpeciesComposition(path_to_align,spp_info,align_name):
     df = pd.DataFrame(list(zip(spp_list,total_base_counts,n_totals,gap_totals,percent_gc,percent_n,percent_gap)), 
                columns =['Taxon','Total_Bases','Total_N','Total_Gaps','Percent_GC','Percent_N','Percent_Gap'])
     df['Alignment_Name'] = alignment_name
-    return df
-
-def main(path_to_align,spp_info,align_name):
-    return(fetchSpeciesComposition(path_to_align,spp_info,align_name))
     
+    temp_df = tempfile.NamedTemporaryFile()
+    temp_df_name = temp_df.name
+    temp_df.close()
+    with open(temp_df_name, "wb") as f:
+        pickle.dump(df, f)
+    f.close()
+
+    print(temp_df_name)
+    
+def main(path_to_align,spp_info,align_name):
+    fetchSpeciesComposition(path_to_align,spp_info,align_name)
+
 if __name__ == "__main__":
     main(sys.argv[1],sys.argv[2],sys.argv[3])

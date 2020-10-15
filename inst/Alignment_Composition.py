@@ -10,6 +10,8 @@ import os
 import numpy as np
 import pandas as pd
 from Bio import AlignIO, SeqIO
+import pickle
+import tempfile
 
 # countAs returns the count of A/a in the alignment
 def countAs(pruned_alignment):
@@ -69,7 +71,7 @@ def fetchAlignmentComposition(path_to_align,spp_info,align_name):
 
     # Set alignment name
     alignment_name = str(align_name)
-
+    
     # Read in alignment and prune to desired species if requested
     try:
         formats = {'nex': 'nexus', 'nexus': 'nexus',
@@ -141,10 +143,18 @@ def fetchAlignmentComposition(path_to_align,spp_info,align_name):
     percent_gap = float(gap_count)/(alignment_length*len(spp_list))
     
     return_df = pd.DataFrame([[alignment_name,alignment_length,percent_gc,percent_n,percent_gap]],columns=['Alignment_Name','Alignment_Length','Percent_GC','Percent_N','Percent_Gap'])
-    return(return_df)
-
-def main(path_to_align,spp_info,align_name):
-    return(fetchAlignmentComposition(path_to_align,spp_info,align_name))
     
+    temp_df = tempfile.NamedTemporaryFile()
+    temp_df_name = temp_df.name
+    temp_df.close()
+    with open(temp_df_name, "wb") as f:
+        pickle.dump(return_df, f)
+    f.close()
+    
+    print(temp_df_name)
+    
+def main(path_to_align,spp_info,align_name):
+    fetchAlignmentComposition(path_to_align,spp_info,align_name)
+
 if __name__ == "__main__":
     main(sys.argv[1],sys.argv[2],sys.argv[3])

@@ -7,12 +7,15 @@ sourceRboretum <- function(){
   
   # Source python scripts
   source_python(system.file("", "Alignment_Species.py", package = "Rboretum"),envir=globalenv())
-  source_python(system.file("", "Alignment_Splits.py", package = "Rboretum"),envir=globalenv())
-  source_python(system.file("", "Alignment_Patterns.py", package = "Rboretum"),envir=globalenv())
-  source_python(system.file("", "Alignment_Composition.py", package = "Rboretum"),envir=globalenv())
-  source_python(system.file("", "Species_Composition.py", package = "Rboretum"),envir=globalenv())
-  source_python(system.file("", "readAlignment.py", package = "Rboretum"),envir=globalenv())
-  source_python(system.file("", "siteCounter.py", package = "Rboretum"),envir=globalenv())
+  source_python(system.file("", "Rboretum_pyRun.py", package = "Rboretum"),envir=globalenv())
+
+  
+  #source_python(system.file("", "Alignment_Splits.py", package = "Rboretum"),envir=globalenv())
+  #source_python(system.file("", "Alignment_Patterns.py", package = "Rboretum"),envir=globalenv())
+  #source_python(system.file("", "Alignment_Composition.py", package = "Rboretum"),envir=globalenv())
+  #source_python(system.file("", "Species_Composition.py", package = "Rboretum"),envir=globalenv())
+  #source_python(system.file("", "readAlignment.py", package = "Rboretum"),envir=globalenv())
+  #source_python(system.file("", "siteCounter.py", package = "Rboretum"),envir=globalenv())
   
   rboretum_example_data_dir <<- system.file("extdata",package = 'Rboretum')
   rb_unroot_dir <<- paste0(rboretum_example_data_dir,'/unrootedTrees')

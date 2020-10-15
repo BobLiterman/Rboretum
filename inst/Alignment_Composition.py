@@ -14,7 +14,8 @@ import pickle
 import tempfile
 
 # countAs returns the count of A/a in the alignment
-def countAs(pruned_alignment):
+def countAs():
+    global pruned_alignment
     a_total = []
     for seq in pruned_alignment:
         a_total.append(seq.seq.count('a')+seq.seq.count('A'))
@@ -22,7 +23,8 @@ def countAs(pruned_alignment):
     return int(sum(a_total))
 
 # countCs returns the count of C/c in the alignment
-def countCs(pruned_alignment):
+def countCs():
+    global pruned_alignment
     c_total = []
     for seq in pruned_alignment:
         c_total.append(seq.seq.count('c')+seq.seq.count('C'))
@@ -30,7 +32,8 @@ def countCs(pruned_alignment):
     return int(sum(c_total))
 
 # countGs returns the count of G/g in the alignment
-def countGs(pruned_alignment):
+def countGs():
+    global pruned_alignment
     g_total = []
     for seq in pruned_alignment:
         g_total.append(seq.seq.count('g')+seq.seq.count('G'))
@@ -38,7 +41,8 @@ def countGs(pruned_alignment):
     return int(sum(g_total))
 
 # countTs returns the count of T/t in the alignment        
-def countTs(pruned_alignment):
+def countTs():
+    global pruned_alignment
     t_total = []
     for seq in pruned_alignment:
         t_total.append(seq.seq.count('t')+seq.seq.count('T'))
@@ -46,7 +50,8 @@ def countTs(pruned_alignment):
     return int(sum(t_total))
 
 # countNs returns the count of N/n in the alignment
-def countNs(pruned_alignment):
+def countNs():
+    global pruned_alignment
     n_total = []
     for seq in pruned_alignment:
         n_total.append(seq.seq.count('n')+seq.seq.count('N'))
@@ -54,7 +59,8 @@ def countNs(pruned_alignment):
     return int(sum(n_total))
 
 # countGaps returns the count of "-" in the alignment
-def countGaps(pruned_alignment):
+def countGaps():
+    global pruned_alignment
     gap_total = []
     for seq in pruned_alignment:
         gap_total.append(seq.seq.count('-'))
@@ -107,6 +113,7 @@ def fetchAlignmentComposition(path_to_align,spp_info,align_name):
     # Re-order alignment to sorted order of species list
     else:
         # Create dummy alignment        
+        global pruned_alignment
         pruned_alignment = raw_alignment[0:0]
         
         # Populate alignment by adding taxa sorted by taxon ID
@@ -121,12 +128,12 @@ def fetchAlignmentComposition(path_to_align,spp_info,align_name):
     alignment_length = int(pruned_alignment.get_alignment_length())
     
     # Count A, C, T, G, N, -
-    a_count = countAs(pruned_alignment)
-    c_count = countCs(pruned_alignment)
-    g_count = countGs(pruned_alignment)
-    t_count = countTs(pruned_alignment)
-    n_count = countNs(pruned_alignment)
-    gap_count = countGaps(pruned_alignment)
+    a_count = countAs()
+    c_count = countCs()
+    g_count = countGs()
+    t_count = countTs()
+    n_count = countNs()
+    gap_count = countGaps()
 
     # Sum ACTG + GC bases and get percent GC
     all_base_count = sum([a_count,c_count,g_count,t_count])

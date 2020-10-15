@@ -16,110 +16,8 @@ from collections import Counter
 import multiprocessing as mp
 from itertools import chain
 import copy
-
-def splitsProcessor(path_to_align,spp_info,use_gaps,align_name):
-
-    # Set path to alignment
-    global alignment_path
-    alignment_path = str(path_to_align)
-    
-    # Set species information
-    global spp_list
-    spp_list = sorted((spp_info).split(";"))
-
-    # Set gap data
-    global info_gap
-    global bases
-
-    info_gap = str(use_gaps)
-
-    # Set valid bases based on info_gap
-    if use_gaps != "0" and use_gaps != "1":
-        sys.exit("ERROR: info_gap must be '0' or '1'")
-    
-    if use_gaps == "0":
-        bases = ['A', 'C', 'T', 'G', 'a', 'g', 't', 'c']
-    
-    else:
-        bases = ['A', 'C', 'T', 'G', 'a', 'g', 't', 'c','-']
-        
-    # Set alignment name
-    global alignment_name
-    alignment_name = str(align_name)
-    
-    # If alignment_filename contains all species from spp_list (>= 3 species), continue
-    if not getPrunedAlignment_Splits():
-        sys.exit("ERROR: Cannot process "+os.path.basename(alignment_path)+" with provided species list.")
-    
-    # For each position, grab bases and describe variation pattern
-    if info_gap == "0":
-        print("Processing site split patterns for " + os.path.basename(alignment_path) + ", with gaps interpreted as missing data...")
-    if info_gap == "1":
-        print("Processing site split patterns for " + os.path.basename(alignment_path) + ", with gaps interpreted as valid bases...")
-        
-    # Detect CPUs and create a pool of workers
-    if mp.cpu_count() == 1:
-        pool_cpu = 1
-    else:
-        pool_cpu = mp.cpu_count() - 1
-
-    # Get a 0-based coordinate map for alignment
-    alignment_positions = range(0, pruned_alignment.get_alignment_length())
-
-    with mp.Pool(pool_cpu) as pool:
-        split_results = pool.map(getSiteSplits, alignment_positions)
-    
-    print("Signal processed...compiling final dataframe...")
-    split_results = pd.concat(split_results).sort_values(by=['Alignment_Position']).reset_index()
-    
-    # Add 1 to site position to convert from 0 to 1-based
-    split_results.Alignment_Position = split_results.Alignment_Position + 1
-    split_results['Alignment_Name'] = alignment_name
-
-    return split_results
-
-def getPrunedAlignment_Splits():
-    # getPrunedAlignment returns True if:
-        # (1) All species in tree are in alignment
-        # (2) Three or more species are present.
-    # If True,sets global pruned_alignment is pruned and alphabetized match tree species
-
-    # Read in alignment
-    try:
-        formats = {'nex': 'nexus', 'nexus': 'nexus',
-                   'phy': 'phylip', 'phylip-relaxed': 'phylip-relaxed', 'phylip': 'phylip',
-                   'fa': 'fasta', 'fasta': 'fasta'}
-        
-        fformat = formats[alignment_path.split('.')[-1]]
-        raw_alignment = AlignIO.read(alignment_path, fformat)
-    except:
-        return False
-
-    # Get alignment species
-    raw_spp = []
-    for seq_record in raw_alignment:
-        raw_spp.append(str(seq_record.id))
-    
-    # If species list/alignment contains fewer than 3 species, return False
-    if len(spp_list) < 3 or len(raw_spp) < 3:
-        return False
-    
-    # If any species from spp_list are not present in raw_spp, return False
-    if not all(x in raw_spp for x in spp_list): 
-        return False
-    
-    # Re-order alignment to sorted order of species list
-    else:
-        # Create dummy alignment        
-        global pruned_alignment
-        pruned_alignment = raw_alignment[0:0]
-        
-        # Populate alignment by adding taxa sorted by taxon ID
-        for i in spp_list:
-            pruned_alignment.add_sequence(str(raw_alignment[raw_spp.index(i)].id), str(raw_alignment[raw_spp.index(i)].seq))
-        
-        # Return True to indicate a valid alignment was processed
-        return True
+import pickle
+import tempfile
 
 def findOccurrences(s, ch):
     # findOccurrences returns indexes of occurrences of list items in a list or string
@@ -303,3 +201,107 @@ def getSiteSplits(pos):
         
         return(pd.DataFrame([[pos,seq_bases,'pentallelic',non_base_taxa_string,non_base_count,singleton_taxa_string,singleton_count,gap_taxa_string,base_1_taxa,base_2_taxa,base_3_taxa,base_4_taxa,base_5_taxa]], columns=['Alignment_Position','All_Site_Bases','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Singleton_Count','Gap_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
 
+def splitsProcessor(path_to_align,spp_info,use_gaps,align_name):
+
+    # Set path to alignment
+    alignment_path = str(path_to_align)
+
+    # Get species list from semicolon-separated string
+    global spp_list
+    spp_list = sorted(str(spp_info).split(";"))
+
+    # Set alignment name
+    alignment_name = str(align_name)
+
+    # Set gap data
+    info_gap = str(use_gaps)
+
+    # Set valid bases based on info_gap
+    global bases
+    if use_gaps != "0" and use_gaps != "1":
+        sys.exit("ERROR: info_gap must be '0' or '1'")
+
+    if use_gaps == "0":
+        bases = ['A', 'C', 'T', 'G', 'a', 'g', 't', 'c']
+
+    else:
+        bases = ['A', 'C', 'T', 'G', 'a', 'g', 't', 'c','-']
+
+    # Read in alignment and prune to desired species if requested
+    try:
+        formats = {'nex': 'nexus', 'nexus': 'nexus',
+                   'phy': 'phylip', 'phylip-relaxed': 'phylip-relaxed', 'phylip': 'phylip',
+                   'fa': 'fasta', 'fasta': 'fasta'}
+        
+        fformat = formats[alignment_path.split('.')[-1]]
+        raw_alignment = AlignIO.read(alignment_path, fformat)
+
+    # If alignment cannot be read in, raise exception
+    except:
+        sys.exit("ERROR: Cannot process "+os.path.basename(alignment_path))
+
+    # Get species from raw alignment
+    raw_spp = list()
+    for seq_record in raw_alignment:
+        raw_spp.append(str(seq_record.id))
+
+    # Convert numeric IDs to string prior to sorting
+    raw_spp = [str(i) for i in raw_spp] 
+    raw_spp.sort()
+
+    # If fewer than three species exist in alignment or species list, raise exception
+    if (len(list(set(spp_list))) < 3) or (len(list(set(raw_spp))) < 3):
+        sys.exit("ERROR: Cannot process fewer than 3 species...")
+        
+    # If requested species are not in alignment, raise exception
+    spp_diff = list(set(spp_list) - set(raw_spp))
+
+    if len(spp_diff) > 0:
+        sys.exit("ERROR: Requested species not found in "+os.path.basename(alignment_path)+"...")
+
+    # Re-order alignment to sorted order of species list
+    else:
+        # Create dummy alignment   
+        global pruned_alignment     
+        pruned_alignment = raw_alignment[0:0]
+        
+        # Populate alignment by adding taxa sorted by taxon ID
+        for i in spp_list:
+            pruned_alignment.add_sequence(str(raw_alignment[raw_spp.index(i)].id), str(raw_alignment[raw_spp.index(i)].seq))
+        
+        # If resulting alignment is empty, raise exception
+        if int(pruned_alignment.get_alignment_length()) == 0:
+            sys.exit("ERROR: Alignment processed, but appears to have no bases...")
+
+    # Detect CPUs and create a pool of workers
+    if mp.cpu_count() == 1:
+        pool_cpu = 1
+    else:
+        pool_cpu = mp.cpu_count() - 1
+
+    # Get a 0-based coordinate map for alignment
+    alignment_positions = range(0, pruned_alignment.get_alignment_length())
+
+    with mp.Pool(pool_cpu) as pool:
+        split_results = pool.map(getSiteSplits, alignment_positions)
+    
+    split_results = pd.concat(split_results).sort_values(by=['Alignment_Position']).reset_index()
+    
+    # Add 1 to site position to convert from 0 to 1-based
+    split_results.Alignment_Position = split_results.Alignment_Position + 1
+    split_results['Alignment_Name'] = alignment_name
+
+    temp_df = tempfile.NamedTemporaryFile()
+    temp_df_name = temp_df.name
+    temp_df.close()
+    with open(temp_df_name, "wb") as f:
+        pickle.dump(split_results, f)
+    f.close()
+
+    print(temp_df_name)
+
+def main(path_to_align,spp_info,use_gaps,align_name):
+    splitsProcessor(path_to_align,spp_info,use_gaps,align_name)
+
+if __name__ == "__main__":
+    main(sys.argv[1],sys.argv[2],sys.argv[3],sys.argv[4])

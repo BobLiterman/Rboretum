@@ -7,10 +7,13 @@ Arguments:
 """
 import sys
 import os
+import inspect
 
 # Fix path for reticulate
-if os.path.join(os.path.dirname(__file__)) not in sys.path:
-    sys.path.append(os.path.join(os.path.dirname(__file__)))
+src_file_path = inspect.getfile(lambda: None)
+
+if src_file_path not in sys.path:
+    sys.path.append(src_file_path)
     
 import numpy as np
 import pandas as pd

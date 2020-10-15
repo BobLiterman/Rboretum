@@ -7,6 +7,11 @@ Arguments:
 """
 import sys
 import os
+
+# Fix path for reticulate
+if os.path.join(os.path.dirname(__file__)) not in sys.path:
+    sys.path.append(os.path.join(os.path.dirname(__file__)))
+    
 import numpy as np
 import pandas as pd
 from Bio import AlignIO, SeqIO

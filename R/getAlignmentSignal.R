@@ -182,7 +182,7 @@ getAlignmentSignal <- function(alignment_path,species_info,use_gaps,alignment_na
   }
   
   if(alignment_count == 1){
-    splits_df <- splitsProcessor(alignment_path,species_info,gap_list,alignment_name) %>%
+    splits_df <- rb_run_align_splits(rb_lib_dir,alignment_path,species_info,gap_list,alignment_name) %>%
       mutate_if(is.list,as.character) %>%
       select(-index) %>%
       mutate_all(~na_if(., 'NaN')) %>%
@@ -190,7 +190,7 @@ getAlignmentSignal <- function(alignment_path,species_info,use_gaps,alignment_na
       mutate(All_Site_Bases = semiSorter(All_Site_Bases)) %>%
       ungroup()
   } else{
-    splits_df = purrr::map(.x=1:alignment_count,.f=function(x){splitsProcessor(alignment_path[x],species_info[x],gap_list[x],alignment_name[x])}) %>% do.call(rbind, .) %>%
+    splits_df = purrr::map(.x=1:alignment_count,.f=function(x){rb_run_align_splits(rb_lib_dir,alignment_path[x],species_info[x],gap_list[x],alignment_name[x])}) %>% do.call(rbind, .) %>%
       mutate_if(is.list,as.character) %>%
       select(-index) %>%
       mutate_all(~na_if(., 'NaN')) %>%

@@ -18,16 +18,199 @@ from itertools import chain
 import copy
 import pickle
 import tempfile
+from functools import partial
+
 
 def findOccurrences(s, ch):
     # findOccurrences returns indexes of occurrences of list items in a list or string
     return [i for i, letter in enumerate(s) if letter in ch]
 
+def windowsPool(pool_cpu,pos_list,alignment,spp,base):
+    pool = mp.Pool(pool_cpu)
+    var_getSiteSplits=partial(getSiteSplits_Windows, pruned_alignment = alignment,bases = base, spp_list = spp)
+    split_results = pool.map(var_getSiteSplits, pos_list)
+    pool.close()
+    return(split_results)
+
+def getSiteSplits_Windows(pos,pruned_alignment,bases,spp_list):
+    
+    temp_list = copy.deepcopy(spp_list)
+    seq_string = pruned_alignment[:, pos]
+            
+    # Get alleles and their occurrences
+    site_set = Counter(seq_string)
+    allele_list = list(site_set)
+    seq_bases = ";".join(allele_list)
+
+    allele_count = len(allele_list)
+    allele_counts = list(site_set.values())
+    
+    # Get gap taxa
+    if "-" in allele_list:
+        gap_index = findOccurrences(seq_string, "-")
+        gap_taxa = itemgetter(*gap_index)(temp_list)
+        gap_count = int(len(gap_index))
+
+        if gap_count == 1:
+            gap_taxa_string = gap_taxa
+        if gap_count > 1:
+            gap_taxa_string = ";".join(sorted(gap_taxa))
+    
+    else:
+        gap_taxa_string = np.nan
+
+    # If column contains any non-bases, remove them and reassess pattern unless fewer than three bases remain
+    if(not set(allele_list).issubset(set(bases))):
+        non_base_list = list(set(seq_string) - set(bases))
+        non_base_index = findOccurrences(seq_string, non_base_list)
+        non_base_taxa = itemgetter(*non_base_index)(temp_list)
+        non_base_count = int(len(non_base_index))
+
+        if non_base_count == 1:
+            non_base_taxa_string = non_base_taxa
+        if non_base_count > 1:
+            non_base_taxa_string = ";".join(sorted(non_base_taxa))
+        
+        # If fewer than three bases remain after removing non-bases, return 'non_base'result
+        if len(temp_list) - non_base_count < 3:
+            return(pd.DataFrame([[pos,seq_bases,'non_base',non_base_taxa_string,non_base_count,np.nan,np.nan,gap_taxa_string,np.nan,np.nan,np.nan,np.nan,np.nan]], columns=['Alignment_Position','All_Site_Bases','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Singleton_Count','Gap_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
+        
+        else:
+            # Get species list and sequence data from taxa with appropriate bases
+            seq_string = [v for k,v in enumerate(seq_string) if k not in non_base_index]
+            temp_list = [v for k,v in enumerate(temp_list) if k not in non_base_index]
+            
+            # Re-get alleles and their occurrences
+            site_set = Counter(seq_string)
+            allele_list = list(site_set)
+
+            allele_count = len(allele_list)
+            allele_counts = list(site_set.values())
+
+    else:
+        non_base_taxa_string = np.nan
+        non_base_count = 0
+
+    # If column contains any singletons, remove them and reassess pattern unless fewer than three bases remain
+    if(1 in allele_counts):
+        singleton_list = [base for base, count in site_set.items() if count == 1]
+        singelton_index = findOccurrences(seq_string, singleton_list)
+        singleton_taxa = itemgetter(*singelton_index)(temp_list)
+        singleton_count = int(len(singelton_index))
+
+        if singleton_count == 1:
+            singleton_taxa_string = singleton_taxa
+        if singleton_count > 1:
+            singleton_taxa_string = ";".join(sorted(singleton_taxa))
+
+        # If fewer than three bases remain after removing singletons, return 'non_base'result
+        if len(temp_list) - singleton_count < 3:
+            return(pd.DataFrame([[pos,seq_bases,'non_base',non_base_taxa_string,non_base_count,singleton_taxa_string,singleton_count,gap_taxa_string,np.nan,np.nan,np.nan,np.nan,np.nan]], columns=['Alignment_Position','All_Site_Bases','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Singleton_Count','Gap_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
+        
+        else:
+            # Get species list and sequence data from taxa with appropriate bases
+            seq_string = [v for k,v in enumerate(seq_string) if k not in singelton_index]
+            temp_list = [v for k,v in enumerate(temp_list) if k not in singelton_index]
+            
+            # Re-get alleles and their occurrences
+            site_set = Counter(seq_string)
+            allele_list = list(site_set)
+
+            allele_count = len(allele_list)
+            allele_counts = list(site_set.values())
+
+    else:
+        singleton_taxa_string = np.nan
+        singleton_count = 0
+
+    # If only a single allele is present, return 'singleton' or 'invariant' result
+    if(allele_count == 1):
+        if singleton_count > 0:
+            return(pd.DataFrame([[pos,seq_bases,'singleton',non_base_taxa_string,non_base_count,singleton_taxa_string,singleton_count,gap_taxa_string,np.nan,np.nan,np.nan,np.nan,np.nan]], columns=['Alignment_Position','All_Site_Bases','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Singleton_Count','Gap_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
+        else:
+            return(pd.DataFrame([[pos,seq_bases,'invariant',non_base_taxa_string,non_base_count,singleton_taxa_string,singleton_count,gap_taxa_string,np.nan,np.nan,np.nan,np.nan,np.nan]], columns=['Alignment_Position','All_Site_Bases','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Singleton_Count','Gap_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
+    
+    # Process biallelic sites
+    if(allele_count == 2):
+        # Get alleles and their associated taxa
+        split_1_base = sorted(allele_list)[0]
+        base_1_index = findOccurrences(seq_string, split_1_base)
+        base_1_taxa = ";".join(itemgetter(*base_1_index)(temp_list))
+        
+        split_2_base = sorted(allele_list)[1]
+        base_2_index = findOccurrences(seq_string, split_2_base)
+        base_2_taxa = ";".join(itemgetter(*base_2_index)(temp_list))
+        
+        return(pd.DataFrame([[pos,seq_bases,'biallelic',non_base_taxa_string,non_base_count,singleton_taxa_string,singleton_count,gap_taxa_string,base_1_taxa,base_2_taxa,np.nan,np.nan,np.nan]], columns=['Alignment_Position','All_Site_Bases','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Singleton_Count','Gap_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
+
+    # Process triallelic sites
+    if(allele_count == 3):
+        # Get alleles and their associated taxa
+        split_1_base = sorted(allele_list)[0]
+        base_1_index = findOccurrences(seq_string, split_1_base)
+        base_1_taxa = ";".join(itemgetter(*base_1_index)(temp_list))
+        
+        split_2_base = sorted(allele_list)[1]
+        base_2_index = findOccurrences(seq_string, split_2_base)
+        base_2_taxa = ";".join(itemgetter(*base_2_index)(temp_list))
+        
+        split_3_base = sorted(allele_list)[2]
+        base_3_index = findOccurrences(seq_string, split_3_base)
+        base_3_taxa = ";".join(itemgetter(*base_3_index)(temp_list))
+        
+        return(pd.DataFrame([[pos,seq_bases,'triallelic',non_base_taxa_string,non_base_count,singleton_taxa_string,singleton_count,gap_taxa_string,base_1_taxa,base_2_taxa,base_3_taxa,np.nan,np.nan]], columns=['Alignment_Position','All_Site_Bases','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Singleton_Count','Gap_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
+
+    # Process quadallelic sites
+    if(allele_count == 4):
+        # Get alleles and their associated taxa
+        split_1_base = sorted(allele_list)[0]
+        base_1_index = findOccurrences(seq_string, split_1_base)
+        base_1_taxa = ";".join(itemgetter(*base_1_index)(temp_list))
+        
+        split_2_base = sorted(allele_list)[1]
+        base_2_index = findOccurrences(seq_string, split_2_base)
+        base_2_taxa = ";".join(itemgetter(*base_2_index)(temp_list))
+        
+        split_3_base = sorted(allele_list)[2]
+        base_3_index = findOccurrences(seq_string, split_3_base)
+        base_3_taxa = ";".join(itemgetter(*base_3_index)(temp_list))
+        
+        split_4_base = sorted(allele_list)[3]
+        base_4_index = findOccurrences(seq_string, split_4_base)
+        base_4_taxa = ";".join(itemgetter(*base_4_index)(temp_list))
+        
+        return(pd.DataFrame([[pos,seq_bases,'quadallelic',non_base_taxa_string,non_base_count,singleton_taxa_string,singleton_count,gap_taxa_string,base_1_taxa,base_2_taxa,base_3_taxa,base_4_taxa,np.nan]], columns=['Alignment_Position','All_Site_Bases','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Singleton_Count','Gap_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
+
+    # Process pentallelic sites
+    if(allele_count == 5):
+        # Get alleles and their associated taxa
+        split_1_base = sorted(allele_list)[0]
+        base_1_index = findOccurrences(seq_string, split_1_base)
+        base_1_taxa = ";".join(itemgetter(*base_1_index)(temp_list))
+        
+        split_2_base = sorted(allele_list)[1]
+        base_2_index = findOccurrences(seq_string, split_2_base)
+        base_2_taxa = ";".join(itemgetter(*base_2_index)(temp_list))
+        
+        split_3_base = sorted(allele_list)[2]
+        base_3_index = findOccurrences(seq_string, split_3_base)
+        base_3_taxa = ";".join(itemgetter(*base_3_index)(temp_list))
+        
+        split_4_base = sorted(allele_list)[3]
+        base_4_index = findOccurrences(seq_string, split_4_base)
+        base_4_taxa = ";".join(itemgetter(*base_4_index)(temp_list))
+        
+        split_5_base = sorted(allele_list)[4]
+        base_5_index = findOccurrences(seq_string, split_5_base)
+        base_5_taxa = ";".join(itemgetter(*base_5_index)(temp_list))
+        
+        return(pd.DataFrame([[pos,seq_bases,'pentallelic',non_base_taxa_string,non_base_count,singleton_taxa_string,singleton_count,gap_taxa_string,base_1_taxa,base_2_taxa,base_3_taxa,base_4_taxa,base_5_taxa]], columns=['Alignment_Position','All_Site_Bases','Site_Pattern','Non_Base_Taxa','Non_Base_Count','Singleton_Taxa','Singleton_Count','Gap_Taxa','Split_1','Split_2','Split_3','Split_4','Split_5']))
+
 def getSiteSplits(pos):
     
     global pruned_alignment
-    global bases
     global spp_list
+    global bases
     
     temp_list = copy.deepcopy(spp_list)
     seq_string = pruned_alignment[:, pos]
@@ -218,6 +401,7 @@ def splitsProcessor(path_to_align,spp_info,use_gaps,align_name):
 
     # Set valid bases based on info_gap
     global bases
+    
     if use_gaps != "0" and use_gaps != "1":
         sys.exit("ERROR: info_gap must be '0' or '1'")
 
@@ -261,8 +445,8 @@ def splitsProcessor(path_to_align,spp_info,use_gaps,align_name):
 
     # Re-order alignment to sorted order of species list
     else:
-        # Create dummy alignment   
-        global pruned_alignment     
+        # Create dummy alignment  
+        global pruned_alignment
         pruned_alignment = raw_alignment[0:0]
         
         # Populate alignment by adding taxa sorted by taxon ID
@@ -282,8 +466,11 @@ def splitsProcessor(path_to_align,spp_info,use_gaps,align_name):
     # Get a 0-based coordinate map for alignment
     alignment_positions = range(0, pruned_alignment.get_alignment_length())
 
-    with mp.Pool(pool_cpu) as pool:
-        split_results = pool.map(getSiteSplits, alignment_positions)
+    if os.name == 'nt':
+        split_results = windowsPool(pool_cpu,alignment_positions,pruned_alignment,spp_list,bases)
+    else:
+        with mp.Pool(pool_cpu) as pool:
+            split_results = pool.map(getSiteSplits, alignment_positions)
     
     split_results = pd.concat(split_results).sort_values(by=['Alignment_Position']).reset_index()
     

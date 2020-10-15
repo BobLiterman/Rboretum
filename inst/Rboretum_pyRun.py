@@ -37,7 +37,7 @@ def rb_run_species_comp(package_dir,path_to_align,spp_info,align_name):
     return(content)
 
 def rb_run_align_patterns(package_dir,path_to_align,use_gaps,spp_info,align_name):
-    cmd = ["python", package_dir+"/Alignment_Patterns.py",path_to_align,use_gaps,spp_info,align_name]
+    cmd = ["python", package_dir+"/Alignment_Patterns.py",path_to_align,spp_info,use_gaps,align_name]
     
     if os.name == 'nt':
         result = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,stdin=subprocess.DEVNULL,shell=True)
@@ -53,7 +53,7 @@ def rb_run_align_patterns(package_dir,path_to_align,use_gaps,spp_info,align_name
     return(content)
 
 def rb_run_align_splits(package_dir,path_to_align,use_gaps,spp_info,align_name):
-    cmd = ["python", package_dir+"/Alignment_Splits.py",path_to_align,use_gaps,spp_info,align_name]
+    cmd = ["python", package_dir+"/Alignment_Splits.py",path_to_align,spp_info,use_gaps,align_name]
     
     if os.name == 'nt':
         result = subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,stdin=subprocess.DEVNULL,shell=True)

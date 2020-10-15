@@ -11,10 +11,8 @@ sourceRboretum <- function(){
   source_python(system.file("", "Alignment_Patterns.py", package = "Rboretum"),envir=globalenv())
   source_python(system.file("", "Alignment_Composition.py", package = "Rboretum"),envir=globalenv())
   source_python(system.file("", "Species_Composition.py", package = "Rboretum"),envir=globalenv())
-
-  source_python(system.file("", "align_func/__init__.py", package = "Rboretum"),envir=globalenv())
-  source_python(system.file("", "align_func/readAlignment.py", package = "Rboretum"),envir=globalenv())
-  source_python(system.file("", "align_func/siteCounter.py", package = "Rboretum"),envir=globalenv())
+  source_python(system.file("", "readAlignment.py", package = "Rboretum"),envir=globalenv())
+  source_python(system.file("", "siteCounter.py", package = "Rboretum"),envir=globalenv())
   
   rboretum_example_data_dir <<- system.file("extdata",package = 'Rboretum')
   rb_unroot_dir <<- paste0(rboretum_example_data_dir,'/unrootedTrees')

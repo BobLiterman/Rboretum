@@ -12,6 +12,10 @@ import inspect
 # Fix path for reticulate
 src_file_path = inspect.getfile(lambda: None)
 
+print(os.getcwd())
+print(sys.argv[0])
+print(os.path.dirname(os.path.realpath('__file__')))
+
 if src_file_path not in sys.path:
     sys.path.append(src_file_path)
     

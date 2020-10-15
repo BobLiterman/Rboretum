@@ -30,9 +30,48 @@ def fetchAlignmentComposition(path_to_align,spp_info,align_name):
 
     # Read in alignment and prune to desired species if requested
     try:
-        pruned_alignment = getPrunedAlignment(alignment_path,spp_list)        
+        formats = {'nex': 'nexus', 'nexus': 'nexus',
+                   'phy': 'phylip', 'phylip-relaxed': 'phylip-relaxed', 'phylip': 'phylip',
+                   'fa': 'fasta', 'fasta': 'fasta'}
+        
+        fformat = formats[alignment_path.split('.')[-1]]
+        raw_alignment = AlignIO.read(alignment_path, fformat)
+
+    # If alignment cannot be read in, raise exception
     except:
-        sys.exit("ERROR: Cannot process "+os.path.basename(alignment_path)+" with provided species list.")
+        sys.exit("ERROR: Cannot process "+os.path.basename(alignment_path))
+
+    # Get species from raw alignment
+    raw_spp = list()
+    for seq_record in raw_alignment:
+        raw_spp.append(str(seq_record.id))
+    
+    # Convert numeric IDs to string prior to sorting
+    raw_spp = [str(i) for i in raw_spp] 
+    raw_spp.sort()
+    
+    # If fewer than three species exist in alignment or species list, raise exception
+    if (len(list(set(spp_list))) < 3) or (len(list(set(raw_spp))) < 3):
+        sys.exit("ERROR: Cannot process fewer than 3 species...")
+        
+    # If requested species are not in alignment, raise exception
+    spp_diff = list(set(spp_list) - set(raw_spp))
+
+    if len(spp_diff) > 0:
+        sys.exit("ERROR: Requested species not found in "+os.path.basename(alignment_path)+"...")
+    
+    # Re-order alignment to sorted order of species list
+    else:
+        # Create dummy alignment        
+        pruned_alignment = raw_alignment[0:0]
+        
+        # Populate alignment by adding taxa sorted by taxon ID
+        for i in spp_list:
+            pruned_alignment.add_sequence(str(raw_alignment[raw_spp.index(i)].id), str(raw_alignment[raw_spp.index(i)].seq))
+        
+        # If resulting alignment is empty, raise exception
+        if int(pruned_alignment.get_alignment_length()) == 0:
+            sys.exit("ERROR: Alignment processed, but appears to have no bases...")
 
     # Get alignment length
     alignment_length = int(pruned_alignment.get_alignment_length())
@@ -62,5 +101,8 @@ def fetchAlignmentComposition(path_to_align,spp_info,align_name):
     return_df = pd.DataFrame([[alignment_name,alignment_length,percent_gc,percent_n,percent_gap]],columns=['Alignment_Name','Alignment_Length','Percent_GC','Percent_N','Percent_Gap'])
     return(return_df)
 
+def main(path_to_align,spp_info,align_name):
+    return(fetchAlignmentComposition(path_to_align,spp_info,align_name))
+    
 if __name__ == "__main__":
-    fetchAlignmentComposition(sys.argv[1],sys.argv[2],sys.argv[3])
+    main(sys.argv[1],sys.argv[2],sys.argv[3])

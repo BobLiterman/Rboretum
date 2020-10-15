@@ -7,18 +7,14 @@ Arguments:
 """
 import sys
 import os
-import inspect
 
-# Fix path for reticulate
-src_file_path = inspect.getfile(lambda: None)
-
-if src_file_path not in sys.path:
-    sys.path.append(src_file_path)
+if "." not in sys.path:
+    sys.path.append(".")
     
 import numpy as np
 import pandas as pd
 from Bio import AlignIO, SeqIO
-from readAlignment import getPrunedAlignment
+from .readAlignment import getPrunedAlignment
     
 def fetchSpeciesComposition(path_to_align,spp_info,align_name):
     

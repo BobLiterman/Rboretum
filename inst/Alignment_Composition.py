@@ -7,23 +7,15 @@ Arguments:
 """
 import sys
 import os
-import inspect
 
-# Fix path for reticulate
-src_file_path = inspect.getfile(lambda: None)
-
-print(os.getcwd())
-print(sys.argv[0])
-print(os.path.dirname(os.path.realpath('__file__')))
-
-if src_file_path not in sys.path:
-    sys.path.append(src_file_path)
+if "." not in sys.path:
+    sys.path.append(".")
     
 import numpy as np
 import pandas as pd
 from Bio import AlignIO, SeqIO
-from siteCounter import countAs,countCs,countGs,countTs,countNs,countGaps
-from readAlignment import getPrunedAlignment
+from .siteCounter import countAs,countCs,countGs,countTs,countNs,countGaps
+from .readAlignment import getPrunedAlignment
 
 def fetchAlignmentComposition(path_to_align,spp_info,align_name):
     

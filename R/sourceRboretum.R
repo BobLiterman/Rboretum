@@ -5,7 +5,8 @@
 #' 
 sourceRboretum <- function(){
   
-  # Set local package directory
+  # Set python and local package directory
+  user_python <<- py_config()$python
   rb_lib_dir <<- system.file(package = "Rboretum")
   
   # Source python scripts

@@ -158,9 +158,9 @@ getSpeciesComposition <- function(alignment_path,species_info,alignment_name,pre
   }
   
   if(alignment_count == 1){
-    composition_df <- rb_run_species_comp(rb_lib_dir,alignment_path,species_info,alignment_name)
+    composition_df <- rb_run_species_comp(user_python,rb_lib_dir,alignment_path,species_info,alignment_name)
   } else{
-    composition_df = purrr::map(.x=1:alignment_count,.f=function(x){rb_run_species_comp(rb_lib_dir,alignment_path[x],species_info[x],alignment_name[x])}) %>% do.call(rbind, .)
+    composition_df = purrr::map(.x=1:alignment_count,.f=function(x){rb_run_species_comp(user_python,rb_lib_dir,alignment_path[x],species_info[x],alignment_name[x])}) %>% do.call(rbind, .)
   }
   
   # Python NaN

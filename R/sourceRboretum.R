@@ -34,7 +34,7 @@ sourceRboretum <- function(){
 
   rb_all_align <<- c(rb_align1_path,rb_align2_path,rb_align3_path,rb_align4_path,rb_align5_path)
   
-  rb_dummy_align_path <<- paste0(rb_alignment_dir,'/Gap_GC_N.fa')
+  rb_dummy_align_path <<- paste0(rb_alignment_dir,'/Dummy_Alignment.fa')
   
   rb_timeTree1_path <<- paste0(rb_timeTree_dir,"/Chronogram_1.nwk")
   rb_timeTree2_path <<- paste0(rb_timeTree_dir,"/Chronogram_2.nwk")

@@ -185,7 +185,7 @@ getAlignmentPatterns <- function(alignment_path,species_info,use_gaps,alignment_
       mutate_if(is.list,as.character) %>%
       select(-index)
   } else{
-    pattern_df = purrr::map(.x=1:alignment_count,.f=function(x){user_python,rb_run_align_patterns(rb_lib_dir,alignment_path[x],species_info[x],gap_list[x],alignment_name[x])}) %>% do.call(rbind, .) %>%
+    pattern_df = purrr::map(.x=1:alignment_count,.f=function(x){rb_run_align_patterns(user_python,rb_lib_dir,alignment_path[x],species_info[x],gap_list[x],alignment_name[x])}) %>% do.call(rbind, .) %>%
       mutate_if(is.list,as.character) %>%
       select(-index)
   }

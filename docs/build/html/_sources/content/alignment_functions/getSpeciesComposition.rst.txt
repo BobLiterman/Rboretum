@@ -18,8 +18,8 @@ Function and Arguments
 ===========================      ===============================================================================================================================================================================================================
  Argument                         Description
 ===========================      ===============================================================================================================================================================================================================
-**alignment_path**				        An absolute or relative path to an alignment file or a directory containing multiple alignments
-**species_info**                  A list of species to consider, provided as a phylo, multiPhlyo, character vector or labels or a semicolon-delimited string [Default: all species]
+**alignment_path**				        An absolute or relative path to an alignment file(s) or a directory containing multiple alignments
+**species_info**                  A list of species to consider, provided as a phylo, multiPhlyo, character vector or labels or a semicolon-delimited string [Default: Shared species among all alignments]
 **alignment_name**                A character vector containing desired alignment IDs [Default: Derive name from filename]
 **prefix**                        If **alignment_path** points to a directory, only query files starting with **prefix** (e.g. 'Alignment') [Default: Use all files in directory]
 **suffix**                        If **alignment_path** points to a directory, only query files ending wtih **suffix** (e.g. '.nex') [Default: Use all files in directory]
@@ -95,7 +95,7 @@ Example Usage
          Taxon Total_Bases Total_Degenerate Total_N Total_Gaps Percent_GC Percent_Degenerate  Percent_N Percent_Gap     Alignment_Name
   1  Species_A          12                0       1          0 0.00000000         0.00000000 0.07692308  0.00000000 Dummy_Alignment.fa
   2  Species_B          12                0       1          0 0.00000000         0.00000000 0.07692308  0.00000000 Dummy_Alignment.fa
-  3  Species_C          12                0       1          0 0.00000000         0.00000000 0.07692308  0.00000000 Dummy_Alignment.fa
+  3  Species_C          11                0       2          0 0.00000000         0.00000000 0.15384615  0.00000000 Dummy_Alignment.fa
   4  Species_D          11                0       2          0 0.00000000         0.00000000 0.15384615  0.00000000 Dummy_Alignment.fa
   5  Species_E          11                0       2          0 0.09090909         0.00000000 0.15384615  0.00000000 Dummy_Alignment.fa
   6  Species_F          10                1       2          0 0.10000000         0.07692308 0.15384615  0.00000000 Dummy_Alignment.fa
@@ -103,6 +103,8 @@ Example Usage
   8  Species_H          10                1       2          0 0.40000000         0.07692308 0.15384615  0.00000000 Dummy_Alignment.fa
   9  Species_I           9                1       2          1 0.33333333         0.07692308 0.15384615  0.07692308 Dummy_Alignment.fa
   10 Species_J           7                1       2          3 0.42857143         0.07692308 0.15384615  0.23076923 Dummy_Alignment.fa
+
+**Dummy Alignment**
 
 .. image:: ../images/Dummy_Align.png
   :width: 600

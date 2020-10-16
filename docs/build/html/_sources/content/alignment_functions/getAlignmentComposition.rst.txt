@@ -18,8 +18,8 @@ Function and Arguments
 ===========================      ===============================================================================================================================================================================================================
  Argument                         Description
 ===========================      ===============================================================================================================================================================================================================
-**alignment_path**				        An absolute or relative path to an alignment file or a directory containing multiple alignments
-**species_info**                  A list of species to consider, provided as a phylo, multiPhlyo, character vector or labels or a semicolon-delimited string [Default: all species]
+**alignment_path**				        An absolute or relative path to an alignment file(s) or a directory containing multiple alignments
+**species_info**                  A list of species to consider, provided as a phylo, multiPhlyo, character vector or labels or a semicolon-delimited string [Default: Shared species among all alignments]
 **alignment_name**                A character vector containing desired alignment IDs [Default: Derive name from filename]
 **prefix**                        If **alignment_path** points to a directory, only query files starting with **prefix** (e.g. 'Alignment') [Default: Use all files in directory]
 **suffix**                        If **alignment_path** points to a directory, only query files ending wtih **suffix** (e.g. '.nex') [Default: Use all files in directory]
@@ -62,7 +62,9 @@ Example Usage
   getAlignmentComposition(alignment_path = rb_dummy_align_path)
 
         Alignment_Name Alignment_Length Percent_GC Percent_Degenerate Percent_N Percent_Gap
-  1 Dummy_Alignment.fa               13  0.1456311         0.03846154 0.1307692  0.03846154
+  1 Dummy_Alignment.fa               13  0.1470588         0.03846154 0.1384615  0.03846154
+
+**Dummy Alignment**
 
 .. image:: ../images/Dummy_Align.png
   :width: 600

@@ -52,7 +52,7 @@ def getSitePatterns_Windows(pos,pruned_alignment,bases,spp_list):
 
         # If fewer than three bases remain after removing non-bases, return 'non_base'result
         if len(temp_list) - non_base_count < 3:
-            return(pd.DataFrame([[pos,'non_base',non_base_count,np.nan]], columns=['Alignment_Position','Site_Pattern','Non_Base_Count','Parsimony_Informative']))
+            return(pd.DataFrame([[pos,'non_base',non_base_count,"No"]], columns=['Alignment_Position','Site_Pattern','Non_Base_Count','Parsimony_Informative']))
         
         else:
             # Get species list and sequence data from taxa with appropriate bases
@@ -77,7 +77,7 @@ def getSitePatterns_Windows(pos,pruned_alignment,bases,spp_list):
 
         # If fewer than three bases remain after removing singletons, return 'non_base'result
         if len(temp_list) - singleton_count < 3:
-            return(pd.DataFrame([[pos,'non_base',non_base_count,np.nan]], columns=['Alignment_Position','Site_Pattern','Non_Base_Count','Parsimony_Informative']))
+            return(pd.DataFrame([[pos,'non_base',non_base_count,"No"]], columns=['Alignment_Position','Site_Pattern','Non_Base_Count','Parsimony_Informative']))
         
         else:
             # Get species list and sequence data from taxa with appropriate bases
@@ -155,7 +155,7 @@ def getSitePatterns(pos):
 
         # If fewer than three bases remain after removing non-bases, return 'non_base'result
         if len(temp_list) - non_base_count < 3:
-            return(pd.DataFrame([[pos,'non_base',non_base_count,np.nan]], columns=['Alignment_Position','Site_Pattern','Non_Base_Count','Parsimony_Informative']))
+            return(pd.DataFrame([[pos,'non_base',non_base_count,"No"]], columns=['Alignment_Position','Site_Pattern','Non_Base_Count','Parsimony_Informative']))
         
         else:
             # Get species list and sequence data from taxa with appropriate bases
@@ -180,7 +180,7 @@ def getSitePatterns(pos):
 
         # If fewer than three bases remain after removing singletons, return 'non_base'result
         if len(temp_list) - singleton_count < 3:
-            return(pd.DataFrame([[pos,'non_base',non_base_count,np.nan]], columns=['Alignment_Position','Site_Pattern','Non_Base_Count','Parsimony_Informative']))
+            return(pd.DataFrame([[pos,'non_base',non_base_count,"No"]], columns=['Alignment_Position','Site_Pattern','Non_Base_Count','Parsimony_Informative']))
         
         else:
             # Get species list and sequence data from taxa with appropriate bases

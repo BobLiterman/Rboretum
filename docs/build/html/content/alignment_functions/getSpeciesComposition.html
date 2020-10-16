@@ -92,6 +92,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../loading.html"><strong>Loading Rboretum</strong></a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../rboretum-suite.html"><strong>Rboretum Functions</strong></a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="getAlignmentComposition.html"><strong>getAlignmentComposition</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="getAlignmentPatterns.html"><strong>getAlignmentPatterns</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="getAlignmentSignal.html"><strong>getAlignmentSignal</strong></a></li>
 <li class="toctree-l2"><a class="reference internal" href="getAlignmentSpecies.html"><strong>getAlignmentSpecies</strong></a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#"><strong>getSpeciesComposition</strong></a></li>
 <li class="toctree-l2"><a class="reference internal" href="../plotting_functions/tandemPlotter.html"><strong>tandemPlotter</strong></a></li>
@@ -194,10 +196,10 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p><strong>alignment_path</strong></p></td>
-<td><p>An absolute or relative path to an alignment file or a directory containing multiple alignments</p></td>
+<td><p>An absolute or relative path to an alignment file(s) or a directory containing multiple alignments</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>species_info</strong></p></td>
-<td><p>A list of species to consider, provided as a phylo, multiPhlyo, character vector or labels or a semicolon-delimited string [Default: all species]</p></td>
+<td><p>A list of species to consider, provided as a phylo, multiPhlyo, character vector or labels or a semicolon-delimited string [Default: Shared species among all alignments]</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>alignment_name</strong></p></td>
 <td><p>A character vector containing desired alignment IDs [Default: Derive name from filename]</p></td>
@@ -277,7 +279,7 @@
        <span class="n">Taxon</span> <span class="n">Total_Bases</span> <span class="n">Total_Degenerate</span> <span class="n">Total_N</span> <span class="n">Total_Gaps</span> <span class="n">Percent_GC</span> <span class="n">Percent_Degenerate</span>  <span class="n">Percent_N</span> <span class="n">Percent_Gap</span>     <span class="n">Alignment_Name</span>
 <span class="m">1</span>  <span class="n">Species_A</span>          <span class="m">12</span>                <span class="m">0</span>       <span class="m">1</span>          <span class="m">0</span> <span class="m">0.00000000</span>         <span class="m">0.00000000</span> <span class="m">0.07692308</span>  <span class="m">0.00000000</span> <span class="n">Dummy_Alignment.fa</span>
 <span class="m">2</span>  <span class="n">Species_B</span>          <span class="m">12</span>                <span class="m">0</span>       <span class="m">1</span>          <span class="m">0</span> <span class="m">0.00000000</span>         <span class="m">0.00000000</span> <span class="m">0.07692308</span>  <span class="m">0.00000000</span> <span class="n">Dummy_Alignment.fa</span>
-<span class="m">3</span>  <span class="n">Species_C</span>          <span class="m">12</span>                <span class="m">0</span>       <span class="m">1</span>          <span class="m">0</span> <span class="m">0.00000000</span>         <span class="m">0.00000000</span> <span class="m">0.07692308</span>  <span class="m">0.00000000</span> <span class="n">Dummy_Alignment.fa</span>
+<span class="m">3</span>  <span class="n">Species_C</span>          <span class="m">11</span>                <span class="m">0</span>       <span class="m">2</span>          <span class="m">0</span> <span class="m">0.00000000</span>         <span class="m">0.00000000</span> <span class="m">0.15384615</span>  <span class="m">0.00000000</span> <span class="n">Dummy_Alignment.fa</span>
 <span class="m">4</span>  <span class="n">Species_D</span>          <span class="m">11</span>                <span class="m">0</span>       <span class="m">2</span>          <span class="m">0</span> <span class="m">0.00000000</span>         <span class="m">0.00000000</span> <span class="m">0.15384615</span>  <span class="m">0.00000000</span> <span class="n">Dummy_Alignment.fa</span>
 <span class="m">5</span>  <span class="n">Species_E</span>          <span class="m">11</span>                <span class="m">0</span>       <span class="m">2</span>          <span class="m">0</span> <span class="m">0.09090909</span>         <span class="m">0.00000000</span> <span class="m">0.15384615</span>  <span class="m">0.00000000</span> <span class="n">Dummy_Alignment.fa</span>
 <span class="m">6</span>  <span class="n">Species_F</span>          <span class="m">10</span>                <span class="m">1</span>       <span class="m">2</span>          <span class="m">0</span> <span class="m">0.10000000</span>         <span class="m">0.07692308</span> <span class="m">0.15384615</span>  <span class="m">0.00000000</span> <span class="n">Dummy_Alignment.fa</span>
@@ -287,6 +289,7 @@
 <span class="m">10</span> <span class="n">Species_J</span>           <span class="m">7</span>                <span class="m">1</span>       <span class="m">2</span>          <span class="m">3</span> <span class="m">0.42857143</span>         <span class="m">0.07692308</span> <span class="m">0.15384615</span>  <span class="m">0.23076923</span> <span class="n">Dummy_Alignment.fa</span>
 </pre></div>
 </div>
+<p><strong>Dummy Alignment</strong></p>
 <a class="reference internal image-reference" href="../../_images/Dummy_Align.png"><img alt="../../_images/Dummy_Align.png" src="../../_images/Dummy_Align.png" style="width: 600px;" /></a>
 </div>
 </div>

@@ -9,6 +9,7 @@ Alignment Functions
   :maxdepth: 1
   
   alignment_functions/getAlignmentComposition
+  alignment_functions/getAlignmentPatterns
   alignment_functions/getAlignmentSignal
   alignment_functions/getAlignmentSpecies
   alignment_functions/getSpeciesComposition

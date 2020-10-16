@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>getAlignmentSpecies &mdash; Rboretum 1.0 documentation</title>
+  <title>getAlignmentPatterns &mdash; Rboretum 1.0 documentation</title>
   
 
   
@@ -35,7 +35,10 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="Rboretum 1.0 documentation" href="../../index.html"/> 
+    <link rel="top" title="Rboretum 1.0 documentation" href="../../index.html"/>
+        <link rel="up" title="Rboretum Functions" href="../rboretum-suite.html"/>
+        <link rel="next" title="getAlignmentSignal" href="getAlignmentSignal.html"/>
+        <link rel="prev" title="getAlignmentComposition" href="getAlignmentComposition.html"/> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -84,10 +87,34 @@
           
             
             
-                <ul>
+                <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html"><strong>Installing Rboretum</strong></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../loading.html"><strong>Loading Rboretum</strong></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../rboretum-suite.html"><strong>Rboretum Functions</strong></a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../rboretum-suite.html"><strong>Rboretum Functions</strong></a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="getAlignmentComposition.html"><strong>getAlignmentComposition</strong></a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><strong>getAlignmentPatterns</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="getAlignmentSignal.html"><strong>getAlignmentSignal</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="getAlignmentSpecies.html"><strong>getAlignmentSpecies</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="getSpeciesComposition.html"><strong>getSpeciesComposition</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plotting_functions/tandemPlotter.html"><strong>tandemPlotter</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/checkTips.html"><strong>checkTips</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/extractNodeAges.html"><strong>extractNodeAges</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/getSharedTaxa.html"><strong>getSharedTaxa</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/getTreeClades.html"><strong>getTreeClades</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/getTreeSplits.html"><strong>getTreeSplits</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/getUniqueTopologies.html"><strong>getUniqueTopologies</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/readRooted.html"><strong>readRooted</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/summarizeMultiphylo.html"><strong>summarizeMultiphylo</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/treeDater.html"><strong>treeDater</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/treeNamer.html"><strong>treeNamer</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/treeTrimmer.html"><strong>treeTrimmer</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utility_functions/convertLabels.html"><strong>convertLabels</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utility_functions/semiSorter.html"><strong>semiSorter</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utility_functions/semiVector.html"><strong>semiVector</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utility_functions/tableCount.html"><strong>tableCount</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utility_functions/vectorSemi.html"><strong>vectorSemi</strong></a></li>
+</ul>
+</li>
 </ul>
 
             
@@ -129,7 +156,9 @@
     
       <li><a href="../../index.html">Docs</a> &raquo;</li>
         
-      <li><strong>getAlignmentSpecies</strong></li>
+          <li><a href="../rboretum-suite.html"><strong>Rboretum Functions</strong></a> &raquo;</li>
+        
+      <li><strong>getAlignmentPatterns</strong></li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -146,13 +175,21 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="getalignmentspecies">
-<span id="id1"></span><h1><strong>getAlignmentSpecies</strong><a class="headerlink" href="#getalignmentspecies" title="Permalink to this headline">¶</a></h1>
-<p><em>getAlignmentSpecies</em> returns the species IDs from an alignment file, specified by <em>alignment_path</em></p>
+  <div class="section" id="getalignmentpatterns">
+<span id="id1"></span><h1><strong>getAlignmentPatterns</strong><a class="headerlink" href="#getalignmentpatterns" title="Permalink to this headline">¶</a></h1>
+<p><em>getAlignmentPatterns</em> takes one or more alignment files and returns site-by-site information about:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Site variation patterns (i.e. is the site invariant, singleton, biallelic, triallelic, etc.)</p></li>
+<li><p>Missing data</p></li>
+<li><p>Parsimony-informativeness (i.e. is the site variable, and does the site contain no singleton taxa)</p></li>
+</ul>
+</div></blockquote>
+<p>Note: This information can be derived from the output from <em>getAlignmentSignal</em>, which also returns information about site splits</p>
 <div class="section" id="function-and-arguments">
 <h2>Function and Arguments<a class="headerlink" href="#function-and-arguments" title="Permalink to this headline">¶</a></h2>
 <p><strong>Usage</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">getAlignmentSpecies</span> <span class="o">&lt;-</span> <span class="n">function</span><span class="p">(</span><span class="n">alignment_path</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">getAlignmentPatterns</span> <span class="o">&lt;-</span> <span class="n">function</span><span class="p">(</span><span class="n">alignment_path</span><span class="p">,</span><span class="n">species_info</span><span class="p">,</span><span class="n">use_gaps</span><span class="p">,</span><span class="n">alignment_name</span><span class="p">,</span><span class="n">prefix</span><span class="p">,</span><span class="n">suffix</span><span class="p">){</span>
 </pre></div>
 </div>
 <table class="docutils align-default">
@@ -167,33 +204,115 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p><strong>alignment_path</strong></p></td>
-<td><p>An absolute or relative path to the alignment file from which you want to extract labels</p></td>
+<td><p>An absolute or relative path to an alignment file(s) or a directory containing multiple alignments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>species_info</strong></p></td>
+<td><p>A list of species to consider, provided as a phylo, multiPhlyo, character vector or labels or a semicolon-delimited string [Default: Shared species among all alignments]</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>use_gaps</strong></p></td>
+<td><p>If FALSE, consider gaps (-) in alignments as missing data. [Default: TRUE, treat gaps as indel characters]</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>alignment_name</strong></p></td>
+<td><p>A character vector containing desired alignment IDs [Default: Derive name from filename]</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>prefix</strong></p></td>
+<td><p>If <strong>alignment_path</strong> points to a directory, only query files starting with <strong>prefix</strong> (e.g. ‘Alignment’) [Default: Use all files in directory]</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>suffix</strong></p></td>
+<td><p>If <strong>alignment_path</strong> points to a directory, only query files ending wtih <strong>suffix</strong> (e.g. ‘.nex’) [Default: Use all files in directory]</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="section" id="example-usage">
 <h2>Example Usage<a class="headerlink" href="#example-usage" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Script: Rboretum/docs/content/Doc_Function_Scripts/getAlignmentSpecies.R</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Script: Rboretum/docs/content/Doc_Function_Scripts/getAlignmentPatterns.R</span>
 
 <span class="nf">library</span><span class="p">(</span><span class="n">Rboretum</span><span class="p">)</span>
 
 <span class="c1"># Set test data directory</span>
 <span class="nf">sourceRboretum</span><span class="p">()</span>
 
-<span class="c1"># Set alignment path</span>
+<span class="c1"># Set path to alignment data</span>
 <span class="n">myAlignmentFile</span> <span class="o">&lt;-</span> <span class="n">rb_align1_path</span>
+<span class="n">mySpecies</span> <span class="o">&lt;-</span> <span class="nf">getAlignmentSpecies</span><span class="p">(</span><span class="n">myAlignmentFile</span><span class="p">)</span>
+<span class="n">myAlignmentDir</span> <span class="o">&lt;-</span> <span class="n">rb_alignment_dir</span>
 
-<span class="n">myAlignmentFile</span>
-<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;&lt;PACKAGE_DIR&gt;/extdata/alignments/Gene_1.phylip&quot;</span>
+<span class="c1"># Get alignment Patterns information for a single alignment</span>
+<span class="nf">getAlignmentPatterns</span><span class="p">(</span><span class="n">alignment_path</span> <span class="o">=</span> <span class="n">myAlignmentFile</span><span class="p">)</span>
 
+    <span class="n">Alignment_Position</span> <span class="n">Site_Pattern</span> <span class="n">Non_Base_Count</span> <span class="n">Parsimony_Informative</span> <span class="n">Alignment_Name</span>
+<span class="m">1</span>                    <span class="m">1</span>   <span class="n">triallelic</span>              <span class="m">0</span>                   <span class="n">Yes</span>  <span class="n">Gene_1.phylip</span>
+<span class="m">2</span>                    <span class="m">2</span>   <span class="n">triallelic</span>              <span class="m">0</span>                   <span class="n">Yes</span>  <span class="n">Gene_1.phylip</span>
+<span class="m">3</span>                    <span class="m">3</span>    <span class="n">biallelic</span>              <span class="m">0</span>                   <span class="n">Yes</span>  <span class="n">Gene_1.phylip</span>
+<span class="m">4</span>                    <span class="m">4</span>   <span class="n">triallelic</span>              <span class="m">0</span>                    <span class="n">No</span>  <span class="n">Gene_1.phylip</span>
+<span class="m">5</span>                    <span class="m">5</span>   <span class="n">triallelic</span>              <span class="m">0</span>                    <span class="n">No</span>  <span class="n">Gene_1.phylip</span>
+<span class="m">6</span>                    <span class="m">6</span>   <span class="n">triallelic</span>              <span class="m">0</span>                   <span class="n">Yes</span>  <span class="n">Gene_1.phylip</span>
+<span class="m">7</span>                    <span class="m">7</span>    <span class="n">biallelic</span>              <span class="m">0</span>                    <span class="n">No</span>  <span class="n">Gene_1.phylip</span>
+<span class="m">8</span>                    <span class="m">8</span>    <span class="n">biallelic</span>              <span class="m">0</span>                   <span class="n">Yes</span>  <span class="n">Gene_1.phylip</span>
+<span class="m">9</span>                    <span class="m">9</span>  <span class="n">quadallelic</span>              <span class="m">0</span>                   <span class="n">Yes</span>  <span class="n">Gene_1.phylip</span>
+<span class="m">10</span>                  <span class="m">10</span>   <span class="n">triallelic</span>              <span class="m">0</span>                   <span class="n">Yes</span>  <span class="n">Gene_1.phylip</span>
 
-<span class="c1"># Get sample IDs from alignment</span>
-<span class="nf">getAlignmentSpecies</span><span class="p">(</span><span class="n">alignment_path</span> <span class="o">=</span> <span class="n">myAlignmentFile</span><span class="p">)</span>
+<span class="c1"># Get alignment Patterns information from all .phylip files in a directory, providing new names, consider gaps as missing data</span>
+<span class="nf">getAlignmentPatterns</span><span class="p">(</span><span class="n">alignment_path</span> <span class="o">=</span> <span class="n">myAlignmentDir</span><span class="p">,</span><span class="n">species_info</span> <span class="o">=</span> <span class="n">mySpecies</span><span class="p">,</span><span class="n">use_gaps</span> <span class="o">=</span> <span class="kc">FALSE</span><span class="p">,</span><span class="n">suffix</span> <span class="o">=</span> <span class="s">&quot;.phylip&quot;</span><span class="p">,</span><span class="n">alignment_name</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Gene_A&#39;</span><span class="p">,</span><span class="s">&#39;Gene_B&#39;</span><span class="p">,</span><span class="s">&#39;Gene_C&#39;</span><span class="p">,</span><span class="s">&#39;Gene_D&#39;</span><span class="p">,</span><span class="s">&#39;Gene_E&#39;</span><span class="p">))</span>
 
-<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_B;Species_C;Species_D;Species_E;Species_F;Species_G;Species_H;Species_I;Species_J;Species_K;Species_L;Species_M;Species_N;Species_O&quot;</span>
+    <span class="n">Alignment_Position</span> <span class="n">Site_Pattern</span> <span class="n">Non_Base_Count</span> <span class="n">Parsimony_Informative</span> <span class="n">Alignment_Name</span>
+<span class="m">1</span>                    <span class="m">1</span>   <span class="n">triallelic</span>              <span class="m">0</span>                   <span class="n">Yes</span>         <span class="n">Gene_A</span>
+<span class="m">2</span>                    <span class="m">2</span>   <span class="n">triallelic</span>              <span class="m">0</span>                   <span class="n">Yes</span>         <span class="n">Gene_A</span>
+<span class="m">3</span>                    <span class="m">3</span>    <span class="n">biallelic</span>              <span class="m">0</span>                   <span class="n">Yes</span>         <span class="n">Gene_A</span>
+<span class="m">4</span>                    <span class="m">4</span>   <span class="n">triallelic</span>              <span class="m">0</span>                    <span class="n">No</span>         <span class="n">Gene_A</span>
+<span class="m">5</span>                    <span class="m">5</span>   <span class="n">triallelic</span>              <span class="m">0</span>                    <span class="n">No</span>         <span class="n">Gene_A</span>
+<span class="m">6</span>                    <span class="m">6</span>   <span class="n">triallelic</span>              <span class="m">0</span>                   <span class="n">Yes</span>         <span class="n">Gene_A</span>
+<span class="m">7</span>                    <span class="m">7</span>    <span class="n">biallelic</span>              <span class="m">0</span>                    <span class="n">No</span>         <span class="n">Gene_A</span>
+<span class="m">8</span>                    <span class="m">8</span>    <span class="n">biallelic</span>              <span class="m">0</span>                   <span class="n">Yes</span>         <span class="n">Gene_A</span>
+<span class="m">9</span>                    <span class="m">9</span>  <span class="n">quadallelic</span>              <span class="m">0</span>                   <span class="n">Yes</span>         <span class="n">Gene_A</span>
+<span class="m">10</span>                  <span class="m">10</span>   <span class="n">triallelic</span>              <span class="m">0</span>                   <span class="n">Yes</span>         <span class="n">Gene_A</span>
+<span class="n">.</span>
+<span class="n">.</span>
+<span class="n">.</span>
+
+<span class="c1"># Get alignment Patterns from dummy alignment, with and without gap support</span>
+<span class="nf">getAlignmentPatterns</span><span class="p">(</span><span class="n">alignment_path</span> <span class="o">=</span> <span class="n">rb_dummy_align_path</span><span class="p">)</span>
+
+   <span class="n">Alignment_Position</span> <span class="n">Site_Pattern</span> <span class="n">Non_Base_Count</span> <span class="n">Parsimony_Informative</span>     <span class="n">Alignment_Name</span>
+<span class="m">1</span>                   <span class="m">1</span>     <span class="n">non_base</span>             <span class="m">10</span>                    <span class="n">No</span> <span class="n">Dummy_Alignment.fa</span>
+<span class="m">2</span>                   <span class="m">2</span>     <span class="n">non_base</span>              <span class="m">8</span>                    <span class="n">No</span> <span class="n">Dummy_Alignment.fa</span>
+<span class="m">3</span>                   <span class="m">3</span>    <span class="n">invariant</span>              <span class="m">0</span>                    <span class="n">No</span> <span class="n">Dummy_Alignment.fa</span>
+<span class="m">4</span>                   <span class="m">4</span>    <span class="n">singleton</span>              <span class="m">0</span>                    <span class="n">No</span> <span class="n">Dummy_Alignment.fa</span>
+<span class="m">5</span>                   <span class="m">5</span>    <span class="n">singleton</span>              <span class="m">0</span>                    <span class="n">No</span> <span class="n">Dummy_Alignment.fa</span>
+<span class="m">6</span>                   <span class="m">6</span>    <span class="n">singleton</span>              <span class="m">0</span>                    <span class="n">No</span> <span class="n">Dummy_Alignment.fa</span>
+<span class="m">7</span>                   <span class="m">7</span>    <span class="n">biallelic</span>              <span class="m">0</span>                   <span class="n">Yes</span> <span class="n">Dummy_Alignment.fa</span>
+<span class="m">8</span>                   <span class="m">8</span>   <span class="n">triallelic</span>              <span class="m">0</span>                   <span class="n">Yes</span> <span class="n">Dummy_Alignment.fa</span>
+<span class="m">9</span>                   <span class="m">9</span>  <span class="n">quadallelic</span>              <span class="m">0</span>                   <span class="n">Yes</span> <span class="n">Dummy_Alignment.fa</span>
+<span class="m">10</span>                 <span class="m">10</span>  <span class="n">pentallelic</span>              <span class="m">0</span>                   <span class="n">Yes</span> <span class="n">Dummy_Alignment.fa</span>
+<span class="m">11</span>                 <span class="m">11</span>    <span class="n">biallelic</span>              <span class="m">0</span>                    <span class="n">No</span> <span class="n">Dummy_Alignment.fa</span>
+<span class="m">12</span>                 <span class="m">12</span>    <span class="n">biallelic</span>              <span class="m">0</span>                    <span class="n">No</span> <span class="n">Dummy_Alignment.fa</span>
+<span class="m">13</span>                 <span class="m">13</span>    <span class="n">invariant</span>              <span class="m">5</span>                    <span class="n">No</span> <span class="n">Dummy_Alignment.fa</span>
+
+<span class="nf">getAlignmentPatterns</span><span class="p">(</span><span class="n">alignment_path</span> <span class="o">=</span> <span class="n">rb_dummy_align_path</span><span class="p">,</span><span class="n">use_gaps</span> <span class="o">=</span> <span class="kc">FALSE</span><span class="p">)</span>
+
+   <span class="n">Alignment_Position</span> <span class="n">Site_Pattern</span> <span class="n">Non_Base_Count</span> <span class="n">Parsimony_Informative</span>     <span class="n">Alignment_Name</span>
+<span class="m">1</span>                   <span class="m">1</span>     <span class="n">non_base</span>             <span class="m">10</span>                    <span class="n">No</span> <span class="n">Dummy_Alignment.fa</span>
+<span class="m">2</span>                   <span class="m">2</span>     <span class="n">non_base</span>              <span class="m">8</span>                    <span class="n">No</span> <span class="n">Dummy_Alignment.fa</span>
+<span class="m">3</span>                   <span class="m">3</span>    <span class="n">invariant</span>              <span class="m">0</span>                    <span class="n">No</span> <span class="n">Dummy_Alignment.fa</span>
+<span class="m">4</span>                   <span class="m">4</span>    <span class="n">singleton</span>              <span class="m">0</span>                    <span class="n">No</span> <span class="n">Dummy_Alignment.fa</span>
+<span class="m">5</span>                   <span class="m">5</span>    <span class="n">invariant</span>              <span class="m">1</span>                    <span class="n">No</span> <span class="n">Dummy_Alignment.fa</span>
+<span class="m">6</span>                   <span class="m">6</span>    <span class="n">singleton</span>              <span class="m">1</span>                    <span class="n">No</span> <span class="n">Dummy_Alignment.fa</span>
+<span class="m">7</span>                   <span class="m">7</span>    <span class="n">biallelic</span>              <span class="m">0</span>                   <span class="n">Yes</span> <span class="n">Dummy_Alignment.fa</span>
+<span class="m">8</span>                   <span class="m">8</span>   <span class="n">triallelic</span>              <span class="m">0</span>                   <span class="n">Yes</span> <span class="n">Dummy_Alignment.fa</span>
+<span class="m">9</span>                   <span class="m">9</span>  <span class="n">quadallelic</span>              <span class="m">0</span>                   <span class="n">Yes</span> <span class="n">Dummy_Alignment.fa</span>
+<span class="m">10</span>                 <span class="m">10</span>  <span class="n">quadallelic</span>              <span class="m">2</span>                   <span class="n">Yes</span> <span class="n">Dummy_Alignment.fa</span>
+<span class="m">11</span>                 <span class="m">11</span>    <span class="n">biallelic</span>              <span class="m">1</span>                   <span class="n">Yes</span> <span class="n">Dummy_Alignment.fa</span>
+<span class="m">12</span>                 <span class="m">12</span>    <span class="n">biallelic</span>              <span class="m">0</span>                    <span class="n">No</span> <span class="n">Dummy_Alignment.fa</span>
+<span class="m">13</span>                 <span class="m">13</span>    <span class="n">invariant</span>              <span class="m">5</span>                    <span class="n">No</span> <span class="n">Dummy_Alignment.fa</span>
+
+<span class="c1"># Postion 2 is &#39;non_base&#39; because &lt; 3 species have a called base</span>
+<span class="c1"># Note: Sites 5, 6, 10, and 11 have species with gap positions.</span>
+<span class="c1"># Treating gaps as missing data sets all gap taxa to missing taxa in the bottom dataframe, and also changes the reported site patterns for rows 5 + 10</span>
 </pre></div>
 </div>
+<p><strong>Dummy Alignment</strong></p>
+<a class="reference internal image-reference" href="../../_images/Dummy_Align.png"><img alt="../../_images/Dummy_Align.png" src="../../_images/Dummy_Align.png" style="width: 600px;" /></a>
 </div>
 </div>
 
@@ -201,6 +320,15 @@
            </div>
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="getAlignmentSignal.html" class="btn btn-neutral float-right" title="getAlignmentSignal" accesskey="n">Next →</a>
+      
+      
+        <a href="getAlignmentComposition.html" class="btn btn-neutral" title="getAlignmentComposition" accesskey="p">← Previous</a>
+      
+    </div>
   
 
   <hr/>

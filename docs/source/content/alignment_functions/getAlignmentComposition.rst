@@ -45,46 +45,24 @@ Example Usage
   # Get alignment composition information for a single alignment
   getAlignmentComposition(alignment_path = myAlignmentFile)
   
-    Alignment_Name Alignment_Length Percent_GC Percent_N Percent_Gap
-  1  Gene_1.phylip             2000  0.4940333         0           0
+    Alignment_Name Alignment_Length Percent_GC Percent_Degenerate Percent_N Percent_Gap
+  1  Gene_1.phylip             2000  0.4940333                  0         0           0
 
   # Get alignment composition information from all .phylip files in a directory, providing new names
   getAlignmentComposition(alignment_path = myAlignmentDir,suffix = ".phylip",alignment_name = c('Gene_A','Gene_B','Gene_C','Gene_D','Gene_E'))
 
-    Alignment_Name Alignment_Length Percent_GC Percent_N Percent_Gap
-  1         Gene_A             2000  0.4940333         0           0
-  2         Gene_B             2500  0.4978400         0           0
-  3         Gene_C             1500  0.4921778         0           0
-  4         Gene_D             3000  0.5011556         0           0
-  5         Gene_E             2500  0.5003733         0           0
+    Alignment_Name Alignment_Length Percent_GC Percent_Degenerate Percent_N Percent_Gap
+  1         Gene_A             2000  0.4940333                  0         0           0
+  2         Gene_B             2500  0.4978400                  0         0           0
+  3         Gene_C             1500  0.4921778                  0         0           0
+  4         Gene_D             3000  0.5011556                  0         0           0
+  5         Gene_E             2500  0.5003733                  0         0           0
   
   # Get species composition from dummy alignment
-  
-  # Dummy Alignment
-
-  >Species_A
-  NAAAAAAAAAAAA
-  >Species_B
-  NAAAAAAAAAAAA
-  >Species_C
-  NAAAAAAAATAAA
-  >Species_D
-  NNAAAAATTTAAA
-  >Species_E
-  NNAAAAATTCAAA
-  >Species_F
-  NNAAAATTTCTTW
-  >Species_G
-  NNAAA-TCCGTTK
-  >Species_H
-  NNAAAGTCCGTTM
-  >Species_I
-  NNAAACTCG-TTS
-  >Species_J
-  NNAT-TTCG--GR
-  
   getAlignmentComposition(alignment_path = rb_dummy_align_path)
 
         Alignment_Name Alignment_Length Percent_GC Percent_Degenerate Percent_N Percent_Gap
   1 Dummy_Alignment.fa               13  0.1456311         0.03846154 0.1307692  0.03846154
-  
+
+.. image:: ../images/Dummy_Align.png
+  :width: 600

@@ -45,73 +45,64 @@ Example Usage
   # Get species composition information
   getSpeciesComposition(alignment_path = myAlignmentFile)
 
-         Taxon Total_Bases Total_N Total_Gaps Percent_GC Percent_N Percent_Gap Alignment_Name
-  1  Species_A        2000       0          0     0.4780         0           0  Gene_1.phylip
-  2  Species_B        2000       0          0     0.4935         0           0  Gene_1.phylip
-  3  Species_C        2000       0          0     0.4940         0           0  Gene_1.phylip
-  4  Species_D        2000       0          0     0.4880         0           0  Gene_1.phylip
-  5  Species_E        2000       0          0     0.4925         0           0  Gene_1.phylip
-  6  Species_F        2000       0          0     0.4820         0           0  Gene_1.phylip
-  7  Species_G        2000       0          0     0.4905         0           0  Gene_1.phylip
-  8  Species_H        2000       0          0     0.4950         0           0  Gene_1.phylip
-  9  Species_I        2000       0          0     0.5035         0           0  Gene_1.phylip
-  10 Species_J        2000       0          0     0.5100         0           0  Gene_1.phylip
-  11 Species_K        2000       0          0     0.5025         0           0  Gene_1.phylip
-  12 Species_L        2000       0          0     0.4950         0           0  Gene_1.phylip
-  13 Species_M        2000       0          0     0.5005         0           0  Gene_1.phylip
-  14 Species_N        2000       0          0     0.4970         0           0  Gene_1.phylip
-  15 Species_O        2000       0          0     0.4885         0           0  Gene_1.phylip
+         Taxon Total_Bases Total_Degenerate Total_N Total_Gaps Percent_GC Percent_Degenerate Percent_N Percent_Gap Alignment_Name
+  1  Species_A        2000                0       0          0     0.4950                  0         0           0  Gene_1.phylip
+  2  Species_B        2000                0       0          0     0.4940                  0         0           0  Gene_1.phylip
+  3  Species_C        2000                0       0          0     0.5025                  0         0           0  Gene_1.phylip
+  4  Species_D        2000                0       0          0     0.4950                  0         0           0  Gene_1.phylip
+  5  Species_E        2000                0       0          0     0.4780                  0         0           0  Gene_1.phylip
+  6  Species_F        2000                0       0          0     0.4820                  0         0           0  Gene_1.phylip
+  7  Species_G        2000                0       0          0     0.4925                  0         0           0  Gene_1.phylip
+  8  Species_H        2000                0       0          0     0.5005                  0         0           0  Gene_1.phylip
+  9  Species_I        2000                0       0          0     0.5100                  0         0           0  Gene_1.phylip
+  10 Species_J        2000                0       0          0     0.5035                  0         0           0  Gene_1.phylip
+  11 Species_K        2000                0       0          0     0.4970                  0         0           0  Gene_1.phylip
+  12 Species_L        2000                0       0          0     0.4905                  0         0           0  Gene_1.phylip
+  13 Species_M        2000                0       0          0     0.4935                  0         0           0  Gene_1.phylip
+  14 Species_N        2000                0       0          0     0.4885                  0         0           0  Gene_1.phylip
+  15 Species_O        2000                0       0          0     0.4880                  0         0           0  Gene_1.phylip
   
   # Get species composition information from all .phylip files in a directory, providing new names
   getSpeciesComposition(alignment_path = myAlignmentDir,suffix = ".phylip",alignment_name = c('Gene_A','Gene_B','Gene_C','Gene_D','Gene_E'))
   
-         Taxon Total_Bases Total_N Total_Gaps Percent_GC Percent_N Percent_Gap Alignment_Name
-  1  Species_A        2000       0          0  0.4780000         0           0         Gene_A
-  2  Species_B        2000       0          0  0.4935000         0           0         Gene_A
-  3  Species_C        2000       0          0  0.4940000         0           0         Gene_A
-  4  Species_D        2000       0          0  0.4880000         0           0         Gene_A
-  5  Species_E        2000       0          0  0.4925000         0           0         Gene_A
-  6  Species_F        2000       0          0  0.4820000         0           0         Gene_A
-  7  Species_G        2000       0          0  0.4905000         0           0         Gene_A
-  8  Species_H        2000       0          0  0.4950000         0           0         Gene_A
-  9  Species_I        2000       0          0  0.5035000         0           0         Gene_A
-  10 Species_J        2000       0          0  0.5100000         0           0         Gene_A
-  11 Species_K        2000       0          0  0.5025000         0           0         Gene_A
-  12 Species_L        2000       0          0  0.4950000         0           0         Gene_A
-  13 Species_M        2000       0          0  0.5005000         0           0         Gene_A
-  14 Species_N        2000       0          0  0.4970000         0           0         Gene_A
-  15 Species_O        2000       0          0  0.4885000         0           0         Gene_A
-  16 Species_A        2500       0          0  0.4956000         0           0         Gene_B
-  17 Species_B        2500       0          0  0.4840000         0           0         Gene_B
-  18 Species_C        2500       0          0  0.4896000         0           0         Gene_B
+         Taxon Total_Bases Total_Degenerate Total_N Total_Gaps Percent_GC Percent_Degenerate Percent_N Percent_Gap Alignment_Name
+  1  Species_A        2000                0       0          0  0.4950000                  0         0           0         Gene_A
+  2  Species_B        2000                0       0          0  0.4940000                  0         0           0         Gene_A
+  3  Species_C        2000                0       0          0  0.5025000                  0         0           0         Gene_A
+  4  Species_D        2000                0       0          0  0.4950000                  0         0           0         Gene_A
+  5  Species_E        2000                0       0          0  0.4780000                  0         0           0         Gene_A
+  6  Species_F        2000                0       0          0  0.4820000                  0         0           0         Gene_A
+  7  Species_G        2000                0       0          0  0.4925000                  0         0           0         Gene_A
+  8  Species_H        2000                0       0          0  0.5005000                  0         0           0         Gene_A
+  9  Species_I        2000                0       0          0  0.5100000                  0         0           0         Gene_A
+  10 Species_J        2000                0       0          0  0.5035000                  0         0           0         Gene_A
+  11 Species_K        2000                0       0          0  0.4970000                  0         0           0         Gene_A
+  12 Species_L        2000                0       0          0  0.4905000                  0         0           0         Gene_A
+  13 Species_M        2000                0       0          0  0.4935000                  0         0           0         Gene_A
+  14 Species_N        2000                0       0          0  0.4885000                  0         0           0         Gene_A
+  15 Species_O        2000                0       0          0  0.4880000                  0         0           0         Gene_A
+  16 Species_A        2500                0       0          0  0.4916000                  0         0           0         Gene_B
+  17 Species_B        2500                0       0          0  0.4896000                  0         0           0         Gene_B
+  18 Species_C        2500                0       0          0  0.4904000                  0         0           0         Gene_B
+  19 Species_D        2500                0       0          0  0.4920000                  0         0           0         Gene_B
   .
   .
   .
-  
   
   # Get species composition from dummy alignment
   getSpeciesComposition(alignment_path = rb_dummy_align_path)
   
-  # Dummy alignment
-  
-  >Species_A_NoGap_NoN_NoGC
-  ATATATATATATATATATATATATATATATATATAT
-  >Species_B_10Gap_NoN_NoGC
-  ATATATATATATATATATATATATAT----------
-  >Species_C_10Gap_10N_NoGC
-  ATATATATATATATATNNNNNNNNNN----------
-  >Species_D_NoGap_NoN_50GC
-  ATATATATATATATATATGCGCGCGCGCGCGCGCGC
-  >Species_E_10Gap_NoN_50GC
-  ATATATATATATA----------CGCGCGCGCGCGC
-  >Species_F_10Gap_10N_50GC
-  ATATATATNNNNN----------NNNNNGCGCGCGC
+         Taxon Total_Bases Total_Degenerate Total_N Total_Gaps Percent_GC Percent_Degenerate  Percent_N Percent_Gap     Alignment_Name
+  1  Species_A          12                0       1          0 0.00000000         0.00000000 0.07692308  0.00000000 Dummy_Alignment.fa
+  2  Species_B          12                0       1          0 0.00000000         0.00000000 0.07692308  0.00000000 Dummy_Alignment.fa
+  3  Species_C          12                0       1          0 0.00000000         0.00000000 0.07692308  0.00000000 Dummy_Alignment.fa
+  4  Species_D          11                0       2          0 0.00000000         0.00000000 0.15384615  0.00000000 Dummy_Alignment.fa
+  5  Species_E          11                0       2          0 0.09090909         0.00000000 0.15384615  0.00000000 Dummy_Alignment.fa
+  6  Species_F          10                1       2          0 0.10000000         0.07692308 0.15384615  0.00000000 Dummy_Alignment.fa
+  7  Species_G           9                1       2          1 0.33333333         0.07692308 0.15384615  0.07692308 Dummy_Alignment.fa
+  8  Species_H          10                1       2          0 0.40000000         0.07692308 0.15384615  0.00000000 Dummy_Alignment.fa
+  9  Species_I           9                1       2          1 0.33333333         0.07692308 0.15384615  0.07692308 Dummy_Alignment.fa
+  10 Species_J           7                1       2          3 0.42857143         0.07692308 0.15384615  0.23076923 Dummy_Alignment.fa
 
-                       Taxon Total_Bases Total_N Total_Gaps Percent_GC Percent_N Percent_Gap Alignment_Name
-  1 Species_A_NoGap_NoN_NoGC          36       0          0        0.0 0.0000000   0.0000000    Gap_GC_N.fa
-  2 Species_B_10Gap_NoN_NoGC          26       0         10        0.0 0.0000000   0.2777778    Gap_GC_N.fa
-  3 Species_C_10Gap_10N_NoGC          16      10         10        0.0 0.2777778   0.2777778    Gap_GC_N.fa
-  4 Species_D_NoGap_NoN_50GC          36       0          0        0.5 0.0000000   0.0000000    Gap_GC_N.fa
-  5 Species_E_10Gap_NoN_50GC          26       0         10        0.5 0.0000000   0.2777778    Gap_GC_N.fa
-  6 Species_F_10Gap_10N_50GC          16      10         10        0.5 0.2777778   0.2777778    Gap_GC_N.fa
-    
+.. image:: ../images/Dummy_Align.png
+  :width: 600

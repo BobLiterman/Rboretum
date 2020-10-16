@@ -59,22 +59,32 @@ Example Usage
   5         Gene_E             2500  0.5003733         0           0
   
   # Get species composition from dummy alignment
-  getAlignmentComposition(alignment_path = rb_dummy_align_path)
   
-  # Dummy alignment
-  
-  >Species_A_NoGap_NoN_NoGC
-  ATATATATATATATATATATATATATATATATATAT
-  >Species_B_10Gap_NoN_NoGC
-  ATATATATATATATATATATATATAT----------
-  >Species_C_10Gap_10N_NoGC
-  ATATATATATATATATNNNNNNNNNN----------
-  >Species_D_NoGap_NoN_50GC
-  ATATATATATATATATATGCGCGCGCGCGCGCGCGC
-  >Species_E_10Gap_NoN_50GC
-  ATATATATATATA----------CGCGCGCGCGCGC
-  >Species_F_10Gap_10N_50GC
-  ATATATATNNNNN----------NNNNNGCGCGCGC
+  # Dummy Alignment
 
-    Alignment_Name Alignment_Length Percent_GC  Percent_N Percent_Gap
-  1    Gap_GC_N.fa               36       0.25 0.09259259   0.1851852
+  >Species_A
+  NAAAAAAAAAAAA
+  >Species_B
+  NAAAAAAAAAAAA
+  >Species_C
+  NAAAAAAAATAAA
+  >Species_D
+  NNAAAAATTTAAA
+  >Species_E
+  NNAAAAATTCAAA
+  >Species_F
+  NNAAAATTTCTTW
+  >Species_G
+  NNAAA-TCCGTTK
+  >Species_H
+  NNAAAGTCCGTTM
+  >Species_I
+  NNAAACTCG-TTS
+  >Species_J
+  NNAT-TTCG--GR
+  
+  getAlignmentComposition(alignment_path = rb_dummy_align_path)
+
+        Alignment_Name Alignment_Length Percent_GC Percent_Degenerate Percent_N Percent_Gap
+  1 Dummy_Alignment.fa               13  0.1456311         0.03846154 0.1307692  0.03846154
+  

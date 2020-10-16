@@ -88,30 +88,42 @@ Example Usage
   .
   .
   
-  
   # Get species composition from dummy alignment
+  
+  # Dummy Alignment
+  
+  >Species_A
+  NAAAAAAAAAAAA
+  >Species_B
+  NAAAAAAAAAAAA
+  >Species_C
+  NAAAAAAAATAAA
+  >Species_D
+  NNAAAAATTTAAA
+  >Species_E
+  NNAAAAATTCAAA
+  >Species_F
+  NNAAAATTTCTTW
+  >Species_G
+  NNAAA-TCCGTTK
+  >Species_H
+  NNAAAGTCCGTTM
+  >Species_I
+  NNAAACTCG-TTS
+  >Species_J
+  NNAT-TTCG--GR
+  
   getSpeciesComposition(alignment_path = rb_dummy_align_path)
   
-  # Dummy alignment
-  
-  >Species_A_NoGap_NoN_NoGC
-  ATATATATATATATATATATATATATATATATATAT
-  >Species_B_10Gap_NoN_NoGC
-  ATATATATATATATATATATATATAT----------
-  >Species_C_10Gap_10N_NoGC
-  ATATATATATATATATNNNNNNNNNN----------
-  >Species_D_NoGap_NoN_50GC
-  ATATATATATATATATATGCGCGCGCGCGCGCGCGC
-  >Species_E_10Gap_NoN_50GC
-  ATATATATATATA----------CGCGCGCGCGCGC
-  >Species_F_10Gap_10N_50GC
-  ATATATATNNNNN----------NNNNNGCGCGCGC
-
-                       Taxon Total_Bases Total_N Total_Gaps Percent_GC Percent_N Percent_Gap Alignment_Name
-  1 Species_A_NoGap_NoN_NoGC          36       0          0        0.0 0.0000000   0.0000000    Gap_GC_N.fa
-  2 Species_B_10Gap_NoN_NoGC          26       0         10        0.0 0.0000000   0.2777778    Gap_GC_N.fa
-  3 Species_C_10Gap_10N_NoGC          16      10         10        0.0 0.2777778   0.2777778    Gap_GC_N.fa
-  4 Species_D_NoGap_NoN_50GC          36       0          0        0.5 0.0000000   0.0000000    Gap_GC_N.fa
-  5 Species_E_10Gap_NoN_50GC          26       0         10        0.5 0.0000000   0.2777778    Gap_GC_N.fa
-  6 Species_F_10Gap_10N_50GC          16      10         10        0.5 0.2777778   0.2777778    Gap_GC_N.fa
+         Taxon Total_Bases Total_Degenerate Total_N Total_Gaps Percent_GC Percent_Degenerate  Percent_N Percent_Gap     Alignment_Name
+  1  Species_A          12                0       1          0 0.00000000         0.00000000 0.07692308  0.00000000 Dummy_Alignment.fa
+  2  Species_B          12                0       1          0 0.00000000         0.00000000 0.07692308  0.00000000 Dummy_Alignment.fa
+  3  Species_C          12                0       1          0 0.00000000         0.00000000 0.07692308  0.00000000 Dummy_Alignment.fa
+  4  Species_D          11                0       2          0 0.00000000         0.00000000 0.15384615  0.00000000 Dummy_Alignment.fa
+  5  Species_E          11                0       2          0 0.09090909         0.00000000 0.15384615  0.00000000 Dummy_Alignment.fa
+  6  Species_F          10                1       2          0 0.10000000         0.07692308 0.15384615  0.00000000 Dummy_Alignment.fa
+  7  Species_G           9                1       2          1 0.33333333         0.07692308 0.15384615  0.07692308 Dummy_Alignment.fa
+  8  Species_H          10                1       2          0 0.40000000         0.07692308 0.15384615  0.00000000 Dummy_Alignment.fa
+  9  Species_I           9                1       2          1 0.33333333         0.07692308 0.15384615  0.07692308 Dummy_Alignment.fa
+  10 Species_J           7                1       2          3 0.42857143         0.07692308 0.15384615  0.23076923 Dummy_Alignment.fa
     

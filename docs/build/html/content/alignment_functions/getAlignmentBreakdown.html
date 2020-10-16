@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>getAlignmentSpecies &mdash; Rboretum 1.0 documentation</title>
+  <title>getAlignmentBreakdown &mdash; Rboretum 1.0 documentation</title>
   
 
   
@@ -35,7 +35,10 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="Rboretum 1.0 documentation" href="../../index.html"/> 
+    <link rel="top" title="Rboretum 1.0 documentation" href="../../index.html"/>
+        <link rel="up" title="Rboretum Functions" href="../rboretum-suite.html"/>
+        <link rel="next" title="getAlignmentPatterns" href="getAlignmentPatterns.html"/>
+        <link rel="prev" title="getAlignmentComposition" href="getAlignmentComposition.html"/> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -84,10 +87,35 @@
           
             
             
-                <ul>
+                <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html"><strong>Installing Rboretum</strong></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../loading.html"><strong>Loading Rboretum</strong></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../rboretum-suite.html"><strong>Rboretum Functions</strong></a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../rboretum-suite.html"><strong>Rboretum Functions</strong></a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="getAlignmentComposition.html"><strong>getAlignmentComposition</strong></a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><strong>getAlignmentBreakdown</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="getAlignmentPatterns.html"><strong>getAlignmentPatterns</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="getAlignmentSignal.html"><strong>getAlignmentSignal</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="getAlignmentSpecies.html"><strong>getAlignmentSpecies</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="getSpeciesComposition.html"><strong>getSpeciesComposition</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plotting_functions/tandemPlotter.html"><strong>tandemPlotter</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/checkTips.html"><strong>checkTips</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/extractNodeAges.html"><strong>extractNodeAges</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/getSharedTaxa.html"><strong>getSharedTaxa</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/getTreeClades.html"><strong>getTreeClades</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/getTreeSplits.html"><strong>getTreeSplits</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/getUniqueTopologies.html"><strong>getUniqueTopologies</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/readRooted.html"><strong>readRooted</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/summarizeMultiphylo.html"><strong>summarizeMultiphylo</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/treeDater.html"><strong>treeDater</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/treeNamer.html"><strong>treeNamer</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/treeTrimmer.html"><strong>treeTrimmer</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utility_functions/convertLabels.html"><strong>convertLabels</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utility_functions/semiSorter.html"><strong>semiSorter</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utility_functions/semiVector.html"><strong>semiVector</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utility_functions/tableCount.html"><strong>tableCount</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utility_functions/vectorSemi.html"><strong>vectorSemi</strong></a></li>
+</ul>
+</li>
 </ul>
 
             
@@ -129,7 +157,9 @@
     
       <li><a href="../../index.html">Docs</a> &raquo;</li>
         
-      <li><strong>getAlignmentSpecies</strong></li>
+          <li><a href="../rboretum-suite.html"><strong>Rboretum Functions</strong></a> &raquo;</li>
+        
+      <li><strong>getAlignmentBreakdown</strong></li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -146,13 +176,13 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="getalignmentspecies">
-<span id="id1"></span><h1><strong>getAlignmentSpecies</strong><a class="headerlink" href="#getalignmentspecies" title="Permalink to this headline">¶</a></h1>
-<p><em>getAlignmentSpecies</em> returns the species IDs from an alignment file, specified by <em>alignment_path</em></p>
+  <div class="section" id="getalignmentbreakdown">
+<span id="id1"></span><h1><strong>getAlignmentBreakdown</strong><a class="headerlink" href="#getalignmentbreakdown" title="Permalink to this headline">¶</a></h1>
+<p><em>getAlignmentBreakdown</em> returns the species IDs from an alignment file, specified by <em>alignment_path</em></p>
 <div class="section" id="function-and-arguments">
 <h2>Function and Arguments<a class="headerlink" href="#function-and-arguments" title="Permalink to this headline">¶</a></h2>
 <p><strong>Usage</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">getAlignmentSpecies</span> <span class="o">&lt;-</span> <span class="n">function</span><span class="p">(</span><span class="n">alignment_path</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">getAlignmentBreakdown</span> <span class="o">&lt;-</span> <span class="n">function</span><span class="p">(</span><span class="n">alignment_path</span><span class="p">,</span><span class="n">species_info</span><span class="p">,</span><span class="n">use_gaps</span><span class="p">,</span><span class="n">alignment_name</span><span class="p">,</span><span class="n">prefix</span><span class="p">,</span><span class="n">suffix</span><span class="p">)</span>
 </pre></div>
 </div>
 <table class="docutils align-default">
@@ -167,33 +197,70 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p><strong>alignment_path</strong></p></td>
-<td><p>An absolute or relative path to the alignment file from which you want to extract labels</p></td>
+<td><p>An absolute or relative path to an alignment file(s) or a directory containing multiple alignments</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>species_info</strong></p></td>
+<td><p>A list of species to consider, provided as a phylo, multiPhlyo, character vector or labels or a semicolon-delimited string [Default: Shared species among all alignments]</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>use_gaps</strong></p></td>
+<td><p>If FALSE, consider gaps (-) in alignments as missing data. [Default: TRUE, treat gaps as indel characters]</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>alignment_name</strong></p></td>
+<td><p>A character vector containing desired alignment IDs [Default: Derive name from filename]</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>prefix</strong></p></td>
+<td><p>If <strong>alignment_path</strong> points to a directory, only query files starting with <strong>prefix</strong> (e.g. ‘Alignment’) [Default: Use all files in directory]</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>suffix</strong></p></td>
+<td><p>If <strong>alignment_path</strong> points to a directory, only query files ending wtih <strong>suffix</strong> (e.g. ‘.nex’) [Default: Use all files in directory]</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="section" id="example-usage">
 <h2>Example Usage<a class="headerlink" href="#example-usage" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Script: Rboretum/docs/content/Doc_Function_Scripts/getAlignmentSpecies.R</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Script: Rboretum/docs/content/Doc_Function_Scripts/getAlignmentBreakdown.R</span>
 
 <span class="nf">library</span><span class="p">(</span><span class="n">Rboretum</span><span class="p">)</span>
 
 <span class="c1"># Set test data directory</span>
 <span class="nf">sourceRboretum</span><span class="p">()</span>
 
-<span class="c1"># Set alignment path</span>
+<span class="c1"># Set path to alignment data</span>
 <span class="n">myAlignmentFile</span> <span class="o">&lt;-</span> <span class="n">rb_align1_path</span>
+<span class="n">mySpecies</span> <span class="o">&lt;-</span> <span class="nf">getAlignmentSpecies</span><span class="p">(</span><span class="n">myAlignmentFile</span><span class="p">)</span>
+<span class="n">myAlignmentDir</span> <span class="o">&lt;-</span> <span class="n">rb_alignment_dir</span>
 
-<span class="n">myAlignmentFile</span>
-<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;&lt;PACKAGE_DIR&gt;/extdata/alignments/Gene_1.phylip&quot;</span>
+<span class="c1"># Get alignment Breakdown information for a single alignment</span>
+<span class="nf">getAlignmentBreakdown</span><span class="p">(</span><span class="n">alignment_path</span> <span class="o">=</span> <span class="n">myAlignmentFile</span><span class="p">)</span>
 
+  <span class="n">Alignment_Name</span> <span class="n">Alignment_Length</span> <span class="n">Alignment_Percent_GC</span> <span class="n">Percent_Degenerate</span> <span class="n">Percent_N</span> <span class="n">Percent_Gap</span> <span class="n">Species_GC_Mean</span> <span class="n">Species_GC_StdDev</span> <span class="n">Percent_Nonbase</span> <span class="n">Percent_Invariant</span> <span class="n">Percent_Singleton</span> <span class="n">Percent_Parsimony_Informative</span>  <span class="n">Percent_Biallelic</span> <span class="n">Percent_Triallelic</span> <span class="n">Percent_Quadallelic</span> <span class="n">Percent_Pentallelic</span>
+<span class="m">1</span>  <span class="n">Gene_1.phylip</span>             <span class="m">2000</span>            <span class="m">0.4940333</span>                  <span class="m">0</span>         <span class="m">0</span>           <span class="m">0</span>       <span class="m">0.4940333</span>       <span class="m">0.008249387</span>               <span class="m">0</span>             <span class="m">0.009</span>            <span class="m">0.0355</span>                        <span class="m">0.5945</span>                      <span class="m">0.342</span>             <span class="m">0.4685</span>               <span class="m">0.145</span>                           <span class="m">0</span>
 
-<span class="c1"># Get sample IDs from alignment</span>
-<span class="nf">getAlignmentSpecies</span><span class="p">(</span><span class="n">alignment_path</span> <span class="o">=</span> <span class="n">myAlignmentFile</span><span class="p">)</span>
+<span class="c1"># Get alignment Breakdown information from all .phylip files in a directory, providing new names, consider gaps as missing data</span>
+<span class="nf">getAlignmentBreakdown</span><span class="p">(</span><span class="n">alignment_path</span> <span class="o">=</span> <span class="n">myAlignmentDir</span><span class="p">,</span><span class="n">species_info</span> <span class="o">=</span> <span class="n">mySpecies</span><span class="p">,</span><span class="n">use_gaps</span> <span class="o">=</span> <span class="kc">FALSE</span><span class="p">,</span><span class="n">suffix</span> <span class="o">=</span> <span class="s">&quot;.phylip&quot;</span><span class="p">,</span><span class="n">alignment_name</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Gene_A&#39;</span><span class="p">,</span><span class="s">&#39;Gene_B&#39;</span><span class="p">,</span><span class="s">&#39;Gene_C&#39;</span><span class="p">,</span><span class="s">&#39;Gene_D&#39;</span><span class="p">,</span><span class="s">&#39;Gene_E&#39;</span><span class="p">))</span>
 
-<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_B;Species_C;Species_D;Species_E;Species_F;Species_G;Species_H;Species_I;Species_J;Species_K;Species_L;Species_M;Species_N;Species_O&quot;</span>
+  <span class="n">Alignment_Name</span> <span class="n">Alignment_Length</span> <span class="n">Alignment_Percent_GC</span> <span class="n">Percent_Degenerate</span> <span class="n">Percent_N</span> <span class="n">Percent_Gap</span> <span class="n">Species_GC_Mean</span> <span class="n">Species_GC_StdDev</span> <span class="n">Percent_Nonbase</span> <span class="n">Percent_Invariant</span> <span class="n">Percent_Singleton</span> <span class="n">Percent_Parsimony_Informative</span>  <span class="n">Percent_Biallelic</span> <span class="n">Percent_Triallelic</span> <span class="n">Percent_Quadallelic</span> <span class="n">Percent_Pentallelic</span>
+<span class="m">1</span>         <span class="n">Gene_A</span>             <span class="m">2000</span>            <span class="m">0.4940333</span>                  <span class="m">0</span>         <span class="m">0</span>           <span class="m">0</span>       <span class="m">0.4940333</span>       <span class="m">0.008249387</span>               <span class="m">0</span>            <span class="m">0.0090</span>            <span class="m">0.0355</span>                     <span class="m">0.5945000</span>              <span class="m">0.3420000</span>          <span class="m">0.4685000</span>              <span class="m">0.1450</span>                   <span class="m">0</span>
+<span class="m">2</span>         <span class="n">Gene_B</span>             <span class="m">2500</span>            <span class="m">0.4978400</span>                  <span class="m">0</span>         <span class="m">0</span>           <span class="m">0</span>       <span class="m">0.4978400</span>       <span class="m">0.012087112</span>               <span class="m">0</span>            <span class="m">0.0912</span>            <span class="m">0.1028</span>                     <span class="m">0.5788000</span>              <span class="m">0.5004000</span>          <span class="m">0.2768000</span>              <span class="m">0.0288</span>                   <span class="m">0</span>
+<span class="m">3</span>         <span class="n">Gene_C</span>             <span class="m">1500</span>            <span class="m">0.4921778</span>                  <span class="m">0</span>         <span class="m">0</span>           <span class="m">0</span>       <span class="m">0.4921778</span>       <span class="m">0.010674005</span>               <span class="m">0</span>            <span class="m">0.0120</span>            <span class="m">0.0320</span>                     <span class="m">0.5846667</span>              <span class="m">0.3653333</span>          <span class="m">0.4586667</span>              <span class="m">0.1320</span>                   <span class="m">0</span>
+<span class="m">4</span>         <span class="n">Gene_D</span>             <span class="m">3000</span>            <span class="m">0.5011556</span>                  <span class="m">0</span>         <span class="m">0</span>           <span class="m">0</span>       <span class="m">0.5011556</span>       <span class="m">0.008174551</span>               <span class="m">0</span>            <span class="m">0.0100</span>            <span class="m">0.0380</span>                     <span class="m">0.6080000</span>              <span class="m">0.3326667</span>          <span class="m">0.4853333</span>              <span class="m">0.1340</span>                   <span class="m">0</span>
+<span class="m">5</span>         <span class="n">Gene_E</span>             <span class="m">2500</span>            <span class="m">0.5003733</span>                  <span class="m">0</span>         <span class="m">0</span>           <span class="m">0</span>       <span class="m">0.5003733</span>       <span class="m">0.010630916</span>               <span class="m">0</span>            <span class="m">0.0000</span>            <span class="m">0.0048</span>                     <span class="m">0.6144000</span>              <span class="m">0.1132000</span>          <span class="m">0.5200000</span>              <span class="m">0.3620</span>                   <span class="m">0</span>
+
+<span class="c1"># Get alignment Breakdown from dummy alignment, with and without gap support</span>
+<span class="nf">getAlignmentBreakdown</span><span class="p">(</span><span class="n">alignment_path</span> <span class="o">=</span> <span class="n">rb_dummy_align_path</span><span class="p">)</span>
+
+      <span class="n">Alignment_Name</span> <span class="n">Alignment_Length</span> <span class="n">Alignment_Percent_GC</span> <span class="n">Percent_Degenerate</span> <span class="n">Percent_N</span> <span class="n">Percent_Gap</span> <span class="n">Species_GC_Mean</span> <span class="n">Species_GC_StdDev</span> <span class="n">Percent_Nonbase</span> <span class="n">Percent_Invariant</span> <span class="n">Percent_Singleton</span> <span class="n">Percent_Parsimony_Informative</span>  <span class="n">Percent_Biallelic</span> <span class="n">Percent_Triallelic</span> <span class="n">Percent_Quadallelic</span> <span class="n">Percent_Pentallelic</span>
+<span class="m">1</span> <span class="n">Dummy_Alignment.fa</span>               <span class="m">13</span>            <span class="m">0.1470588</span>         <span class="m">0.03846154</span> <span class="m">0.1384615</span>  <span class="m">0.03846154</span>       <span class="m">0.1686147</span>         <span class="m">0.1825288</span>       <span class="m">0.1538462</span>         <span class="m">0.1538462</span>         <span class="m">0.2307692</span>                     <span class="m">0.3076923</span>          <span class="m">0.2307692</span>         <span class="m">0.07692308</span>          <span class="m">0.07692308</span>          <span class="m">0.07692308</span>
+
+<span class="nf">getAlignmentBreakdown</span><span class="p">(</span><span class="n">alignment_path</span> <span class="o">=</span> <span class="n">rb_dummy_align_path</span><span class="p">,</span><span class="n">use_gaps</span> <span class="o">=</span> <span class="kc">FALSE</span><span class="p">)</span>
+
+      <span class="n">Alignment_Name</span> <span class="n">Alignment_Length</span> <span class="n">Alignment_Percent_GC</span> <span class="n">Percent_Degenerate</span> <span class="n">Percent_N</span> <span class="n">Percent_Gap</span> <span class="n">Species_GC_Mean</span> <span class="n">Species_GC_StdDev</span> <span class="n">Percent_Nonbase</span> <span class="n">Percent_Invariant</span> <span class="n">Percent_Singleton</span> <span class="n">Percent_Parsimony_Informative</span>  <span class="n">Percent_Biallelic</span> <span class="n">Percent_Triallelic</span> <span class="n">Percent_Quadallelic</span> <span class="n">Percent_Pentallelic</span>
+<span class="m">1</span> <span class="n">Dummy_Alignment.fa</span>               <span class="m">13</span>            <span class="m">0.1470588</span>         <span class="m">0.03846154</span> <span class="m">0.1384615</span>  <span class="m">0.03846154</span>       <span class="m">0.1686147</span>         <span class="m">0.1825288</span>       <span class="m">0.1538462</span>         <span class="m">0.2307692</span>         <span class="m">0.1538462</span>                     <span class="m">0.3846154</span>          <span class="m">0.2307692</span>         <span class="m">0.07692308</span>           <span class="m">0.1538462</span>                   <span class="m">0</span>
 </pre></div>
 </div>
+<p><strong>Dummy Alignment</strong></p>
+<a class="reference internal image-reference" href="../../_images/Dummy_Align.png"><img alt="../../_images/Dummy_Align.png" src="../../_images/Dummy_Align.png" style="width: 600px;" /></a>
 </div>
 </div>
 
@@ -201,6 +268,15 @@
            </div>
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="getAlignmentPatterns.html" class="btn btn-neutral float-right" title="getAlignmentPatterns" accesskey="n">Next →</a>
+      
+      
+        <a href="getAlignmentComposition.html" class="btn btn-neutral" title="getAlignmentComposition" accesskey="p">← Previous</a>
+      
+    </div>
   
 
   <hr/>

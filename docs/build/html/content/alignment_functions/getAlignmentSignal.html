@@ -92,6 +92,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../loading.html"><strong>Loading Rboretum</strong></a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../rboretum-suite.html"><strong>Rboretum Functions</strong></a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="getAlignmentComposition.html"><strong>getAlignmentComposition</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="getAlignmentBreakdown.html"><strong>getAlignmentBreakdown</strong></a></li>
 <li class="toctree-l2"><a class="reference internal" href="getAlignmentPatterns.html"><strong>getAlignmentPatterns</strong></a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#"><strong>getAlignmentSignal</strong></a></li>
 <li class="toctree-l2"><a class="reference internal" href="getAlignmentSpecies.html"><strong>getAlignmentSpecies</strong></a></li>
@@ -180,13 +181,24 @@
 <p><em>getAlignmentSignal</em> takes one or more alignment files and returns site-by-site information about:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>Site variation patterns (i.e. is the site invariant, singleton, biallelic, triallelic, etc.)</p></li>
-<li><p>Indels (if gap data is not treated as missing)</p></li>
-<li><p>Missing data</p></li>
+<li><p>Site variation patterns. Possible site patterns include:</p>
+<ul>
+<li><p><strong>non_base</strong>: Sites where less than three species have a called, fixed base (A/C/T/G/-)</p></li>
+<li><p><strong>invariant</strong>: Sites made up of a single allele (and possibly missing data)</p></li>
+<li><p><strong>singleton</strong>: Otherwise invariant sites where one or more individual taxa have a unique, separate A/T/C/G/- allele</p></li>
+<li><p><strong>biallelic</strong>: Sites with two possible alleles + possible missing or singleton taxa</p></li>
+<li><p><strong>triallelic</strong>: Sites with three possible alleles + possible missing or singleton taxa</p></li>
+<li><p><strong>quadallelic</strong>: Sites with four possible alleles + possible missing or singleton taxa</p></li>
+<li><p><strong>pentallelic</strong>: Sites with five possible alleles (A + C + T + G + ‘-‘) + possible missing or singleton taxa</p></li>
+</ul>
+</li>
+<li><p>Which taxa have indels (if gap data is not treated as missing)</p></li>
+<li><p>Which taxa have missing data</p></li>
 <li><p>Parsimony-based splits (i.e. which taxonomic groupings are supported by alleles at each site)</p></li>
 </ul>
 </div></blockquote>
-<p>The output from <em>getAlignmentSignal</em> can be used to extract support values for different relationships via <strong>getTreeSupport</strong></p>
+<p>The output from <em>getAlignmentSignal</em> can be used to extract support values for different potential relationships via <strong>getTreeSupport</strong>.</p>
+<p><strong>Note:</strong> Rboretum currently does not support handling of degenerate bases, and classifies them broadly as missing. Degenerate nucleotide support is in progress and set for a future version release.</p>
 <div class="section" id="function-and-arguments">
 <h2>Function and Arguments<a class="headerlink" href="#function-and-arguments" title="Permalink to this headline">¶</a></h2>
 <p><strong>Usage</strong>:</p>

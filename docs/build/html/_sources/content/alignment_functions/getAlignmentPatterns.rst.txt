@@ -6,11 +6,21 @@
 
 *getAlignmentPatterns* takes one or more alignment files and returns site-by-site information about:
 
-  - Site variation patterns (i.e. is the site invariant, singleton, biallelic, triallelic, etc.)
-  - Missing data
-  - Parsimony-informativeness (i.e. is the site variable, and does the site contain no singleton taxa)
+  - Site variation patterns. Possible site patterns include:
   
-Note: This information can be derived from the output from *getAlignmentSignal*, which also returns information about site splits
+    - **non_base**: Sites where less than three species have a called, fixed base (A/C/T/G/-)
+    - **invariant**: Sites made up of a single allele (and possibly missing data)
+    - **singleton**: Otherwise invariant sites where one or more individual taxa have a unique, separate A/T/C/G/- allele
+    - **biallelic**: Sites with two possible alleles + possible missing or singleton taxa
+    - **triallelic**: Sites with three possible alleles + possible missing or singleton taxa
+    - **quadallelic**: Sites with four possible alleles + possible missing or singleton taxa
+    - **pentallelic**: Sites with five possible alleles (A + C + T + G + '-') + possible missing or singleton taxa
+  
+  - Which sites have missing data
+  - Site parsimony-informativeness (i.e. is the site variable, and does the site contain no singleton taxa)
+  
+**Note 1:** This information can be derived from the output from *getAlignmentSignal*, which also returns information about site splits
+**Note 2:** Rboretum currently does not support handling of degenerate bases, and classifies them broadly as missing. Degenerate nucleotide support is in progress and set for a future version release. 
 
 =======================
 Function and Arguments

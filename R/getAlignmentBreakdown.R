@@ -54,7 +54,7 @@ getAlignmentBreakdown <- function(alignment_path,species_info,use_gaps,alignment
   align_comp_df <- getAlignmentComposition(alignment_path,species_info,alignment_name,prefix,suffix)
   
   # Get species composition data
-  species_comp_df <- getSpeciesComposition(alignment_path,species_info,alignment_name,suffix)
+  species_comp_df <- getSpeciesComposition(alignment_path,species_info,alignment_name,prefix,suffix)
   
   # Get alignment patterns
   pattern_df <- getAlignmentPatterns(alignment_path,species_info,use_gaps,alignment_name,prefix,suffix)

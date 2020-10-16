@@ -12,6 +12,14 @@ Alignment Functions
   alignment_functions/getAlignmentSpecies
   alignment_functions/getSpeciesComposition
 
+Plotting Functions
+-------------------
+  
+.. toctree::
+  :maxdepth: 1
+
+  plotting_functions/tandemPlotter
+    
 Tree Functions
 ---------------
 
@@ -40,5 +48,4 @@ Utility Functions
   utility_functions/semiSorter
   utility_functions/semiVector
   utility_functions/tableCount
-  utility_functions/tandemPlotter
   utility_functions/vectorSemi

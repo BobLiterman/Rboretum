@@ -49,6 +49,15 @@ def countTs():
 
     return int(sum(t_total))
 
+# countDegen returns the count of degenerate bases in the alignment
+def countDegen():
+    global pruned_alignment
+    degen_total = []
+    for seq in pruned_alignment:
+        degen_total.append(seq.seq.count('w')+seq.seq.count('W')+seq.seq.count('s')+seq.seq.count('S')+seq.seq.count('m')+seq.seq.count('M')+seq.seq.count('k')+seq.seq.count('K')+seq.seq.count('r')+seq.seq.count('R')+seq.seq.count('y')+seq.seq.count('Y')+seq.seq.count('b')+seq.seq.count('B')+seq.seq.count('d')+seq.seq.count('D')+seq.seq.count('h')+seq.seq.count('H')+seq.seq.count('v')+seq.seq.count('V'))
+
+    return int(sum(degen_total))
+
 # countNs returns the count of N/n in the alignment
 def countNs():
     global pruned_alignment
@@ -132,6 +141,7 @@ def fetchAlignmentComposition(path_to_align,spp_info,align_name):
     c_count = countCs()
     g_count = countGs()
     t_count = countTs()
+    degen_count = countDegen()
     n_count = countNs()
     gap_count = countGaps()
 
@@ -148,8 +158,9 @@ def fetchAlignmentComposition(path_to_align,spp_info,align_name):
     # Calculate Percent N + Percent Gap
     percent_n = float(n_count)/(alignment_length*len(spp_list))
     percent_gap = float(gap_count)/(alignment_length*len(spp_list))
+    percent_degen = float(degen_count)/(alignment_length*len(spp_list))
     
-    return_df = pd.DataFrame([[alignment_name,alignment_length,percent_gc,percent_n,percent_gap]],columns=['Alignment_Name','Alignment_Length','Percent_GC','Percent_N','Percent_Gap'])
+    return_df = pd.DataFrame([[alignment_name,alignment_length,percent_gc,percent_degen,percent_n,percent_gap]],columns=['Alignment_Name','Alignment_Length','Percent_GC','Percent_Degenerate','Percent_N','Percent_Gap'])
     
     temp_df = tempfile.NamedTemporaryFile()
     temp_df_name = temp_df.name

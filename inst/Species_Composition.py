@@ -77,6 +77,7 @@ def fetchSpeciesComposition(path_to_align,spp_info,align_name):
     c_totals = []
     t_totals = []
     g_totals = []
+    degen_totals = []
     n_totals = []
     gap_totals = []
     
@@ -86,6 +87,7 @@ def fetchSpeciesComposition(path_to_align,spp_info,align_name):
         t_totals.append(seq.seq.count('t')+seq.seq.count('T'))
         g_totals.append(seq.seq.count('g')+seq.seq.count('G'))
         n_totals.append(seq.seq.count('n')+seq.seq.count('N'))
+        degen_totals.append(seq.seq.count('w')+seq.seq.count('W')+seq.seq.count('s')+seq.seq.count('S')+seq.seq.count('m')+seq.seq.count('M')+seq.seq.count('k')+seq.seq.count('K')+seq.seq.count('r')+seq.seq.count('R')+seq.seq.count('y')+seq.seq.count('Y')+seq.seq.count('b')+seq.seq.count('B')+seq.seq.count('d')+seq.seq.count('D')+seq.seq.count('h')+seq.seq.count('H')+seq.seq.count('v')+seq.seq.count('V'))
         gap_totals.append(seq.seq.count('-'))
 
     # Get total base counts and gc counts
@@ -96,7 +98,7 @@ def fetchSpeciesComposition(path_to_align,spp_info,align_name):
         total_base_counts.append(a_i+c_i+t_i+g_i)
         gc_counts.append(g_i+c_i)
     
-    # Get percent GC, N, and gap
+    # Get percent GC, degenerate, N, and gap
     percent_gc = []
     percent_gc_zip = zip(gc_counts,total_base_counts)
     for gc_i,total_i in percent_gc_zip:
@@ -104,6 +106,11 @@ def fetchSpeciesComposition(path_to_align,spp_info,align_name):
             percent_gc.append(np.nan)
         else:
             percent_gc.append(gc_i/float(total_i))
+    
+    # Get Percent Degenerate
+    percent_degen = []
+    for degen_i in degen_totals:
+        percent_degen.append(float(degen_i)/alignment_length)    
     
     # Get Percent N
     percent_n = []
@@ -115,8 +122,8 @@ def fetchSpeciesComposition(path_to_align,spp_info,align_name):
     for gap_i in gap_totals:
         percent_gap.append(float(gap_i)/alignment_length)
     
-    df = pd.DataFrame(list(zip(spp_list,total_base_counts,n_totals,gap_totals,percent_gc,percent_n,percent_gap)), 
-               columns =['Taxon','Total_Bases','Total_N','Total_Gaps','Percent_GC','Percent_N','Percent_Gap'])
+    df = pd.DataFrame(list(zip(spp_list,total_base_counts,degen_totals,n_totals,gap_totals,percent_gc,percent_degen,percent_n,percent_gap)), 
+               columns =['Taxon','Total_Bases','Total_Degenerate','Total_N','Total_Gaps','Percent_GC','Percent_Degenerate','Percent_N','Percent_Gap'])
     df['Alignment_Name'] = alignment_name
     
     temp_df = tempfile.NamedTemporaryFile()

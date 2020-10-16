@@ -161,7 +161,7 @@ getAlignmentSignal <- function(alignment_path,species_info,use_gaps,alignment_na
   
   # Get gap data
   if(missing(use_gaps)){
-    gap_list <- rep("0",alignment_count)
+    gap_list <- rep("1",alignment_count) # Default, include gap data
   } else if(is.logical(use_gaps)){
     if(length(use_gaps)==1){
       if(use_gaps){
@@ -171,8 +171,8 @@ getAlignmentSignal <- function(alignment_path,species_info,use_gaps,alignment_na
       }
     } else{
       if(length(use_gaps)!=alignment_count){
-        print(paste(c("'use_gaps' (",length(use_gaps),") and number of alignments (",alignment_count,") do not match...using default setting of ignoring gaps..."),collapse = ''))
-        gap_list <- rep("0",alignment_count)
+        print(paste(c("'use_gaps' (",length(use_gaps),") and number of alignments (",alignment_count,") do not match...using default setting of including gaps..."),collapse = ''))
+        gap_list <- rep("1",alignment_count)
       } else{
         gap_list <- purrr::map(.x=use_gaps,.f=function(x){ifelse(x,"1","0")}) %>% unlist()
       }

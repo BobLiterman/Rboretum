@@ -6,6 +6,10 @@
 
 *getAlignmentComposition* takes one or more alignment files and returns information about the sequence content, including base counts, 'N' counts, and gap counts
 
+.. warning::
+  
+  **Note:** Rboretum currently does not support handling of degenerate bases, and classifies them broadly as missing. Support for degenerate nucleotides is in progress and set for a future release. 
+
 =======================
 Function and Arguments
 =======================

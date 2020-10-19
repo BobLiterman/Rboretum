@@ -18,10 +18,14 @@
   
   - Which sites have missing data
   - Site parsimony-informativeness (i.e. is the site variable, and does the site contain no singleton taxa)
-  
-**Note 1:** This information can be derived from the output from *getAlignmentSignal*, which also returns information about site splits
 
-**Note 2:** Rboretum currently does not support handling of degenerate bases, and classifies them broadly as missing. Degenerate nucleotide support is in progress and set for a future version release. 
+.. warning::
+
+  **Note 1:** This information can be derived from the output from *getAlignmentSignal*, which also returns information about site splits
+
+.. warning::
+  
+  **Note 2:** Rboretum currently does not support handling of degenerate bases, and classifies them broadly as missing. Support for degenerate nucleotides is in progress and set for a future release. 
 
 =======================
 Function and Arguments

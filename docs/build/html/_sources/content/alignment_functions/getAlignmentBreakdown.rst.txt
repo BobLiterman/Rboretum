@@ -6,6 +6,10 @@
 
 *getAlignmentBreakdown* returns the species IDs from an alignment file, specified by *alignment_path*
 
+.. warning::
+  
+  **Note:** Rboretum currently does not support handling of degenerate bases, and classifies them broadly as missing. Support for degenerate nucleotides is in progress and set for a future release. 
+
 =======================
 Function and Arguments
 =======================

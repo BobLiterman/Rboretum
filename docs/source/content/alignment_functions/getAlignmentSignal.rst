@@ -22,7 +22,9 @@
   
 The output from *getAlignmentSignal* can be used to extract support values for different potential relationships via **getTreeSupport**. 
 
-**Note:** Rboretum currently does not support handling of degenerate bases, and classifies them broadly as missing. Degenerate nucleotide support is in progress and set for a future version release. 
+.. warning::
+  
+  **Note:** Rboretum currently does not support handling of degenerate bases, and classifies them broadly as missing. Support for degenerate nucleotides is in progress and set for a future release. 
 
 =======================
 Function and Arguments

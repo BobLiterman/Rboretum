@@ -8,7 +8,7 @@
 
 .. warning::
   
-  **Note:** Rboretum currently does not support handling of degenerate bases, and classifies them broadly as missing. Support for degenerate nucleotides is in progress and set for a future release. 
+  **Note:** Rboretum currently does not support handling of degenerate bases, and classifies them broadly as N/missing. Support for degenerate nucleotides is in progress and set for a future release. 
 
 =======================
 Function and Arguments

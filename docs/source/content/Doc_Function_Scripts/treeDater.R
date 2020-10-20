@@ -3,15 +3,15 @@ sourceRboretum()
 
 # Date a phylo object where branch lengths are substitution rates
 myTree <- readRooted(rb_tree1_path,c('Species_C','Species_H'))
+is.ultrametric(myTree)
 
 # Estimate node ages by calibrating the root node to between 100MY and 120MY, iterating estimates 100 times
 myDatedTree <- treeDater(tree = myTree, taxa='Species_C;Species_M',min_max = c(100,120),iterations = 100)
-
 is.ultrametric(myDatedTree)
+
 extractNodeAges(myDatedTree)
 
 # Estimate node ages by calibrating at two nodes
-
 myCalibration <- tibble(Taxon_A = c('Species_C','Species_A'),
                         Taxon_B = c('Species_M','Species_F'),
                         Min = c(100,15),
@@ -23,10 +23,11 @@ myRedatedTree <- treeDater(tree = myTree, calibration_df = myCalibration,iterati
 is.ultrametric(myRedatedTree)
 extractNodeAges(myRedatedTree)
 
-# Date a multiPhylo object
-myTrees <- readRooted(c(rb_tree1_path,rb_tree2_path,rb_timeTree3_path),c('Species_C','Species_H'))
+# Date a multiPhylo object where all trees share a common topology
+myTrees <- readRooted(c(rb_tree1_path,rb_tree2_path,rb_tree3_path),root_taxa = c('Species_C','Species_H'))
 
 myDatedTrees <- treeDater(tree = myTrees, taxa='Species_C;Species_M',min_max = c(100,120),iterations = 100)
+myDatedTrees
 
 all(is.ultrametric(myDatedTrees))
 extractNodeAges(myDatedTrees,return_summary = 'both')

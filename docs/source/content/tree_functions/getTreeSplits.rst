@@ -4,7 +4,7 @@
 **getTreeSplits**
 ##################
 
-*getTreeSplits* breaks rooted phylo and multiPhylo objects down into their respective splits. 
+**getTreeSplits** breaks rooted phylo and multiPhylo objects down into their respective splits. 
 
   - If a single topology is supplied (via 1 or more trees), a single dataframe is returned.
   - If multiple unqique toplogies are present, a list of dataframes is returned.
@@ -33,12 +33,9 @@ Example Usage
   # Script: Rboretum/docs/content/Doc_Function_Scripts/getTreeSplits.R
 
   library(Rboretum)
-
-  # Set test data directory
   sourceRboretum()
 
   # Read in trees with two topologies (1=2, 1!=3)
-
   myTree_1 <- readRooted(rb_tree1_path,root_taxa = c('Species_C','Species_H'))
   myTree_2 <- readRooted(rb_tree2_path,root_taxa = c('Species_C','Species_H'))
   myTree_3 <- readRooted(rb_tree4_path,root_taxa = c('Species_C','Species_H'))

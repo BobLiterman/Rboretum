@@ -191,6 +191,7 @@ Example Usage
   14 Species_A;Species_E;Species_F                                                                                                         1 Tree_3              
   15 Species_B;Species_D;Species_K;Species_L;Species_O                                                                                     1 Tree_3              
   16 Species_D;Species_K;Species_L                                                                                                         1 Tree_3              
+  
    [1] "Species_A;Species_B;Species_D;Species_E;Species_F;Species_G;Species_I;Species_J;Species_K;Species_L;Species_M;Species_N;Species_O"
    [2] "Species_A;Species_B;Species_D;Species_E;Species_F;Species_K;Species_L;Species_O"                                                  
    [3] "Species_A;Species_E;Species_F"                                                                                                    

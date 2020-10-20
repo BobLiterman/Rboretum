@@ -185,7 +185,7 @@
             
   <div class="section" id="gettreesplits">
 <span id="id1"></span><h1><strong>getTreeSplits</strong><a class="headerlink" href="#gettreesplits" title="Permalink to this headline">¶</a></h1>
-<p><em>getTreeSplits</em> breaks rooted phylo and multiPhylo objects down into their respective splits.</p>
+<p><strong>getTreeSplits</strong> breaks rooted phylo and multiPhylo objects down into their respective splits.</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>If a single topology is supplied (via 1 or more trees), a single dataframe is returned.</p></li>
@@ -220,12 +220,9 @@
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Script: Rboretum/docs/content/Doc_Function_Scripts/getTreeSplits.R</span>
 
 <span class="nf">library</span><span class="p">(</span><span class="n">Rboretum</span><span class="p">)</span>
-
-<span class="c1"># Set test data directory</span>
 <span class="nf">sourceRboretum</span><span class="p">()</span>
 
 <span class="c1"># Read in trees with two topologies (1=2, 1!=3)</span>
-
 <span class="n">myTree_1</span> <span class="o">&lt;-</span> <span class="nf">readRooted</span><span class="p">(</span><span class="n">rb_tree1_path</span><span class="p">,</span><span class="n">root_taxa</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Species_C&#39;</span><span class="p">,</span><span class="s">&#39;Species_H&#39;</span><span class="p">))</span>
 <span class="n">myTree_2</span> <span class="o">&lt;-</span> <span class="nf">readRooted</span><span class="p">(</span><span class="n">rb_tree2_path</span><span class="p">,</span><span class="n">root_taxa</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Species_C&#39;</span><span class="p">,</span><span class="s">&#39;Species_H&#39;</span><span class="p">))</span>
 <span class="n">myTree_3</span> <span class="o">&lt;-</span> <span class="nf">readRooted</span><span class="p">(</span><span class="n">rb_tree4_path</span><span class="p">,</span><span class="n">root_taxa</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Species_C&#39;</span><span class="p">,</span><span class="s">&#39;Species_H&#39;</span><span class="p">))</span>

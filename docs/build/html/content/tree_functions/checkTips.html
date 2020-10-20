@@ -236,6 +236,9 @@
 <span class="n">myTree_1</span> <span class="o">&lt;-</span> <span class="nf">readRooted</span><span class="p">(</span><span class="n">rb_tree1_path</span><span class="p">,</span><span class="n">root_taxa</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Species_C&#39;</span><span class="p">,</span><span class="s">&#39;Species_H&#39;</span><span class="p">))</span>
 <span class="n">myTree_2</span> <span class="o">&lt;-</span> <span class="nf">readRooted</span><span class="p">(</span><span class="n">rb_tree4_path</span><span class="p">,</span><span class="n">root_taxa</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Species_C&#39;</span><span class="p">,</span><span class="s">&#39;Species_H&#39;</span><span class="p">))</span>
 
+<span class="c1"># Create mutliPhylo</span>
+<span class="n">myTrees</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="n">myTree_1</span><span class="p">,</span><span class="n">myTree_2</span><span class="p">)</span> <span class="o">%&gt;%</span> <span class="nf">treeNamer</span><span class="p">()</span>
+
 <span class="c1"># Visualize trees</span>
 
 <span class="c1"># Set some clades of interest</span>
@@ -254,44 +257,54 @@
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Check if taxa from Clade of Interest 1 (Species_J/Species_M) are in the trees</span>
 
 <span class="nf">checkTips</span><span class="p">(</span><span class="n">tree</span><span class="o">=</span><span class="n">myTree_1</span><span class="p">,</span><span class="n">taxa</span> <span class="o">=</span> <span class="n">coi_1</span><span class="p">)</span>
-<span class="kc">TRUE</span>
+<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="kc">TRUE</span>
 <span class="nf">checkTips</span><span class="p">(</span><span class="n">tree</span><span class="o">=</span><span class="n">myTree_2</span><span class="p">,</span><span class="n">taxa</span> <span class="o">=</span> <span class="n">coi_1</span><span class="p">)</span>
-<span class="kc">TRUE</span>
+<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="kc">TRUE</span>
+<span class="nf">checkTips</span><span class="p">(</span><span class="n">tree</span><span class="o">=</span><span class="n">myTrees</span><span class="p">,</span><span class="n">taxa</span> <span class="o">=</span> <span class="n">coi_1</span><span class="p">)</span>
+<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="kc">TRUE</span>
 
 <span class="c1"># Check if nonsense taxa are in the trees</span>
 
 <span class="nf">checkTips</span><span class="p">(</span><span class="n">tree</span><span class="o">=</span><span class="n">myTree_1</span><span class="p">,</span><span class="n">taxa</span> <span class="o">=</span> <span class="s">&quot;Not_A_Species&quot;</span><span class="p">)</span>
-<span class="kc">FALSE</span>
+<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="kc">FALSE</span>
 <span class="nf">checkTips</span><span class="p">(</span><span class="n">tree</span><span class="o">=</span><span class="n">myTree_2</span><span class="p">,</span><span class="n">taxa</span> <span class="o">=</span> <span class="s">&quot;Also_Not_A_Species&quot;</span><span class="p">)</span>
-<span class="kc">FALSE</span>
+<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="kc">FALSE</span>
 
 <span class="c1"># Check if taxa from Clade of Interest 1 (Species_J/Species_M) form a monophyletic group</span>
 
 <span class="nf">checkTips</span><span class="p">(</span><span class="n">tree</span><span class="o">=</span><span class="n">myTree_1</span><span class="p">,</span><span class="n">taxa</span> <span class="o">=</span> <span class="n">coi_1</span><span class="p">,</span><span class="n">check_mono</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
-<span class="kc">TRUE</span>
+<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="kc">TRUE</span>
 <span class="nf">checkTips</span><span class="p">(</span><span class="n">tree</span><span class="o">=</span><span class="n">myTree_2</span><span class="p">,</span><span class="n">taxa</span> <span class="o">=</span> <span class="n">coi_1</span><span class="p">,</span><span class="n">check_mono</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
-<span class="kc">TRUE</span>
+<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="kc">TRUE</span>
+<span class="nf">checkTips</span><span class="p">(</span><span class="n">tree</span><span class="o">=</span><span class="n">myTrees</span><span class="p">,</span><span class="n">taxa</span> <span class="o">=</span> <span class="n">coi_1</span><span class="p">,</span><span class="n">check_mono</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
+<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="kc">TRUE</span>
 
 <span class="c1"># Check if taxa from Clade of Interest 1 (Species_J/Species_M) form a monophyletic group at the root of the tree</span>
 
 <span class="nf">checkTips</span><span class="p">(</span><span class="n">tree</span><span class="o">=</span><span class="n">myTree_1</span><span class="p">,</span><span class="n">taxa</span> <span class="o">=</span> <span class="n">coi_1</span><span class="p">,</span><span class="n">check_mono</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span> <span class="n">check_root</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
-<span class="kc">FALSE</span>
+<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="kc">FALSE</span>
 <span class="nf">checkTips</span><span class="p">(</span><span class="n">tree</span><span class="o">=</span><span class="n">myTree_2</span><span class="p">,</span><span class="n">taxa</span> <span class="o">=</span> <span class="n">coi_1</span><span class="p">,</span><span class="n">check_mono</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span> <span class="n">check_root</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
-<span class="kc">FALSE</span>
+<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="kc">FALSE</span>
+<span class="nf">checkTips</span><span class="p">(</span><span class="n">tree</span><span class="o">=</span><span class="n">myTrees</span><span class="p">,</span><span class="n">taxa</span> <span class="o">=</span> <span class="n">coi_1</span><span class="p">,</span><span class="n">check_mono</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span> <span class="n">check_root</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
+<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="kc">FALSE</span>
 
 <span class="c1"># Check if taxa from Clade of Interest 2 (Species_C/Species_H) form a monophyletic group at the root of the tree</span>
 
 <span class="nf">checkTips</span><span class="p">(</span><span class="n">tree</span><span class="o">=</span><span class="n">myTree_1</span><span class="p">,</span><span class="n">taxa</span> <span class="o">=</span> <span class="n">coi_2</span><span class="p">,</span><span class="n">check_mono</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span> <span class="n">check_root</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
-<span class="kc">TRUE</span>
+<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="kc">TRUE</span>
 <span class="nf">checkTips</span><span class="p">(</span><span class="n">tree</span><span class="o">=</span><span class="n">myTree_2</span><span class="p">,</span><span class="n">taxa</span> <span class="o">=</span> <span class="n">coi_2</span><span class="p">,</span><span class="n">check_mono</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span> <span class="n">check_root</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
-<span class="kc">TRUE</span>
+<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="kc">TRUE</span>
+<span class="nf">checkTips</span><span class="p">(</span><span class="n">tree</span><span class="o">=</span><span class="n">myTrees</span><span class="p">,</span><span class="n">taxa</span> <span class="o">=</span> <span class="n">coi_2</span><span class="p">,</span><span class="n">check_mono</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span> <span class="n">check_root</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
+<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="kc">TRUE</span>
 
 <span class="c1"># Check if taxa from Clade of Interest 3 (Species_D/Species_K/Species_L)form a monophyletic group</span>
 
 <span class="nf">checkTips</span><span class="p">(</span><span class="n">tree</span><span class="o">=</span><span class="n">myTree_1</span><span class="p">,</span><span class="n">taxa</span> <span class="o">=</span> <span class="n">coi_3</span><span class="p">,</span><span class="n">check_mono</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
-<span class="kc">FALSE</span>
+<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="kc">FALSE</span>
 <span class="nf">checkTips</span><span class="p">(</span><span class="n">tree</span><span class="o">=</span><span class="n">myTree_2</span><span class="p">,</span><span class="n">taxa</span> <span class="o">=</span> <span class="n">coi_3</span><span class="p">,</span><span class="n">check_mono</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
-<span class="kc">TRUE</span>
+<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="kc">TRUE</span>
+<span class="nf">checkTips</span><span class="p">(</span><span class="n">tree</span><span class="o">=</span><span class="n">myTrees</span><span class="p">,</span><span class="n">taxa</span> <span class="o">=</span> <span class="n">coi_3</span><span class="p">,</span><span class="n">check_mono</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
+<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="kc">FALSE</span>
 </pre></div>
 </div>
 </div>

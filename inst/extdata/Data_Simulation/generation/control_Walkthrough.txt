@@ -45,22 +45,42 @@
   [maxdistance] 0.2
 
 [PARTITIONS] MyPartition_1
-  [Tree_1A HKYexample 1500]
+  [Tree_1A HKYexample 5000]
 
 [PARTITIONS] MyPartition_2
-  [Tree_1B K81example 2500]
+  [Tree_1B K81example 7000]
  
 [PARTITIONS] MyPartition_3
-  [Tree_1C GTRexample 750]
+  [Tree_1C GTRexample 3500]
 
-[PARTITIONS] MyPartition_4  
-  [Tree_2B HKYexample 2000]
+[PARTITIONS] MyPartition_4
+  [Tree_1A HKYexample 4500]
 
 [PARTITIONS] MyPartition_5
-  [Tree_3 JCexample 1500]
+  [Tree_1B K81example 1200]
 
-[EVOLVE] MyPartition_1 1 Out_1_Sm  //  This will generate 1 dataset
-  MyPartition_2 1 Out_2_Sm  //  This will generate 1 dataset
-  MyPartition_3 1 Out_3_Sm  //  This will generate 1 dataset
-  MyPartition_4 1 Out_4_Sm  //  This will generate 1 dataset
-  MyPartition_5 1 Out_5_Sm  //  This will generate 1 dataset
+[PARTITIONS] MyPartition_6
+  [Tree_1C GTRexample 6750]
+  
+[PARTITIONS] MyPartition_7
+  [Tree_1C GTRexample 1750]
+
+[PARTITIONS] MyPartition_8  
+  [Tree_2A HKYexample 6500]
+ 
+[PARTITIONS] MyPartition_9
+  [Tree_2B GTRexample 7500]
+
+[PARTITIONS] MyPartition_10
+  [Tree_3 JCexample 5000]
+
+[EVOLVE] MyPartition_1 1 Out_1  //  This will generate 1 dataset
+  MyPartition_2 1 Out_2  //  This will generate 1 dataset
+  MyPartition_3 1 Out_3  //  This will generate 1 dataset
+  MyPartition_4 1 Out_4  //  This will generate 1 dataset
+  MyPartition_5 1 Out_5  //  This will generate 1 dataset
+  MyPartition_6 1 Out_6  //  This will generate 1 dataset
+  MyPartition_7 1 Out_7  //  This will generate 1 dataset
+  MyPartition_8 1 Out_8  //  This will generate 1 dataset
+  MyPartition_9 1 Out_9  //  This will generate 1 dataset
+  MyPartition_10 1 Out_10  //  This will generate 1 dataset

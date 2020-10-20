@@ -1,113 +1,58 @@
 ********************************************************************************
-INDELible V1.03 by Will Fletcher : Simulation began at: Mon Oct 19 22:37:47 2020
+INDELible V1.03 by Will Fletcher : Simulation began at: Tue Oct 20 09:11:05 2020
 ********************************************************************************
 
-  Actual Insertion : Deletion Ratio  0.544248 : 0.455752	(Total indel rate = 1)
-  Actual average insertion length    1.23577
-  Actual average deletion length     1.1165
-  Number of insertion events         123
-  Number of deletion events          103
+  Actual Insertion : Deletion Ratio  0.465909 : 0.534091	(Total indel rate = 1)
+  Actual average insertion length    1.2439
+  Actual average deletion length     1.12766
+  Number of insertion events         41
+  Number of deletion events          47
 
-  * Block 1 was completed in 0.037 seconds.
-
-********************************************************************************
-
-
-  Actual Insertion : Deletion Ratio  0.484922 : 0.515078	(Total indel rate = 1)
-  Actual average insertion length    1.05721
-  Actual average deletion length     1.03864
-  Number of insertion events         804
-  Number of deletion events          854
-
-  * Block 2 was completed in 0.083 seconds.
+  * Block 1 was completed in 0.019 seconds.
 
 ********************************************************************************
 
 
-  Actual Insertion : Deletion Ratio  0.486753 : 0.513247	(Total indel rate = 1)
-  Actual average insertion length    1.00427
-  Actual average deletion length     1.00101
-  Number of insertion events         937
-  Number of deletion events          988
+  Actual Insertion : Deletion Ratio  0.514938 : 0.485062	(Total indel rate = 1)
+  Actual average insertion length    1.03754
+  Actual average deletion length     1.03986
+  Number of insertion events         293
+  Number of deletion events          276
 
-  * Block 3 was completed in 0.046 seconds.
-
-********************************************************************************
-
-
-  Actual Insertion : Deletion Ratio  0.443878 : 0.556122	(Total indel rate = 1)
-  Actual average insertion length    1.1954
-  Actual average deletion length     1.12844
-  Number of insertion events         87
-  Number of deletion events          109
-
-  * Block 4 was completed in 0.04 seconds.
+  * Block 2 was completed in 0.035 seconds.
 
 ********************************************************************************
 
 
-  Actual Insertion : Deletion Ratio  0.485714 : 0.514286	(Total indel rate = 1)
-  Actual average insertion length    1.06618
-  Actual average deletion length     1.04861
-  Number of insertion events         136
-  Number of deletion events          144
+  Actual Insertion : Deletion Ratio  0.471284 : 0.528716	(Total indel rate = 1)
+  Actual average insertion length    1.00717
+  Actual average deletion length     1.00958
+  Number of insertion events         279
+  Number of deletion events          313
 
-  * Block 5 was completed in 0.012 seconds.
-
-********************************************************************************
-
-
-  Actual Insertion : Deletion Ratio  0.502514 : 0.497486	(Total indel rate = 1)
-  Actual average insertion length    1.00369
-  Actual average deletion length     1.0016
-  Number of insertion events         1899
-  Number of deletion events          1880
-
-  * Block 6 was completed in 0.088 seconds.
+  * Block 3 was completed in 0.019 seconds.
 
 ********************************************************************************
 
 
-  Actual Insertion : Deletion Ratio  0.503634 : 0.496366	(Total indel rate = 1)
-  Actual average insertion length    1.00412
-  Actual average deletion length     1.00418
-  Number of insertion events         485
-  Number of deletion events          478
+  Actual Insertion : Deletion Ratio  0.50838 : 0.49162	(Total indel rate = 1)
+  Actual average insertion length    1.2033
+  Actual average deletion length     1.27273
+  Number of insertion events         182
+  Number of deletion events          176
 
-  * Block 7 was completed in 0.024 seconds.
-
-********************************************************************************
-
-
-  Actual Insertion : Deletion Ratio  0.539394 : 0.460606	(Total indel rate = 1)
-  Actual average insertion length    1.14045
-  Actual average deletion length     1.25
-  Number of insertion events         178
-  Number of deletion events          152
-
-  * Block 8 was completed in 0.052 seconds.
+  * Block 4 was completed in 0.029 seconds.
 
 ********************************************************************************
 
 
-  Actual Insertion : Deletion Ratio  0.498212 : 0.501788	(Total indel rate = 1)
-  Actual average insertion length    1.00462
-  Actual average deletion length     1.00102
-  Number of insertion events         1950
-  Number of deletion events          1964
-
-  * Block 9 was completed in 0.132 seconds.
+  * Block 5 was completed in 0.019 seconds.
 
 ********************************************************************************
 
+  * Simulation completed. Whole batch took: 0.183 seconds.
 
-  * Block 10 was completed in 0.048 seconds.
-
-********************************************************************************
-
-  * Simulation completed. Whole batch took: 0.658 seconds.
-
-INDELible V1.03 Simulations completed at: Mon Oct 19 22:37:47 2020
+INDELible V1.03 Simulations completed at: Tue Oct 20 09:11:05 2020
 
 ********************************************************************************
 
@@ -164,42 +109,22 @@ INDELible V1.03 Simulations completed at: Mon Oct 19 22:37:47 2020
   [maxdistance] 0.2
 
 [PARTITIONS] MyPartition_1
-  [Tree_1A HKYexample 5000]
+  [Tree_1A HKYexample 1500]
 
 [PARTITIONS] MyPartition_2
-  [Tree_1B K81example 7000]
+  [Tree_1B K81example 2500]
  
 [PARTITIONS] MyPartition_3
-  [Tree_1C GTRexample 3500]
+  [Tree_1C GTRexample 750]
 
-[PARTITIONS] MyPartition_4
-  [Tree_1A HKYexample 4500]
+[PARTITIONS] MyPartition_4  
+  [Tree_2B HKYexample 2000]
 
 [PARTITIONS] MyPartition_5
-  [Tree_1B K81example 1200]
+  [Tree_3 JCexample 1500]
 
-[PARTITIONS] MyPartition_6
-  [Tree_1C GTRexample 6750]
-  
-[PARTITIONS] MyPartition_7
-  [Tree_1C GTRexample 1750]
-
-[PARTITIONS] MyPartition_8  
-  [Tree_2A HKYexample 6500]
- 
-[PARTITIONS] MyPartition_9
-  [Tree_2B GTRexample 7500]
-
-[PARTITIONS] MyPartition_10
-  [Tree_3 JCexample 5000]
-
-[EVOLVE] MyPartition_1 1 Out_1  //  This will generate 1 dataset
-  MyPartition_2 1 Out_2  //  This will generate 1 dataset
-  MyPartition_3 1 Out_3  //  This will generate 1 dataset
-  MyPartition_4 1 Out_4  //  This will generate 1 dataset
-  MyPartition_5 1 Out_5  //  This will generate 1 dataset
-  MyPartition_6 1 Out_6  //  This will generate 1 dataset
-  MyPartition_7 1 Out_7  //  This will generate 1 dataset
-  MyPartition_8 1 Out_8  //  This will generate 1 dataset
-  MyPartition_9 1 Out_9  //  This will generate 1 dataset
-  MyPartition_10 1 Out_10  //  This will generate 1 dataset
+[EVOLVE] MyPartition_1 1 Out_1_Sm  //  This will generate 1 dataset
+  MyPartition_2 1 Out_2_Sm  //  This will generate 1 dataset
+  MyPartition_3 1 Out_3_Sm  //  This will generate 1 dataset
+  MyPartition_4 1 Out_4_Sm  //  This will generate 1 dataset
+  MyPartition_5 1 Out_5_Sm  //  This will generate 1 dataset

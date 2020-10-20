@@ -1,0 +1,86 @@
+[TYPE] NUCLEOTIDE 1
+
+[MODEL]    HKYexample
+  [submodel]  HKY 2.5
+  [statefreq] 0.4 0.3 0.2 0.1
+  [indelmodel] POW 3.5
+  [indelrate] 0.1
+
+[MODEL]    K81example
+  [submodel]  K81 1.5 2.5
+  [indelmodel] POW 5.5
+  [indelrate] 0.2
+ 
+[MODEL]    GTRexample
+  [submodel]  GTR 0.2 0.4 0.6 0.8 1.2
+  [statefreq] 0.1 0.2 0.3 0.4
+  [indelmodel] POW 10
+  [indelrate] 0.3
+
+[MODEL]    JCexample
+  [submodel] JC
+
+[TREE] Tree_1A (Species_H,Species_C,(((((Species_K,Species_L),(Species_A,Species_F)),Species_E),((Species_M,Species_J),(Species_I,(Species_N,Species_G)))),((Species_B,Species_O),Species_D)));
+  [branchlengths] NON-ULTRAMETRIC 
+  [maxdistance] 0.1
+ 
+[TREE] Tree_1B (Species_H,Species_C,(((((Species_K,Species_L),(Species_A,Species_F)),Species_E),((Species_M,Species_J),(Species_I,(Species_N,Species_G)))),((Species_B,Species_O),Species_D)));
+  [branchlengths] NON-ULTRAMETRIC 
+  [maxdistance] 0.2
+
+[TREE] Tree_1C (Species_H,Species_C,(((((Species_K,Species_L),(Species_A,Species_F)),Species_E),((Species_M,Species_J),(Species_I,(Species_N,Species_G)))),((Species_B,Species_O),Species_D)));
+  [branchlengths] NON-ULTRAMETRIC 
+  [maxdistance] 0.4
+
+[TREE] Tree_2A (Species_H,Species_C,((((Species_A,Species_F),Species_E),((Species_M,Species_J),(Species_I,(Species_N,Species_G)))),((Species_B,Species_O),((Species_K,Species_L),Species_D))));
+  [branchlengths] NON-ULTRAMETRIC 
+  [maxdistance] 0.1
+ 
+[TREE] Tree_2B (Species_H,Species_C,((((Species_A,Species_F),Species_E),((Species_M,Species_J),(Species_I,(Species_N,Species_G)))),((Species_B,Species_O),((Species_K,Species_L),Species_D))));
+  [branchlengths] NON-ULTRAMETRIC 
+  [maxdistance] 0.3
+
+[TREE] Tree_3 (Species_H,Species_C,(((Species_K,Species_L),(Species_A,Species_F)),(((Species_E,Species_I),((Species_M,Species_J),(Species_N,Species_G))),((Species_B,Species_D),Species_O))));
+  [branchlengths] NON-ULTRAMETRIC 
+  [maxdistance] 0.2
+
+[PARTITIONS] MyPartition_1
+  [Tree_1A HKYexample 5000]
+
+[PARTITIONS] MyPartition_2
+  [Tree_1B K81example 7000]
+ 
+[PARTITIONS] MyPartition_3
+  [Tree_1C GTRexample 3500]
+
+[PARTITIONS] MyPartition_4
+  [Tree_1A HKYexample 4500]
+
+[PARTITIONS] MyPartition_5
+  [Tree_1B K81example 1200]
+
+[PARTITIONS] MyPartition_6
+  [Tree_1C GTRexample 6750]
+  
+[PARTITIONS] MyPartition_7
+  [Tree_1C GTRexample 1750]
+
+[PARTITIONS] MyPartition_8  
+  [Tree_2A HKYexample 6500]
+ 
+[PARTITIONS] MyPartition_9
+  [Tree_2B GTRexample 7500]
+
+[PARTITIONS] MyPartition_10
+  [Tree_3 JCexample 5000]
+
+[EVOLVE] MyPartition_1 1 Out_1  //  This will generate 1 dataset
+  MyPartition_2 1 Out_2  //  This will generate 1 dataset
+  MyPartition_3 1 Out_3  //  This will generate 1 dataset
+  MyPartition_4 1 Out_4  //  This will generate 1 dataset
+  MyPartition_5 1 Out_5  //  This will generate 1 dataset
+  MyPartition_6 1 Out_6  //  This will generate 1 dataset
+  MyPartition_7 1 Out_7  //  This will generate 1 dataset
+  MyPartition_8 1 Out_8  //  This will generate 1 dataset
+  MyPartition_9 1 Out_9  //  This will generate 1 dataset
+  MyPartition_10 1 Out_10  //  This will generate 1 dataset

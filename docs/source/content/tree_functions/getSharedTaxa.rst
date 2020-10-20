@@ -4,7 +4,7 @@
 **getSharedTaxa**
 ##################
 
-*getSharedTaxa* returns all tips shared among trees in a multiPhylo
+**getSharedTaxa** returns all tips shared among trees in a multiPhylo
 
 =======================
 Function and Arguments
@@ -30,8 +30,6 @@ Example Usage
   # Script: Rboretum/docs/content/Doc_Function_Scripts/getSharedTaxa.R
 
   library(Rboretum)
-
-  # Set test data directory
   sourceRboretum()
 
   # Create a multiPhylo where all trees share all taxa
@@ -39,13 +37,13 @@ Example Usage
   tree_1 <- ape::rtree(25)
   tree_2 <- ape::rtree(25)
   tree_3 <- ape::rtree(25)
-
-  getSharedTaxa(c(tree_1,tree_2,tree_3))
+  trees <- c(tree_1,tree_2,tree_3)
+  getSharedTaxa(trees)
 
   [1] "t1"  "t2"  "t3"  "t4"  "t5"  "t6"  "t7"  "t8"  "t9"  "t10" "t11" "t12" "t13" "t14" "t15" "t16" "t17" "t18" "t19" "t20" "t21"
   [22] "t22" "t23" "t24" "t25"
 
-  length(getSharedTaxa(c(tree_1,tree_2,tree_3)))
+  length(getSharedTaxa(trees))
 
   [1] 25
 

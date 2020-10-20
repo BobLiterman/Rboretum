@@ -185,7 +185,7 @@
             
   <div class="section" id="getsharedtaxa">
 <span id="id1"></span><h1><strong>getSharedTaxa</strong><a class="headerlink" href="#getsharedtaxa" title="Permalink to this headline">¶</a></h1>
-<p><em>getSharedTaxa</em> returns all tips shared among trees in a multiPhylo</p>
+<p><strong>getSharedTaxa</strong> returns all tips shared among trees in a multiPhylo</p>
 <div class="section" id="function-and-arguments">
 <h2>Function and Arguments<a class="headerlink" href="#function-and-arguments" title="Permalink to this headline">¶</a></h2>
 <p><strong>Usage</strong>:</p>
@@ -214,8 +214,6 @@
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Script: Rboretum/docs/content/Doc_Function_Scripts/getSharedTaxa.R</span>
 
 <span class="nf">library</span><span class="p">(</span><span class="n">Rboretum</span><span class="p">)</span>
-
-<span class="c1"># Set test data directory</span>
 <span class="nf">sourceRboretum</span><span class="p">()</span>
 
 <span class="c1"># Create a multiPhylo where all trees share all taxa</span>
@@ -223,13 +221,13 @@
 <span class="n">tree_1</span> <span class="o">&lt;-</span> <span class="n">ape</span><span class="o">::</span><span class="nf">rtree</span><span class="p">(</span><span class="m">25</span><span class="p">)</span>
 <span class="n">tree_2</span> <span class="o">&lt;-</span> <span class="n">ape</span><span class="o">::</span><span class="nf">rtree</span><span class="p">(</span><span class="m">25</span><span class="p">)</span>
 <span class="n">tree_3</span> <span class="o">&lt;-</span> <span class="n">ape</span><span class="o">::</span><span class="nf">rtree</span><span class="p">(</span><span class="m">25</span><span class="p">)</span>
-
-<span class="nf">getSharedTaxa</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="n">tree_1</span><span class="p">,</span><span class="n">tree_2</span><span class="p">,</span><span class="n">tree_3</span><span class="p">))</span>
+<span class="n">trees</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="n">tree_1</span><span class="p">,</span><span class="n">tree_2</span><span class="p">,</span><span class="n">tree_3</span><span class="p">)</span>
+<span class="nf">getSharedTaxa</span><span class="p">(</span><span class="n">trees</span><span class="p">)</span>
 
 <span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;t1&quot;</span>  <span class="s">&quot;t2&quot;</span>  <span class="s">&quot;t3&quot;</span>  <span class="s">&quot;t4&quot;</span>  <span class="s">&quot;t5&quot;</span>  <span class="s">&quot;t6&quot;</span>  <span class="s">&quot;t7&quot;</span>  <span class="s">&quot;t8&quot;</span>  <span class="s">&quot;t9&quot;</span>  <span class="s">&quot;t10&quot;</span> <span class="s">&quot;t11&quot;</span> <span class="s">&quot;t12&quot;</span> <span class="s">&quot;t13&quot;</span> <span class="s">&quot;t14&quot;</span> <span class="s">&quot;t15&quot;</span> <span class="s">&quot;t16&quot;</span> <span class="s">&quot;t17&quot;</span> <span class="s">&quot;t18&quot;</span> <span class="s">&quot;t19&quot;</span> <span class="s">&quot;t20&quot;</span> <span class="s">&quot;t21&quot;</span>
 <span class="p">[</span><span class="m">22</span><span class="p">]</span> <span class="s">&quot;t22&quot;</span> <span class="s">&quot;t23&quot;</span> <span class="s">&quot;t24&quot;</span> <span class="s">&quot;t25&quot;</span>
 
-<span class="nf">length</span><span class="p">(</span><span class="nf">getSharedTaxa</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="n">tree_1</span><span class="p">,</span><span class="n">tree_2</span><span class="p">,</span><span class="n">tree_3</span><span class="p">)))</span>
+<span class="nf">length</span><span class="p">(</span><span class="nf">getSharedTaxa</span><span class="p">(</span><span class="n">trees</span><span class="p">))</span>
 
 <span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="m">25</span>
 

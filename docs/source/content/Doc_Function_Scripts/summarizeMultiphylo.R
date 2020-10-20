@@ -1,10 +1,10 @@
 library(Rboretum)
 sourceRboretum()
 
-# Read in trees with two topologies (1=2, 1!=3)
-myTree_1 <- readRooted(rb_tree1_path,root_taxa = c('Species_C','Species_H'))
-myTree_2 <- readRooted(rb_tree4_path,root_taxa = c('Species_C','Species_H'))
-
-myTrees <- c(myTree_1,myTree_2)
-
+# Read in trees
+myTrees <- readRooted(rb_unroot_dir,root_taxa = c('Species_C','Species_H'))
 summarizeMultiPhylo(myTrees)
+
+# Simulate trees with different numbers of taxa
+mySimTrees <- c(rtree(10),rtree(10),rtree(20))
+summarizeMultiPhylo(mySimTrees)

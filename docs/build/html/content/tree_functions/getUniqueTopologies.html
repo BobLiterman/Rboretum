@@ -185,7 +185,7 @@
             
   <div class="section" id="getuniquetopologies">
 <span id="id1"></span><h1><strong>getUniqueTopologies</strong><a class="headerlink" href="#getuniquetopologies" title="Permalink to this headline">¶</a></h1>
-<p><em>getUniqueTopologies</em> takes a multiPhlyo, prunes down to common taxa, and returns unique topologies or summary information</p>
+<p><strong>getUniqueTopologies</strong> takes a multiPhlyo, and (1) prunes down to common taxa [if necessary], then (2) returns unique topologies and/or summary information</p>
 <div class="section" id="function-and-arguments">
 <h2>Function and Arguments<a class="headerlink" href="#function-and-arguments" title="Permalink to this headline">¶</a></h2>
 <p><strong>Usage</strong>:</p>
@@ -223,22 +223,12 @@
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Script: Rboretum/docs/content/Doc_Function_Scripts/getUniqueTopologies.R</span>
 
 <span class="nf">library</span><span class="p">(</span><span class="n">Rboretum</span><span class="p">)</span>
-
-<span class="c1"># Set test data directory</span>
 <span class="nf">sourceRboretum</span><span class="p">()</span>
 
 <span class="c1"># Read in multiPhylo</span>
 <span class="n">myMultiPhylo</span> <span class="o">&lt;-</span> <span class="nf">readRooted</span><span class="p">(</span><span class="n">to_root</span> <span class="o">=</span> <span class="n">rb_all_unrooted</span><span class="p">,</span><span class="n">root_taxa</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Species_C&#39;</span><span class="p">,</span><span class="s">&#39;Species_H&#39;</span><span class="p">))</span>
 
-<span class="n">myMultiPhylo</span>
-<span class="m">5</span> <span class="n">phylogenetic</span> <span class="n">trees</span>
-
-<span class="nf">treePlotter</span><span class="p">(</span><span class="n">myMultiPhylo</span><span class="p">,</span><span class="n">basic_plot</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span><span class="n">xmax</span><span class="o">=</span><span class="m">10</span><span class="p">,</span><span class="n">taxa_font_size</span> <span class="o">=</span> <span class="m">3</span><span class="p">,</span><span class="n">node_label_font_size</span> <span class="o">=</span> <span class="m">3</span><span class="p">)</span>
-</pre></div>
-</div>
-<a class="reference internal image-reference" href="../../_images/getUniqueTopologies_1.png"><img alt="treePlotter(myMultiPhylo,basic_plot = TRUE,xmin=-0.5,xmax=10,taxa_font_size = 3,node_label_font_size = 3)" src="../../_images/getUniqueTopologies_1.png" style="width: 800px;" /></a>
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Reduce to unique topologies, use tree names for new trees</span>
-
+<span class="c1"># Reduce to unique topologies, use tree names for new trees; Print results and return unique trees</span>
 <span class="n">myUniqueTrees_1</span> <span class="o">&lt;-</span> <span class="nf">getUniqueTopologies</span><span class="p">(</span><span class="n">trees</span> <span class="o">=</span> <span class="n">myMultiPhylo</span><span class="p">,</span><span class="n">tree_names</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span><span class="n">print_table</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
 
                          <span class="n">Tree_Name</span>              <span class="n">Trees_with_Topology</span> <span class="n">Tree_Count</span> <span class="n">Tree_Percent</span>
@@ -246,15 +236,7 @@
 <span class="m">2</span>                       <span class="n">Gene_4.nwk</span>                       <span class="n">Gene_4.nwk</span>          <span class="m">1</span>           <span class="m">20</span>
 <span class="m">3</span>                       <span class="n">Gene_5.nwk</span>                       <span class="n">Gene_5.nwk</span>          <span class="m">1</span>           <span class="m">20</span>
 
-<span class="n">myUniqueTrees_1</span>
-<span class="m">3</span> <span class="n">phylogenetic</span> <span class="n">trees</span>
-
-<span class="nf">treePlotter</span><span class="p">(</span><span class="n">myUniqueTrees_1</span><span class="p">,</span><span class="n">basic_plot</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span><span class="n">xmax</span><span class="o">=</span><span class="m">10</span><span class="p">,</span><span class="n">taxa_font_size</span> <span class="o">=</span> <span class="m">3</span><span class="p">,</span><span class="n">node_label_font_size</span> <span class="o">=</span> <span class="m">3</span><span class="p">)</span>
-</pre></div>
-</div>
-<a class="reference internal image-reference" href="../../_images/getUniqueTopologies_2.png"><img alt="treePlotter(myUniqueTrees_1,basic_plot = TRUE,xmin=-0.5,xmax=10,taxa_font_size = 3,node_label_font_size = 3)" src="../../_images/getUniqueTopologies_2.png" style="width: 800px;" /></a>
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Reduce to unique topolodies, use dummy names for new trees</span>
-
+<span class="c1"># Reduce to unique topologies, use dummy names for new trees; Print results and return unique trees</span>
 <span class="n">myUniqueTrees_2</span> <span class="o">&lt;-</span> <span class="nf">getUniqueTopologies</span><span class="p">(</span><span class="n">trees</span> <span class="o">=</span> <span class="n">myMultiPhylo</span><span class="p">,</span><span class="n">tree_names</span> <span class="o">=</span> <span class="kc">FALSE</span><span class="p">,</span><span class="n">print_table</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
 
    <span class="n">Tree_Name</span>              <span class="n">Trees_with_Topology</span> <span class="n">Tree_Count</span> <span class="n">Tree_Percent</span>
@@ -262,13 +244,22 @@
 <span class="m">2</span> <span class="n">Topology_2</span>                       <span class="n">Gene_4.nwk</span>          <span class="m">1</span>           <span class="m">20</span>
 <span class="m">3</span> <span class="n">Topology_3</span>                       <span class="n">Gene_5.nwk</span>          <span class="m">1</span>           <span class="m">20</span>
 
+<span class="c1"># Reduce to unique topologies, use tree names for new trees; Return results table</span>
+<span class="n">myUniqueTrees_3</span> <span class="o">&lt;-</span> <span class="nf">getUniqueTopologies</span><span class="p">(</span><span class="n">trees</span> <span class="o">=</span> <span class="n">myMultiPhylo</span><span class="p">,</span><span class="n">tree_names</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span><span class="n">return_table</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
+
+<span class="n">myUniqueTrees_1</span>
+<span class="m">3</span> <span class="n">phylogenetic</span> <span class="n">trees</span>
+
 <span class="n">myUniqueTrees_2</span>
 <span class="m">3</span> <span class="n">phylogenetic</span> <span class="n">trees</span>
 
-<span class="nf">treePlotter</span><span class="p">(</span><span class="n">myUniqueTrees_2</span><span class="p">,</span><span class="n">basic_plot</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span><span class="n">xmax</span><span class="o">=</span><span class="m">10</span><span class="p">,</span><span class="n">taxa_font_size</span> <span class="o">=</span> <span class="m">3</span><span class="p">,</span><span class="n">node_label_font_size</span> <span class="o">=</span> <span class="m">3</span><span class="p">)</span>
+<span class="n">myUniqueTrees_3</span>
+                         <span class="n">Tree_Name</span>              <span class="n">Trees_with_Topology</span> <span class="n">Tree_Count</span> <span class="n">Tree_Percent</span>
+<span class="m">1</span> <span class="n">Gene_1.nwk</span><span class="p">;</span><span class="n">Gene_2.nwk</span><span class="p">;</span><span class="n">Gene_3.nwk</span> <span class="n">Gene_1.nwk</span><span class="p">;</span><span class="n">Gene_2.nwk</span><span class="p">;</span><span class="n">Gene_3.nwk</span>          <span class="m">3</span>           <span class="m">60</span>
+<span class="m">2</span>                       <span class="n">Gene_4.nwk</span>                       <span class="n">Gene_4.nwk</span>          <span class="m">1</span>           <span class="m">20</span>
+<span class="m">3</span>                       <span class="n">Gene_5.nwk</span>                       <span class="n">Gene_5.nwk</span>          <span class="m">1</span>           <span class="m">20</span>
 </pre></div>
 </div>
-<a class="reference internal image-reference" href="../../_images/getUniqueTopologies_3.png"><img alt="treePlotter(myUniqueTrees_2,basic_plot = TRUE,xmin=-0.5,xmax=10,taxa_font_size = 3,node_label_font_size = 3)" src="../../_images/getUniqueTopologies_3.png" style="width: 800px;" /></a>
 </div>
 </div>
 

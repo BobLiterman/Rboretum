@@ -185,14 +185,14 @@
             
   <div class="section" id="readrooted">
 <span id="id1"></span><h1><strong>readRooted</strong><a class="headerlink" href="#readrooted" title="Permalink to this headline">¶</a></h1>
-<p><em>readRooted</em> is an ape wrapper, equivalent to:</p>
+<p><strong>readRooted</strong> is an ape wrapper, equivalent to:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ape</span><span class="p">::</span><span class="n">read</span><span class="o">.</span><span class="n">tree</span><span class="p">(</span><span class="n">TREE</span><span class="p">)</span> <span class="o">%&gt;%</span> <span class="n">ape</span><span class="p">::</span><span class="n">unroot</span><span class="o">.</span><span class="n">phylo</span><span class="p">(</span><span class="o">.</span><span class="p">)</span> <span class="o">%&gt;%</span> <span class="n">ape</span><span class="p">::</span><span class="n">root</span><span class="o">.</span><span class="n">phylo</span><span class="p">(</span><span class="o">.</span><span class="p">,</span><span class="n">ROOT_TAXA</span><span class="p">,</span><span class="n">resolve_root</span><span class="o">=</span><span class="n">TRUE</span><span class="p">)</span>
 </pre></div>
 </div>
 <ul class="simple">
-<li><p><em>readRooted</em> can read in Newick and Nexus trees, as well as trees with booststrap values stored as RAxML-style branch labels</p></li>
-<li><p><em>readRooted</em> can be run in with a single file or in batch mode (simultaneously reading in and rooting multiple trees with the same outgroup taxa).</p></li>
-<li><p>When reading in multiple trees, <em>readRooted</em> will name trees based on the file basename, but this can be overridden by supplying names via the <strong>“tree_names”</strong> arguments, or by setting <strong>“dummy_names”</strong> to TRUE.</p></li>
+<li><p><strong>readRooted</strong> can read in Newick and Nexus trees, as well as trees with booststrap values stored as RAxML-style branch labels</p></li>
+<li><p><strong>readRooted</strong> can be run in with a single file or in batch mode (simultaneously reading in and rooting multiple trees with the same outgroup taxa).</p></li>
+<li><p>When reading in multiple trees, <strong>readRooted</strong> will name trees based on the file basename, but this can be overridden by supplying names via the <em>tree_names</em> arguments, or by setting <em>dummy_names</em> to TRUE.</p></li>
 </ul>
 <div class="section" id="function-and-arguments">
 <h2>Function and Arguments<a class="headerlink" href="#function-and-arguments" title="Permalink to this headline">¶</a></h2>
@@ -235,8 +235,8 @@
 <div class="section" id="function-return">
 <h2>Function Return<a class="headerlink" href="#function-return" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>If a single tree is provided via <strong>“to_root”</strong>, <em>readRooted</em> returns a phylo object rooted at <strong>“root_taxa”</strong></p></li>
-<li><p>If multiple trees are provided via <strong>to_root</strong>, <em>readRooted</em> returns a named multiPhylo object, with all trees rooted at <strong>root_taxa</strong></p></li>
+<li><p>If a single tree is provided via <em>to_root</em>, <strong>readRooted</strong> returns a phylo object rooted at <em>root_taxa</em></p></li>
+<li><p>If multiple trees are provided via <em>to_root</em>, <strong>readRooted</strong> returns a named multiPhylo object, with all trees rooted at <em>root_taxa</em></p></li>
 <li><p>Function will throw an error if:</p>
 <ul>
 <li><p>Any tree cannot be found based on the path given</p></li>
@@ -250,14 +250,9 @@
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Script: Rboretum/docs/content/Doc_Function_Scripts/readRooted.R</span>
 
 <span class="nf">library</span><span class="p">(</span><span class="n">Rboretum</span><span class="p">)</span>
-
-<span class="c1"># Set test data directory</span>
 <span class="nf">sourceRboretum</span><span class="p">()</span>
 
 <span class="c1"># Read in a single tree and root at the clade of Species C + Species H</span>
-<span class="n">rb_tree1_path</span>
-<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;&lt;PACKAGE_DIR&gt;/extdata/unrootedTrees/Gene_1.nwk&quot;</span>
-
 <span class="n">raw_tree</span> <span class="o">&lt;-</span> <span class="n">ape</span><span class="o">::</span><span class="nf">read.tree</span><span class="p">(</span><span class="n">rb_tree1_path</span><span class="p">)</span>
 <span class="n">ape</span><span class="o">::</span><span class="nf">is.rooted</span><span class="p">(</span><span class="n">raw_tree</span><span class="p">)</span>
 <span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="kc">FALSE</span>
@@ -267,13 +262,6 @@
 <span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="kc">TRUE</span>
 
 <span class="c1"># Read in a multiple unrooted trees and root at the clade of Species C + Species H</span>
-<span class="n">rb_all_unrooted</span>
-<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;&lt;PACKAGE_DIR&gt;/extdata/unrootedTrees/Gene_1.nwk&quot;</span>
-<span class="p">[</span><span class="m">2</span><span class="p">]</span> <span class="s">&quot;&lt;PACKAGE_DIR&gt;/extdata/unrootedTrees/Gene_2.nwk&quot;</span>
-<span class="p">[</span><span class="m">3</span><span class="p">]</span> <span class="s">&quot;&lt;PACKAGE_DIR&gt;/extdata/unrootedTrees/Gene_3.nwk&quot;</span>
-<span class="p">[</span><span class="m">4</span><span class="p">]</span> <span class="s">&quot;&lt;PACKAGE_DIR&gt;/extdata/unrootedTrees/Gene_4.nwk&quot;</span>
-<span class="p">[</span><span class="m">5</span><span class="p">]</span> <span class="s">&quot;&lt;PACKAGE_DIR&gt;/extdata/unrootedTrees/Gene_5.nwk&quot;</span>
-
 <span class="n">purrr</span><span class="o">::</span><span class="nf">map</span><span class="p">(</span><span class="n">.x</span><span class="o">=</span><span class="n">rb_all_unrooted</span><span class="p">,</span><span class="n">.f</span><span class="o">=</span><span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">){</span><span class="n">ape</span><span class="o">::</span><span class="nf">read.tree</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">%&gt;%</span> <span class="n">ape</span><span class="o">::</span><span class="nf">is.rooted</span><span class="p">(</span><span class="n">.</span><span class="p">)})</span> <span class="o">%&gt;%</span> <span class="nf">unlist</span><span class="p">()</span>
 <span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="kc">FALSE</span> <span class="kc">FALSE</span> <span class="kc">FALSE</span> <span class="kc">FALSE</span> <span class="kc">FALSE</span>
 
@@ -281,20 +269,19 @@
 <span class="n">purrr</span><span class="o">::</span><span class="nf">map</span><span class="p">(</span><span class="n">.x</span><span class="o">=</span><span class="n">myTrees</span><span class="p">,</span><span class="n">.f</span><span class="o">=</span><span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">){</span><span class="n">ape</span><span class="o">::</span><span class="nf">is.rooted</span><span class="p">(</span><span class="n">x</span><span class="p">)})</span> <span class="o">%&gt;%</span> <span class="nf">unlist</span><span class="p">()</span>
 
 <span class="n">Gene_1.nwk</span> <span class="n">Gene_2.nwk</span> <span class="n">Gene_3.nwk</span> <span class="n">Gene_4.nwk</span> <span class="n">Gene_5.nwk</span>
-  <span class="kc">TRUE</span>       <span class="kc">TRUE</span>       <span class="kc">TRUE</span>       <span class="kc">TRUE</span>       <span class="kc">TRUE</span>
+    <span class="kc">TRUE</span>       <span class="kc">TRUE</span>       <span class="kc">TRUE</span>       <span class="kc">TRUE</span>       <span class="kc">TRUE</span>
 
 <span class="c1"># From a directory containing multiple unrooted trees, read in all &#39;.nwk&#39; files and root at the clade of Species C + Species H</span>
-<span class="n">rb_unroot_dir</span>
-<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;&lt;PACKAGE_DIR&gt;/inst/extdata/unrootedTrees&quot;</span>
-
 <span class="n">myTrees</span> <span class="o">&lt;-</span> <span class="nf">readRooted</span><span class="p">(</span><span class="n">to_root</span> <span class="o">=</span> <span class="n">rb_unroot_dir</span><span class="p">,</span> <span class="n">root_taxa</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Species_C&#39;</span><span class="p">,</span><span class="s">&#39;Species_H&#39;</span><span class="p">),</span><span class="n">prefix</span><span class="o">=</span><span class="s">&quot;Gene&quot;</span><span class="p">,</span><span class="n">suffix</span><span class="o">=</span><span class="s">&quot;.nwk&quot;</span><span class="p">)</span>
 <span class="n">purrr</span><span class="o">::</span><span class="nf">map</span><span class="p">(</span><span class="n">.x</span><span class="o">=</span><span class="n">myTrees</span><span class="p">,</span><span class="n">.f</span><span class="o">=</span><span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">){</span><span class="n">ape</span><span class="o">::</span><span class="nf">is.rooted</span><span class="p">(</span><span class="n">x</span><span class="p">)})</span> <span class="o">%&gt;%</span> <span class="nf">unlist</span><span class="p">()</span>
 
 <span class="n">Gene_1.nwk</span> <span class="n">Gene_2.nwk</span> <span class="n">Gene_3.nwk</span> <span class="n">Gene_4.nwk</span> <span class="n">Gene_5.nwk</span>
-  <span class="kc">TRUE</span>       <span class="kc">TRUE</span>       <span class="kc">TRUE</span>       <span class="kc">TRUE</span>       <span class="kc">TRUE</span>
+    <span class="kc">TRUE</span>       <span class="kc">TRUE</span>       <span class="kc">TRUE</span>       <span class="kc">TRUE</span>       <span class="kc">TRUE</span>
 
 <span class="c1"># Same as above, but add placeholder tree_names (&#39;Tree_1&#39; - &#39;Tree_5&#39;) as opposed to tree file basenames</span>
-<span class="n">myDummyTrees</span> <span class="o">&lt;-</span> <span class="nf">readRooted</span><span class="p">(</span><span class="n">to_root</span> <span class="o">=</span> <span class="n">rb_unroot_dir</span><span class="p">,</span> <span class="n">root_taxa</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Species_C&#39;</span><span class="p">,</span><span class="s">&#39;Species_H&#39;</span><span class="p">),</span><span class="n">prefix</span><span class="o">=</span><span class="s">&quot;Gene&quot;</span><span class="p">,</span><span class="n">suffix</span><span class="o">=</span><span class="s">&quot;.nwk&quot;</span><span class="p">,</span><span class="n">dummy_names</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
+<span class="n">myDummyTrees</span> <span class="o">&lt;-</span> <span class="nf">readRooted</span><span class="p">(</span><span class="n">to_root</span> <span class="o">=</span> <span class="n">rb_unroot_dir</span><span class="p">,</span> <span class="n">root_taxa</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Species_C&#39;</span><span class="p">,</span><span class="s">&#39;Species_H&#39;</span><span class="p">),</span><span class="n">prefix</span><span class="o">=</span><span class="s">&quot;Gene&quot;</span><span class="p">,</span><span class="n">suffix</span><span class="o">=</span><span class="s">&quot;.nwk&quot;</span><span class="p">,</span><span class="n">dummy_names</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
+<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;Applying dummy tree names as requested...&quot;</span>
+
 <span class="n">purrr</span><span class="o">::</span><span class="nf">map</span><span class="p">(</span><span class="n">.x</span><span class="o">=</span><span class="n">myDummyTrees</span><span class="p">,</span><span class="n">.f</span><span class="o">=</span><span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">){</span><span class="n">ape</span><span class="o">::</span><span class="nf">is.rooted</span><span class="p">(</span><span class="n">x</span><span class="p">)})</span> <span class="o">%&gt;%</span> <span class="nf">unlist</span><span class="p">()</span>
 
 <span class="n">Tree_1</span> <span class="n">Tree_2</span> <span class="n">Tree_3</span> <span class="n">Tree_4</span> <span class="n">Tree_5</span>
@@ -302,7 +289,6 @@
 
 <span class="c1"># Same as above, but add user-defined tree tree_names as opposed to tree file basenames</span>
 <span class="n">myTreeNames</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Gene_A&#39;</span><span class="p">,</span><span class="s">&#39;Gene_B&#39;</span><span class="p">,</span><span class="s">&#39;Gene_C&#39;</span><span class="p">,</span><span class="s">&#39;Gene_D&#39;</span><span class="p">,</span><span class="s">&#39;Gene_E&#39;</span><span class="p">)</span>
-
 <span class="n">myNamedTrees</span> <span class="o">&lt;-</span> <span class="nf">readRooted</span><span class="p">(</span><span class="n">to_root</span> <span class="o">=</span> <span class="n">rb_unroot_dir</span><span class="p">,</span> <span class="n">root_taxa</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Species_C&#39;</span><span class="p">,</span><span class="s">&#39;Species_H&#39;</span><span class="p">),</span><span class="n">prefix</span><span class="o">=</span><span class="s">&quot;Gene&quot;</span><span class="p">,</span><span class="n">suffix</span><span class="o">=</span><span class="s">&quot;.nwk&quot;</span><span class="p">,</span><span class="n">tree_names</span><span class="o">=</span><span class="n">myTreeNames</span><span class="p">)</span>
 <span class="n">purrr</span><span class="o">::</span><span class="nf">map</span><span class="p">(</span><span class="n">.x</span><span class="o">=</span><span class="n">myNamedTrees</span><span class="p">,</span><span class="n">.f</span><span class="o">=</span><span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">){</span><span class="n">ape</span><span class="o">::</span><span class="nf">is.rooted</span><span class="p">(</span><span class="n">x</span><span class="p">)})</span> <span class="o">%&gt;%</span> <span class="nf">unlist</span><span class="p">()</span>
 

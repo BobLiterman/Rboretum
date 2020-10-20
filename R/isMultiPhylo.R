@@ -97,7 +97,7 @@ isMultiPhylo <- function(test_object,check_named,check_rooted,check_three_taxa,c
       
       # Get shared species
       tip_table  <- purrr::map(.x=test_object,.f=function(x){x$tip.label}) %>% unlist() %>% table() # Tally tip counts
-      shared_species <- naturalsort(tree_taxa[tip_table==tree_count]) # Find tips that occur in all 'trees'
+      shared_species <- tip_table[tip_table == tree_count] %>% names() %>% naturalsort() # Find tips that occur in all 'trees'
       shared_count <- length(shared_species)
       
       has_names <- !is.null(names(test_object))

@@ -1,6 +1,9 @@
 ############################################################################
 **Rboretum**: *Analysis and Visualization of Phylogenies and their Support*
 ############################################################################
+.. |br| raw:: html
+
+   <br />
 
 The **Rboretum** package for R provides a number of functions that allow users to:
 
@@ -10,11 +13,15 @@ The **Rboretum** package for R provides a number of functions that allow users t
   - multiPhylo summary tools
   - Tree trimming function that prunes datasets down to a common set of taxa
 
-2. Get summary statistics (e.g. %GC, %N, %Parsimony Informative, etc.) from multiple-sequence alignment data, directly in R (via Biopython + *reticulate*)
-|
+2. Get summary statistics from multiple-sequence alignment data directly in R (via Biopython + *reticulate*), including:
+
+  - Percent GC
+  - Percent Missing Data
+  - Percent Parsimony-Informative Data
+  - Percent Invariant
  
 3. Extract site-by-site allelic signal from MSA data, and convert it to node support information that can be tabulated and plotted onto trees.
-| 
+|br|
 
 4. Plot custom phylogenetic trees with a wide range of options including:
 

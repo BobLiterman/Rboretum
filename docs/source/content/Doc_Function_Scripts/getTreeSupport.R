@@ -12,6 +12,11 @@ myTreeSupport <- getTreeSupport(tree = myTree,signal = mySignal,include_root = T
 
 myTreeSupport
 
+# Map the signal from a single alignment onto a single tree topology, and only consider sites where one taxon has missing data
+myTreeSupport_m1 <- getTreeSupport(tree = myTree,signal = mySignal,include_root = TRUE,max_missing = 1,existing_support = myTreeSupport)
+
+myTreeSupport_m1
+
 # Map the signal from a multiple alignments onto a single tree topology
 mySignals <- getAlignmentSignal(alignment_path = rb_all_align,species_info = myTree)
 

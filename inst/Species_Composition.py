@@ -42,18 +42,17 @@ def fetchSpeciesComposition(path_to_align,spp_info,align_name):
     for seq_record in raw_alignment:
         raw_spp.append(str(seq_record.id))
     
-    # Convert numeric IDs to string prior to sorting
-    raw_spp = [str(i) for i in raw_spp] 
-    raw_spp.sort()
-    
+    # Get species from raw alignment
+    raw_spp = []
+    for seq_record in raw_alignment:
+        raw_spp.append(str(seq_record.id))
+
     # If fewer than three species exist in alignment or species list, raise exception
-    if (len(list(set(spp_list))) < 3) or (len(list(set(raw_spp))) < 3):
+    if (len(spp_list) < 3) or (len(raw_spp) < 3):
         sys.exit("ERROR: Cannot process fewer than 3 species...")
         
     # If requested species are not in alignment, raise exception
-    spp_diff = list(set(spp_list) - set(raw_spp))
-
-    if len(spp_diff) > 0:
+    if not all(elem in spp_list for elem in raw_spp):
         sys.exit("ERROR: Requested species not found in "+os.path.basename(alignment_path)+"...")
     
     # Re-order alignment to sorted order of species list

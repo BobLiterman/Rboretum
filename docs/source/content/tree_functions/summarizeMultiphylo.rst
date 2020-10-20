@@ -4,7 +4,7 @@
 **summarizeMultiphylo**
 ########################
 
-*summarizeMultiphylo* prints a brief, useful summary of a multiPhylo object
+**summarizeMultiphylo** prints a brief, useful summary of a multiPhylo object
 
 =======================
 Function and Arguments

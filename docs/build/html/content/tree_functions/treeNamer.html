@@ -185,7 +185,7 @@
             
   <div class="section" id="treenamer">
 <span id="id1"></span><h1><strong>treeNamer</strong><a class="headerlink" href="#treenamer" title="Permalink to this headline">¶</a></h1>
-<p><em>treeNamer</em> takes a multiPhylo object, and returns the same trees with ‘dummy names’ (e.g. Tree_1,Tree_2,etc.)</p>
+<p><strong>treeNamer</strong> takes a multiPhylo object, and returns the same trees with ‘dummy names’ (e.g. Tree_1,Tree_2,etc.)</p>
 <div class="section" id="function-and-arguments">
 <h2>Function and Arguments<a class="headerlink" href="#function-and-arguments" title="Permalink to this headline">¶</a></h2>
 <p><strong>Usage</strong>:</p>
@@ -214,17 +214,20 @@
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Script: Rboretum/docs/content/Doc_Function_Scripts/treeNamer.R</span>
 
 <span class="nf">library</span><span class="p">(</span><span class="n">Rboretum</span><span class="p">)</span>
-
-<span class="c1"># Set test data directory</span>
 <span class="nf">sourceRboretum</span><span class="p">()</span>
 
 <span class="c1"># Read in multiPhylo</span>
-<span class="n">noname_multiPhylo</span> <span class="o">&lt;-</span> <span class="nf">readRooted</span><span class="p">(</span><span class="n">rb_all_unrooted</span><span class="p">,</span><span class="n">root_taxa</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Species_C&#39;</span><span class="p">,</span><span class="s">&#39;Species_H&#39;</span><span class="p">))</span>
-<span class="nf">names</span><span class="p">(</span><span class="n">noname_multiPhylo</span><span class="p">)</span> <span class="c1"># Names are based on filenames by default</span>
+<span class="n">myTrees</span> <span class="o">&lt;-</span> <span class="nf">readRooted</span><span class="p">(</span><span class="n">rb_all_unrooted</span><span class="p">,</span><span class="n">root_taxa</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Species_C&#39;</span><span class="p">,</span><span class="s">&#39;Species_H&#39;</span><span class="p">))</span>
+<span class="nf">names</span><span class="p">(</span><span class="n">myTrees</span><span class="p">)</span> <span class="c1"># Names are based on filenames by default</span>
 <span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;Gene_1.nwk&quot;</span> <span class="s">&quot;Gene_2.nwk&quot;</span> <span class="s">&quot;Gene_3.nwk&quot;</span> <span class="s">&quot;Gene_4.nwk&quot;</span> <span class="s">&quot;Gene_5.nwk&quot;</span>
 
+<span class="c1"># Remove names from trees</span>
+<span class="nf">names</span><span class="p">(</span><span class="n">myTrees</span><span class="p">)</span> <span class="o">&lt;-</span> <span class="kc">NULL</span>
+<span class="nf">names</span><span class="p">(</span><span class="n">myTrees</span><span class="p">)</span>
+<span class="kc">NULL</span>
+
 <span class="c1"># Add dummy names</span>
-<span class="n">named_multiPhlyo</span> <span class="o">&lt;-</span> <span class="nf">treeNamer</span><span class="p">(</span><span class="n">noname_multiPhylo</span><span class="p">)</span>
+<span class="n">named_multiPhlyo</span> <span class="o">&lt;-</span> <span class="nf">treeNamer</span><span class="p">(</span><span class="n">myTrees</span><span class="p">)</span>
 <span class="nf">names</span><span class="p">(</span><span class="n">named_multiPhlyo</span><span class="p">)</span>
 <span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;Tree_1&quot;</span> <span class="s">&quot;Tree_2&quot;</span> <span class="s">&quot;Tree_3&quot;</span> <span class="s">&quot;Tree_4&quot;</span> <span class="s">&quot;Tree_5&quot;</span>
 </pre></div>

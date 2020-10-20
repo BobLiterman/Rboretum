@@ -14,19 +14,18 @@ getTreeClades(myTree_2)
 getTreeClades(myTree_3)
 
 # Get splits from a multiPhylo
-myMultiPhylo <- readRooted(c(rb_tree1_path,rb_tree2_path,rb_tree4_path),root_taxa = c('Species_C','Species_H'))
-
-# Return all identified splits
+myMultiPhylo <- c(myTree_1,myTree_2,myTree_3) %>% treeNamer()
+  
 getTreeClades(myMultiPhylo)
-length(getTreeClades(myMultiPhylo))
 
 # Return all identified splits, but exclude root split
 getTreeClades(myMultiPhylo,include_root = FALSE)
-length(getTreeClades(myMultiPhylo,include_root = FALSE))
 
 # Return only splits present in all trees
 getTreeClades(myMultiPhylo,return_shared = TRUE)
-length(getTreeClades(myMultiPhylo,return_shared = TRUE))
 
 # Return a table of results
 getTreeClades(myMultiPhylo,return_counts = TRUE)
+
+# Return clades, but print counts to console
+getTreeClades(myMultiPhylo,print_counts = TRUE)

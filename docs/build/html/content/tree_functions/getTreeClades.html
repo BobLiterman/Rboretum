@@ -185,16 +185,16 @@
             
   <div class="section" id="gettreeclades">
 <span id="id1"></span><h1><strong>getTreeClades</strong><a class="headerlink" href="#gettreeclades" title="Permalink to this headline">¶</a></h1>
-<p><em>getTreeClades</em> breaks rooted phylo and multiPhylo objects down into their respective clade sets.</p>
+<p><strong>getTreeClades</strong> breaks rooted phylo and multiPhylo objects down into their respective clade sets.</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>If a phylo or multiPhylo is passed, a character vector is returned with each unique clade (from all trees if a multiPhylo is provided), represented as a semicolon-delimited string</p></li>
-<li><p>multiPhylo objects are trimmed down to common taxa prior to clade breakdown</p></li>
+<li><p>If a phylo or multiPhylo is passed, a character vector is returned with each unique clade (from all trees if a multiPhylo is provided), represented as a semicolon-delimited string  <br /></p></li>
+<li><p>multiPhylo objects are trimmed down to common taxa prior to clade breakdown   <br /></p></li>
 <li><p>Results can be filtered to:</p>
 <ul>
-<li><p>Omit root clades (include_root = FALSE)</p></li>
-<li><p>Return only shared clades (return_shared = TRUE)</p></li>
-<li><p>Return a table of results with information about the splits in all trees (return_counts = TRUE)</p></li>
+<li><p>Omit root clades (<strong>include_root = FALSE</strong>)</p></li>
+<li><p>Return only shared clades (<strong>return_shared = TRUE</strong>)</p></li>
+<li><p>Return a table of results with information about the splits in all trees (<strong>return_counts = TRUE</strong>)</p></li>
 </ul>
 </li>
 </ul>
@@ -236,160 +236,171 @@
 </div>
 <div class="section" id="example-usage">
 <h2>Example Usage<a class="headerlink" href="#example-usage" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Script: Rboretum/docs/content/Doc_Function_Scripts/getTreeClades.R</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span> <span class="c1"># Script: Rboretum/docs/content/Doc_Function_Scripts/getTreeClades.R</span>
 
-<span class="nf">library</span><span class="p">(</span><span class="n">Rboretum</span><span class="p">)</span>
+ <span class="nf">library</span><span class="p">(</span><span class="n">Rboretum</span><span class="p">)</span>
+ <span class="nf">sourceRboretum</span><span class="p">()</span>
 
-<span class="c1"># Set test data directory</span>
-<span class="nf">sourceRboretum</span><span class="p">()</span>
+ <span class="c1"># Read in trees with two topologies (1=2, 1!=3)</span>
+ <span class="n">myTree_1</span> <span class="o">&lt;-</span> <span class="nf">readRooted</span><span class="p">(</span><span class="n">rb_tree1_path</span><span class="p">,</span><span class="n">root_taxa</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Species_C&#39;</span><span class="p">,</span><span class="s">&#39;Species_H&#39;</span><span class="p">))</span>
+ <span class="n">myTree_2</span> <span class="o">&lt;-</span> <span class="nf">readRooted</span><span class="p">(</span><span class="n">rb_tree2_path</span><span class="p">,</span><span class="n">root_taxa</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Species_C&#39;</span><span class="p">,</span><span class="s">&#39;Species_H&#39;</span><span class="p">))</span>
+ <span class="n">myTree_3</span> <span class="o">&lt;-</span> <span class="nf">readRooted</span><span class="p">(</span><span class="n">rb_tree4_path</span><span class="p">,</span><span class="n">root_taxa</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Species_C&#39;</span><span class="p">,</span><span class="s">&#39;Species_H&#39;</span><span class="p">))</span>
 
-<span class="c1"># Read in trees with two topologies (1=2, 1!=3)</span>
+ <span class="nf">getTreeClades</span><span class="p">(</span><span class="n">myTree_1</span><span class="p">)</span>
 
-<span class="n">myTree_1</span> <span class="o">&lt;-</span> <span class="nf">readRooted</span><span class="p">(</span><span class="n">rb_tree1_path</span><span class="p">,</span><span class="n">root_taxa</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Species_C&#39;</span><span class="p">,</span><span class="s">&#39;Species_H&#39;</span><span class="p">))</span>
-<span class="n">myTree_2</span> <span class="o">&lt;-</span> <span class="nf">readRooted</span><span class="p">(</span><span class="n">rb_tree2_path</span><span class="p">,</span><span class="n">root_taxa</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Species_C&#39;</span><span class="p">,</span><span class="s">&#39;Species_H&#39;</span><span class="p">))</span>
-<span class="n">myTree_3</span> <span class="o">&lt;-</span> <span class="nf">readRooted</span><span class="p">(</span><span class="n">rb_tree4_path</span><span class="p">,</span><span class="n">root_taxa</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Species_C&#39;</span><span class="p">,</span><span class="s">&#39;Species_H&#39;</span><span class="p">))</span>
+ <span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_B;Species_D;Species_E;Species_F;Species_G;Species_I;Species_J;Species_K;Species_L;Species_M;Species_N;Species_O&quot;</span>
+ <span class="p">[</span><span class="m">2</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_E;Species_F;Species_G;Species_I;Species_J;Species_K;Species_L;Species_M;Species_N&quot;</span>
+ <span class="p">[</span><span class="m">3</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_E;Species_F;Species_K;Species_L&quot;</span>
+ <span class="p">[</span><span class="m">4</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_F&quot;</span>
+ <span class="p">[</span><span class="m">5</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_F;Species_K;Species_L&quot;</span>
+ <span class="p">[</span><span class="m">6</span><span class="p">]</span> <span class="s">&quot;Species_B;Species_D;Species_O&quot;</span>
+ <span class="p">[</span><span class="m">7</span><span class="p">]</span> <span class="s">&quot;Species_B;Species_O&quot;</span>
+ <span class="p">[</span><span class="m">8</span><span class="p">]</span> <span class="s">&quot;Species_C;Species_H&quot;</span>
+ <span class="p">[</span><span class="m">9</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_I;Species_J;Species_M;Species_N&quot;</span>
+ <span class="p">[</span><span class="m">10</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_I;Species_N&quot;</span>
+ <span class="p">[</span><span class="m">11</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_N&quot;</span>
+ <span class="p">[</span><span class="m">12</span><span class="p">]</span> <span class="s">&quot;Species_J;Species_M&quot;</span>
+ <span class="p">[</span><span class="m">13</span><span class="p">]</span> <span class="s">&quot;Species_K;Species_L&quot;</span>
 
-<span class="c1"># Toplogy A</span>
+ <span class="nf">getTreeClades</span><span class="p">(</span><span class="n">myTree_2</span><span class="p">)</span>
 
-<span class="nf">getTreeClades</span><span class="p">(</span><span class="n">myTree_1</span><span class="p">)</span>
+ <span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_B;Species_D;Species_E;Species_F;Species_G;Species_I;Species_J;Species_K;Species_L;Species_M;Species_N;Species_O&quot;</span>
+ <span class="p">[</span><span class="m">2</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_E;Species_F;Species_G;Species_I;Species_J;Species_K;Species_L;Species_M;Species_N&quot;</span>
+ <span class="p">[</span><span class="m">3</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_E;Species_F;Species_K;Species_L&quot;</span>
+ <span class="p">[</span><span class="m">4</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_F&quot;</span>
+ <span class="p">[</span><span class="m">5</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_F;Species_K;Species_L&quot;</span>
+ <span class="p">[</span><span class="m">6</span><span class="p">]</span> <span class="s">&quot;Species_B;Species_D;Species_O&quot;</span>
+ <span class="p">[</span><span class="m">7</span><span class="p">]</span> <span class="s">&quot;Species_B;Species_O&quot;</span>
+ <span class="p">[</span><span class="m">8</span><span class="p">]</span> <span class="s">&quot;Species_C;Species_H&quot;</span>
+ <span class="p">[</span><span class="m">9</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_I;Species_J;Species_M;Species_N&quot;</span>
+ <span class="p">[</span><span class="m">10</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_I;Species_N&quot;</span>
+ <span class="p">[</span><span class="m">11</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_N&quot;</span>
+ <span class="p">[</span><span class="m">12</span><span class="p">]</span> <span class="s">&quot;Species_J;Species_M&quot;</span>
+ <span class="p">[</span><span class="m">13</span><span class="p">]</span> <span class="s">&quot;Species_K;Species_L&quot;</span>
 
-<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_B;Species_D;Species_E;Species_F;Species_G;Species_I;Species_J;Species_K;Species_L;Species_M;Species_N;Species_O&quot;</span>
-<span class="p">[</span><span class="m">2</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_E;Species_F;Species_G;Species_I;Species_J;Species_K;Species_L;Species_M;Species_N&quot;</span>
-<span class="p">[</span><span class="m">3</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_E;Species_F;Species_K;Species_L&quot;</span>
-<span class="p">[</span><span class="m">4</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_F&quot;</span>
-<span class="p">[</span><span class="m">5</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_F;Species_K;Species_L&quot;</span>
-<span class="p">[</span><span class="m">6</span><span class="p">]</span> <span class="s">&quot;Species_B;Species_D;Species_O&quot;</span>
-<span class="p">[</span><span class="m">7</span><span class="p">]</span> <span class="s">&quot;Species_B;Species_O&quot;</span>
-<span class="p">[</span><span class="m">8</span><span class="p">]</span> <span class="s">&quot;Species_C;Species_H&quot;</span>
-<span class="p">[</span><span class="m">9</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_I;Species_J;Species_M;Species_N&quot;</span>
-<span class="p">[</span><span class="m">10</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_I;Species_N&quot;</span>
-<span class="p">[</span><span class="m">11</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_N&quot;</span>
-<span class="p">[</span><span class="m">12</span><span class="p">]</span> <span class="s">&quot;Species_J;Species_M&quot;</span>
-<span class="p">[</span><span class="m">13</span><span class="p">]</span> <span class="s">&quot;Species_K;Species_L&quot;</span>
+ <span class="nf">getTreeClades</span><span class="p">(</span><span class="n">myTree_3</span><span class="p">)</span>
 
-<span class="nf">getTreeClades</span><span class="p">(</span><span class="n">myTree_2</span><span class="p">)</span>
+ <span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_B;Species_D;Species_E;Species_F;Species_G;Species_I;Species_J;Species_K;Species_L;Species_M;Species_N;Species_O&quot;</span>
+ <span class="p">[</span><span class="m">2</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_E;Species_F&quot;</span>
+ <span class="p">[</span><span class="m">3</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_E;Species_F;Species_G;Species_I;Species_J;Species_M;Species_N&quot;</span>
+ <span class="p">[</span><span class="m">4</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_F&quot;</span>
+ <span class="p">[</span><span class="m">5</span><span class="p">]</span> <span class="s">&quot;Species_B;Species_D;Species_K;Species_L;Species_O&quot;</span>
+ <span class="p">[</span><span class="m">6</span><span class="p">]</span> <span class="s">&quot;Species_B;Species_O&quot;</span>
+ <span class="p">[</span><span class="m">7</span><span class="p">]</span> <span class="s">&quot;Species_C;Species_H&quot;</span>
+ <span class="p">[</span><span class="m">8</span><span class="p">]</span> <span class="s">&quot;Species_D;Species_K;Species_L&quot;</span>
+ <span class="p">[</span><span class="m">9</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_I;Species_J;Species_M;Species_N&quot;</span>
+ <span class="p">[</span><span class="m">10</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_I;Species_N&quot;</span>
+ <span class="p">[</span><span class="m">11</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_N&quot;</span>
+ <span class="p">[</span><span class="m">12</span><span class="p">]</span> <span class="s">&quot;Species_J;Species_M&quot;</span>
+ <span class="p">[</span><span class="m">13</span><span class="p">]</span> <span class="s">&quot;Species_K;Species_L&quot;</span>
 
-<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_B;Species_D;Species_E;Species_F;Species_G;Species_I;Species_J;Species_K;Species_L;Species_M;Species_N;Species_O&quot;</span>
-<span class="p">[</span><span class="m">2</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_E;Species_F;Species_G;Species_I;Species_J;Species_K;Species_L;Species_M;Species_N&quot;</span>
-<span class="p">[</span><span class="m">3</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_E;Species_F;Species_K;Species_L&quot;</span>
-<span class="p">[</span><span class="m">4</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_F&quot;</span>
-<span class="p">[</span><span class="m">5</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_F;Species_K;Species_L&quot;</span>
-<span class="p">[</span><span class="m">6</span><span class="p">]</span> <span class="s">&quot;Species_B;Species_D;Species_O&quot;</span>
-<span class="p">[</span><span class="m">7</span><span class="p">]</span> <span class="s">&quot;Species_B;Species_O&quot;</span>
-<span class="p">[</span><span class="m">8</span><span class="p">]</span> <span class="s">&quot;Species_C;Species_H&quot;</span>
-<span class="p">[</span><span class="m">9</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_I;Species_J;Species_M;Species_N&quot;</span>
-<span class="p">[</span><span class="m">10</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_I;Species_N&quot;</span>
-<span class="p">[</span><span class="m">11</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_N&quot;</span>
-<span class="p">[</span><span class="m">12</span><span class="p">]</span> <span class="s">&quot;Species_J;Species_M&quot;</span>
-<span class="p">[</span><span class="m">13</span><span class="p">]</span> <span class="s">&quot;Species_K;Species_L&quot;</span>
+ <span class="c1"># Get splits from a multiPhylo</span>
+ <span class="n">myMultiPhylo</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="n">myTree_1</span><span class="p">,</span><span class="n">myTree_2</span><span class="p">,</span><span class="n">myTree_3</span><span class="p">)</span> <span class="o">%&gt;%</span> <span class="nf">treeNamer</span><span class="p">()</span>
 
-<span class="c1"># Topology B</span>
+ <span class="c1"># Return all identified splits</span>
+ <span class="nf">getTreeClades</span><span class="p">(</span><span class="n">myMultiPhylo</span><span class="p">)</span>
 
-<span class="nf">getTreeClades</span><span class="p">(</span><span class="n">myTree_3</span><span class="p">)</span>
+ <span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_B;Species_D;Species_E;Species_F;Species_G;Species_I;Species_J;Species_K;Species_L;Species_M;Species_N;Species_O&quot;</span>
+ <span class="p">[</span><span class="m">2</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_B;Species_D;Species_E;Species_F;Species_K;Species_L;Species_O&quot;</span>
+ <span class="p">[</span><span class="m">3</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_E;Species_F&quot;</span>
+ <span class="p">[</span><span class="m">4</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_E;Species_F;Species_G;Species_I;Species_J;Species_K;Species_L;Species_M;Species_N&quot;</span>
+ <span class="p">[</span><span class="m">5</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_E;Species_F;Species_K;Species_L&quot;</span>
+ <span class="p">[</span><span class="m">6</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_F;Species_K;Species_L&quot;</span>
+ <span class="p">[</span><span class="m">7</span><span class="p">]</span> <span class="s">&quot;Species_B;Species_D;Species_K;Species_L;Species_O&quot;</span>
+ <span class="p">[</span><span class="m">8</span><span class="p">]</span> <span class="s">&quot;Species_B;Species_D;Species_O&quot;</span>
+ <span class="p">[</span><span class="m">9</span><span class="p">]</span> <span class="s">&quot;Species_B;Species_O&quot;</span>
+<span class="p">[</span><span class="m">10</span><span class="p">]</span> <span class="s">&quot;Species_C;Species_H&quot;</span>
+<span class="p">[</span><span class="m">11</span><span class="p">]</span> <span class="s">&quot;Species_D;Species_K;Species_L&quot;</span>
+<span class="p">[</span><span class="m">12</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_I;Species_J;Species_M;Species_N&quot;</span>
+<span class="p">[</span><span class="m">13</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_I;Species_N&quot;</span>
+<span class="p">[</span><span class="m">14</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_N&quot;</span>
+<span class="p">[</span><span class="m">15</span><span class="p">]</span> <span class="s">&quot;Species_J;Species_M&quot;</span>
+<span class="p">[</span><span class="m">16</span><span class="p">]</span> <span class="s">&quot;Species_K;Species_L&quot;</span>
 
-<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_B;Species_D;Species_E;Species_F;Species_G;Species_I;Species_J;Species_K;Species_L;Species_M;Species_N;Species_O&quot;</span>
-<span class="p">[</span><span class="m">2</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_E;Species_F&quot;</span>
-<span class="p">[</span><span class="m">3</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_E;Species_F;Species_G;Species_I;Species_J;Species_M;Species_N&quot;</span>
-<span class="p">[</span><span class="m">4</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_F&quot;</span>
-<span class="p">[</span><span class="m">5</span><span class="p">]</span> <span class="s">&quot;Species_B;Species_D;Species_K;Species_L;Species_O&quot;</span>
-<span class="p">[</span><span class="m">6</span><span class="p">]</span> <span class="s">&quot;Species_B;Species_O&quot;</span>
-<span class="p">[</span><span class="m">7</span><span class="p">]</span> <span class="s">&quot;Species_C;Species_H&quot;</span>
-<span class="p">[</span><span class="m">8</span><span class="p">]</span> <span class="s">&quot;Species_D;Species_K;Species_L&quot;</span>
-<span class="p">[</span><span class="m">9</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_I;Species_J;Species_M;Species_N&quot;</span>
-<span class="p">[</span><span class="m">10</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_I;Species_N&quot;</span>
-<span class="p">[</span><span class="m">11</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_N&quot;</span>
-<span class="p">[</span><span class="m">12</span><span class="p">]</span> <span class="s">&quot;Species_J;Species_M&quot;</span>
-<span class="p">[</span><span class="m">13</span><span class="p">]</span> <span class="s">&quot;Species_K;Species_L&quot;</span>
+ <span class="c1"># Return all identified splits, but exclude root split</span>
+ <span class="nf">getTreeClades</span><span class="p">(</span><span class="n">myMultiPhylo</span><span class="p">,</span><span class="n">include_root</span> <span class="o">=</span> <span class="kc">FALSE</span><span class="p">)</span>
 
-<span class="c1"># Get splits from a multiPhylo</span>
+ <span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_B;Species_D;Species_E;Species_F;Species_K;Species_L;Species_O&quot;</span>                     <span class="s">&quot;Species_A;Species_E;Species_F&quot;</span>
+ <span class="p">[</span><span class="m">3</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_E;Species_F;Species_G;Species_I;Species_J;Species_K;Species_L;Species_M;Species_N&quot;</span> <span class="s">&quot;Species_A;Species_E;Species_F;Species_K;Species_L&quot;</span>
+ <span class="p">[</span><span class="m">5</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_F;Species_K;Species_L&quot;</span>                                                             <span class="s">&quot;Species_B;Species_D;Species_K;Species_L;Species_O&quot;</span>
+ <span class="p">[</span><span class="m">7</span><span class="p">]</span> <span class="s">&quot;Species_B;Species_D;Species_O&quot;</span>                                                                       <span class="s">&quot;Species_B;Species_O&quot;</span>
+ <span class="p">[</span><span class="m">9</span><span class="p">]</span> <span class="s">&quot;Species_D;Species_K;Species_L&quot;</span>                                                                       <span class="s">&quot;Species_G;Species_I;Species_J;Species_M;Species_N&quot;</span>
+<span class="p">[</span><span class="m">11</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_I;Species_N&quot;</span>                                                                       <span class="s">&quot;Species_G;Species_N&quot;</span>
+<span class="p">[</span><span class="m">13</span><span class="p">]</span> <span class="s">&quot;Species_J;Species_M&quot;</span>                                                                                 <span class="s">&quot;Species_K;Species_L&quot;</span>
 
-<span class="n">myMultiPhylo</span> <span class="o">&lt;-</span> <span class="nf">readRooted</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="n">rb_tree1_path</span><span class="p">,</span><span class="n">rb_tree2_path</span><span class="p">,</span><span class="n">rb_tree4_path</span><span class="p">),</span><span class="n">root_taxa</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Species_C&#39;</span><span class="p">,</span><span class="s">&#39;Species_H&#39;</span><span class="p">))</span>
+ <span class="c1"># Return only splits present in all trees</span>
+ <span class="nf">getTreeClades</span><span class="p">(</span><span class="n">myMultiPhylo</span><span class="p">,</span><span class="n">return_shared</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
 
-<span class="c1"># Return all identified splits</span>
+ <span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_B;Species_D;Species_E;Species_F;Species_G;Species_I;Species_J;Species_K;Species_L;Species_M;Species_N;Species_O&quot;</span>
+ <span class="p">[</span><span class="m">2</span><span class="p">]</span> <span class="s">&quot;Species_B;Species_O&quot;</span>
+ <span class="p">[</span><span class="m">3</span><span class="p">]</span> <span class="s">&quot;Species_C;Species_H&quot;</span>
+ <span class="p">[</span><span class="m">4</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_I;Species_J;Species_M;Species_N&quot;</span>
+ <span class="p">[</span><span class="m">5</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_I;Species_N&quot;</span>
+ <span class="p">[</span><span class="m">6</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_N&quot;</span>
+ <span class="p">[</span><span class="m">7</span><span class="p">]</span> <span class="s">&quot;Species_J;Species_M&quot;</span>
+ <span class="p">[</span><span class="m">8</span><span class="p">]</span> <span class="s">&quot;Species_K;Species_L&quot;</span>
 
-<span class="nf">getTreeClades</span><span class="p">(</span><span class="n">myMultiPhylo</span><span class="p">)</span>
+ <span class="c1"># Return a table of results</span>
+ <span class="nf">getTreeClades</span><span class="p">(</span><span class="n">myMultiPhylo</span><span class="p">,</span><span class="n">return_counts</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
 
-<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_B;Species_D;Species_E;Species_F;Species_G;Species_I;Species_J;Species_K;Species_L;Species_M;Species_N;Species_O&quot;</span>
-<span class="p">[</span><span class="m">2</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_E;Species_F&quot;</span>
-<span class="p">[</span><span class="m">3</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_E;Species_F;Species_G;Species_I;Species_J;Species_K;Species_L;Species_M;Species_N&quot;</span>
-<span class="p">[</span><span class="m">4</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_E;Species_F;Species_G;Species_I;Species_J;Species_M;Species_N&quot;</span>
-<span class="p">[</span><span class="m">5</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_E;Species_F;Species_K;Species_L&quot;</span>
-<span class="p">[</span><span class="m">6</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_F&quot;</span>
-<span class="p">[</span><span class="m">7</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_F;Species_K;Species_L&quot;</span>
-<span class="p">[</span><span class="m">8</span><span class="p">]</span> <span class="s">&quot;Species_B;Species_D;Species_K;Species_L;Species_O&quot;</span>
-<span class="p">[</span><span class="m">9</span><span class="p">]</span> <span class="s">&quot;Species_B;Species_D;Species_O&quot;</span>
-<span class="p">[</span><span class="m">10</span><span class="p">]</span> <span class="s">&quot;Species_B;Species_O&quot;</span>
-<span class="p">[</span><span class="m">11</span><span class="p">]</span> <span class="s">&quot;Species_C;Species_H&quot;</span>
-<span class="p">[</span><span class="m">12</span><span class="p">]</span> <span class="s">&quot;Species_D;Species_K;Species_L&quot;</span>
-<span class="p">[</span><span class="m">13</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_I;Species_J;Species_M;Species_N&quot;</span>
-<span class="p">[</span><span class="m">14</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_I;Species_N&quot;</span>
-<span class="p">[</span><span class="m">15</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_N&quot;</span>
-<span class="p">[</span><span class="m">16</span><span class="p">]</span> <span class="s">&quot;Species_J;Species_M&quot;</span>
-<span class="p">[</span><span class="m">17</span><span class="p">]</span> <span class="s">&quot;Species_K;Species_L&quot;</span>
+ <span class="c1"># A tibble: 16 x 3</span>
+    <span class="n">Clade</span>                                                                                                                             <span class="n">Count</span> <span class="n">Trees</span>
+    <span class="o">&lt;</span><span class="n">chr</span><span class="o">&gt;</span>                                                                                                                             <span class="o">&lt;</span><span class="n">int</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">chr</span><span class="o">&gt;</span>
+  <span class="m">1</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_B</span><span class="p">;</span><span class="n">Species_D</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_J</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span><span class="p">;</span><span class="n">Species_M</span><span class="p">;</span><span class="n">Species_N</span><span class="p">;</span><span class="n">Species_O</span>     <span class="m">3</span> <span class="n">Tree_1</span><span class="p">;</span><span class="n">Tree_2</span><span class="p">;</span><span class="n">Tree_3</span>
+  <span class="m">2</span> <span class="n">Species_B</span><span class="p">;</span><span class="n">Species_O</span>                                                                                                                   <span class="m">3</span> <span class="n">Tree_1</span><span class="p">;</span><span class="n">Tree_2</span><span class="p">;</span><span class="n">Tree_3</span>
+  <span class="m">3</span> <span class="n">Species_C</span><span class="p">;</span><span class="n">Species_H</span>                                                                                                                   <span class="m">3</span> <span class="n">Tree_1</span><span class="p">;</span><span class="n">Tree_2</span><span class="p">;</span><span class="n">Tree_3</span>
+  <span class="m">4</span> <span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_J</span><span class="p">;</span><span class="n">Species_M</span><span class="p">;</span><span class="n">Species_N</span>                                                                                     <span class="m">3</span> <span class="n">Tree_1</span><span class="p">;</span><span class="n">Tree_2</span><span class="p">;</span><span class="n">Tree_3</span>
+  <span class="m">5</span> <span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_N</span>                                                                                                         <span class="m">3</span> <span class="n">Tree_1</span><span class="p">;</span><span class="n">Tree_2</span><span class="p">;</span><span class="n">Tree_3</span>
+  <span class="m">6</span> <span class="n">Species_G</span><span class="p">;</span><span class="n">Species_N</span>                                                                                                                   <span class="m">3</span> <span class="n">Tree_1</span><span class="p">;</span><span class="n">Tree_2</span><span class="p">;</span><span class="n">Tree_3</span>
+  <span class="m">7</span> <span class="n">Species_J</span><span class="p">;</span><span class="n">Species_M</span>                                                                                                                   <span class="m">3</span> <span class="n">Tree_1</span><span class="p">;</span><span class="n">Tree_2</span><span class="p">;</span><span class="n">Tree_3</span>
+  <span class="m">8</span> <span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span>                                                                                                                   <span class="m">3</span> <span class="n">Tree_1</span><span class="p">;</span><span class="n">Tree_2</span><span class="p">;</span><span class="n">Tree_3</span>
+  <span class="m">9</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_J</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span><span class="p">;</span><span class="n">Species_M</span><span class="p">;</span><span class="n">Species_N</span>                                   <span class="m">2</span> <span class="n">Tree_1</span><span class="p">;</span><span class="n">Tree_2</span>
+ <span class="m">10</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span>                                                                                     <span class="m">2</span> <span class="n">Tree_1</span><span class="p">;</span><span class="n">Tree_2</span>
+ <span class="m">11</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span>                                                                                               <span class="m">2</span> <span class="n">Tree_1</span><span class="p">;</span><span class="n">Tree_2</span>
+ <span class="m">12</span> <span class="n">Species_B</span><span class="p">;</span><span class="n">Species_D</span><span class="p">;</span><span class="n">Species_O</span>                                                                                                         <span class="m">2</span> <span class="n">Tree_1</span><span class="p">;</span><span class="n">Tree_2</span>
+ <span class="m">13</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_B</span><span class="p">;</span><span class="n">Species_D</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span><span class="p">;</span><span class="n">Species_O</span>                                                       <span class="m">1</span> <span class="n">Tree_3</span>
+ <span class="m">14</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span>                                                                                                         <span class="m">1</span> <span class="n">Tree_3</span>
+ <span class="m">15</span> <span class="n">Species_B</span><span class="p">;</span><span class="n">Species_D</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span><span class="p">;</span><span class="n">Species_O</span>                                                                                     <span class="m">1</span> <span class="n">Tree_3</span>
+ <span class="m">16</span> <span class="n">Species_D</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span>                                                                                                         <span class="m">1</span> <span class="n">Tree_3</span>
 
-<span class="nf">length</span><span class="p">(</span><span class="nf">getTreeClades</span><span class="p">(</span><span class="n">myMultiPhylo</span><span class="p">))</span>
+ <span class="c1"># Return clades, but print counts to console</span>
+ <span class="nf">getTreeClades</span><span class="p">(</span><span class="n">myMultiPhylo</span><span class="p">,</span><span class="n">print_counts</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
 
-<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="m">17</span>
-
-<span class="c1"># Return all identified splits, but exclude root split</span>
-
-<span class="nf">getTreeClades</span><span class="p">(</span><span class="n">myMultiPhylo</span><span class="p">,</span><span class="n">include_root</span> <span class="o">=</span> <span class="kc">FALSE</span><span class="p">)</span>
-
-<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_E;Species_F&quot;</span>                                                                       <span class="s">&quot;Species_A;Species_E;Species_F;Species_G;Species_I;Species_J;Species_K;Species_L;Species_M;Species_N&quot;</span>
-<span class="p">[</span><span class="m">3</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_E;Species_F;Species_G;Species_I;Species_J;Species_M;Species_N&quot;</span>                     <span class="s">&quot;Species_A;Species_E;Species_F;Species_K;Species_L&quot;</span>
-<span class="p">[</span><span class="m">5</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_F&quot;</span>                                                                                 <span class="s">&quot;Species_A;Species_F;Species_K;Species_L&quot;</span>
-<span class="p">[</span><span class="m">7</span><span class="p">]</span> <span class="s">&quot;Species_B;Species_D;Species_K;Species_L;Species_O&quot;</span>                                                   <span class="s">&quot;Species_B;Species_D;Species_O&quot;</span>
-<span class="p">[</span><span class="m">9</span><span class="p">]</span> <span class="s">&quot;Species_B;Species_O&quot;</span>                                                                                 <span class="s">&quot;Species_D;Species_K;Species_L&quot;</span>
-<span class="p">[</span><span class="m">11</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_I;Species_J;Species_M;Species_N&quot;</span>                                                   <span class="s">&quot;Species_G;Species_I;Species_N&quot;</span>
-<span class="p">[</span><span class="m">13</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_N&quot;</span>                                                                                 <span class="s">&quot;Species_J;Species_M&quot;</span>
-<span class="p">[</span><span class="m">15</span><span class="p">]</span> <span class="s">&quot;Species_K;Species_L&quot;</span>
-
-<span class="nf">length</span><span class="p">(</span><span class="nf">getTreeClades</span><span class="p">(</span><span class="n">myMultiPhylo</span><span class="p">,</span><span class="n">include_root</span> <span class="o">=</span> <span class="kc">FALSE</span><span class="p">))</span>
-
-<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="m">15</span>
-
-<span class="c1"># Return only splits present in all trees</span>
-
-<span class="nf">getTreeClades</span><span class="p">(</span><span class="n">myMultiPhylo</span><span class="p">,</span><span class="n">return_shared</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
-
-<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_B;Species_D;Species_E;Species_F;Species_G;Species_I;Species_J;Species_K;Species_L;Species_M;Species_N;Species_O&quot;</span>
-<span class="p">[</span><span class="m">2</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_F&quot;</span>
-<span class="p">[</span><span class="m">3</span><span class="p">]</span> <span class="s">&quot;Species_B;Species_O&quot;</span>
-<span class="p">[</span><span class="m">4</span><span class="p">]</span> <span class="s">&quot;Species_C;Species_H&quot;</span>
-<span class="p">[</span><span class="m">5</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_I;Species_J;Species_M;Species_N&quot;</span>
-<span class="p">[</span><span class="m">6</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_I;Species_N&quot;</span>
-<span class="p">[</span><span class="m">7</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_N&quot;</span>
-<span class="p">[</span><span class="m">8</span><span class="p">]</span> <span class="s">&quot;Species_J;Species_M&quot;</span>
-<span class="p">[</span><span class="m">9</span><span class="p">]</span> <span class="s">&quot;Species_K;Species_L&quot;</span>
-
-<span class="nf">length</span><span class="p">(</span><span class="nf">getTreeClades</span><span class="p">(</span><span class="n">myMultiPhylo</span><span class="p">,</span><span class="n">return_shared</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">))</span>
-
-<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="m">9</span>
-
-<span class="c1"># Return a table of results</span>
-
-<span class="nf">getTreeClades</span><span class="p">(</span><span class="n">myMultiPhylo</span><span class="p">,</span><span class="n">return_counts</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
-
-<span class="c1"># A tibble: 17 x 3</span>
- <span class="n">Clade</span>                                                                                                                             <span class="n">Count</span> <span class="n">Trees</span>
- <span class="o">&lt;</span><span class="n">chr</span><span class="o">&gt;</span>                                                                                                                             <span class="o">&lt;</span><span class="n">int</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">chr</span><span class="o">&gt;</span>
-<span class="m">1</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_B</span><span class="p">;</span><span class="n">Species_D</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_J</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span><span class="p">;</span><span class="n">Species_M</span><span class="p">;</span><span class="n">Species_N</span><span class="p">;</span><span class="n">Species_O</span>     <span class="m">3</span> <span class="n">Gene_1.nwk</span><span class="p">;</span><span class="n">Gene_2.nwk</span><span class="p">;</span><span class="n">Gene_4.nwk</span>
-<span class="m">2</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_F</span>                                                                                                                   <span class="m">3</span> <span class="n">Gene_1.nwk</span><span class="p">;</span><span class="n">Gene_2.nwk</span><span class="p">;</span><span class="n">Gene_4.nwk</span>
-<span class="m">3</span> <span class="n">Species_B</span><span class="p">;</span><span class="n">Species_O</span>                                                                                                                   <span class="m">3</span> <span class="n">Gene_1.nwk</span><span class="p">;</span><span class="n">Gene_2.nwk</span><span class="p">;</span><span class="n">Gene_4.nwk</span>
-<span class="m">4</span> <span class="n">Species_C</span><span class="p">;</span><span class="n">Species_H</span>                                                                                                                   <span class="m">3</span> <span class="n">Gene_1.nwk</span><span class="p">;</span><span class="n">Gene_2.nwk</span><span class="p">;</span><span class="n">Gene_4.nwk</span>
-<span class="m">5</span> <span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_J</span><span class="p">;</span><span class="n">Species_M</span><span class="p">;</span><span class="n">Species_N</span>                                                                                     <span class="m">3</span> <span class="n">Gene_1.nwk</span><span class="p">;</span><span class="n">Gene_2.nwk</span><span class="p">;</span><span class="n">Gene_4.nwk</span>
-<span class="m">6</span> <span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_N</span>                                                                                                         <span class="m">3</span> <span class="n">Gene_1.nwk</span><span class="p">;</span><span class="n">Gene_2.nwk</span><span class="p">;</span><span class="n">Gene_4.nwk</span>
-<span class="m">7</span> <span class="n">Species_G</span><span class="p">;</span><span class="n">Species_N</span>                                                                                                                   <span class="m">3</span> <span class="n">Gene_1.nwk</span><span class="p">;</span><span class="n">Gene_2.nwk</span><span class="p">;</span><span class="n">Gene_4.nwk</span>
-<span class="m">8</span> <span class="n">Species_J</span><span class="p">;</span><span class="n">Species_M</span>                                                                                                                   <span class="m">3</span> <span class="n">Gene_1.nwk</span><span class="p">;</span><span class="n">Gene_2.nwk</span><span class="p">;</span><span class="n">Gene_4.nwk</span>
-<span class="m">9</span> <span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span>                                                                                                                   <span class="m">3</span> <span class="n">Gene_1.nwk</span><span class="p">;</span><span class="n">Gene_2.nwk</span><span class="p">;</span><span class="n">Gene_4.nwk</span>
-<span class="m">10</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_J</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span><span class="p">;</span><span class="n">Species_M</span><span class="p">;</span><span class="n">Species_N</span>                                   <span class="m">2</span> <span class="n">Gene_1.nwk</span><span class="p">;</span><span class="n">Gene_2.nwk</span>
-<span class="m">11</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span>                                                                                     <span class="m">2</span> <span class="n">Gene_1.nwk</span><span class="p">;</span><span class="n">Gene_2.nwk</span>
-<span class="m">12</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span>                                                                                               <span class="m">2</span> <span class="n">Gene_1.nwk</span><span class="p">;</span><span class="n">Gene_2.nwk</span>
-<span class="m">13</span> <span class="n">Species_B</span><span class="p">;</span><span class="n">Species_D</span><span class="p">;</span><span class="n">Species_O</span>                                                                                                         <span class="m">2</span> <span class="n">Gene_1.nwk</span><span class="p">;</span><span class="n">Gene_2.nwk</span>
-<span class="m">14</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span>                                                                                                         <span class="m">1</span> <span class="n">Gene_4.nwk</span>
-<span class="m">15</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_J</span><span class="p">;</span><span class="n">Species_M</span><span class="p">;</span><span class="n">Species_N</span>                                                       <span class="m">1</span> <span class="n">Gene_4.nwk</span>
-<span class="m">16</span> <span class="n">Species_B</span><span class="p">;</span><span class="n">Species_D</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span><span class="p">;</span><span class="n">Species_O</span>                                                                                     <span class="m">1</span> <span class="n">Gene_4.nwk</span>
-<span class="m">17</span> <span class="n">Species_D</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span>                                                                                                         <span class="m">1</span> <span class="n">Gene_4.nwk</span>
+ <span class="c1"># A tibble: 16 x 3</span>
+    <span class="n">Clade</span>                                                                                                                             <span class="n">Count</span> <span class="n">Trees</span>
+    <span class="o">&lt;</span><span class="n">chr</span><span class="o">&gt;</span>                                                                                                                             <span class="o">&lt;</span><span class="n">int</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">chr</span><span class="o">&gt;</span>
+  <span class="m">1</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_B</span><span class="p">;</span><span class="n">Species_D</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_J</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span><span class="p">;</span><span class="n">Species_M</span><span class="p">;</span><span class="n">Species_N</span><span class="p">;</span><span class="n">Species_O</span>     <span class="m">3</span> <span class="n">Tree_1</span><span class="p">;</span><span class="n">Tree_2</span><span class="p">;</span><span class="n">Tree_3</span>
+  <span class="m">2</span> <span class="n">Species_B</span><span class="p">;</span><span class="n">Species_O</span>                                                                                                                   <span class="m">3</span> <span class="n">Tree_1</span><span class="p">;</span><span class="n">Tree_2</span><span class="p">;</span><span class="n">Tree_3</span>
+  <span class="m">3</span> <span class="n">Species_C</span><span class="p">;</span><span class="n">Species_H</span>                                                                                                                   <span class="m">3</span> <span class="n">Tree_1</span><span class="p">;</span><span class="n">Tree_2</span><span class="p">;</span><span class="n">Tree_3</span>
+  <span class="m">4</span> <span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_J</span><span class="p">;</span><span class="n">Species_M</span><span class="p">;</span><span class="n">Species_N</span>                                                                                     <span class="m">3</span> <span class="n">Tree_1</span><span class="p">;</span><span class="n">Tree_2</span><span class="p">;</span><span class="n">Tree_3</span>
+  <span class="m">5</span> <span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_N</span>                                                                                                         <span class="m">3</span> <span class="n">Tree_1</span><span class="p">;</span><span class="n">Tree_2</span><span class="p">;</span><span class="n">Tree_3</span>
+  <span class="m">6</span> <span class="n">Species_G</span><span class="p">;</span><span class="n">Species_N</span>                                                                                                                   <span class="m">3</span> <span class="n">Tree_1</span><span class="p">;</span><span class="n">Tree_2</span><span class="p">;</span><span class="n">Tree_3</span>
+  <span class="m">7</span> <span class="n">Species_J</span><span class="p">;</span><span class="n">Species_M</span>                                                                                                                   <span class="m">3</span> <span class="n">Tree_1</span><span class="p">;</span><span class="n">Tree_2</span><span class="p">;</span><span class="n">Tree_3</span>
+  <span class="m">8</span> <span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span>                                                                                                                   <span class="m">3</span> <span class="n">Tree_1</span><span class="p">;</span><span class="n">Tree_2</span><span class="p">;</span><span class="n">Tree_3</span>
+  <span class="m">9</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_J</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span><span class="p">;</span><span class="n">Species_M</span><span class="p">;</span><span class="n">Species_N</span>                                   <span class="m">2</span> <span class="n">Tree_1</span><span class="p">;</span><span class="n">Tree_2</span>
+ <span class="m">10</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span>                                                                                     <span class="m">2</span> <span class="n">Tree_1</span><span class="p">;</span><span class="n">Tree_2</span>
+ <span class="m">11</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span>                                                                                               <span class="m">2</span> <span class="n">Tree_1</span><span class="p">;</span><span class="n">Tree_2</span>
+ <span class="m">12</span> <span class="n">Species_B</span><span class="p">;</span><span class="n">Species_D</span><span class="p">;</span><span class="n">Species_O</span>                                                                                                         <span class="m">2</span> <span class="n">Tree_1</span><span class="p">;</span><span class="n">Tree_2</span>
+ <span class="m">13</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_B</span><span class="p">;</span><span class="n">Species_D</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span><span class="p">;</span><span class="n">Species_O</span>                                                       <span class="m">1</span> <span class="n">Tree_3</span>
+ <span class="m">14</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span>                                                                                                         <span class="m">1</span> <span class="n">Tree_3</span>
+ <span class="m">15</span> <span class="n">Species_B</span><span class="p">;</span><span class="n">Species_D</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span><span class="p">;</span><span class="n">Species_O</span>                                                                                     <span class="m">1</span> <span class="n">Tree_3</span>
+ <span class="m">16</span> <span class="n">Species_D</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span>                                                                                                         <span class="m">1</span> <span class="n">Tree_3</span>
+  <span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_B;Species_D;Species_E;Species_F;Species_G;Species_I;Species_J;Species_K;Species_L;Species_M;Species_N;Species_O&quot;</span>
+  <span class="p">[</span><span class="m">2</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_B;Species_D;Species_E;Species_F;Species_K;Species_L;Species_O&quot;</span>
+  <span class="p">[</span><span class="m">3</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_E;Species_F&quot;</span>
+  <span class="p">[</span><span class="m">4</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_E;Species_F;Species_G;Species_I;Species_J;Species_K;Species_L;Species_M;Species_N&quot;</span>
+  <span class="p">[</span><span class="m">5</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_E;Species_F;Species_K;Species_L&quot;</span>
+  <span class="p">[</span><span class="m">6</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_F;Species_K;Species_L&quot;</span>
+  <span class="p">[</span><span class="m">7</span><span class="p">]</span> <span class="s">&quot;Species_B;Species_D;Species_K;Species_L;Species_O&quot;</span>
+  <span class="p">[</span><span class="m">8</span><span class="p">]</span> <span class="s">&quot;Species_B;Species_D;Species_O&quot;</span>
+  <span class="p">[</span><span class="m">9</span><span class="p">]</span> <span class="s">&quot;Species_B;Species_O&quot;</span>
+ <span class="p">[</span><span class="m">10</span><span class="p">]</span> <span class="s">&quot;Species_C;Species_H&quot;</span>
+ <span class="p">[</span><span class="m">11</span><span class="p">]</span> <span class="s">&quot;Species_D;Species_K;Species_L&quot;</span>
+ <span class="p">[</span><span class="m">12</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_I;Species_J;Species_M;Species_N&quot;</span>
+ <span class="p">[</span><span class="m">13</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_I;Species_N&quot;</span>
+ <span class="p">[</span><span class="m">14</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_N&quot;</span>
+ <span class="p">[</span><span class="m">15</span><span class="p">]</span> <span class="s">&quot;Species_J;Species_M&quot;</span>
+ <span class="p">[</span><span class="m">16</span><span class="p">]</span> <span class="s">&quot;Species_K;Species_L&quot;</span>
 </pre></div>
 </div>
 </div>

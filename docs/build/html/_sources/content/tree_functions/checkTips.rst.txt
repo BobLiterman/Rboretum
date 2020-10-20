@@ -74,14 +74,12 @@ Example Usage
   [1] TRUE
 
   # Check if nonsense taxa are in the trees
-  
   checkTips(tree=myTree_1,taxa = "Not_A_Species")
   [1] FALSE
   checkTips(tree=myTree_2,taxa = "Also_Not_A_Species")
   [1] FALSE
 
   # Check if taxa from Clade of Interest 1 (Species_J/Species_M) form a monophyletic group
-  
   checkTips(tree=myTree_1,taxa = coi_1,check_mono = TRUE)
   [1] TRUE
   checkTips(tree=myTree_2,taxa = coi_1,check_mono = TRUE)
@@ -90,7 +88,6 @@ Example Usage
   [1] TRUE
 
   # Check if taxa from Clade of Interest 1 (Species_J/Species_M) form a monophyletic group at the root of the tree
-  
   checkTips(tree=myTree_1,taxa = coi_1,check_mono = TRUE, check_root=TRUE)
   [1] FALSE
   checkTips(tree=myTree_2,taxa = coi_1,check_mono = TRUE, check_root=TRUE)
@@ -99,7 +96,6 @@ Example Usage
   [1] FALSE
 
   # Check if taxa from Clade of Interest 2 (Species_C/Species_H) form a monophyletic group at the root of the tree
-  
   checkTips(tree=myTree_1,taxa = coi_2,check_mono = TRUE, check_root=TRUE)
   [1] TRUE
   checkTips(tree=myTree_2,taxa = coi_2,check_mono = TRUE, check_root=TRUE)
@@ -108,7 +104,6 @@ Example Usage
   [1] TRUE
 
   # Check if taxa from Clade of Interest 3 (Species_D/Species_K/Species_L)form a monophyletic group
-  
   checkTips(tree=myTree_1,taxa = coi_3,check_mono = TRUE)
   [1] FALSE
   checkTips(tree=myTree_2,taxa = coi_3,check_mono = TRUE)

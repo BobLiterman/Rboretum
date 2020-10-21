@@ -85,10 +85,10 @@ extractNodeAges <- function(tree,return_summary){
   for(i in 1:tree_count){
     
     # Get tree splits
-    tree_splits <- getTreeSplits(tree)
+    tree_splits <- getTreeSplits(tree[[i]])
     
     # If trees have node labels, node IDs can't be used to pull branching times
-    no_bs_tree <- stripNodeLabels(tree)
+    no_bs_tree <- stripNodeLabels(tree[[i]])
     no_bs_branching_times <- branching.times(no_bs_tree)
     
     node_ages <- purrr::map(.x=tree_splits$Split_Node,.f=function(x){no_bs_branching_times[[as.character(x)]] %>% as.numeric()}) %>% unlist()

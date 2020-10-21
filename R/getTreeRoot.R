@@ -5,13 +5,13 @@
 #' @return A two-element character vector containing semicolon-delimited root clades
 #' @export
 
-getRoot <- function(tree){
+getTreeRoot <- function(tree){
   
   # Ensure tree is passed
-  if(missing(tree)){ stop("'getRoot' requires a phylo object passed via the 'tree' argument...")} 
+  if(missing(tree)){ stop("'getTreeRoot' requires a phylo object passed via the 'tree' argument...")} 
 
   # Ensure tree is rooted
-  if(!Rboretum::isPhylo(tree,check_rooted = TRUE)){ stop("'getRoot' requires a rooted phylo object passed via the 'tree' argument...")} 
+  if(!Rboretum::isPhylo(tree,check_rooted = TRUE)){ stop("'getTreeRoot' requires a rooted phylo object passed via the 'tree' argument...")} 
   
   # Get tip labels and count
   tree_tips <- naturalsort(tree$tip.label)

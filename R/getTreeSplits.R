@@ -24,7 +24,7 @@ getTreeSplits <- function(tree){
       tree <- Rboretum::treeNamer(tree)
     }
     
-    # Trim to commmon taxa if necessary
+    # Trim to common taxa if necessary
     if(!Rboretum::isMultiPhylo(tree,check_all_taxa = TRUE)){
       tree <- treeTrimmer(tree)
     }
@@ -35,7 +35,9 @@ getTreeSplits <- function(tree){
       tree <- tree[[1]]
       split_df <- getTreeSplits_Worker(tree)
       return(split_df)
-    } else{ # If multiple topologies exist in the multiPhylo, return splits for each tree
+    } else{ 
+      
+      # If multiple topologies exist in the multiPhylo, return splits for each tree
       tree_names <- names(tree)
       split_df <- purrr::map(.x = tree,.f = function(x){getTreeSplits_Worker(x)}) %>% `names<-`(tree_names)
       return(split_df)

@@ -7,3 +7,6 @@ Rboretum.Rproj
 docs/make2.bat
 docs/build/html/debug.log
 docs/source/content/images/Logo.psd
+inst/extdata/Data_Simulation/generation/indelible_1.03_Windows.exe
+tests
+vignettes

@@ -185,14 +185,14 @@
             
   <div class="section" id="treetrimmer">
 <span id="id1"></span><h1><strong>treeTrimmer</strong><a class="headerlink" href="#treetrimmer" title="Permalink to this headline">¶</a></h1>
-<p><em>treeTrimmer</em> is an ape wrapper, equivalent to:</p>
+<p><strong>treeTrimmer</strong> is an ape wrapper, equivalent to:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ape</span><span class="p">::</span><span class="n">drop</span><span class="o">.</span><span class="n">tip</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span><span class="n">taxa_to_remove</span><span class="p">)</span>
 </pre></div>
 </div>
 <ul class="simple">
-<li><p><em>treeTrimmer</em>  can accept a phylo or multiPhylo <strong>“tree”</strong> argument for pruning</p></li>
-<li><p>User can set whether to keep or remove specified <strong>“taxa”</strong> with the <strong>“remove”</strong> argument</p></li>
-<li><p>If <strong>tree</strong> is a multiPhylo and no other arguments are given, the default behavior is to trim all trees down to those taxa shared among all trees.</p></li>
+<li><p><strong>treeTrimmer</strong>  can accept a phylo or multiPhylo <em>tree</em> argument for pruning</p></li>
+<li><p>User can set whether to keep or remove specified <em>taxa</em> with the <em>remove</em> argument</p></li>
+<li><p>If <em>tree</em> is a multiPhylo and no other arguments are given, the default behavior is to trim all trees down to those taxa shared among all trees.</p></li>
 </ul>
 <div class="section" id="function-and-arguments">
 <h2>Function and Arguments<a class="headerlink" href="#function-and-arguments" title="Permalink to this headline">¶</a></h2>
@@ -215,10 +215,10 @@
 <td><p>Tree(s) to trim. Options include: (1) A phylo or (2) a multiPhylo object where all trees share 3+ tip labels</p></td>
 </tr>
 <tr class="row-odd"><td><p><strong>taxa</strong></p></td>
-<td><p>Character vector (or semicolon-separated list) of desired tip labels to keep [default] or discard [if remove=TRUE]</p></td>
+<td><p>Character vector (or semicolon-separated list) of desired tip labels to keep [default] or discard [if <em>remove</em> = TRUE]</p></td>
 </tr>
 <tr class="row-even"><td><p><strong>remove</strong></p></td>
-<td><p>OPTIONAL: If TRUE, tip labels specified by <strong>taxa</strong> are removed from trees rather than retained [Default: FALSE, prune <strong>tree</strong> down to <strong>taxa</strong>]</p></td>
+<td><p>OPTIONAL: If TRUE, tip labels specified by <em>taxa</em> are removed from trees rather than retained [Default: FALSE, prune <em>tree</em> down to <em>taxa</em>]</p></td>
 </tr>
 </tbody>
 </table>
@@ -226,8 +226,9 @@
 <div class="section" id="function-return">
 <h2>Function Return<a class="headerlink" href="#function-return" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li><p>If a single tree is provided via <strong>tree</strong>, <em>treeTrimmer</em> returns a phylo object pruned down to the desired taxa specified by <strong>taxa</strong> and <strong>remove</strong></p></li>
-<li><p>If multiple trees are provided via <strong>tree</strong>, <em>treeTrimmer</em> returns a multiPhylo where all trees are pruned down to the desired taxa specified by <strong>taxa</strong> and <strong>remove</strong></p></li>
+<li><p>If a single tree is provided via <em>tree</em>, <strong>treeTrimmer</strong> returns a phylo object pruned down to the desired taxa specified by <em>taxa</em> and <em>remove</em></p></li>
+<li><p>If multiple trees are provided via <em>tree</em>, <strong>treeTrimmer</strong> returns a multiPhylo where all trees are pruned down to the desired taxa specified by <em>taxa</em> and <em>remove</em></p></li>
+<li><p>If multiple trees are provided via <em>tree</em> and no <em>taxa</em> are specified, <strong>treeTrimmer</strong> returns a multiPhylo where all trees are pruned down to the common set of taxa among trees</p></li>
 <li><p>Function will throw an error if:</p>
 <ul>
 <li><p>Fewer than 3 species are specified for retention in any tree</p></li>
@@ -241,16 +242,17 @@
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Script: Rboretum/docs/content/Doc_Function_Scripts/treeTrimmer.R</span>
 
 <span class="nf">library</span><span class="p">(</span><span class="n">Rboretum</span><span class="p">)</span>
-
-<span class="c1"># Set test data directory</span>
 <span class="nf">sourceRboretum</span><span class="p">()</span>
 
-<span class="c1">### SINGLE TREE ###</span>
-
 <span class="c1"># Read in a single tree rooted at the clade of Species C + Species H</span>
-<span class="n">myTree</span> <span class="o">&lt;-</span> <span class="nf">readRooted</span><span class="p">(</span><span class="n">to_root</span> <span class="o">=</span> <span class="n">rb_tree1_path</span><span class="p">,</span> <span class="n">root_taxa</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Species_C&#39;</span><span class="p">,</span><span class="s">&#39;Species_H&#39;</span><span class="p">))</span>
+<span class="nf">is.rooted</span><span class="p">(</span><span class="n">ape</span><span class="o">::</span><span class="nf">read.tree</span><span class="p">(</span><span class="n">rb_tree1_path</span><span class="p">))</span>
+<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="kc">FALSE</span>
 
-<span class="c1"># Trim myTree down to Species A - I</span>
+<span class="n">myTree</span> <span class="o">&lt;-</span> <span class="nf">readRooted</span><span class="p">(</span><span class="n">to_root</span> <span class="o">=</span> <span class="n">rb_tree1_path</span><span class="p">,</span> <span class="n">root_taxa</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Species_C&#39;</span><span class="p">,</span><span class="s">&#39;Species_H&#39;</span><span class="p">))</span>
+<span class="nf">is.rooted</span><span class="p">(</span><span class="n">myTree</span><span class="p">)</span>
+<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="kc">TRUE</span>
+
+<span class="c1"># Trim myTree, keeping only Species A - I</span>
 <span class="n">taxa_to_keep</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;Species_A&quot;</span><span class="p">,</span><span class="s">&quot;Species_B&quot;</span><span class="p">,</span><span class="s">&quot;Species_C&quot;</span><span class="p">,</span><span class="s">&quot;Species_D&quot;</span><span class="p">,</span><span class="s">&quot;Species_E&quot;</span><span class="p">,</span><span class="s">&quot;Species_F&quot;</span><span class="p">,</span><span class="s">&quot;Species_G&quot;</span><span class="p">,</span><span class="s">&quot;Species_H&quot;</span><span class="p">,</span><span class="s">&quot;Species_I&quot;</span><span class="p">)</span>
 <span class="n">taxa_to_remove</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="s">&quot;Species_J&quot;</span><span class="p">,</span><span class="s">&quot;Species_K&quot;</span><span class="p">,</span><span class="s">&quot;Species_L&quot;</span><span class="p">,</span><span class="s">&quot;Species_M&quot;</span><span class="p">,</span><span class="s">&quot;Species_N&quot;</span><span class="p">,</span><span class="s">&quot;Species_O&quot;</span><span class="p">)</span>
 
@@ -267,30 +269,14 @@
 <span class="nf">naturalsort</span><span class="p">(</span><span class="n">myTrimmedTree_remove</span><span class="o">$</span><span class="n">tip.label</span><span class="p">)</span>
 <span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;Species_A&quot;</span> <span class="s">&quot;Species_B&quot;</span> <span class="s">&quot;Species_C&quot;</span> <span class="s">&quot;Species_D&quot;</span> <span class="s">&quot;Species_E&quot;</span> <span class="s">&quot;Species_F&quot;</span> <span class="s">&quot;Species_G&quot;</span> <span class="s">&quot;Species_H&quot;</span> <span class="s">&quot;Species_I&quot;</span>
 
-<span class="c1">### 2+ TREES ###</span>
-
-<span class="c1"># Read in a a multiPhylo of trees rooted at the clade of Species C + Species H</span>
+<span class="c1"># Read in all trees from a directory that start with &quot;Gene&quot; and end with &quot;.nwk&quot;, and root at the clade of Species C + Species H</span>
 <span class="n">myTrees</span> <span class="o">&lt;-</span> <span class="nf">readRooted</span><span class="p">(</span><span class="n">to_root</span> <span class="o">=</span> <span class="n">rb_unroot_dir</span><span class="p">,</span> <span class="n">root_taxa</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Species_C&#39;</span><span class="p">,</span><span class="s">&#39;Species_H&#39;</span><span class="p">),</span><span class="n">prefix</span><span class="o">=</span><span class="s">&quot;Gene&quot;</span><span class="p">,</span><span class="n">suffix</span><span class="o">=</span><span class="s">&quot;.nwk&quot;</span><span class="p">,</span><span class="n">dummy_names</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
+<span class="n">purrr</span><span class="o">::</span><span class="nf">map</span><span class="p">(</span><span class="n">.x</span><span class="o">=</span><span class="n">myTrees</span><span class="p">,</span><span class="n">.f</span><span class="o">=</span><span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">){</span><span class="nf">is.rooted</span><span class="p">(</span><span class="n">x</span><span class="p">)})</span> <span class="o">%&gt;%</span> <span class="nf">unlist</span><span class="p">()</span>
 
-<span class="c1"># Check raw tip labels</span>
-<span class="n">purrr</span><span class="o">::</span><span class="nf">map</span><span class="p">(</span><span class="n">.x</span> <span class="o">=</span> <span class="n">myTrees</span><span class="p">,</span> <span class="n">.f</span> <span class="o">=</span> <span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">){</span><span class="nf">naturalsort</span><span class="p">(</span><span class="n">x</span><span class="o">$</span><span class="n">tip.label</span><span class="p">)})</span>
+<span class="n">Tree_1</span> <span class="n">Tree_2</span> <span class="n">Tree_3</span> <span class="n">Tree_4</span> <span class="n">Tree_5</span>
+<span class="kc">TRUE</span>   <span class="kc">TRUE</span>   <span class="kc">TRUE</span>   <span class="kc">TRUE</span>   <span class="kc">TRUE</span>
 
-<span class="o">$</span><span class="n">Tree_1</span>
-<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;Species_A&quot;</span> <span class="s">&quot;Species_B&quot;</span> <span class="s">&quot;Species_C&quot;</span> <span class="s">&quot;Species_D&quot;</span> <span class="s">&quot;Species_E&quot;</span> <span class="s">&quot;Species_F&quot;</span> <span class="s">&quot;Species_G&quot;</span> <span class="s">&quot;Species_H&quot;</span> <span class="s">&quot;Species_I&quot;</span> <span class="s">&quot;Species_J&quot;</span> <span class="s">&quot;Species_K&quot;</span> <span class="s">&quot;Species_L&quot;</span> <span class="s">&quot;Species_M&quot;</span> <span class="s">&quot;Species_N&quot;</span> <span class="s">&quot;Species_O&quot;</span>
-
-<span class="o">$</span><span class="n">Tree_2</span>
-<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;Species_A&quot;</span> <span class="s">&quot;Species_B&quot;</span> <span class="s">&quot;Species_C&quot;</span> <span class="s">&quot;Species_D&quot;</span> <span class="s">&quot;Species_E&quot;</span> <span class="s">&quot;Species_F&quot;</span> <span class="s">&quot;Species_G&quot;</span> <span class="s">&quot;Species_H&quot;</span> <span class="s">&quot;Species_I&quot;</span> <span class="s">&quot;Species_J&quot;</span> <span class="s">&quot;Species_K&quot;</span> <span class="s">&quot;Species_L&quot;</span> <span class="s">&quot;Species_M&quot;</span> <span class="s">&quot;Species_N&quot;</span> <span class="s">&quot;Species_O&quot;</span>
-
-<span class="o">$</span><span class="n">Tree_3</span>
-<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;Species_A&quot;</span> <span class="s">&quot;Species_B&quot;</span> <span class="s">&quot;Species_C&quot;</span> <span class="s">&quot;Species_D&quot;</span> <span class="s">&quot;Species_E&quot;</span> <span class="s">&quot;Species_F&quot;</span> <span class="s">&quot;Species_G&quot;</span> <span class="s">&quot;Species_H&quot;</span> <span class="s">&quot;Species_I&quot;</span> <span class="s">&quot;Species_J&quot;</span> <span class="s">&quot;Species_K&quot;</span> <span class="s">&quot;Species_L&quot;</span> <span class="s">&quot;Species_M&quot;</span> <span class="s">&quot;Species_N&quot;</span> <span class="s">&quot;Species_O&quot;</span>
-
-<span class="o">$</span><span class="n">Tree_4</span>
-<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;Species_A&quot;</span> <span class="s">&quot;Species_B&quot;</span> <span class="s">&quot;Species_C&quot;</span> <span class="s">&quot;Species_D&quot;</span> <span class="s">&quot;Species_E&quot;</span> <span class="s">&quot;Species_F&quot;</span> <span class="s">&quot;Species_G&quot;</span> <span class="s">&quot;Species_H&quot;</span> <span class="s">&quot;Species_I&quot;</span> <span class="s">&quot;Species_J&quot;</span> <span class="s">&quot;Species_K&quot;</span> <span class="s">&quot;Species_L&quot;</span> <span class="s">&quot;Species_M&quot;</span> <span class="s">&quot;Species_N&quot;</span> <span class="s">&quot;Species_O&quot;</span>
-
-<span class="o">$</span><span class="n">Tree_5</span>
-<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;Species_A&quot;</span> <span class="s">&quot;Species_B&quot;</span> <span class="s">&quot;Species_C&quot;</span> <span class="s">&quot;Species_D&quot;</span> <span class="s">&quot;Species_E&quot;</span> <span class="s">&quot;Species_F&quot;</span> <span class="s">&quot;Species_G&quot;</span> <span class="s">&quot;Species_H&quot;</span> <span class="s">&quot;Species_I&quot;</span> <span class="s">&quot;Species_J&quot;</span> <span class="s">&quot;Species_K&quot;</span> <span class="s">&quot;Species_L&quot;</span> <span class="s">&quot;Species_M&quot;</span> <span class="s">&quot;Species_N&quot;</span> <span class="s">&quot;Species_O&quot;</span>
-
-<span class="c1"># Make a multiPhlyo where trees do not share all taxa (one tree only has Species_A - Species_I)</span>
+<span class="c1"># Create a multiPhlyo where trees do not share all taxa (one tree only has Species_A - Species_I)</span>
 <span class="n">mixed_trees</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="n">myTrees</span><span class="p">,</span><span class="n">myTrimmedTree_keep</span><span class="p">)</span>
 
 <span class="c1"># Default behavior is to trim down to common taxa</span>
@@ -298,7 +284,6 @@
 
 <span class="c1"># Check multiPhylo trimming</span>
 <span class="n">purrr</span><span class="o">::</span><span class="nf">map</span><span class="p">(</span><span class="n">.x</span> <span class="o">=</span> <span class="n">myTrimmedTrees_mixed</span><span class="p">,</span> <span class="n">.f</span> <span class="o">=</span> <span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">){</span><span class="nf">naturalsort</span><span class="p">(</span><span class="n">x</span><span class="o">$</span><span class="n">tip.label</span><span class="p">)})</span>
-
 <span class="o">$</span><span class="n">Tree_1</span>
 <span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;Species_A&quot;</span> <span class="s">&quot;Species_B&quot;</span> <span class="s">&quot;Species_C&quot;</span> <span class="s">&quot;Species_D&quot;</span> <span class="s">&quot;Species_E&quot;</span> <span class="s">&quot;Species_F&quot;</span> <span class="s">&quot;Species_G&quot;</span> <span class="s">&quot;Species_H&quot;</span> <span class="s">&quot;Species_I&quot;</span>
 
@@ -317,28 +302,26 @@
 <span class="o">$</span><span class="n">Tree_6</span>
 <span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;Species_A&quot;</span> <span class="s">&quot;Species_B&quot;</span> <span class="s">&quot;Species_C&quot;</span> <span class="s">&quot;Species_D&quot;</span> <span class="s">&quot;Species_E&quot;</span> <span class="s">&quot;Species_F&quot;</span> <span class="s">&quot;Species_G&quot;</span> <span class="s">&quot;Species_H&quot;</span> <span class="s">&quot;Species_I&quot;</span>
 
-<span class="c1"># Trim multiPhylo given a list of taxa</span>
-<span class="n">myTrees</span> <span class="o">&lt;-</span> <span class="nf">readRooted</span><span class="p">(</span><span class="n">to_root</span> <span class="o">=</span> <span class="n">rb_unroot_dir</span><span class="p">,</span> <span class="n">root_taxa</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Species_C&#39;</span><span class="p">,</span><span class="s">&#39;Species_H&#39;</span><span class="p">),</span><span class="n">suffix</span><span class="o">=</span><span class="s">&quot;.nwk&quot;</span><span class="p">,</span><span class="n">dummy_names</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
-
-<span class="n">myTrimmedTrees</span> <span class="o">&lt;-</span> <span class="nf">treeTrimmer</span><span class="p">(</span><span class="n">tree</span><span class="o">=</span><span class="n">myTrees</span><span class="p">,</span><span class="n">taxa</span><span class="o">=</span><span class="n">taxa_to_keep</span><span class="p">)</span>
+<span class="c1"># Trim all trees in the multiPhylo down to a given a list of taxa</span>
+<span class="n">myTrees</span> <span class="o">&lt;-</span> <span class="nf">readRooted</span><span class="p">(</span><span class="n">to_root</span> <span class="o">=</span> <span class="n">rb_unroot_dir</span><span class="p">,</span> <span class="n">root_taxa</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Species_C&#39;</span><span class="p">,</span><span class="s">&#39;Species_H&#39;</span><span class="p">),</span><span class="n">prefix</span><span class="o">=</span><span class="s">&quot;Gene&quot;</span><span class="p">,</span><span class="n">suffix</span><span class="o">=</span><span class="s">&quot;.nwk&quot;</span><span class="p">,</span><span class="n">dummy_names</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
+<span class="n">myTrimmedTrees</span> <span class="o">&lt;-</span> <span class="nf">treeTrimmer</span><span class="p">(</span><span class="n">tree</span><span class="o">=</span><span class="n">myTrees</span><span class="p">,</span><span class="n">taxa</span><span class="o">=</span><span class="s">&#39;Species_A;Species_B;Species_C;Species_H&#39;</span><span class="p">)</span>
 
 <span class="c1"># Check multiPhylo trimming</span>
 <span class="n">purrr</span><span class="o">::</span><span class="nf">map</span><span class="p">(</span><span class="n">.x</span> <span class="o">=</span> <span class="n">myTrimmedTrees</span><span class="p">,</span> <span class="n">.f</span> <span class="o">=</span> <span class="nf">function</span><span class="p">(</span><span class="n">x</span><span class="p">){</span><span class="nf">naturalsort</span><span class="p">(</span><span class="n">x</span><span class="o">$</span><span class="n">tip.label</span><span class="p">)})</span>
-
 <span class="o">$</span><span class="n">Tree_1</span>
-<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;Species_A&quot;</span> <span class="s">&quot;Species_B&quot;</span> <span class="s">&quot;Species_C&quot;</span> <span class="s">&quot;Species_D&quot;</span> <span class="s">&quot;Species_E&quot;</span> <span class="s">&quot;Species_F&quot;</span> <span class="s">&quot;Species_G&quot;</span> <span class="s">&quot;Species_H&quot;</span> <span class="s">&quot;Species_I&quot;</span>
+<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;Species_A&quot;</span> <span class="s">&quot;Species_B&quot;</span> <span class="s">&quot;Species_C&quot;</span> <span class="s">&quot;Species_H&quot;</span>
 
 <span class="o">$</span><span class="n">Tree_2</span>
-<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;Species_A&quot;</span> <span class="s">&quot;Species_B&quot;</span> <span class="s">&quot;Species_C&quot;</span> <span class="s">&quot;Species_D&quot;</span> <span class="s">&quot;Species_E&quot;</span> <span class="s">&quot;Species_F&quot;</span> <span class="s">&quot;Species_G&quot;</span> <span class="s">&quot;Species_H&quot;</span> <span class="s">&quot;Species_I&quot;</span>
+<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;Species_A&quot;</span> <span class="s">&quot;Species_B&quot;</span> <span class="s">&quot;Species_C&quot;</span> <span class="s">&quot;Species_H&quot;</span>
 
 <span class="o">$</span><span class="n">Tree_3</span>
-<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;Species_A&quot;</span> <span class="s">&quot;Species_B&quot;</span> <span class="s">&quot;Species_C&quot;</span> <span class="s">&quot;Species_D&quot;</span> <span class="s">&quot;Species_E&quot;</span> <span class="s">&quot;Species_F&quot;</span> <span class="s">&quot;Species_G&quot;</span> <span class="s">&quot;Species_H&quot;</span> <span class="s">&quot;Species_I&quot;</span>
+<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;Species_A&quot;</span> <span class="s">&quot;Species_B&quot;</span> <span class="s">&quot;Species_C&quot;</span> <span class="s">&quot;Species_H&quot;</span>
 
 <span class="o">$</span><span class="n">Tree_4</span>
-<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;Species_A&quot;</span> <span class="s">&quot;Species_B&quot;</span> <span class="s">&quot;Species_C&quot;</span> <span class="s">&quot;Species_D&quot;</span> <span class="s">&quot;Species_E&quot;</span> <span class="s">&quot;Species_F&quot;</span> <span class="s">&quot;Species_G&quot;</span> <span class="s">&quot;Species_H&quot;</span> <span class="s">&quot;Species_I&quot;</span>
+<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;Species_A&quot;</span> <span class="s">&quot;Species_B&quot;</span> <span class="s">&quot;Species_C&quot;</span> <span class="s">&quot;Species_H&quot;</span>
 
 <span class="o">$</span><span class="n">Tree_5</span>
-<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;Species_A&quot;</span> <span class="s">&quot;Species_B&quot;</span> <span class="s">&quot;Species_C&quot;</span> <span class="s">&quot;Species_D&quot;</span> <span class="s">&quot;Species_E&quot;</span> <span class="s">&quot;Species_F&quot;</span> <span class="s">&quot;Species_G&quot;</span> <span class="s">&quot;Species_H&quot;</span> <span class="s">&quot;Species_I&quot;</span>
+<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;Species_A&quot;</span> <span class="s">&quot;Species_B&quot;</span> <span class="s">&quot;Species_C&quot;</span> <span class="s">&quot;Species_H&quot;</span>
 </pre></div>
 </div>
 </div>

@@ -282,7 +282,7 @@ def patternProcessor(path_to_align,spp_info,use_gaps,align_name):
         sys.exit("ERROR: Cannot process fewer than 3 species...")
         
     # If requested species are not in alignment, raise exception
-    if not all(elem in spp_list for elem in raw_spp):
+    if not all(elem in raw_spp for elem in spp_list):
         sys.exit("ERROR: Requested species not found in "+os.path.basename(alignment_path)+"...")
 
     # Re-order alignment to sorted order of species list

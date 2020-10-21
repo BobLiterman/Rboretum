@@ -2,7 +2,7 @@
 #'
 #' This function breaks down a rooted phylo into its respective set of splits
 #' @param tree Rooted phylo object
-#' @return Dataframe: Column 1: Semi-colon separated monophyletic clade; Column 2: 'Mirror Clade'; Column 3: Phylo Node ID (NA for root split)
+#' @return Dataframe: Column 1: Semi-colon separated monophyletic clade; Column 2: 'Mirror Clade'; Column 3: Phylo Node ID
 #' @export
 
 getTreeSplits_Worker <- function(tree){
@@ -11,32 +11,40 @@ getTreeSplits_Worker <- function(tree){
     stop("'getTreeSplits_Worker' requires a rooted tree.")
   }
   
-  # Strip bootsrap values if present
-  tree <- stripNodeLabels(tree)
+  tree_tips <- naturalsort(tree$tip.label)
+  tip_count <- length(tree_tips)
   
-  # Get species + subtree
-  tree_species <- naturalsort(tree$tip.label)
-  tree_subtree <- subtrees(tree)
-  subtree_length <- length(tree_subtree)
+  # Get subtrees (except for subtree with all taxa)
+  all_subtrees <- ape::subtrees(tree)
+  subtree_taxa_counts <- purrr::map(.x=all_subtrees,.f=function(x){length(x$tip.label)}) %>% unlist()
+  clade_subtrees <- all_subtrees[subtree_taxa_counts != tip_count]
   
-  # Root detection for clade listing
-  if(detectSingleRoot(tree)){
-    tree_subtree <- subtrees(tree)[2:subtree_length] # Remove top subtree (whole tree)
-  } else{
-    tree_subtree <- subtrees(tree)[3:subtree_length] # Remove top two subtrees (whole tree + other side of root)
-  }
+  # Get all taxa + clades included in clade subtrees
+  subtree_taxa <- purrr::map(.x=clade_subtrees,.f=function(x){x$tip.label}) %>% unlist() %>% unique() %>% naturalsort()
+  subtree_taxa_count <- length(subtree_taxa)
+  subtree_clades <- purrr::map(.x=clade_subtrees,.f=function(x){semiSorter(x$tip.label)}) %>% unlist()
+  mirror_clades <- purrr::map(.x=subtree_clades,.f=function(x){semiSorter(tree_tips[!tree_tips %in% semiVector(x)])}) %>% unlist()
   
-  # Get clades, mirror clades, and node list
-  tree_clades <- purrr::map(.x=tree_subtree,.f=function(x){semiSorter(x$tip.label)}) %>% unlist()
-  mirror_clades <- purrr::map(.x=tree_clades,.f=function(x){semiSorter(setdiff(tree_species,semiVector(x)))}) %>% unlist()
-  node_list <- purrr::map(.x=tree_subtree,.f=function(x){x$node.label[1]}) %>% unlist()
+  # Get root clades and remove from larger list
+  root_clades <- getTreeRoot(tree)
+  root_node <- getMRCA(tree,tree$tip.label)
   
-  # Set root node to tree root
-  split_df <- tibble("Clade"=as.character(tree_clades),"Mirror_Clade"=as.character(mirror_clades),"Split_Node"=as.integer(node_list),"Root"=FALSE) %>%
-    rowwise() %>%
-    mutate(Split_Node = ifelse(ape::is.monophyletic(tree,semiVector(Clade)) & ape::is.monophyletic(tree,semiVector(Mirror_Clade)),ape::getMRCA(tree,tree_species),Split_Node),
-           Root = ifelse(ape::is.monophyletic(tree,semiVector(Clade)) & ape::is.monophyletic(tree,semiVector(Mirror_Clade)),TRUE,FALSE)) %>%
-    ungroup()
-
-  return(split_df)
+  # Get non-root clades
+  non_root_clades <- subtree_clades[!subtree_clades %in% root_clades]
+  non_root_mirror <- mirror_clades[!subtree_clades %in% root_clades]
+  
+  # Get node IDs
+  non_root_mrca <- purrr::map(.x=non_root_clades,.f=function(x){getMRCA(tree,semiVector(x))}) %>% unlist()
+  
+  tree_split_df <- tibble(
+    Clade = non_root_clades,
+    Mirror_Clade = non_root_mirror,
+    Split_Node = non_root_mrca,
+    Root = FALSE) %>%
+    add_row(Clade = root_clades[1],
+            Mirror_Clade = root_clades[2],
+            Split_Node = root_node,
+            Root=TRUE)
+  
+  return(tree_split_df)
 }

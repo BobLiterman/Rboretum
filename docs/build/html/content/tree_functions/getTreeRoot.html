@@ -37,7 +37,9 @@
 
     
     <link rel="index" title="Index" href="../../genindex.html" />
-    <link rel="search" title="Search" href="../../search.html" /> 
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="getTreeSplits" href="getTreeSplits.html" />
+    <link rel="prev" title="getTreeClades" href="getTreeClades.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -85,10 +87,36 @@
               
             
             
-              <ul>
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installation.html"><strong>Installing Rboretum</strong></a></li>
 <li class="toctree-l1"><a class="reference internal" href="../loading.html"><strong>Loading Rboretum</strong></a></li>
-<li class="toctree-l1"><a class="reference internal" href="../rboretum-suite.html"><strong>Rboretum Functions</strong></a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../rboretum-suite.html"><strong>Rboretum Functions</strong></a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../alignment_functions/getAlignmentComposition.html"><strong>getAlignmentComposition</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../alignment_functions/getAlignmentBreakdown.html"><strong>getAlignmentBreakdown</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../alignment_functions/getAlignmentPatterns.html"><strong>getAlignmentPatterns</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../alignment_functions/getAlignmentSignal.html"><strong>getAlignmentSignal</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../alignment_functions/getAlignmentSpecies.html"><strong>getAlignmentSpecies</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../alignment_functions/getSpeciesComposition.html"><strong>getSpeciesComposition</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../plotting_functions/tandemPlotter.html"><strong>tandemPlotter</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="checkTips.html"><strong>checkTips</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="extractNodeAges.html"><strong>extractNodeAges</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="getSharedTaxa.html"><strong>getSharedTaxa</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="getTreeClades.html"><strong>getTreeClades</strong></a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><strong>getTreeRoot</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="getTreeSplits.html"><strong>getTreeSplits</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="getUniqueTopologies.html"><strong>getUniqueTopologies</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="readRooted.html"><strong>readRooted</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="summarizeMultiphylo.html"><strong>summarizeMultiphylo</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="treeDater.html"><strong>treeDater</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="treeNamer.html"><strong>treeNamer</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="treeTrimmer.html"><strong>treeTrimmer</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utility_functions/convertLabels.html"><strong>convertLabels</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utility_functions/semiSorter.html"><strong>semiSorter</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utility_functions/semiVector.html"><strong>semiVector</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utility_functions/tableCount.html"><strong>tableCount</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utility_functions/vectorSemi.html"><strong>vectorSemi</strong></a></li>
+</ul>
+</li>
 </ul>
 
             
@@ -135,6 +163,8 @@
     
       <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
         
+          <li><a href="../rboretum-suite.html"><strong>Rboretum Functions</strong></a> &raquo;</li>
+        
       <li><strong>getTreeRoot</strong></li>
     
     
@@ -156,24 +186,11 @@
             
   <div class="section" id="gettreeroot">
 <span id="id1"></span><h1><strong>getTreeRoot</strong><a class="headerlink" href="#gettreeroot" title="Permalink to this headline">¶</a></h1>
-<p><strong>getTreeRoot</strong> breaks rooted phylo and multiPhylo objects down into their respective clade sets.</p>
-<blockquote>
-<div><ul class="simple">
-<li><p>If a phylo or multiPhylo is passed, a character vector is returned with each unique clade (from all trees if a multiPhylo is provided), represented as a semicolon-delimited string  <br /></p></li>
-<li><p>multiPhylo objects are trimmed down to common taxa prior to clade breakdown   <br /></p></li>
-<li><p>Results can be filtered to:</p>
-<ul>
-<li><p>Omit root clades (<strong>include_root = FALSE</strong>)</p></li>
-<li><p>Return only shared clades (<strong>return_shared = TRUE</strong>)</p></li>
-<li><p>Return a table of results with information about the splits in all trees (<strong>return_counts = TRUE</strong>)</p></li>
-</ul>
-</li>
-</ul>
-</div></blockquote>
+<p><strong>getTreeRoot</strong> takes a rooted phylo object and returns the two root splits</p>
 <div class="section" id="function-and-arguments">
 <h2>Function and Arguments<a class="headerlink" href="#function-and-arguments" title="Permalink to this headline">¶</a></h2>
 <p><strong>Usage</strong>:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">getTreeRoot</span> <span class="o">&lt;-</span> <span class="n">function</span><span class="p">(</span><span class="n">tree</span><span class="p">,</span><span class="n">include_root</span><span class="p">,</span><span class="n">print_counts</span><span class="p">,</span><span class="n">return_counts</span><span class="p">,</span><span class="n">return_shared</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">getTreeRoot</span> <span class="o">&lt;-</span> <span class="n">function</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
 </pre></div>
 </div>
 <table class="docutils align-default">
@@ -188,191 +205,33 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p><strong>tree</strong></p></td>
-<td><p>A rooted phylo object, or a rooted multiPhylo object where all trees share 3+ taxa</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>include_root</strong></p></td>
-<td><p>If FALSE, exclude root clades in the returned results [Default: TRUE, return root clades]</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>print_counts</strong></p></td>
-<td><p>If TRUE and a multiPhylo is provided return clades, but also print clade information table to console [Default: FALSE, no printing]</p></td>
-</tr>
-<tr class="row-odd"><td><p><strong>return_counts</strong></p></td>
-<td><p>If TRUE and a multiPhylo is provided, return clade information table rather than clades [Default: FALSE, return clades]</p></td>
-</tr>
-<tr class="row-even"><td><p><strong>return_shared</strong></p></td>
-<td><p>If TRUE and a multiPhlyo is provided, return only clades found in all trees</p></td>
+<td><p>A rooted phylo object</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="section" id="example-usage">
 <h2>Example Usage<a class="headerlink" href="#example-usage" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span> <span class="c1"># Script: Rboretum/docs/content/Doc_Function_Scripts/getTreeRoot.R</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Script: Rboretum/docs/content/Doc_Function_Scripts/getTreeRoot.R</span>
 
- <span class="nf">library</span><span class="p">(</span><span class="n">Rboretum</span><span class="p">)</span>
- <span class="nf">sourceRboretum</span><span class="p">()</span>
+<span class="nf">library</span><span class="p">(</span><span class="n">Rboretum</span><span class="p">)</span>
+<span class="nf">sourceRboretum</span><span class="p">()</span>
 
- <span class="c1"># Read in trees with two topologies (1=2, 1!=3)</span>
- <span class="n">myTree_1</span> <span class="o">&lt;-</span> <span class="nf">readRooted</span><span class="p">(</span><span class="n">rb_tree1_path</span><span class="p">,</span><span class="n">root_taxa</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Species_C&#39;</span><span class="p">,</span><span class="s">&#39;Species_H&#39;</span><span class="p">))</span>
- <span class="n">myTree_2</span> <span class="o">&lt;-</span> <span class="nf">readRooted</span><span class="p">(</span><span class="n">rb_tree2_path</span><span class="p">,</span><span class="n">root_taxa</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Species_C&#39;</span><span class="p">,</span><span class="s">&#39;Species_H&#39;</span><span class="p">))</span>
- <span class="n">myTree_3</span> <span class="o">&lt;-</span> <span class="nf">readRooted</span><span class="p">(</span><span class="n">rb_tree4_path</span><span class="p">,</span><span class="n">root_taxa</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Species_C&#39;</span><span class="p">,</span><span class="s">&#39;Species_H&#39;</span><span class="p">))</span>
+<span class="c1"># Read in rooted tree</span>
+<span class="n">myTree</span> <span class="o">&lt;-</span> <span class="nf">readRooted</span><span class="p">(</span><span class="n">rb_tree1_path</span><span class="p">,</span><span class="s">&#39;Species_C;Species_H&#39;</span><span class="p">)</span>
+<span class="nf">getTreeRoot</span><span class="p">(</span><span class="n">myTree</span><span class="p">)</span>
+<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;Species_C;Species_H&quot;</span>
+<span class="p">[</span><span class="m">2</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_B;Species_D;Species_E;Species_F;Species_G;Species_I;Species_J;Species_K;Species_L;Species_M;Species_N;Species_O&quot;</span>
 
- <span class="nf">getTreeRoot</span><span class="p">(</span><span class="n">myTree_1</span><span class="p">)</span>
+<span class="n">myTree</span> <span class="o">&lt;-</span> <span class="nf">readRooted</span><span class="p">(</span><span class="n">rb_tree1_path</span><span class="p">,</span><span class="s">&#39;Species_B;Species_O&#39;</span><span class="p">)</span>
+<span class="nf">getTreeRoot</span><span class="p">(</span><span class="n">myTree</span><span class="p">)</span>
+<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;Species_B;Species_O&quot;</span>
+<span class="p">[</span><span class="m">2</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_C;Species_D;Species_E;Species_F;Species_G;Species_H;Species_I;Species_J;Species_K;Species_L;Species_M;Species_N&quot;</span>
 
- <span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_B;Species_D;Species_E;Species_F;Species_G;Species_I;Species_J;Species_K;Species_L;Species_M;Species_N;Species_O&quot;</span>
- <span class="p">[</span><span class="m">2</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_E;Species_F;Species_G;Species_I;Species_J;Species_K;Species_L;Species_M;Species_N&quot;</span>
- <span class="p">[</span><span class="m">3</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_E;Species_F;Species_K;Species_L&quot;</span>
- <span class="p">[</span><span class="m">4</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_F&quot;</span>
- <span class="p">[</span><span class="m">5</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_F;Species_K;Species_L&quot;</span>
- <span class="p">[</span><span class="m">6</span><span class="p">]</span> <span class="s">&quot;Species_B;Species_D;Species_O&quot;</span>
- <span class="p">[</span><span class="m">7</span><span class="p">]</span> <span class="s">&quot;Species_B;Species_O&quot;</span>
- <span class="p">[</span><span class="m">8</span><span class="p">]</span> <span class="s">&quot;Species_C;Species_H&quot;</span>
- <span class="p">[</span><span class="m">9</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_I;Species_J;Species_M;Species_N&quot;</span>
- <span class="p">[</span><span class="m">10</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_I;Species_N&quot;</span>
- <span class="p">[</span><span class="m">11</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_N&quot;</span>
- <span class="p">[</span><span class="m">12</span><span class="p">]</span> <span class="s">&quot;Species_J;Species_M&quot;</span>
- <span class="p">[</span><span class="m">13</span><span class="p">]</span> <span class="s">&quot;Species_K;Species_L&quot;</span>
-
- <span class="nf">getTreeRoot</span><span class="p">(</span><span class="n">myTree_2</span><span class="p">)</span>
-
- <span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_B;Species_D;Species_E;Species_F;Species_G;Species_I;Species_J;Species_K;Species_L;Species_M;Species_N;Species_O&quot;</span>
- <span class="p">[</span><span class="m">2</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_E;Species_F;Species_G;Species_I;Species_J;Species_K;Species_L;Species_M;Species_N&quot;</span>
- <span class="p">[</span><span class="m">3</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_E;Species_F;Species_K;Species_L&quot;</span>
- <span class="p">[</span><span class="m">4</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_F&quot;</span>
- <span class="p">[</span><span class="m">5</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_F;Species_K;Species_L&quot;</span>
- <span class="p">[</span><span class="m">6</span><span class="p">]</span> <span class="s">&quot;Species_B;Species_D;Species_O&quot;</span>
- <span class="p">[</span><span class="m">7</span><span class="p">]</span> <span class="s">&quot;Species_B;Species_O&quot;</span>
- <span class="p">[</span><span class="m">8</span><span class="p">]</span> <span class="s">&quot;Species_C;Species_H&quot;</span>
- <span class="p">[</span><span class="m">9</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_I;Species_J;Species_M;Species_N&quot;</span>
- <span class="p">[</span><span class="m">10</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_I;Species_N&quot;</span>
- <span class="p">[</span><span class="m">11</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_N&quot;</span>
- <span class="p">[</span><span class="m">12</span><span class="p">]</span> <span class="s">&quot;Species_J;Species_M&quot;</span>
- <span class="p">[</span><span class="m">13</span><span class="p">]</span> <span class="s">&quot;Species_K;Species_L&quot;</span>
-
- <span class="nf">getTreeRoot</span><span class="p">(</span><span class="n">myTree_3</span><span class="p">)</span>
-
- <span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_B;Species_D;Species_E;Species_F;Species_G;Species_I;Species_J;Species_K;Species_L;Species_M;Species_N;Species_O&quot;</span>
- <span class="p">[</span><span class="m">2</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_E;Species_F&quot;</span>
- <span class="p">[</span><span class="m">3</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_E;Species_F;Species_G;Species_I;Species_J;Species_M;Species_N&quot;</span>
- <span class="p">[</span><span class="m">4</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_F&quot;</span>
- <span class="p">[</span><span class="m">5</span><span class="p">]</span> <span class="s">&quot;Species_B;Species_D;Species_K;Species_L;Species_O&quot;</span>
- <span class="p">[</span><span class="m">6</span><span class="p">]</span> <span class="s">&quot;Species_B;Species_O&quot;</span>
- <span class="p">[</span><span class="m">7</span><span class="p">]</span> <span class="s">&quot;Species_C;Species_H&quot;</span>
- <span class="p">[</span><span class="m">8</span><span class="p">]</span> <span class="s">&quot;Species_D;Species_K;Species_L&quot;</span>
- <span class="p">[</span><span class="m">9</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_I;Species_J;Species_M;Species_N&quot;</span>
- <span class="p">[</span><span class="m">10</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_I;Species_N&quot;</span>
- <span class="p">[</span><span class="m">11</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_N&quot;</span>
- <span class="p">[</span><span class="m">12</span><span class="p">]</span> <span class="s">&quot;Species_J;Species_M&quot;</span>
- <span class="p">[</span><span class="m">13</span><span class="p">]</span> <span class="s">&quot;Species_K;Species_L&quot;</span>
-
- <span class="c1"># Get splits from a multiPhylo</span>
- <span class="n">myMultiPhylo</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="n">myTree_1</span><span class="p">,</span><span class="n">myTree_2</span><span class="p">,</span><span class="n">myTree_3</span><span class="p">)</span> <span class="o">%&gt;%</span> <span class="nf">treeNamer</span><span class="p">()</span>
-
- <span class="c1"># Return all identified splits</span>
- <span class="nf">getTreeRoot</span><span class="p">(</span><span class="n">myMultiPhylo</span><span class="p">)</span>
-
- <span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_B;Species_D;Species_E;Species_F;Species_G;Species_I;Species_J;Species_K;Species_L;Species_M;Species_N;Species_O&quot;</span>
- <span class="p">[</span><span class="m">2</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_B;Species_D;Species_E;Species_F;Species_K;Species_L;Species_O&quot;</span>
- <span class="p">[</span><span class="m">3</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_E;Species_F&quot;</span>
- <span class="p">[</span><span class="m">4</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_E;Species_F;Species_G;Species_I;Species_J;Species_K;Species_L;Species_M;Species_N&quot;</span>
- <span class="p">[</span><span class="m">5</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_E;Species_F;Species_K;Species_L&quot;</span>
- <span class="p">[</span><span class="m">6</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_F;Species_K;Species_L&quot;</span>
- <span class="p">[</span><span class="m">7</span><span class="p">]</span> <span class="s">&quot;Species_B;Species_D;Species_K;Species_L;Species_O&quot;</span>
- <span class="p">[</span><span class="m">8</span><span class="p">]</span> <span class="s">&quot;Species_B;Species_D;Species_O&quot;</span>
- <span class="p">[</span><span class="m">9</span><span class="p">]</span> <span class="s">&quot;Species_B;Species_O&quot;</span>
-<span class="p">[</span><span class="m">10</span><span class="p">]</span> <span class="s">&quot;Species_C;Species_H&quot;</span>
-<span class="p">[</span><span class="m">11</span><span class="p">]</span> <span class="s">&quot;Species_D;Species_K;Species_L&quot;</span>
-<span class="p">[</span><span class="m">12</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_I;Species_J;Species_M;Species_N&quot;</span>
-<span class="p">[</span><span class="m">13</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_I;Species_N&quot;</span>
-<span class="p">[</span><span class="m">14</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_N&quot;</span>
-<span class="p">[</span><span class="m">15</span><span class="p">]</span> <span class="s">&quot;Species_J;Species_M&quot;</span>
-<span class="p">[</span><span class="m">16</span><span class="p">]</span> <span class="s">&quot;Species_K;Species_L&quot;</span>
-
- <span class="c1"># Return all identified splits, but exclude root split</span>
- <span class="nf">getTreeRoot</span><span class="p">(</span><span class="n">myMultiPhylo</span><span class="p">,</span><span class="n">include_root</span> <span class="o">=</span> <span class="kc">FALSE</span><span class="p">)</span>
-
- <span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_B;Species_D;Species_E;Species_F;Species_K;Species_L;Species_O&quot;</span>                     <span class="s">&quot;Species_A;Species_E;Species_F&quot;</span>
- <span class="p">[</span><span class="m">3</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_E;Species_F;Species_G;Species_I;Species_J;Species_K;Species_L;Species_M;Species_N&quot;</span> <span class="s">&quot;Species_A;Species_E;Species_F;Species_K;Species_L&quot;</span>
- <span class="p">[</span><span class="m">5</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_F;Species_K;Species_L&quot;</span>                                                             <span class="s">&quot;Species_B;Species_D;Species_K;Species_L;Species_O&quot;</span>
- <span class="p">[</span><span class="m">7</span><span class="p">]</span> <span class="s">&quot;Species_B;Species_D;Species_O&quot;</span>                                                                       <span class="s">&quot;Species_B;Species_O&quot;</span>
- <span class="p">[</span><span class="m">9</span><span class="p">]</span> <span class="s">&quot;Species_D;Species_K;Species_L&quot;</span>                                                                       <span class="s">&quot;Species_G;Species_I;Species_J;Species_M;Species_N&quot;</span>
-<span class="p">[</span><span class="m">11</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_I;Species_N&quot;</span>                                                                       <span class="s">&quot;Species_G;Species_N&quot;</span>
-<span class="p">[</span><span class="m">13</span><span class="p">]</span> <span class="s">&quot;Species_J;Species_M&quot;</span>                                                                                 <span class="s">&quot;Species_K;Species_L&quot;</span>
-
- <span class="c1"># Return only splits present in all trees</span>
- <span class="nf">getTreeRoot</span><span class="p">(</span><span class="n">myMultiPhylo</span><span class="p">,</span><span class="n">return_shared</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
-
- <span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_B;Species_D;Species_E;Species_F;Species_G;Species_I;Species_J;Species_K;Species_L;Species_M;Species_N;Species_O&quot;</span>
- <span class="p">[</span><span class="m">2</span><span class="p">]</span> <span class="s">&quot;Species_B;Species_O&quot;</span>
- <span class="p">[</span><span class="m">3</span><span class="p">]</span> <span class="s">&quot;Species_C;Species_H&quot;</span>
- <span class="p">[</span><span class="m">4</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_I;Species_J;Species_M;Species_N&quot;</span>
- <span class="p">[</span><span class="m">5</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_I;Species_N&quot;</span>
- <span class="p">[</span><span class="m">6</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_N&quot;</span>
- <span class="p">[</span><span class="m">7</span><span class="p">]</span> <span class="s">&quot;Species_J;Species_M&quot;</span>
- <span class="p">[</span><span class="m">8</span><span class="p">]</span> <span class="s">&quot;Species_K;Species_L&quot;</span>
-
- <span class="c1"># Return a table of results</span>
- <span class="nf">getTreeRoot</span><span class="p">(</span><span class="n">myMultiPhylo</span><span class="p">,</span><span class="n">return_counts</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
-
- <span class="c1"># A tibble: 16 x 3</span>
-    <span class="n">Clade</span>                                                                                                                             <span class="n">Count</span> <span class="n">Trees</span>
-    <span class="o">&lt;</span><span class="n">chr</span><span class="o">&gt;</span>                                                                                                                             <span class="o">&lt;</span><span class="n">int</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">chr</span><span class="o">&gt;</span>
-  <span class="m">1</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_B</span><span class="p">;</span><span class="n">Species_D</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_J</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span><span class="p">;</span><span class="n">Species_M</span><span class="p">;</span><span class="n">Species_N</span><span class="p">;</span><span class="n">Species_O</span>     <span class="m">3</span> <span class="n">Tree_1</span><span class="p">;</span><span class="n">Tree_2</span><span class="p">;</span><span class="n">Tree_3</span>
-  <span class="m">2</span> <span class="n">Species_B</span><span class="p">;</span><span class="n">Species_O</span>                                                                                                                   <span class="m">3</span> <span class="n">Tree_1</span><span class="p">;</span><span class="n">Tree_2</span><span class="p">;</span><span class="n">Tree_3</span>
-  <span class="m">3</span> <span class="n">Species_C</span><span class="p">;</span><span class="n">Species_H</span>                                                                                                                   <span class="m">3</span> <span class="n">Tree_1</span><span class="p">;</span><span class="n">Tree_2</span><span class="p">;</span><span class="n">Tree_3</span>
-  <span class="m">4</span> <span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_J</span><span class="p">;</span><span class="n">Species_M</span><span class="p">;</span><span class="n">Species_N</span>                                                                                     <span class="m">3</span> <span class="n">Tree_1</span><span class="p">;</span><span class="n">Tree_2</span><span class="p">;</span><span class="n">Tree_3</span>
-  <span class="m">5</span> <span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_N</span>                                                                                                         <span class="m">3</span> <span class="n">Tree_1</span><span class="p">;</span><span class="n">Tree_2</span><span class="p">;</span><span class="n">Tree_3</span>
-  <span class="m">6</span> <span class="n">Species_G</span><span class="p">;</span><span class="n">Species_N</span>                                                                                                                   <span class="m">3</span> <span class="n">Tree_1</span><span class="p">;</span><span class="n">Tree_2</span><span class="p">;</span><span class="n">Tree_3</span>
-  <span class="m">7</span> <span class="n">Species_J</span><span class="p">;</span><span class="n">Species_M</span>                                                                                                                   <span class="m">3</span> <span class="n">Tree_1</span><span class="p">;</span><span class="n">Tree_2</span><span class="p">;</span><span class="n">Tree_3</span>
-  <span class="m">8</span> <span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span>                                                                                                                   <span class="m">3</span> <span class="n">Tree_1</span><span class="p">;</span><span class="n">Tree_2</span><span class="p">;</span><span class="n">Tree_3</span>
-  <span class="m">9</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_J</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span><span class="p">;</span><span class="n">Species_M</span><span class="p">;</span><span class="n">Species_N</span>                                   <span class="m">2</span> <span class="n">Tree_1</span><span class="p">;</span><span class="n">Tree_2</span>
- <span class="m">10</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span>                                                                                     <span class="m">2</span> <span class="n">Tree_1</span><span class="p">;</span><span class="n">Tree_2</span>
- <span class="m">11</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span>                                                                                               <span class="m">2</span> <span class="n">Tree_1</span><span class="p">;</span><span class="n">Tree_2</span>
- <span class="m">12</span> <span class="n">Species_B</span><span class="p">;</span><span class="n">Species_D</span><span class="p">;</span><span class="n">Species_O</span>                                                                                                         <span class="m">2</span> <span class="n">Tree_1</span><span class="p">;</span><span class="n">Tree_2</span>
- <span class="m">13</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_B</span><span class="p">;</span><span class="n">Species_D</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span><span class="p">;</span><span class="n">Species_O</span>                                                       <span class="m">1</span> <span class="n">Tree_3</span>
- <span class="m">14</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span>                                                                                                         <span class="m">1</span> <span class="n">Tree_3</span>
- <span class="m">15</span> <span class="n">Species_B</span><span class="p">;</span><span class="n">Species_D</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span><span class="p">;</span><span class="n">Species_O</span>                                                                                     <span class="m">1</span> <span class="n">Tree_3</span>
- <span class="m">16</span> <span class="n">Species_D</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span>                                                                                                         <span class="m">1</span> <span class="n">Tree_3</span>
-
- <span class="c1"># Return clades, but print counts to console</span>
- <span class="nf">getTreeRoot</span><span class="p">(</span><span class="n">myMultiPhylo</span><span class="p">,</span><span class="n">print_counts</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
-
- <span class="c1"># A tibble: 16 x 3</span>
-    <span class="n">Clade</span>                                                                                                                             <span class="n">Count</span> <span class="n">Trees</span>
-    <span class="o">&lt;</span><span class="n">chr</span><span class="o">&gt;</span>                                                                                                                             <span class="o">&lt;</span><span class="n">int</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">chr</span><span class="o">&gt;</span>
-  <span class="m">1</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_B</span><span class="p">;</span><span class="n">Species_D</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_J</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span><span class="p">;</span><span class="n">Species_M</span><span class="p">;</span><span class="n">Species_N</span><span class="p">;</span><span class="n">Species_O</span>     <span class="m">3</span> <span class="n">Tree_1</span><span class="p">;</span><span class="n">Tree_2</span><span class="p">;</span><span class="n">Tree_3</span>
-  <span class="m">2</span> <span class="n">Species_B</span><span class="p">;</span><span class="n">Species_O</span>                                                                                                                   <span class="m">3</span> <span class="n">Tree_1</span><span class="p">;</span><span class="n">Tree_2</span><span class="p">;</span><span class="n">Tree_3</span>
-  <span class="m">3</span> <span class="n">Species_C</span><span class="p">;</span><span class="n">Species_H</span>                                                                                                                   <span class="m">3</span> <span class="n">Tree_1</span><span class="p">;</span><span class="n">Tree_2</span><span class="p">;</span><span class="n">Tree_3</span>
-  <span class="m">4</span> <span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_J</span><span class="p">;</span><span class="n">Species_M</span><span class="p">;</span><span class="n">Species_N</span>                                                                                     <span class="m">3</span> <span class="n">Tree_1</span><span class="p">;</span><span class="n">Tree_2</span><span class="p">;</span><span class="n">Tree_3</span>
-  <span class="m">5</span> <span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_N</span>                                                                                                         <span class="m">3</span> <span class="n">Tree_1</span><span class="p">;</span><span class="n">Tree_2</span><span class="p">;</span><span class="n">Tree_3</span>
-  <span class="m">6</span> <span class="n">Species_G</span><span class="p">;</span><span class="n">Species_N</span>                                                                                                                   <span class="m">3</span> <span class="n">Tree_1</span><span class="p">;</span><span class="n">Tree_2</span><span class="p">;</span><span class="n">Tree_3</span>
-  <span class="m">7</span> <span class="n">Species_J</span><span class="p">;</span><span class="n">Species_M</span>                                                                                                                   <span class="m">3</span> <span class="n">Tree_1</span><span class="p">;</span><span class="n">Tree_2</span><span class="p">;</span><span class="n">Tree_3</span>
-  <span class="m">8</span> <span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span>                                                                                                                   <span class="m">3</span> <span class="n">Tree_1</span><span class="p">;</span><span class="n">Tree_2</span><span class="p">;</span><span class="n">Tree_3</span>
-  <span class="m">9</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_G</span><span class="p">;</span><span class="n">Species_I</span><span class="p">;</span><span class="n">Species_J</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span><span class="p">;</span><span class="n">Species_M</span><span class="p">;</span><span class="n">Species_N</span>                                   <span class="m">2</span> <span class="n">Tree_1</span><span class="p">;</span><span class="n">Tree_2</span>
- <span class="m">10</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span>                                                                                     <span class="m">2</span> <span class="n">Tree_1</span><span class="p">;</span><span class="n">Tree_2</span>
- <span class="m">11</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span>                                                                                               <span class="m">2</span> <span class="n">Tree_1</span><span class="p">;</span><span class="n">Tree_2</span>
- <span class="m">12</span> <span class="n">Species_B</span><span class="p">;</span><span class="n">Species_D</span><span class="p">;</span><span class="n">Species_O</span>                                                                                                         <span class="m">2</span> <span class="n">Tree_1</span><span class="p">;</span><span class="n">Tree_2</span>
- <span class="m">13</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_B</span><span class="p">;</span><span class="n">Species_D</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span><span class="p">;</span><span class="n">Species_O</span>                                                       <span class="m">1</span> <span class="n">Tree_3</span>
- <span class="m">14</span> <span class="n">Species_A</span><span class="p">;</span><span class="n">Species_E</span><span class="p">;</span><span class="n">Species_F</span>                                                                                                         <span class="m">1</span> <span class="n">Tree_3</span>
- <span class="m">15</span> <span class="n">Species_B</span><span class="p">;</span><span class="n">Species_D</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span><span class="p">;</span><span class="n">Species_O</span>                                                                                     <span class="m">1</span> <span class="n">Tree_3</span>
- <span class="m">16</span> <span class="n">Species_D</span><span class="p">;</span><span class="n">Species_K</span><span class="p">;</span><span class="n">Species_L</span>                                                                                                         <span class="m">1</span> <span class="n">Tree_3</span>
-
-  <span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_B;Species_D;Species_E;Species_F;Species_G;Species_I;Species_J;Species_K;Species_L;Species_M;Species_N;Species_O&quot;</span>
-  <span class="p">[</span><span class="m">2</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_B;Species_D;Species_E;Species_F;Species_K;Species_L;Species_O&quot;</span>
-  <span class="p">[</span><span class="m">3</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_E;Species_F&quot;</span>
-  <span class="p">[</span><span class="m">4</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_E;Species_F;Species_G;Species_I;Species_J;Species_K;Species_L;Species_M;Species_N&quot;</span>
-  <span class="p">[</span><span class="m">5</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_E;Species_F;Species_K;Species_L&quot;</span>
-  <span class="p">[</span><span class="m">6</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_F;Species_K;Species_L&quot;</span>
-  <span class="p">[</span><span class="m">7</span><span class="p">]</span> <span class="s">&quot;Species_B;Species_D;Species_K;Species_L;Species_O&quot;</span>
-  <span class="p">[</span><span class="m">8</span><span class="p">]</span> <span class="s">&quot;Species_B;Species_D;Species_O&quot;</span>
-  <span class="p">[</span><span class="m">9</span><span class="p">]</span> <span class="s">&quot;Species_B;Species_O&quot;</span>
- <span class="p">[</span><span class="m">10</span><span class="p">]</span> <span class="s">&quot;Species_C;Species_H&quot;</span>
- <span class="p">[</span><span class="m">11</span><span class="p">]</span> <span class="s">&quot;Species_D;Species_K;Species_L&quot;</span>
- <span class="p">[</span><span class="m">12</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_I;Species_J;Species_M;Species_N&quot;</span>
- <span class="p">[</span><span class="m">13</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_I;Species_N&quot;</span>
- <span class="p">[</span><span class="m">14</span><span class="p">]</span> <span class="s">&quot;Species_G;Species_N&quot;</span>
- <span class="p">[</span><span class="m">15</span><span class="p">]</span> <span class="s">&quot;Species_J;Species_M&quot;</span>
- <span class="p">[</span><span class="m">16</span><span class="p">]</span> <span class="s">&quot;Species_K;Species_L&quot;</span>
+<span class="n">myTree</span> <span class="o">&lt;-</span> <span class="nf">readRooted</span><span class="p">(</span><span class="n">rb_tree1_path</span><span class="p">,</span><span class="s">&#39;Species_F&#39;</span><span class="p">)</span>
+<span class="nf">getTreeRoot</span><span class="p">(</span><span class="n">myTree</span><span class="p">)</span>
+<span class="p">[</span><span class="m">1</span><span class="p">]</span> <span class="s">&quot;Species_F&quot;</span>
+<span class="p">[</span><span class="m">2</span><span class="p">]</span> <span class="s">&quot;Species_A;Species_B;Species_C;Species_D;Species_E;Species_G;Species_H;Species_I;Species_J;Species_K;Species_L;Species_M;Species_N;Species_O&quot;</span>
 </pre></div>
 </div>
 </div>
@@ -383,6 +242,15 @@
            
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="getTreeSplits.html" class="btn btn-neutral float-right" title="getTreeSplits" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="getTreeClades.html" class="btn btn-neutral float-left" title="getTreeClades" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
   
 
   <hr/>

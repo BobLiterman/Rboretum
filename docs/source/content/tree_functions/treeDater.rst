@@ -40,31 +40,29 @@ Example Usage
   myTree <- readRooted(rb_tree1_path,c('Species_C','Species_H'))
   is.ultrametric(myTree)
   [1] FALSE
-  
+
   # Estimate node ages by calibrating the root node to between 100MY and 120MY, iterating estimates 100 times
   myDatedTree <- treeDater(tree = myTree, taxa='Species_C;Species_M',min_max = c(100,120),iterations = 100)
   is.ultrametric(myDatedTree)
   [1] TRUE
-  
-  extractNodeAges(myDatedTree)
 
-  # A tibble: 14 x 2
-     Clade                                                                                                                                                 Node_Age
-     <chr>                                                                                                                                                    <dbl>
-   1 Species_A;Species_B;Species_C;Species_D;Species_E;Species_F;Species_G;Species_H;Species_I;Species_J;Species_K;Species_L;Species_M;Species_N;Species_O    111. 
-   2 Species_A;Species_F                                                                                                                                       18.5
-   3 Species_A;Species_F;Species_K;Species_L                                                                                                                   37.0
-   4 Species_A;Species_E;Species_F;Species_K;Species_L                                                                                                         55.5
-   5 Species_A;Species_E;Species_F;Species_G;Species_I;Species_J;Species_K;Species_L;Species_M;Species_N                                                       74.1
-   6 Species_A;Species_B;Species_D;Species_E;Species_F;Species_G;Species_I;Species_J;Species_K;Species_L;Species_M;Species_N;Species_O                         92.6
-   7 Species_B;Species_D;Species_O                                                                                                                             61.7
-   8 Species_B;Species_O                                                                                                                                       30.9
-   9 Species_G;Species_I;Species_J;Species_M;Species_N                                                                                                         55.5
-  10 Species_G;Species_I;Species_N                                                                                                                             37.0
-  11 Species_G;Species_N                                                                                                                                       18.5
-  12 Species_J;Species_M                                                                                                                                       27.8
-  13 Species_K;Species_L                                                                                                                                       18.5
-  14 Species_C;Species_H                                                                                                                                       55.5
+  extractNodeAges(myDatedTree)
+  
+  # A tibble: 12 x 2
+     Clade                                                                                               Node_Age
+     <chr>                                                                                                  <dbl>
+   1 Species_A;Species_F                                                                                     18.4
+   2 Species_A;Species_F;Species_K;Species_L                                                                 36.8
+   3 Species_A;Species_E;Species_F;Species_K;Species_L                                                       55.3
+   4 Species_A;Species_E;Species_F;Species_G;Species_I;Species_J;Species_K;Species_L;Species_M;Species_N     73.7
+   5 Species_B;Species_D;Species_O                                                                           61.4
+   6 Species_B;Species_O                                                                                     30.7
+   7 Species_G;Species_I;Species_J;Species_M;Species_N                                                       55.3
+   8 Species_G;Species_I;Species_N                                                                           36.8
+   9 Species_G;Species_N                                                                                     18.4
+  10 Species_J;Species_M                                                                                     27.6
+  11 Species_K;Species_L                                                                                     18.4
+  12 Species_C;Species_H                                                                                    111. 
   
   # Estimate node ages by calibrating at two nodes
   myCalibration <- tibble(Taxon_A = c('Species_C','Species_A'),
@@ -78,36 +76,33 @@ Example Usage
     <chr>     <chr>     <dbl> <dbl>
   1 Species_C Species_M   100   120
   2 Species_A Species_F    15    17
-
+  
   myRedatedTree <- treeDater(tree = myTree, calibration_df = myCalibration,iterations = 100)
+
   is.ultrametric(myRedatedTree)
   [1] TRUE
-  
-  extractNodeAges(myRedatedTree)
 
-  # A tibble: 14 x 2
-     Clade                                                                                                                                                 Node_Age
-     <chr>                                                                                                                                                    <dbl>
-   1 Species_A;Species_B;Species_C;Species_D;Species_E;Species_F;Species_G;Species_H;Species_I;Species_J;Species_K;Species_L;Species_M;Species_N;Species_O    110. 
-   2 Species_A;Species_F                                                                                                                                       16.2
-   3 Species_A;Species_F;Species_K;Species_L                                                                                                                   34.9
-   4 Species_A;Species_E;Species_F;Species_K;Species_L                                                                                                         53.6
-   5 Species_A;Species_E;Species_F;Species_G;Species_I;Species_J;Species_K;Species_L;Species_M;Species_N                                                       72.2
-   6 Species_A;Species_B;Species_D;Species_E;Species_F;Species_G;Species_I;Species_J;Species_K;Species_L;Species_M;Species_N;Species_O                         90.9
-   7 Species_B;Species_D;Species_O                                                                                                                             60.7
-   8 Species_B;Species_O                                                                                                                                       30.4
-   9 Species_G;Species_I;Species_J;Species_M;Species_N                                                                                                         54.2
-  10 Species_G;Species_I;Species_N                                                                                                                             36.2
-  11 Species_G;Species_N                                                                                                                                       18.2
-  12 Species_J;Species_M                                                                                                                                       27.2
-  13 Species_K;Species_L                                                                                                                                       17.6
-  14 Species_C;Species_H                                                                                                                                       54.9
+  extractNodeAges(myRedatedTree)
+  # A tibble: 12 x 2
+     Clade                                                                                               Node_Age
+     <chr>                                                                                                  <dbl>
+   1 Species_A;Species_F                                                                                     16.1
+   2 Species_A;Species_F;Species_K;Species_L                                                                 34.9
+   3 Species_A;Species_E;Species_F;Species_K;Species_L                                                       53.7
+   4 Species_A;Species_E;Species_F;Species_G;Species_I;Species_J;Species_K;Species_L;Species_M;Species_N     72.5
+   5 Species_B;Species_D;Species_O                                                                           60.9
+   6 Species_B;Species_O                                                                                     30.5
+   7 Species_G;Species_I;Species_J;Species_M;Species_N                                                       54.4
+   8 Species_G;Species_I;Species_N                                                                           36.3
+   9 Species_G;Species_N                                                                                     18.1
+  10 Species_J;Species_M                                                                                     27.2
+  11 Species_K;Species_L                                                                                     17.5
+  12 Species_C;Species_H                                                                                    110. 
   
   # Date a multiPhylo object where all trees share a common topology
   myTrees <- readRooted(c(rb_tree1_path,rb_tree2_path,rb_tree3_path),root_taxa = c('Species_C','Species_H'))
 
   myDatedTrees <- treeDater(tree = myTrees, taxa='Species_C;Species_M',min_max = c(100,120),iterations = 100)
-  
   myDatedTrees
   3 phylogenetic trees
 
@@ -115,21 +110,18 @@ Example Usage
   [1] TRUE
 
   extractNodeAges(myDatedTrees,return_summary = 'both')
-
-  # A tibble: 14 x 5
-     Clade                                                                                                                                                 Mean_Node_Age Median_Node_Age StdDev_Node_Age MAD_Node_Age
-     <chr>                                                                                                                                                         <dbl>           <dbl>           <dbl>        <dbl>
-   1 Species_A;Species_B;Species_C;Species_D;Species_E;Species_F;Species_G;Species_H;Species_I;Species_J;Species_K;Species_L;Species_M;Species_N;Species_O         110.            109.            0.847       0.0740
-   2 Species_A;Species_B;Species_D;Species_E;Species_F;Species_G;Species_I;Species_J;Species_K;Species_L;Species_M;Species_N;Species_O                              91.3            90.9           0.706       0.0616
-   3 Species_A;Species_E;Species_F;Species_G;Species_I;Species_J;Species_K;Species_L;Species_M;Species_N                                                            73.1            72.8           0.565       0.0493
-   4 Species_A;Species_E;Species_F;Species_K;Species_L                                                                                                              54.8            54.6           0.423       0.0370
-   5 Species_A;Species_F                                                                                                                                            18.3            18.2           0.141       0.0123
-   6 Species_A;Species_F;Species_K;Species_L                                                                                                                        36.5            36.4           0.282       0.0247
-   7 Species_B;Species_D;Species_O                                                                                                                                  60.9            60.6           0.471       0.0411
-   8 Species_B;Species_O                                                                                                                                            30.4            30.3           0.235       0.0205
-   9 Species_C;Species_H                                                                                                                                            54.8            54.6           0.423       0.0370
-  10 Species_G;Species_I;Species_J;Species_M;Species_N                                                                                                              54.8            54.6           0.423       0.0370
-  11 Species_G;Species_I;Species_N                                                                                                                                  36.5            36.4           0.282       0.0247
-  12 Species_G;Species_N                                                                                                                                            18.3            18.2           0.141       0.0123
-  13 Species_J;Species_M                                                                                                                                            27.4            27.3           0.212       0.0185
-  14 Species_K;Species_L                                                                                                                                            18.3            18.2           0.141       0.0123
+  # A tibble: 12 x 5
+     Clade                                                                                               Mean_Node_Age Median_Node_Age StdDev_Node_Age MAD_Node_Age
+     <chr>                                                                                                       <dbl>           <dbl>           <dbl>        <dbl>
+   1 Species_A;Species_E;Species_F;Species_G;Species_I;Species_J;Species_K;Species_L;Species_M;Species_N          73.2            73.0           1.46         1.62 
+   2 Species_A;Species_E;Species_F;Species_K;Species_L                                                            54.9            54.7           1.09         1.22 
+   3 Species_A;Species_F                                                                                          18.3            18.2           0.364        0.405
+   4 Species_A;Species_F;Species_K;Species_L                                                                      36.6            36.5           0.728        0.811
+   5 Species_B;Species_D;Species_O                                                                                61.0            60.8           1.21         1.35 
+   6 Species_B;Species_O                                                                                          30.5            30.4           0.606        0.676
+   7 Species_C;Species_H                                                                                         110.            109.            2.18         2.43 
+   8 Species_G;Species_I;Species_J;Species_M;Species_N                                                            54.9            54.7           1.09         1.22 
+   9 Species_G;Species_I;Species_N                                                                                36.6            36.5           0.728        0.811
+  10 Species_G;Species_N                                                                                          18.3            18.2           0.364        0.405
+  11 Species_J;Species_M                                                                                          27.5            27.4           0.546        0.608
+  12 Species_K;Species_L                                                                                          18.3            18.2           0.364        0.405

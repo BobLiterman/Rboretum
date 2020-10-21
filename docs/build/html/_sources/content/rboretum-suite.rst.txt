@@ -33,6 +33,7 @@ Tree Functions
   tree_functions/extractNodeAges
   tree_functions/getSharedTaxa
   tree_functions/getTreeClades
+  tree_functions/getTreeRoot
   tree_functions/getTreeSplits
   tree_functions/getUniqueTopologies
   tree_functions/readRooted

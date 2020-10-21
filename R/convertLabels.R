@@ -155,7 +155,7 @@ convertLabels <- function(to_convert,name_df,from,to){
       }
       
       
-      new_id_list <- new_id_list %>% sort() %>% paste(collapse = ";")
+      new_id_list <- new_id_list %>% naturalsort() %>% paste(collapse = ";")
       
       clade_list[[i]] <- new_id_list
     }

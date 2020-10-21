@@ -1,8 +1,6 @@
 library(Rboretum)
 sourceRboretum()
 
-rb_name_file
-
 # Read in table of name equivalencies
 name_information <- read_tsv(rb_name_file)
 head(name_information)
@@ -33,7 +31,7 @@ alignment_splits
 number_splits <- alignment_splits %>%
   rowwise() %>%
   mutate(Clade=convertLabels(Clade,name_information),
-         Mirror_Clade=convertLabels(Mirror_Clade,name_information))
+         Mirror_Clade=convertLabels(Mirror_Clade,name_information)) %>% ungroup()
 
 number_splits
 

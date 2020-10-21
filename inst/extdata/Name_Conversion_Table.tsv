@@ -1,16 +1,16 @@
-Alignment_IDs	Common_Names
-Species_A	Fuzzy Wollop
-Species_B	Green-footed Squeazel
-Species_C	Lefty Lucy
-Species_D	Cheeto Bandito
-Species_E	Louse-by-the-Sea
-Species_F	Damp Trickster
-Species_G	Wonky Algo
-Species_H	Clammy Warbeetle
-Species_I	Six-legged Snake
-Species_J	Deborah's Downer
-Species_K	Steve's Fwonkton
-Species_L	Fat Jellysnorp
-Species_M	Three-clawed Sampson
-Species_N	Matzo Monster
-Species_O	Languishing Trunkle
+Alignment_IDs	Number_IDs	Common_Names
+Species_A	Species_1	Fuzzy Wollop
+Species_B	Species_2	Green-footed Squeazel
+Species_C	Species_3	Lefty Lucy
+Species_D	Species_4	Cheeto Bandito
+Species_E	Species_5	Louse-by-the-Sea
+Species_F	Species_6	Damp Trickster
+Species_G	Species_7	Wonky Algo
+Species_H	Species_8	Clammy Warbeetle
+Species_I	Species_9	Six-legged Snake
+Species_J	Species_10	Deborah's Downer
+Species_K	Species_11	Steve's Fwonkton
+Species_L	Species_12	Fat Jellysnorp
+Species_M	Species_13	Three-clawed Sampson
+Species_N	Species_14	Matzo Monster
+Species_O	Species_15	Languishing Trunkle

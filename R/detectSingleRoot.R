@@ -29,21 +29,13 @@ detectSingleRoot <- function(tree,return_root){
   # Single root trees will have one fewer tip labels in the subtrees relative to the tree
   if(length(tree_taxa) == length(subtree_taxa)){
     return(FALSE)
-  }
-  
-  if(return_root){
-    if(length(tree_taxa) - length(subtree_taxa) == 1){
-      return(setdiff(tree_taxa,subtree_taxa))
+  } else if(length(tree_taxa) - length(subtree_taxa) == 1){
+    if(return_root){
+      return(tree_taxa[!tree_taxa %in% subtree_taxa])
     } else{
-      warning("UNEXPECTED RESULT FROM detectSingleRoot")
-      return(FALSE)
+      return(TRUE)
     }
   } else{
-    if(length(tree_taxa) - length(subtree_taxa) == 1){
-      return(TRUE)
-    } else{
-      warning("UNEXPECTED RESULT FROM detectSingleRoot")
-      return(FALSE)
-    }
+    stop("ERROR: Unexpected result from detectSingleRoot")
   }
 }

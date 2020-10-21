@@ -84,17 +84,16 @@ extractNodeAges <- function(tree,return_summary){
   
   for(i in 1:tree_count){
     
-    # If trees have node labels, node IDs can't be used to pull branching times
-    no_bs_tree <- tree[[i]]
-    no_bs_tree$node.label <- NULL
-    no_bs_subtree <- subtrees(no_bs_tree)
-    no_bs_branching_times <- branching.times(no_bs_tree)
-
-    tree_clades <- purrr::map(.x=no_bs_subtree,.f=function(x){semiSorter(x$tip.label)}) %>% unlist()
-    tree_nodes <- purrr::map(.x=tree_clades,.f=function(x){ape::getMRCA(no_bs_tree,semiVector(x))}) %>% unlist()
-    node_ages <- purrr::map(.x=tree_nodes,.f=function(x){no_bs_branching_times[[as.character(x)]] %>% as.numeric()}) %>% unlist()
+    # Get tree splits
+    tree_splits <- getTreeSplits(tree)
     
-    tree_date_df <- tibble(Clade=as.character(tree_clades),Node_Age=as.numeric(node_ages))
+    # If trees have node labels, node IDs can't be used to pull branching times
+    no_bs_tree <- stripNodeLabels(tree)
+    no_bs_branching_times <- branching.times(no_bs_tree)
+    
+    node_ages <- purrr::map(.x=tree_splits$Split_Node,.f=function(x){no_bs_branching_times[[as.character(x)]] %>% as.numeric()}) %>% unlist()
+    
+    tree_date_df <- tibble(Clade=as.character(tree_splits$Clade),Node_Age=as.numeric(node_ages))
     
     if(tree_count == 1){
       return(tree_date_df)

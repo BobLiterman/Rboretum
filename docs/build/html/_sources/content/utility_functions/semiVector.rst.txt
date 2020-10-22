@@ -4,12 +4,12 @@
 **semiVector**
 ###############
 
-*semiVector* is equivalent to:
+**semiVector** is equivalent to:
 ::
 
   str_split(string_to_split,pattern=";")
 
-*semiVector* will convert:
+**semiVector** will convert:
 
   - A single-element semicolon-delimted character into a character vector split by ";"
   - A multi-element semicolon-delimted character into a list of character vectors split by ";"

@@ -4,7 +4,7 @@
 **getSpeciesComposition**
 ##########################
 
-*getSpeciesComposition* takes one or more alignment files and returns information about the sequence content by species, including base counts, 'N' counts, and gap counts
+**getSpeciesComposition** takes one or more alignment files and returns information about the sequence content by species, including base counts, 'N' counts, and gap counts
 
 .. warning::
   

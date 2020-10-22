@@ -4,12 +4,12 @@
 **vectorSemi**
 ###############
 
-*vectorSemi* is equivalent to:
+**vectorSemi** is equivalent to:
 ::
 
   paste(to_semi,collapse=";")
 
-*vectorSemi* will convert:
+**vectorSemi** will convert:
 
   - A multi-element character vector into a single, semicolon-delimted character
   - A list of character vectors into a list of semicolon-delimted characters

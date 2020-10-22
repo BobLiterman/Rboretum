@@ -4,7 +4,7 @@
 **getAlignmentPatterns**
 #########################
 
-*getAlignmentPatterns* takes one or more alignment files and returns site-by-site information about:
+**getAlignmentPatterns** takes one or more alignment files and returns site-by-site information about:
 
   - Site variation patterns. Possible site patterns include:
   

@@ -4,7 +4,7 @@
 **getAlignmentSignal**
 ########################
 
-*getAlignmentSignal* takes one or more alignment files and returns site-by-site information about:
+**getAlignmentSignal** takes one or more alignment files and returns site-by-site information about:
 
   - Site variation patterns. Possible site patterns include:
   
@@ -20,7 +20,7 @@
   - Which taxa have missing data
   - Parsimony-based splits (i.e. which taxonomic groupings are supported by alleles at each site)
   
-The output from *getAlignmentSignal* can be used to extract support values for different potential relationships via **getTreeSupport**. 
+The output from **getAlignmentSignal** can be used to extract support values for different potential relationships via **getTreeSupport**. 
 
 .. warning::
   

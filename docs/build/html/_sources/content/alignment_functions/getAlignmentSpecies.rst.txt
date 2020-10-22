@@ -4,7 +4,7 @@
 **getAlignmentSpecies**
 ########################
 
-*getAlignmentSpecies* returns the species IDs from an alignment file, specified by *alignment_path*
+**getAlignmentSpecies** returns the species IDs from an alignment file, specified by *alignment_path*
 
 =======================
 Function and Arguments

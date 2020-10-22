@@ -4,7 +4,7 @@
 **getAlignmentComposition**
 ############################
 
-*getAlignmentComposition* takes one or more alignment files and returns information about the sequence content, including base counts, 'N' counts, and gap counts
+**getAlignmentComposition** takes one or more alignment files and returns information about the sequence content, including base counts, 'N' counts, and gap counts
 
 .. warning::
   

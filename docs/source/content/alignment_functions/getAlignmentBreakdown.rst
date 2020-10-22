@@ -4,7 +4,7 @@
 **getAlignmentBreakdown**
 ##########################
 
-*getAlignmentBreakdown* returns the species IDs from an alignment file, specified by *alignment_path*
+**getAlignmentBreakdown** returns the species IDs from an alignment file, specified by *alignment_path*
 
 .. warning::
   

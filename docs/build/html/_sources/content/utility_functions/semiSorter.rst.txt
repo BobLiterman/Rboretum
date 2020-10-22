@@ -4,13 +4,13 @@
 **semiSorter**
 ###############
 
-*semiSorter* can accept: 
+**semiSorter** can accept: 
 
   - A character vector of unjoined elements
   - A semicolon-delimited character of elements
   - A character vector of semicolon-delimited elements
 
-In any case, *semiSorter* returns the same elements, sorted via *naturalsort*, and joined by semicolons (";"). 
+In any case, **semiSorter** returns the same elements, sorted via *naturalsort*, and joined by semicolons (";"). 
 
   - If a vector of elements is passed, a single character element is returned.
   - If a set of semicolon-delimted elements are given, a character vector is returned containing each set, sorted

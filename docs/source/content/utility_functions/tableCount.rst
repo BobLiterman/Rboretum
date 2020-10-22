@@ -4,7 +4,7 @@
 **tableCount**
 ###############
 
-*tableCount* queries an R table for a specific item, and returns the count of that item. If the item does not occur in the table, tableCount() returns 0.
+**tableCount** queries an R table for a specific item, and returns the count of that item. If the item does not occur in the table, tableCount() returns 0.
 
 =======================
 Function and Arguments

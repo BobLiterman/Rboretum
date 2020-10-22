@@ -867,10 +867,10 @@ treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_sup
                 legend.text=element_text(size=legend_font_size))
       }
       
-      if(highlight_legend | clade_support){
+      if(highlight_legend | cladeSupport){
         return_tree <- return_tree +
           guides(color = guide_legend(override.aes = list(size = legend_shape_size)))
-      } else if(!clade_support & !highlight_legend){
+      } else if(!cladeSupport & !highlight_legend){
         return_tree <- return_tree +
           guides(color = FALSE)
       }

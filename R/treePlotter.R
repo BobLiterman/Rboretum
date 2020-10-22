@@ -860,14 +860,14 @@ treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_sup
                 legend.title=element_text(size=legend_title_size),
                 legend.text=element_text(size=legend_font_size),
                 plot.title = element_text(hjust = 0.5,face = plot_title_fontface,size = plot_title_size)) +
-          guides(color = guide_legend(override.aes = list(size = legend_shape_size)))
+          guides(color = guide_legend(show=highlight_legend,override.aes = list(size = legend_shape_size)))
         
       } else{
         return_tree <- return_tree +
           theme(legend.position="right",
                 legend.title=element_text(size=legend_title_size),
                 legend.text=element_text(size=legend_font_size)) +
-          guides(color = guide_legend(override.aes = list(size = legend_shape_size)))
+          guides(color = guide_legend(show=highlight_legend,override.aes = list(size = legend_shape_size)))
         
       }
     }

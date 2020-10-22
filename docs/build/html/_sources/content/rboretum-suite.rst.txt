@@ -13,6 +13,7 @@ Alignment Functions
   alignment_functions/getAlignmentPatterns
   alignment_functions/getAlignmentSignal
   alignment_functions/getAlignmentSpecies
+  alignment_functions/getAlignmentSupport
   alignment_functions/getSpeciesComposition
 
 Plotting Functions

@@ -287,7 +287,7 @@ getAlignmentSupport <- function(signal,tree,include_root,clade,dataset_name,max_
   # Add to existing support?
   if(missing(existing_support)){
     add_support <- FALSE
-  } else if(!Rboretum::isTreeSupport(existing_support,test_clade,partial = TRUE)){
+  } else if(!Rboretum::isAlignmentSupport(existing_support,test_clade,partial = TRUE)){
     print("'existing_support' is either not the output from getAlignmentSupport(), or does not contain clade information as requested from 'tree' or 'clade'. Returning unappended...")
     add_support <- FALSE
   } else{

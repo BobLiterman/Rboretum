@@ -35,7 +35,7 @@ timePlotter <- function(node_age_df,tree_support,plot_datasets,all_sites_col,lm_
     # Ensure node_age_df contains information about all splits in tree_support
     node_age_clades <- node_age_df$Clade
     
-    if(!Rboretum::isTreeSupport(test_object = tree_support,test_clade = node_age_clades,partial = TRUE)){
+    if(!Rboretum::isAlignmentSupport(test_object = tree_support,test_clade = node_age_clades,partial = TRUE)){
       stop("Clades from 'node_age_df' are missing from 'tree_support")
     } else{
       

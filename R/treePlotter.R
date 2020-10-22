@@ -269,7 +269,7 @@ treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_sup
     
     treeSupport <- FALSE
     piePossible <- FALSE
-  } else if(!Rboretum::isTreeSupport(tree_support,tree,partial = TRUE)){
+  } else if(!Rboretum::isAlignmentSupport(tree_support,tree,partial = TRUE)){
     stop("'tree_support' does not contain information about all the clades in 'tree'")
   }  else if(!root_status){ # Don't process signal if unrooted trees are present
     treeSupport <- FALSE

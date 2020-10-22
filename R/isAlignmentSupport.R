@@ -1,4 +1,4 @@
-#' Rboretum Tree Support Checker
+#' Rboretum Alignment Support Checker
 #'
 #' This function returns TRUE if the passed object is the output of getAlignmentSupport() and contains information about clades in 'test_clade'; otherwise, FALSE
 #' @param test_object R object to check
@@ -11,7 +11,7 @@
 #' @return TRUE if output of getAlignmentSupport() with information on 'test_clade'; otherwise, FALSE
 #' @export
 
-isTreeSupport <- function(test_object,test_clade,partial){
+isAlignmentSupport <- function(test_object,test_clade,partial){
   
   if(missing(test_object)){
     stop("'test_object' not provided")

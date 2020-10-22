@@ -750,9 +750,9 @@ treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_sup
             return_tree <- return_tree + 
               scale_color_manual("Focal Clades",breaks = names(to_color),values = colors)
           }
+        } else{
+          return_tree <- ggtree(temp_tree,branch.length = 'none',size=branch_weight) %<+% ggtree_df
         }
-      } else{
-        return_tree <- ggtree(temp_tree,branch.length = 'none',size=branch_weight) %<+% ggtree_df
     }
     
     # Process tip labels

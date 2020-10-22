@@ -56,55 +56,71 @@ Example Usage
   # Script: Rboretum/docs/content/Doc_Function_Scripts/getAlignmentSignal.R
 
   library(Rboretum)
-
-  # Set test data directory
   sourceRboretum()
-
+  
   # Set path to alignment data
   myAlignmentFile <- rb_align1_path
   mySpecies <- getAlignmentSpecies(myAlignmentFile)
+  mySubspecies <- semiVector(mySpecies)[1:5]
   myAlignmentDir <- rb_alignment_dir
   
   # Get alignment signal information for a single alignment
   getAlignmentSignal(alignment_path = myAlignmentFile)
-  
-  # A tibble: 2,000 x 14
-     Alignment_Positi~ All_Site_Bases Site_Pattern Non_Base_Taxa Non_Base_Count Singleton_Taxa Singleton_Count Gap_Taxa Split_1              Split_2                    Split_3             Split_4         Split_5 Alignment_Name
-                 <dbl> <chr>          <chr>                <dbl>          <dbl> <chr>                    <dbl>    <dbl> <chr>                <chr>                      <chr>               <chr>             <dbl> <chr>         
-   1                 1 a;c;t          triallelic              NA              0 NA                           0       NA Species_A;Species_B~ Species_J;Species_K;Speci~ Species_C;Species_~ NA                   NA Gene_1.phylip 
-   2                 2 a;c;t          triallelic              NA              0 NA                           0       NA Species_A;Species_B  Species_C;Species_D;Speci~ Species_G;Species_J NA                   NA Gene_1.phylip 
-   3                 3 a;c            biallelic               NA              0 NA                           0       NA Species_G;Species_N~ Species_A;Species_B;Speci~ NA                  NA                   NA Gene_1.phylip 
-   4                 4 a;c;g;t        triallelic              NA              0 Species_J                    1       NA Species_A;Species_B~ Species_C;Species_D;Speci~ Species_H;Species_~ NA                   NA Gene_1.phylip 
-   5                 5 a;c;g;t        triallelic              NA              0 Species_L                    1       NA Species_M;Species_N~ Species_A;Species_B;Speci~ Species_C;Species_~ NA                   NA Gene_1.phylip 
-   6                 6 a;c;t          triallelic              NA              0 NA                           0       NA Species_C;Species_D~ Species_J;Species_M;Speci~ Species_A;Species_B NA                   NA Gene_1.phylip 
-   7                 7 a;c;g          biallelic               NA              0 Species_J                    1       NA Species_A;Species_B~ Species_C;Species_D;Speci~ NA                  NA                   NA Gene_1.phylip 
-   8                 8 a;g            biallelic               NA              0 NA                           0       NA Species_H;Species_I  Species_A;Species_B;Speci~ NA                  NA                   NA Gene_1.phylip 
-   9                 9 a;c;g;t        quadallelic             NA              0 NA                           0       NA Species_G;Species_H~ Species_M;Species_N;Speci~ Species_E;Species_F Species_A;Spec~      NA Gene_1.phylip 
-  10                10 a;g;t          triallelic              NA              0 NA                           0       NA Species_C;Species_D~ Species_H;Species_I;Speci~ Species_A;Species_B NA                   NA Gene_1.phylip 
-  # ... with 1,990 more rows
-  
+
+  # A tibble: 1,551 x 14
+     Alignment_Positi~ All_Site_Bases Site_Pattern Non_Base_Taxa Non_Base_Count Singleton_Taxa Singleton_Count Gap_Taxa Split_1                           Split_2                           Split_3 Split_4 Split_5 Alignment_Name
+                 <dbl> <chr>          <chr>        <chr>                  <dbl> <chr>                    <dbl> <chr>    <chr>                             <chr>                             <chr>     <dbl>   <dbl> <chr>         
+   1                 1 C              invariant    NA                         0 NA                           0 NA       NA                                NA                                NA           NA      NA Gene_1.phy    
+   2                 2 C              invariant    NA                         0 NA                           0 NA       NA                                NA                                NA           NA      NA Gene_1.phy    
+   3                 3 C;N;T          biallelic    Species_D                  1 NA                           0 NA       Species_A;Species_F               Species_B;Species_C;Species_E;Sp~ NA           NA      NA Gene_1.phy    
+   4                 4 T              invariant    NA                         0 NA                           0 NA       NA                                NA                                NA           NA      NA Gene_1.phy    
+   5                 5 C;T            biallelic    NA                         0 NA                           0 NA       Species_C;Species_H               Species_A;Species_B;Species_D;Sp~ NA           NA      NA Gene_1.phy    
+   6                 6 T              invariant    NA                         0 NA                           0 NA       NA                                NA                                NA           NA      NA Gene_1.phy    
+   7                 7 C;G            singleton    NA                         0 Species_H                    1 NA       NA                                NA                                NA           NA      NA Gene_1.phy    
+   8                 8 A;G            biallelic    NA                         0 NA                           0 NA       Species_A;Species_B;Species_D;Sp~ Species_C;Species_H               NA           NA      NA Gene_1.phy    
+   9                 9 T              invariant    NA                         0 NA                           0 NA       NA                                NA                                NA           NA      NA Gene_1.phy    
+  10                10 T              invariant    NA                         0 NA                           0 NA       NA                                NA                                NA           NA      NA Gene_1.phy    
+  # ... with 1,541 more rows
   
   # Get alignment signal information from all .phylip files in a directory, providing new names, consider gaps as missing data
-  getAlignmentSignal(alignment_path = myAlignmentDir,species_info = mySpecies,use_gaps = FALSE,suffix = ".phylip",alignment_name = c('Gene_A','Gene_B','Gene_C','Gene_D','Gene_E'))
+  getAlignmentSignal(alignment_path = myAlignmentDir,species_info = mySpecies,use_gaps = FALSE,suffix = ".phy",alignment_name = c('Gene_A','Gene_B','Gene_C','Gene_D','Gene_E'))
 
-  # A tibble: 11,500 x 14
-     Alignment_Positi~ All_Site_Bases Site_Pattern Non_Base_Taxa Non_Base_Count Singleton_Taxa Singleton_Count Gap_Taxa Split_1              Split_2                    Split_3             Split_4         Split_5 Alignment_Name
-                 <dbl> <chr>          <chr>                <dbl>          <dbl> <chr>                    <dbl>    <dbl> <chr>                <chr>                      <chr>               <chr>             <dbl> <chr>         
-   1                 1 a;c;t          triallelic              NA              0 NA                           0       NA Species_A;Species_B~ Species_J;Species_K;Speci~ Species_C;Species_~ NA                   NA Gene_A        
-   2                 2 a;c;t          triallelic              NA              0 NA                           0       NA Species_A;Species_B  Species_C;Species_D;Speci~ Species_G;Species_J NA                   NA Gene_A        
-   3                 3 a;c            biallelic               NA              0 NA                           0       NA Species_G;Species_N~ Species_A;Species_B;Speci~ NA                  NA                   NA Gene_A        
-   4                 4 a;c;g;t        triallelic              NA              0 Species_J                    1       NA Species_A;Species_B~ Species_C;Species_D;Speci~ Species_H;Species_~ NA                   NA Gene_A        
-   5                 5 a;c;g;t        triallelic              NA              0 Species_L                    1       NA Species_M;Species_N~ Species_A;Species_B;Speci~ Species_C;Species_~ NA                   NA Gene_A        
-   6                 6 a;c;t          triallelic              NA              0 NA                           0       NA Species_C;Species_D~ Species_J;Species_M;Speci~ Species_A;Species_B NA                   NA Gene_A        
-   7                 7 a;c;g          biallelic               NA              0 Species_J                    1       NA Species_A;Species_B~ Species_C;Species_D;Speci~ NA                  NA                   NA Gene_A        
-   8                 8 a;g            biallelic               NA              0 NA                           0       NA Species_H;Species_I  Species_A;Species_B;Speci~ NA                  NA                   NA Gene_A        
-   9                 9 a;c;g;t        quadallelic             NA              0 NA                           0       NA Species_G;Species_H~ Species_M;Species_N;Speci~ Species_E;Species_F Species_A;Spec~      NA Gene_A        
-  10                10 a;g;t          triallelic              NA              0 NA                           0       NA Species_C;Species_D~ Species_H;Species_I;Speci~ Species_A;Species_B NA                   NA Gene_A        
-  # ... with 11,490 more rows
+  # A tibble: 1,551 x 14
+     Alignment_Positi~ All_Site_Bases Site_Pattern Non_Base_Taxa Non_Base_Count Singleton_Taxa Singleton_Count Gap_Taxa Split_1                           Split_2                           Split_3 Split_4 Split_5 Alignment_Name
+                 <dbl> <chr>          <chr>        <chr>                  <dbl> <chr>                    <dbl> <chr>    <chr>                             <chr>                             <chr>     <dbl>   <dbl> <chr>         
+   1                 1 C              invariant    NA                         0 NA                           0 NA       NA                                NA                                NA           NA      NA Gene_1.phy    
+   2                 2 C              invariant    NA                         0 NA                           0 NA       NA                                NA                                NA           NA      NA Gene_1.phy    
+   3                 3 C;N;T          biallelic    Species_D                  1 NA                           0 NA       Species_A;Species_F               Species_B;Species_C;Species_E;Sp~ NA           NA      NA Gene_1.phy    
+   4                 4 T              invariant    NA                         0 NA                           0 NA       NA                                NA                                NA           NA      NA Gene_1.phy    
+   5                 5 C;T            biallelic    NA                         0 NA                           0 NA       Species_C;Species_H               Species_A;Species_B;Species_D;Sp~ NA           NA      NA Gene_1.phy    
+   6                 6 T              invariant    NA                         0 NA                           0 NA       NA                                NA                                NA           NA      NA Gene_1.phy    
+   7                 7 C;G            singleton    NA                         0 Species_H                    1 NA       NA                                NA                                NA           NA      NA Gene_1.phy    
+   8                 8 A;G            biallelic    NA                         0 NA                           0 NA       Species_A;Species_B;Species_D;Sp~ Species_C;Species_H               NA           NA      NA Gene_1.phy    
+   9                 9 T              invariant    NA                         0 NA                           0 NA       NA                                NA                                NA           NA      NA Gene_1.phy    
+  10                10 T              invariant    NA                         0 NA                           0 NA       NA                                NA                                NA           NA      NA Gene_1.phy    
+  # ... with 1,541 more rows
+  
+  # Get alignment signal information from all .phylip files in a directory, providing new names, consider gaps as missing data
+  getAlignmentSignal(alignment_path = myAlignmentDir,species_info = mySubspecies,use_gaps = FALSE,suffix = ".phy",alignment_name = c('Gene_A','Gene_B','Gene_C','Gene_D','Gene_E'))
 
+  # A tibble: 9,105 x 14
+     Alignment_Positi~ All_Site_Bases Site_Pattern Non_Base_Taxa Non_Base_Count Singleton_Taxa Singleton_Count Gap_Taxa Split_1                           Split_2                           Split_3 Split_4 Split_5 Alignment_Name
+                 <dbl> <chr>          <chr>        <chr>                  <dbl> <chr>                    <dbl> <chr>    <chr>                             <chr>                             <chr>   <chr>     <dbl> <chr>         
+   1                 1 C              invariant    NA                         0 NA                           0 NA       NA                                NA                                NA      NA           NA Gene_A        
+   2                 2 C              invariant    NA                         0 NA                           0 NA       NA                                NA                                NA      NA           NA Gene_A        
+   3                 3 C;N;T          biallelic    Species_D                  1 NA                           0 NA       Species_A;Species_F               Species_B;Species_C;Species_E;Sp~ NA      NA           NA Gene_A        
+   4                 4 T              invariant    NA                         0 NA                           0 NA       NA                                NA                                NA      NA           NA Gene_A        
+   5                 5 C;T            biallelic    NA                         0 NA                           0 NA       Species_C;Species_H               Species_A;Species_B;Species_D;Sp~ NA      NA           NA Gene_A        
+   6                 6 T              invariant    NA                         0 NA                           0 NA       NA                                NA                                NA      NA           NA Gene_A        
+   7                 7 C;G            singleton    NA                         0 Species_H                    1 NA       NA                                NA                                NA      NA           NA Gene_A        
+   8                 8 A;G            biallelic    NA                         0 NA                           0 NA       Species_A;Species_B;Species_D;Sp~ Species_C;Species_H               NA      NA           NA Gene_A        
+   9                 9 T              invariant    NA                         0 NA                           0 NA       NA                                NA                                NA      NA           NA Gene_A        
+  10                10 T              invariant    NA                         0 NA                           0 NA       NA                                NA                                NA      NA           NA Gene_A        
+  # ... with 9,095 more rows
+  
   # Get alignment signal from dummy alignment, with and without gap support
   getAlignmentSignal(alignment_path = rb_dummy_align_path)
-  
+
   # A tibble: 13 x 14
      Alignment_Positi~ All_Site_Bases Site_Pattern Non_Base_Taxa                   Non_Base_Count Singleton_Taxa      Singleton_Count Gap_Taxa    Split_1         Split_2         Split_3     Split_4     Split_5   Alignment_Name
                  <dbl> <chr>          <chr>        <chr>                                    <dbl> <chr>                         <dbl> <chr>       <chr>           <chr>           <chr>       <chr>       <chr>     <chr>         
@@ -121,9 +137,9 @@ Example Usage
   11                11 -;A;T          biallelic    NA                                           0 Species_J                         1 Species_J   Species_A;Spec~ Species_F;Spec~ NA          NA          NA        Dummy_Alignme~
   12                12 A;G;T          biallelic    NA                                           0 Species_J                         1 NA          Species_A;Spec~ Species_F;Spec~ NA          NA          NA        Dummy_Alignme~
   13                13 A;K;M;R;S;W    invariant    Species_F;Species_G;Species_H;~              5 NA                                0 NA          NA              NA              NA          NA          NA        Dummy_Alignme~
-    
-  getAlignmentSignal(alignment_path = rb_dummy_align_path,use_gaps = FALSE)
   
+  getAlignmentSignal(alignment_path = rb_dummy_align_path,use_gaps = FALSE)
+
   # A tibble: 13 x 14
      Alignment_Positi~ All_Site_Bases Site_Pattern Non_Base_Taxa                    Non_Base_Count Singleton_Taxa     Singleton_Count Gap_Taxa    Split_1          Split_2          Split_3     Split_4     Split_5 Alignment_Name
                  <dbl> <chr>          <chr>        <chr>                                     <dbl> <chr>                        <dbl> <chr>       <chr>            <chr>            <chr>       <chr>         <dbl> <chr>         

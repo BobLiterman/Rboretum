@@ -49,19 +49,29 @@ Example Usage
   # Get alignment composition information for a single alignment
   getAlignmentComposition(alignment_path = myAlignmentFile)
   
-    Alignment_Name Alignment_Length Percent_GC Percent_Degenerate Percent_N Percent_Gap
-  1  Gene_1.phylip             2000  0.4940333                  0         0           0
+    Alignment_Name Alignment_Length Percent_GC Percent_Degenerate  Percent_N Percent_Gap
+  1     Gene_1.phy             1551  0.3982911                  0 0.02677842  0.03249516
 
   # Get alignment composition information from all .phylip files in a directory, providing new names
-  getAlignmentComposition(alignment_path = myAlignmentDir,suffix = ".phylip",alignment_name = c('Gene_A','Gene_B','Gene_C','Gene_D','Gene_E'))
+  getAlignmentComposition(alignment_path = myAlignmentDir,suffix = ".phy",alignment_name = c('Gene_A','Gene_B','Gene_C','Gene_D','Gene_E'))
 
-    Alignment_Name Alignment_Length Percent_GC Percent_Degenerate Percent_N Percent_Gap
-  1         Gene_A             2000  0.4940333                  0         0           0
-  2         Gene_B             2500  0.4978400                  0         0           0
-  3         Gene_C             1500  0.4921778                  0         0           0
-  4         Gene_D             3000  0.5011556                  0         0           0
-  5         Gene_E             2500  0.5003733                  0         0           0
+    Alignment_Name Alignment_Length Percent_GC Percent_Degenerate  Percent_N Percent_Gap
+  1         Gene_A             1551  0.3982911                  0 0.02677842  0.03249516
+  2         Gene_B             2804  0.5219202                  0 0.02691393  0.10537328
+  3         Gene_C             1031  0.5919662                  0 0.02644682  0.27009376
+  4         Gene_D             2219  0.4160601                  0 0.02679886  0.09397627
+  5         Gene_E             1500  0.4895705                  0 0.02626667  0.00000000
   
+  # Get alignment composition information from all .phy files in a directory, providing new names, considering only Species A - E
+  getAlignmentComposition(alignment_path = myAlignmentDir,species_info = 'Species_A;Species_B;Species_C;Species_D;Species_E',suffix = ".phy",alignment_name = c('Gene_A','Gene_B','Gene_C','Gene_D','Gene_E'))
+
+    Alignment_Name Alignment_Length Percent_GC Percent_Degenerate  Percent_N Percent_Gap
+  1         Gene_A             1551  0.4011516                  0 0.02398453  0.03546099
+  2         Gene_B             2804  0.5211614                  0 0.02410842  0.10627675
+  3         Gene_C             1031  0.5859697                  0 0.02347236  0.27138700
+  4         Gene_D             2219  0.4158223                  0 0.02424516  0.09508788
+  5         Gene_E             1500  0.4852580                  0 0.02320000  0.00000000
+
   # Get species composition from dummy alignment
   getAlignmentComposition(alignment_path = rb_dummy_align_path)
 

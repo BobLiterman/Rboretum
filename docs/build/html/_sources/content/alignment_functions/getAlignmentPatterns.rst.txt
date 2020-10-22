@@ -56,51 +56,71 @@ Example Usage
   # Script: Rboretum/docs/content/Doc_Function_Scripts/getAlignmentPatterns.R
 
   library(Rboretum)
-
-  # Set test data directory
   sourceRboretum()
-
+  
   # Set path to alignment data
   myAlignmentFile <- rb_align1_path
   mySpecies <- getAlignmentSpecies(myAlignmentFile)
+  mySubspecies <- semiVector(mySpecies)[1:5]
   myAlignmentDir <- rb_alignment_dir
   
   # Get alignment Patterns information for a single alignment
   getAlignmentPatterns(alignment_path = myAlignmentFile)
-  
+
       Alignment_Position Site_Pattern Non_Base_Count Parsimony_Informative Alignment_Name
-  1                    1   triallelic              0                   Yes  Gene_1.phylip
-  2                    2   triallelic              0                   Yes  Gene_1.phylip
-  3                    3    biallelic              0                   Yes  Gene_1.phylip
-  4                    4   triallelic              0                    No  Gene_1.phylip
-  5                    5   triallelic              0                    No  Gene_1.phylip
-  6                    6   triallelic              0                   Yes  Gene_1.phylip
-  7                    7    biallelic              0                    No  Gene_1.phylip
-  8                    8    biallelic              0                   Yes  Gene_1.phylip
-  9                    9  quadallelic              0                   Yes  Gene_1.phylip
-  10                  10   triallelic              0                   Yes  Gene_1.phylip
-  
-  # Get alignment Patterns information from all .phylip files in a directory, providing new names, consider gaps as missing data
-  getAlignmentPatterns(alignment_path = myAlignmentDir,species_info = mySpecies,use_gaps = FALSE,suffix = ".phylip",alignment_name = c('Gene_A','Gene_B','Gene_C','Gene_D','Gene_E'))
-  
+  1                    1    invariant              0                    No     Gene_1.phy
+  2                    2    invariant              0                    No     Gene_1.phy
+  3                    3    biallelic              1                   Yes     Gene_1.phy
+  4                    4    invariant              0                    No     Gene_1.phy
+  5                    5    biallelic              0                   Yes     Gene_1.phy
+  6                    6    invariant              0                    No     Gene_1.phy
+  7                    7    singleton              0                    No     Gene_1.phy
+  8                    8    biallelic              0                   Yes     Gene_1.phy
+  9                    9    invariant              0                    No     Gene_1.phy
+  10                  10    invariant              0                    No     Gene_1.phy
+  .
+  .
+  .
+
+  # Get alignment Patterns information from all .phy files in a directory, providing new names, consider gaps as missing data
+  getAlignmentPatterns(alignment_path = myAlignmentDir,species_info = mySpecies,use_gaps = FALSE,suffix = ".phy",alignment_name = c('Gene_A','Gene_B','Gene_C','Gene_D','Gene_E'))
+
       Alignment_Position Site_Pattern Non_Base_Count Parsimony_Informative Alignment_Name
-  1                    1   triallelic              0                   Yes         Gene_A
-  2                    2   triallelic              0                   Yes         Gene_A
-  3                    3    biallelic              0                   Yes         Gene_A
-  4                    4   triallelic              0                    No         Gene_A
-  5                    5   triallelic              0                    No         Gene_A
-  6                    6   triallelic              0                   Yes         Gene_A
-  7                    7    biallelic              0                    No         Gene_A
+  1                    1    invariant              0                    No         Gene_A
+  2                    2    invariant              0                    No         Gene_A
+  3                    3    biallelic              1                   Yes         Gene_A
+  4                    4    invariant              0                    No         Gene_A
+  5                    5    biallelic              0                   Yes         Gene_A
+  6                    6    invariant              0                    No         Gene_A
+  7                    7    singleton              0                    No         Gene_A
   8                    8    biallelic              0                   Yes         Gene_A
-  9                    9  quadallelic              0                   Yes         Gene_A
-  10                  10   triallelic              0                   Yes         Gene_A
+  9                    9    invariant              0                    No         Gene_A
+  10                  10    invariant              0                    No         Gene_A
+  .
+  .
+  .
+  
+  # Get alignment Patterns information from all .phy files in a directory, providing new names, consider gaps as missing data, consider only Species A - E
+  getAlignmentPatterns(alignment_path = myAlignmentDir,species_info = mySubspecies,use_gaps = FALSE,suffix = ".phy",alignment_name = c('Gene_A','Gene_B','Gene_C','Gene_D','Gene_E'))
+  
+      Alignment_Position Site_Pattern Non_Base_Count Parsimony_Informative Alignment_Name
+  1                    1    invariant              0                    No         Gene_A
+  2                    2    invariant              0                    No         Gene_A
+  3                    3    singleton              1                    No         Gene_A
+  4                    4    invariant              0                    No         Gene_A
+  5                    5    singleton              0                    No         Gene_A
+  6                    6    invariant              0                    No         Gene_A
+  7                    7    invariant              0                    No         Gene_A
+  8                    8    singleton              0                    No         Gene_A
+  9                    9    invariant              0                    No         Gene_A
+  10                  10    invariant              0                    No         Gene_A
   .
   .
   .
   
   # Get alignment Patterns from dummy alignment, with and without gap support
   getAlignmentPatterns(alignment_path = rb_dummy_align_path)
-
+  
      Alignment_Position Site_Pattern Non_Base_Count Parsimony_Informative     Alignment_Name
   1                   1     non_base             10                    No Dummy_Alignment.fa
   2                   2     non_base              8                    No Dummy_Alignment.fa
@@ -114,8 +134,8 @@ Example Usage
   10                 10  pentallelic              0                   Yes Dummy_Alignment.fa
   11                 11    biallelic              0                    No Dummy_Alignment.fa
   12                 12    biallelic              0                    No Dummy_Alignment.fa
-  13                 13    invariant              5                    No Dummy_Alignment.fa  
-  
+  13                 13    invariant              5                    No Dummy_Alignment.fa
+
   getAlignmentPatterns(alignment_path = rb_dummy_align_path,use_gaps = FALSE)
 
      Alignment_Position Site_Pattern Non_Base_Count Parsimony_Informative     Alignment_Name
@@ -131,8 +151,8 @@ Example Usage
   10                 10  quadallelic              2                   Yes Dummy_Alignment.fa
   11                 11    biallelic              1                   Yes Dummy_Alignment.fa
   12                 12    biallelic              0                    No Dummy_Alignment.fa
-  13                 13    invariant              5                    No Dummy_Alignment.fa  
-  
+  13                 13    invariant              5                    No Dummy_Alignment.fa
+
   # Postion 2 is 'non_base' because < 3 species have a called base
   # Note: Sites 5, 6, 10, and 11 have species with gap positions. 
   # Treating gaps as missing data sets all gap taxa to missing taxa in the bottom dataframe, and also changes the reported site patterns for rows 5 + 10

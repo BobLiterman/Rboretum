@@ -7,7 +7,7 @@
 rescaleTreeSupport(tree_support, scale, scale_range, return_total)
 }
 \arguments{
-\item{tree_support}{Output of getTreeSupport}
+\item{tree_support}{Output of getAlignmentSupport}
 
 \item{scale}{Scaling factor. Options include:
 \itemize{
@@ -24,5 +24,5 @@ rescaleTreeSupport(tree_support, scale, scale_range, return_total)
 Numeric vector the length of the number of clades, and corresponding to rescaled total support values
 }
 \description{
-This function takes the output of getTreeSupport, and returns a numeric vector of total, summed support that has been rescaled
+This function takes the output of getAlignmentSupport, and returns a numeric vector of total, summed support that has been rescaled
 }

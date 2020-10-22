@@ -2,7 +2,7 @@
 #'
 #' This function takes information about node ages and node support, and plots relative changes in node support over time among datasets. 
 #' @param node_age_df Output from extractNodeAges(phylo) or extractNodeAges(multiPhylo,return_summary = 'mean' or 'median') [Or a two-column dataframe containing (1) semicolon separated clades and (2) estimated node ages]
-#' @param tree_support Output from getTreeSupport with information about all clades in node_age_df and 2+ alignment support columns
+#' @param tree_support Output from getAlignmentSupport with information about all clades in node_age_df and 2+ alignment support columns
 #' @param plot_datasets OPTIONAL: Character vector specifying the datasets desired for the plot (Must be 2+ and present in 'tree_support')
 #' @param all_sites_col OPTIONAL (Very special case): If the alignments from tree_support contain overlapping sites AND there is is a column in the data corresponding to all non-overlapping sites, specify the column name for all nonoverlapping sites to be used when calculating proportions
 #' @param lm_alpha OPTIONAL: Run linear models at this alpha level (must be > 0 and < 1; Alpha will be automatically Bonferroni corrected based on dataset count) [Default: Do not run linear models]

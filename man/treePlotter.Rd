@@ -53,7 +53,7 @@ treePlotter(
 
 \item{basic_plot}{OPTIONAL: If providing a multiPhylo and TRUE, plot all trees as stored and disable support functions [Default: FALSE, plot unique topologies after pruning to common taxa]}
 
-\item{tree_support}{OPTIONAL: Output of getTreeSupport, including data from all clades in 'tree'}
+\item{tree_support}{OPTIONAL: Output of getAlignmentSupport, including data from all clades in 'tree'}
 
 \item{plot_root_support}{OPTIONAL: If TRUE and plotting node support via 'tree_support', include root nodes [Default: FALSE, do not include support for root nodes]}
 

@@ -18,8 +18,8 @@ isTreeSupport(test_object, test_clade, partial)
 \item{partial}{OPTIONAL: If TRUE, as long as all clades from 'test_clade' are present, return TRUE [Default: FALSE, require that test_clades also includes all clades in support object]}
 }
 \value{
-TRUE if output of getTreeSupport() with information on 'test_clade'; otherwise, FALSE
+TRUE if output of getAlignmentSupport() with information on 'test_clade'; otherwise, FALSE
 }
 \description{
-This function returns TRUE if the passed object is the output of getTreeSupport() and contains information about clades in 'test_clade'; otherwise, FALSE
+This function returns TRUE if the passed object is the output of getAlignmentSupport() and contains information about clades in 'test_clade'; otherwise, FALSE
 }

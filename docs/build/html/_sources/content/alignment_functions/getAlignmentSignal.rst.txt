@@ -20,7 +20,7 @@
   - Which taxa have missing data
   - Parsimony-based splits (i.e. which taxonomic groupings are supported by alleles at each site)
   
-The output from **getAlignmentSignal** can be used to extract support values for different potential relationships via **getTreeSupport**. 
+The output from **getAlignmentSignal** can be used to extract support values for different potential relationships via **getAlignmentSupport**. 
 
 .. warning::
   

@@ -1,7 +1,7 @@
 #' Rboretum Tree Support Rescaler
 #' 
-#' This function takes the output of getTreeSupport, and returns a numeric vector of total, summed support that has been rescaled
-#' @param tree_support Output of getTreeSupport
+#' This function takes the output of getAlignmentSupport, and returns a numeric vector of total, summed support that has been rescaled
+#' @param tree_support Output of getAlignmentSupport
 #' @param scale Scaling factor. Options include:
 #' \itemize{
 #'   \item Single numeric value [return a repeated vector of this value (e.g. to set all geom_nodepoint to this size)]
@@ -20,7 +20,7 @@ rescaleTreeSupport <- function(tree_support,scale,scale_range,return_total){
   } else if(!is.data.frame(tree_support)){
     stop("'tree_support' is not a dataframe")
   } else if(names(tree_support)[1] != 'Clade'){
-    stop("The first column of getTreeSupport output is called 'Clade")
+    stop("The first column of getAlignmentSupport output is called 'Clade")
   } else if(ncol(tree_support)==1){
     stop("No data columns.")
   } else{

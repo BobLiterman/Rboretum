@@ -1,6 +1,6 @@
 #' Rboretum Tree Support Checker
 #'
-#' This function returns TRUE if the passed object is the output of getTreeSupport() and contains information about clades in 'test_clade'; otherwise, FALSE
+#' This function returns TRUE if the passed object is the output of getAlignmentSupport() and contains information about clades in 'test_clade'; otherwise, FALSE
 #' @param test_object R object to check
 #' @param test_clade Source for clades to check. Function checks that passed support object contains information about these clades. Options include:
 #' \itemize{
@@ -8,7 +8,7 @@
 #'   \item vector of semicolon-separated clades. 
 #' }
 #' @param partial OPTIONAL: If TRUE, as long as all clades from 'test_clade' are present, return TRUE [Default: FALSE, require that test_clades also includes all clades in support object]
-#' @return TRUE if output of getTreeSupport() with information on 'test_clade'; otherwise, FALSE
+#' @return TRUE if output of getAlignmentSupport() with information on 'test_clade'; otherwise, FALSE
 #' @export
 
 isTreeSupport <- function(test_object,test_clade,partial){
@@ -35,7 +35,7 @@ isTreeSupport <- function(test_object,test_clade,partial){
     return(FALSE) # Tree support starts with a clade column
   }
     
-  # Get sorted clades from getTreeSupport
+  # Get sorted clades from getAlignmentSupport
   support_clades <- naturalsort(as.character(test_object$Clade))
   
   if(!purrr::map(.x=support_clades,.f=function(x){str_detect(x,";")}) %>% unlist() %>% all()){

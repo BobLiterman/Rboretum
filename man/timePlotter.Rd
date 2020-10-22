@@ -18,7 +18,7 @@ timePlotter(
 \arguments{
 \item{node_age_df}{Output from extractNodeAges(phylo) or extractNodeAges(multiPhylo,return_summary = 'mean' or 'median') [Or a two-column dataframe containing (1) semicolon separated clades and (2) estimated node ages]}
 
-\item{tree_support}{Output from getTreeSupport with information about all clades in node_age_df and 2+ alignment support columns}
+\item{tree_support}{Output from getAlignmentSupport with information about all clades in node_age_df and 2+ alignment support columns}
 
 \item{plot_datasets}{OPTIONAL: Character vector specifying the datasets desired for the plot (Must be 2+ and present in 'tree_support')}
 

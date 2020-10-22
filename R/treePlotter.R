@@ -7,7 +7,7 @@
 #'   \item A rooted multiPhylo object where all trees share 3+ taxa [Only unique topologies plotted, from most to least common]
 #' }
 #' @param basic_plot OPTIONAL: If providing a multiPhylo and TRUE, plot all trees as stored and disable support functions [Default: FALSE, plot unique topologies after pruning to common taxa]
-#' @param tree_support OPTIONAL: Output of getTreeSupport, including data from all clades in 'tree'
+#' @param tree_support OPTIONAL: Output of getAlignmentSupport, including data from all clades in 'tree'
 #' @param plot_root_support OPTIONAL: If TRUE and plotting node support via 'tree_support', include root nodes [Default: FALSE, do not include support for root nodes]
 #' @param clade_support OPTIONAL: Output of getTreeClades(return_counts=TRUE), including data from all clades in 'tree'
 #' @param geom_size OPTIONAL: If plotting support via tree_support, how should geom_nodepoint (or pies) be sized? Options include:	

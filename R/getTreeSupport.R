@@ -21,15 +21,15 @@
 #' @param only_pentallelic OPTIONAL: If TRUE, only count sites with pentallelic variation as part of total support [Default: FALSE]
 #' @param return_integer OPTIONAL: If TRUE, return the integer support summed across datasets [Default: FALSE, return results as a dataframe]
 #' @param return_table OPTIONAL: If TRUE, return entire table of filtered signal counts by clade [FALSE: Return clade support counts]
-#' @param existing_support OPTIONAL: Append these results to the output from getTreeSupport() run with the same 'tree' and different alignment options
+#' @param existing_support OPTIONAL: Append these results to the output from getAlignmentSupport() run with the same 'tree' and different alignment options
 #' @return A dataframe containing each monophyletic clade in 'tree', along with site support from all alignments in 'signal' as separate columns
 #' @export
 
-getTreeSupport <- function(signal,tree,include_root,clade,dataset_name,max_missing,separate_signal,only_parsinf,include_gap,only_gap,only_biallelic,only_triallelic,only_quadallelic,only_pentallelic,return_integer,return_table,existing_support){
+getAlignmentSupport <- function(signal,tree,include_root,clade,dataset_name,max_missing,separate_signal,only_parsinf,include_gap,only_gap,only_biallelic,only_triallelic,only_quadallelic,only_pentallelic,return_integer,return_table,existing_support){
   
   # Process signal
   if(missing(signal)){
-    stop("'getTreeSupport' requires 'signal' arguement.")
+    stop("'getAlignmentSupport' requires 'signal' arguement.")
   } else if(!Rboretum::isAlignmentSignal(signal)){
     stop("'signal' is not the output of getAlignmentSignal.")
   } else{
@@ -288,7 +288,7 @@ getTreeSupport <- function(signal,tree,include_root,clade,dataset_name,max_missi
   if(missing(existing_support)){
     add_support <- FALSE
   } else if(!Rboretum::isTreeSupport(existing_support,test_clade,partial = TRUE)){
-    print("'existing_support' is either not the output from getTreeSupport(), or does not contain clade information as requested from 'tree' or 'clade'. Returning unappended...")
+    print("'existing_support' is either not the output from getAlignmentSupport(), or does not contain clade information as requested from 'tree' or 'clade'. Returning unappended...")
     add_support <- FALSE
   } else{
     if(any(names(existing_support) %in% dataset_name)){

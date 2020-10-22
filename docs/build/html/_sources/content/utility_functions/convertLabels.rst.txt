@@ -7,7 +7,7 @@
 **convertLabels** uses a dataframe/tibble of name equivalencies and can use it to convert:
 
   - Tree tip names
-  - Names in the column of a dataframe/tibble (e.g. output from getTreeSupport or getTreeClades)
+  - Names in the column of a dataframe/tibble (e.g. output from getAlignmentSupport or getTreeClades)
   - Semicolon-delimited clade groups
 
 =======================

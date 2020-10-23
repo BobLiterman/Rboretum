@@ -622,10 +622,27 @@ treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_sup
     
     if(missing(scale_range)){
       scaled_totals  <- Rboretum::rescaleTreeSupport(tree_support,scale = geom_size)
-      tree_support_summary <- data.frame(Clade=as.character(tree_support$Clade),total_sites = as.integer(raw_totals),scaled_total = as.numeric(scaled_totals),pie_scales = pie_scaler*(scaled_totals/max(geom_size)),stringsAsFactors = FALSE)
     } else{
       scaled_totals  <- Rboretum::rescaleTreeSupport(tree_support,scale = geom_size,scale_range=scale_range)
-      tree_support_summary <- data.frame(Clade=as.character(tree_support$Clade),total_sites = as.integer(raw_totals),scaled_total = as.numeric(scaled_totals),pie_scales = pie_scaler*(scaled_totals/max(geom_size)),stringsAsFactors = FALSE)
+    }
+    
+    tree_support_summary <- data.frame('Clade'=as.character(tree_support$Clade),
+                                       'total_sites' = as.integer(raw_totals),
+                                       'scaled_total' = as.numeric(scaled_totals),
+                                       stringsAsFactors = FALSE)
+    max_raw <- max(raw_totals)
+    max_scaled <- max(scaled_totals)
+    
+    if("log" %in% geom_size){
+      tree_support_summary <- tree_support_summary %>%
+        rowwise() %>%
+        mutate(pie_scales = pie_scaler*(scaled_total/max_scaled)) %>%
+        ungroup()
+    } else{
+      tree_support_summary <- tree_support_summary %>%
+        rowwise() %>%
+        mutate(pie_scales = pie_scaler*(total_sites/max_raw)) %>%
+        ungroup()
     }
   }
   
@@ -707,7 +724,7 @@ treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_sup
         mutate(node=as.integer(node), Clade = as.character(Clade)) %>%	
         left_join(tree_support,by='Clade') %>% 	
         left_join(tree_support_summary,by='Clade') %>%	
-        select(-Clade)
+        select(-Clade) %>% arrange(node)
       
       if(!plot_root_support){
         pie_df <- pie_df %>% filter(!Root) %>% select(-Root)

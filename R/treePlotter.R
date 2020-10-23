@@ -19,6 +19,7 @@
 #' }
 #' @param scale_range OPTIONAL: If plotting tree_support, supply a min and max of values to be scaled. Values outside this range will be displayed as the otherwise min/max geom size. [Default: scale all data]
 #' @param use_pies OPTIONAL: If TRUE and tree_support contains inforomation from 2+ datasets, data from tree_support will be displayed as an inset pie chart rather than a geom_nodepoint [Default: FALSE, use geom_nodepoint; DEACTIVATED WHEN clade_support IS PROVIDED]	
+#' @param pie_scaler OPTIONAL: If plotting with pies, use pie_scaler to set a relative downward adjustment for geom size (ie. 0.1, 0.5, etc). If pie_scaler > 1, pies will be plotted without adjustment
 #' @param pie_xnudge OPTIONAL: Set ggtree pie label hjust [Default: 0]	
 #' @param pie_ynudge OPTIONAL: Set ggtree pie label yjust [Default: 0]	
 #' @param pie_legend_position OPTIONAL: Numerical vector of length four specifying legend xmin,xmax,ymin,ymax respectively. [Default = c(1,1,1,1); Necessary oddity of generating a legend for nodepie data]
@@ -80,13 +81,13 @@
 #' @return ggtree object or list of ggtree objects
 #' @export
 
-treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_support,geom_size,scale_range,use_pies,pie_xnudge,pie_ynudge,pie_legend_position,branch_length,branch_weight,node_label,node_label_font_size,node_label_fontface,node_label_color,node_label_box,node_label_nudge,taxa_font_size,taxa_fontface,taxa_offset,xmax,xmin,reverse_x,to_color,colors,highlight_legend,color_branches,plot_title,plot_title_size,plot_title_fontface,legend_shape_size,legend_font_size,legend_title_size,geom_alpha,geom_color){  
+treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_support,geom_size,scale_range,use_pies,pie_scaler,pie_xnudge,pie_ynudge,pie_legend_position,branch_length,branch_weight,node_label,node_label_font_size,node_label_fontface,node_label_color,node_label_box,node_label_nudge,taxa_font_size,taxa_fontface,taxa_offset,xmax,xmin,reverse_x,to_color,colors,highlight_legend,color_branches,plot_title,plot_title_size,plot_title_fontface,legend_shape_size,legend_font_size,legend_title_size,geom_alpha,geom_color){  
   
   # Ensure tree is valid for plotter
   if(!Rboretum::isMultiPhylo(tree) & !Rboretum::isPhylo(tree)){
     stop("'tree' must be either a phylo object or a mulitPhlyo object")
   } 
-
+  
   # Check basic_plot
   if(missing(basic_plot)){
     basic_plot <- FALSE
@@ -107,7 +108,7 @@ treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_sup
     
     root_status <- Rboretum::isPhylo(tree,check_rooted = TRUE)
     tree_taxa <- naturalsort(tree$tip.label)
-  
+    
   } else{ # If a multiPhylo is provided...
     
     # Add dummy tree names if necessary
@@ -132,7 +133,7 @@ treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_sup
   
   # Process trees and plot titles...
   if(Rboretum::isPhylo(tree)){ # If one tree is provided...
-
+    
     tree_count <- 1
     
     if(root_status){
@@ -174,11 +175,11 @@ treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_sup
       
       # If not plotting all trees, reduce multiPhylo to unique topologies after pruning to common taxa
       if(Rboretum::isMultiPhylo(tree,check_all_equal = TRUE)){
-  
+        
         tree_count <- 1
         tree <- Rboretum::getUniqueTopologies(tree,tree_names = TRUE)
         tree_clades <- Rboretum::getTreeClades(tree)
-
+        
         # Default: No title for single trees
         if(missing(plot_title)){
           titlePlot <- FALSE
@@ -193,7 +194,7 @@ treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_sup
       } else if(Rboretum::isMultiPhylo(tree,check_all_unique = TRUE)){ # If all trees are unique...
         
         tree_clades <- Rboretum::getTreeClades(tree)
-
+        
         tree_count <- length(tree)
         tree_names <- names(tree)
         
@@ -217,7 +218,7 @@ treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_sup
         tree <- Rboretum::getUniqueTopologies(tree,tree_names = TRUE)
         
         tree_clades <- Rboretum::getTreeClades(tree)
-
+        
         tree_count <- length(tree)
         tree_names <- names(tree)
         
@@ -306,6 +307,15 @@ treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_sup
     use_pies <- FALSE	
   }	
   
+  # Scale pies?	
+  if(missing(pie_scaler)){	
+    pie_scaler <- 1	
+  } else if(!is.numeric(pie_scaler)){	
+    pie_scaler <- 1
+  }	else if(pie_scaler > 1){
+    pie_scaler <- 1
+  }
+  
   # Nudge pies?	
   if(missing(pie_xnudge)){	
     pie_xnudge <- 0	
@@ -328,7 +338,7 @@ treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_sup
   } else{
     
     nodePoint <-  TRUE
-  
+    
     if(missing(geom_size)){
       geom_size <- 4
     } else if(length(geom_size)==1){
@@ -346,7 +356,7 @@ treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_sup
           nodePoint <- FALSE
         }
       } else if(is.numeric(geom_size)){
-          geom_size <- as.numeric(geom_size)
+        geom_size <- as.numeric(geom_size)
       }
     } else if(length(geom_size)==2){
       
@@ -367,11 +377,11 @@ treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_sup
       } else{
         stop("'geom_size' is length 2, but not c(min,max)")
       }
-      } else{
-        stop("If 'geom_size' is numeric, it should be one or two items long.")
-      }
+    } else{
+      stop("If 'geom_size' is numeric, it should be one or two items long.")
     }
-
+  }
+  
   # Print tree with branch lengths?
   if(missing(branch_length)){
     branch_length <- FALSE
@@ -414,7 +424,7 @@ treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_sup
   } else if(!(node_label_fontface %in% c('plain','bold','italic','bold.italic'))){
     node_label_fontface <- 'plain'
   }
-
+  
   # Color node label?
   if(missing(node_label_color)){
     node_label_color <- 'black'
@@ -611,10 +621,10 @@ treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_sup
     
     if(missing(scale_range)){
       scaled_totals  <- Rboretum::rescaleTreeSupport(tree_support,scale = geom_size)
-      tree_support_summary <- data.frame(Clade=as.character(tree_support$Clade),total_sites = as.integer(raw_totals),scaled_total = as.numeric(scaled_totals),stringsAsFactors = FALSE)
+      tree_support_summary <- data.frame(Clade=as.character(tree_support$Clade),total_sites = as.integer(raw_totals),scaled_total = as.numeric(scaled_totals),pie_scales = pie_scaler*(scaled_totals/max(geom_size)),stringsAsFactors = FALSE)
     } else{
       scaled_totals  <- Rboretum::rescaleTreeSupport(tree_support,scale = geom_size,scale_range=scale_range)
-      tree_support_summary <- data.frame(Clade=as.character(tree_support$Clade),total_sites = as.integer(raw_totals),scaled_total = as.numeric(scaled_totals),stringsAsFactors = FALSE)
+      tree_support_summary <- data.frame(Clade=as.character(tree_support$Clade),total_sites = as.integer(raw_totals),scaled_total = as.numeric(scaled_totals),pie_scales = pie_scaler*(scaled_totals/max(geom_size)),stringsAsFactors = FALSE)
     }
   }
   
@@ -737,11 +747,11 @@ treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_sup
             scale_color_manual(values = colors,guide = (last_tree && highlight_legend))
           
         } else if(is.list(to_color)){
-            return_tree <- ggtree(temp_tree,size=branch_weight,aes(color=group)) %<+% ggtree_df
-            return_tree <- return_tree + 
-              scale_color_manual("Focal Clades",breaks = names(to_color),values = colors,guide = (last_tree && highlight_legend))
-          }
-        } else{
+          return_tree <- ggtree(temp_tree,size=branch_weight,aes(color=group)) %<+% ggtree_df
+          return_tree <- return_tree + 
+            scale_color_manual("Focal Clades",breaks = names(to_color),values = colors,guide = (last_tree && highlight_legend))
+        }
+      } else{
         return_tree <- ggtree(temp_tree,size=branch_weight) %<+% ggtree_df
       }
     } else{
@@ -754,13 +764,13 @@ treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_sup
             scale_color_manual(values = colors,guide = (last_tree && highlight_legend))
           
         } else if(is.list(to_color)){
-            return_tree <- ggtree(temp_tree,branch.length = 'none',size=branch_weight,aes(color=group)) %<+% ggtree_df
-            return_tree <- return_tree + 
-              scale_color_manual("Focal Clades",breaks = names(to_color),values = colors,guide = (last_tree && highlight_legend))
-          }
-        } else{
-          return_tree <- ggtree(temp_tree,branch.length = 'none',size=branch_weight) %<+% ggtree_df
+          return_tree <- ggtree(temp_tree,branch.length = 'none',size=branch_weight,aes(color=group)) %<+% ggtree_df
+          return_tree <- return_tree + 
+            scale_color_manual("Focal Clades",breaks = names(to_color),values = colors,guide = (last_tree && highlight_legend))
         }
+      } else{
+        return_tree <- ggtree(temp_tree,branch.length = 'none',size=branch_weight) %<+% ggtree_df
+      }
     }
     
     # Process tip labels
@@ -779,19 +789,19 @@ treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_sup
           return_tree <- return_tree + geom_tiplab(size=taxa_font_size,fontface=taxa_fontface,offset = taxa_offset,aes(color=group)) +
             scale_color_manual(values = colors,guide = (last_tree && highlight_legend))          
         }
-
+        
       } else if(is.list(to_color)){
-          if(reverse_x){
-            return_tree <- return_tree + geom_tiplab(size=taxa_font_size,fontface=taxa_fontface,offset = -taxa_offset,aes(color=group),align=TRUE,linetype=NA,hjust=1) +
-              scale_color_manual("Focal Clades",breaks = names(to_color),values = colors,guide = (last_tree && highlight_legend))
-          } else{
-            return_tree <- return_tree + geom_tiplab(size=taxa_font_size,fontface=taxa_fontface,offset = taxa_offset,aes(color=group)) +
-              scale_color_manual("Focal Clades",breaks = names(to_color),values = colors,guide = (last_tree && highlight_legend))            
-          }
-
+        if(reverse_x){
+          return_tree <- return_tree + geom_tiplab(size=taxa_font_size,fontface=taxa_fontface,offset = -taxa_offset,aes(color=group),align=TRUE,linetype=NA,hjust=1) +
+            scale_color_manual("Focal Clades",breaks = names(to_color),values = colors,guide = (last_tree && highlight_legend))
+        } else{
+          return_tree <- return_tree + geom_tiplab(size=taxa_font_size,fontface=taxa_fontface,offset = taxa_offset,aes(color=group)) +
+            scale_color_manual("Focal Clades",breaks = names(to_color),values = colors,guide = (last_tree && highlight_legend))            
         }
+        
+      }
     }
-
+    
     # Process geom_nodepoint
     if(nodePoint){
       if(treeSupport & !cladeSupport){
@@ -832,7 +842,7 @@ treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_sup
     } else if(!reverse_x & extendX){
       return_tree <- return_tree + ggplot2::xlim(xmin,xmax)
     }
-
+    
     # Add titles
     
     # Set title size
@@ -888,18 +898,18 @@ treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_sup
     if(use_pies){	
       if(i!=tree_count){
         if(reverse_x){	
-          return_tree <- inset(return_tree,pies,height=pie_df$scaled_total,width=pie_df$scaled_total,hjust=pie_xnudge,vjust=pie_ynudge,reverse_x = TRUE)	
+          return_tree <- inset(return_tree,pies,height=pie_df$pie_scales,width=pie_df$pie_scales,hjust=pie_xnudge,vjust=pie_ynudge,reverse_x = TRUE)	
         } else{	
-          return_tree <- inset(return_tree,pies,height=pie_df$scaled_total,width=pie_df$scaled_total,hjust=pie_xnudge,vjust=pie_ynudge)	
+          return_tree <- inset(return_tree,pies,height=pie_df$pie_scales,width=pie_df$pie_scales,hjust=pie_xnudge,vjust=pie_ynudge)	
         }	
       } else{
-      if(reverse_x){	
-        return_tree <- inset(return_tree,pies,height=pie_df$scaled_total,width=pie_df$scaled_total,hjust=pie_xnudge,vjust=pie_ynudge,reverse_x = TRUE) +
-          ggplot2::annotation_custom(grob = legend_for_pie,xmin = pie_legend_position[1],xmax = pie_legend_position[2],ymin = pie_legend_position[3],ymax = pie_legend_position[4])	
-        
-      } else{	
-        return_tree <- inset(return_tree,pies,height=pie_df$scaled_total,width=pie_df$scaled_total,hjust=pie_xnudge,vjust=pie_ynudge)	+
-          ggplot2::annotation_custom(grob = legend_for_pie,xmin = pie_legend_position[1],xmax = pie_legend_position[2],ymin = pie_legend_position[3],ymax = pie_legend_position[4])
+        if(reverse_x){	
+          return_tree <- inset(return_tree,pies,height=pie_df$pie_scales,width=pie_df$pie_scales,hjust=pie_xnudge,vjust=pie_ynudge,reverse_x = TRUE) +
+            ggplot2::annotation_custom(grob = legend_for_pie,xmin = pie_legend_position[1],xmax = pie_legend_position[2],ymin = pie_legend_position[3],ymax = pie_legend_position[4])	
+          
+        } else{	
+          return_tree <- inset(return_tree,pies,height=pie_df$pie_scales,width=pie_df$pie_scales,hjust=pie_xnudge,vjust=pie_ynudge)	+
+            ggplot2::annotation_custom(grob = legend_for_pie,xmin = pie_legend_position[1],xmax = pie_legend_position[2],ymin = pie_legend_position[3],ymax = pie_legend_position[4])
         }	
       }
     }

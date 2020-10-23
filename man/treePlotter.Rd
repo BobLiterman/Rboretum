@@ -13,6 +13,7 @@ treePlotter(
   geom_size,
   scale_range,
   use_pies,
+  pie_colors,
   pie_scaler,
   pie_xnudge,
   pie_ynudge,
@@ -71,6 +72,8 @@ treePlotter(
 \item{scale_range}{OPTIONAL: If plotting tree_support, supply a min and max of values to be scaled. Values outside this range will be displayed as the otherwise min/max geom size. [Default: scale all data]}
 
 \item{use_pies}{OPTIONAL: If TRUE and tree_support contains inforomation from 2+ datasets, data from tree_support will be displayed as an inset pie chart rather than a geom_nodepoint [Default: FALSE, use geom_nodepoint; DEACTIVATED WHEN clade_support IS PROVIDED]}
+
+\item{pie_colors}{OPTIONAL If plotting with pies, a vector of colors with one item per support column [Default: ggplot default colors]}
 
 \item{pie_scaler}{OPTIONAL: If plotting with pies, use pie_scaler to set a relative downward adjustment for geom size (ie. 0.1, 0.5, etc). If pie_scaler > 1, pies will be plotted without adjustment}
 

@@ -19,6 +19,7 @@
 #' }
 #' @param scale_range OPTIONAL: If plotting tree_support, supply a min and max of values to be scaled. Values outside this range will be displayed as the otherwise min/max geom size. [Default: scale all data]
 #' @param use_pies OPTIONAL: If TRUE and tree_support contains inforomation from 2+ datasets, data from tree_support will be displayed as an inset pie chart rather than a geom_nodepoint [Default: FALSE, use geom_nodepoint; DEACTIVATED WHEN clade_support IS PROVIDED]	
+#' @param pie_colors OPTIONAL If plotting with pies, a vector of colors with one item per support column [Default: ggplot default colors]
 #' @param pie_scaler OPTIONAL: If plotting with pies, use pie_scaler to set a relative downward adjustment for geom size (ie. 0.1, 0.5, etc). If pie_scaler > 1, pies will be plotted without adjustment
 #' @param pie_xnudge OPTIONAL: Set ggtree pie label hjust [Default: 0]	
 #' @param pie_ynudge OPTIONAL: Set ggtree pie label yjust [Default: 0]	
@@ -81,7 +82,7 @@
 #' @return ggtree object or list of ggtree objects
 #' @export
 
-treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_support,geom_size,scale_range,use_pies,pie_scaler,pie_xnudge,pie_ynudge,pie_legend_position,branch_length,branch_weight,node_label,node_label_font_size,node_label_fontface,node_label_color,node_label_box,node_label_nudge,taxa_font_size,taxa_fontface,taxa_offset,xmax,xmin,reverse_x,to_color,colors,highlight_legend,color_branches,plot_title,plot_title_size,plot_title_fontface,legend_shape_size,legend_font_size,legend_title_size,geom_alpha,geom_color){  
+treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_support,geom_size,scale_range,use_pies,pie_colors,pie_scaler,pie_xnudge,pie_ynudge,pie_legend_position,branch_length,branch_weight,node_label,node_label_font_size,node_label_fontface,node_label_color,node_label_box,node_label_nudge,taxa_font_size,taxa_fontface,taxa_offset,xmax,xmin,reverse_x,to_color,colors,highlight_legend,color_branches,plot_title,plot_title_size,plot_title_fontface,legend_shape_size,legend_font_size,legend_title_size,geom_alpha,geom_color){  
   
   # Ensure tree is valid for plotter
   if(!Rboretum::isMultiPhylo(tree) & !Rboretum::isPhylo(tree)){
@@ -714,16 +715,54 @@ treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_sup
         pie_df <- pie_df %>% select(-Root)
       }
       
-      pies <- nodepie(pie_df,cols=2:ncol(tree_support),alpha = geom_alpha)	
+      support_counts <- length(2:ncol(tree_support))
       
-      pie_color_data <- cbind(tree_support[2:ncol(tree_support)]) %>%	
-        gather(key = 'Dataset',value = 'Count') %>%	
-        ggplot(aes(x=Dataset, y=Count,fill=Dataset)) +	
-        geom_bar(stat="identity", width=1) +      	
-        theme(legend.position="right",	
-              legend.title=element_text(size=legend_title_size),	
-              legend.text=element_text(size=legend_font_size)) +	
-        guides(fill = guide_legend(override.aes = list(size = legend_shape_size)))	
+      if(missing(pie_colors)){
+        pies <- nodepie(pie_df,cols=2:ncol(tree_support),alpha = geom_alpha)
+        
+        pie_color_data <- cbind(tree_support[2:ncol(tree_support)]) %>%	
+          gather(key = 'Dataset',value = 'Count') %>%	
+          ggplot(aes(x=Dataset, y=Count,fill=Dataset)) +	
+          geom_bar(stat="identity", width=1) +      	
+          theme(legend.position="right",	
+                legend.title=element_text(size=legend_title_size),	
+                legend.text=element_text(size=legend_font_size)) +	
+          guides(fill = guide_legend(override.aes = list(size = legend_shape_size)))	
+      } else if(length(pie_colors) != support_counts){
+        pies <- nodepie(pie_df,cols=2:ncol(tree_support),alpha = geom_alpha)
+        
+        pie_color_data <- cbind(tree_support[2:ncol(tree_support)]) %>%	
+          gather(key = 'Dataset',value = 'Count') %>%	
+          ggplot(aes(x=Dataset, y=Count,fill=Dataset)) +	
+          geom_bar(stat="identity", width=1) +      	
+          theme(legend.position="right",	
+                legend.title=element_text(size=legend_title_size),	
+                legend.text=element_text(size=legend_font_size)) +	
+          guides(fill = guide_legend(override.aes = list(size = legend_shape_size)))
+      } else if(any(has_error(silent=TRUE,expr=grDevices::col2rgb(pie_colors)))){
+        pies <- nodepie(pie_df,cols=2:ncol(tree_support),alpha = geom_alpha)
+        
+        pie_color_data <- cbind(tree_support[2:ncol(tree_support)]) %>%	
+          gather(key = 'Dataset',value = 'Count') %>%	
+          ggplot(aes(x=Dataset, y=Count,fill=Dataset)) +	
+          geom_bar(stat="identity", width=1) +      	
+          theme(legend.position="right",	
+                legend.title=element_text(size=legend_title_size),	
+                legend.text=element_text(size=legend_font_size)) +	
+          guides(fill = guide_legend(override.aes = list(size = legend_shape_size)))
+      } else{
+        pies <- nodepie(pie_df,cols=2:ncol(tree_support),alpha = geom_alpha,color=pie_colors)
+        
+        pie_color_data <- cbind(tree_support[2:ncol(tree_support)]) %>%	
+          gather(key = 'Dataset',value = 'Count') %>%	
+          ggplot(aes(x=Dataset, y=Count,fill=Dataset)) +	
+          scale_fill_manual(values = pie_colors) +
+          geom_bar(stat="identity", width=1) +      	
+          theme(legend.position="right",	
+                legend.title=element_text(size=legend_title_size),	
+                legend.text=element_text(size=legend_font_size)) +	
+          guides(fill = guide_legend(override.aes = list(size = legend_shape_size)))
+      }
       
       legend_for_pie <- gtable::gtable_filter(ggplot_gtable(ggplot_build(pie_color_data)), "guide-box") 	
     }

@@ -628,6 +628,9 @@ treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_sup
   
   for(i in 1:tree_count){
     
+    # Is this the last tree?
+    last_tree <- ifelse(i==tree_count,TRUE,FALSE)
+    
     # Pull out tree
     temp_tree <- tree[[i]]
     
@@ -724,14 +727,14 @@ treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_sup
         
         if(is.character(to_color)){
           
-          return_tree <- ggtree(temp_tree,size=branch_weight,aes(color=group),show.legend=highlight_legend) %<+% ggtree_df
+          return_tree <- ggtree(temp_tree,size=branch_weight,aes(color=group)) %<+% ggtree_df
           return_tree <- return_tree + 
-            scale_color_manual(values = colors,guide=highlight_legend)
+            scale_color_manual(values = colors)
           
         } else if(is.list(to_color)){
-            return_tree <- ggtree(temp_tree,size=branch_weight,aes(color=group),show.legend=highlight_legend) %<+% ggtree_df
+            return_tree <- ggtree(temp_tree,size=branch_weight,aes(color=group)) %<+% ggtree_df
             return_tree <- return_tree + 
-              scale_color_manual("Focal Clades",breaks = names(to_color),values = colors,guide=highlight_legend)
+              scale_color_manual("Focal Clades",breaks = names(to_color),values = colors)
           }
         } else{
         return_tree <- ggtree(temp_tree,size=branch_weight) %<+% ggtree_df
@@ -741,14 +744,14 @@ treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_sup
         
         if(is.character(to_color)){
           
-          return_tree <- ggtree(temp_tree,branch.length = 'none',size=branch_weight,aes(color=group),show.legend=highlight_legend) %<+% ggtree_df
+          return_tree <- ggtree(temp_tree,branch.length = 'none',size=branch_weight,aes(color=group)) %<+% ggtree_df
           return_tree <- return_tree + 
-            scale_color_manual(values = colors,guide=highlight_legend)
+            scale_color_manual(values = colors)
           
         } else if(is.list(to_color)){
-            return_tree <- ggtree(temp_tree,branch.length = 'none',size=branch_weight,aes(color=group),show.legend=highlight_legend) %<+% ggtree_df
+            return_tree <- ggtree(temp_tree,branch.length = 'none',size=branch_weight,aes(color=group)) %<+% ggtree_df
             return_tree <- return_tree + 
-              scale_color_manual("Focal Clades",breaks = names(to_color),values = colors,guide=highlight_legend)
+              scale_color_manual("Focal Clades",breaks = names(to_color),values = colors)
           }
         } else{
           return_tree <- ggtree(temp_tree,branch.length = 'none',size=branch_weight) %<+% ggtree_df
@@ -765,20 +768,20 @@ treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_sup
     } else{
       if(is.character(to_color)){
         if(reverse_x){
-          return_tree <- return_tree + geom_tiplab(size=taxa_font_size,fontface=taxa_fontface,offset = -taxa_offset,aes(color=group),show.legend=highlight_legend,align=TRUE,linetype=NA,hjust=1) +
-            scale_color_manual(values = colors,guide=highlight_legend)
+          return_tree <- return_tree + geom_tiplab(size=taxa_font_size,fontface=taxa_fontface,offset = -taxa_offset,aes(color=group),align=TRUE,linetype=NA,hjust=1) +
+            scale_color_manual(values = colors)
         } else{
-          return_tree <- return_tree + geom_tiplab(size=taxa_font_size,fontface=taxa_fontface,offset = taxa_offset,aes(color=group),show.legend=highlight_legend) +
-            scale_color_manual(values = colors,guide=highlight_legend)          
+          return_tree <- return_tree + geom_tiplab(size=taxa_font_size,fontface=taxa_fontface,offset = taxa_offset,aes(color=group)) +
+            scale_color_manual(values = colors)          
         }
 
       } else if(is.list(to_color)){
           if(reverse_x){
-            return_tree <- return_tree + geom_tiplab(size=taxa_font_size,fontface=taxa_fontface,offset = -taxa_offset,aes(color=group),show.legend=highlight_legend,align=TRUE,linetype=NA,hjust=1) +
-              scale_color_manual("Focal Clades",breaks = names(to_color),values = colors,guide=highlight_legend)
+            return_tree <- return_tree + geom_tiplab(size=taxa_font_size,fontface=taxa_fontface,offset = -taxa_offset,aes(color=group),align=TRUE,linetype=NA,hjust=1) +
+              scale_color_manual("Focal Clades",breaks = names(to_color),values = colors)
           } else{
-            return_tree <- return_tree + geom_tiplab(size=taxa_font_size,fontface=taxa_fontface,offset = taxa_offset,aes(color=group),show.legend=highlight_legend) +
-              scale_color_manual("Focal Clades",breaks = names(to_color),values = colors,guide=highlight_legend)            
+            return_tree <- return_tree + geom_tiplab(size=taxa_font_size,fontface=taxa_fontface,offset = taxa_offset,aes(color=group)) +
+              scale_color_manual("Focal Clades",breaks = names(to_color),values = colors)            
           }
 
         }
@@ -848,10 +851,11 @@ treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_sup
       return_tree <- return_tree + ggplot2::ggtitle(plot_title[i])
     }
     
-    # Adjust theme (FIX LEGENDS)
-    if(i!=tree_count){
+    # Adjust theme
+    if(!last_tree){
       if(titlePlot){
-        return_tree <- return_tree + theme(plot.title = element_text(hjust = 0.5,face = plot_title_fontface,size = plot_title_size))
+        return_tree <- return_tree + theme(plot.title = element_text(hjust = 0.5,face = plot_title_fontface,size = plot_title_size)) +
+          guides(color = FALSE)
       }
     } else{
       if(titlePlot){

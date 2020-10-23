@@ -729,12 +729,12 @@ treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_sup
           
           return_tree <- ggtree(temp_tree,size=branch_weight,aes(color=group)) %<+% ggtree_df
           return_tree <- return_tree + 
-            scale_color_manual(values = colors)
+            scale_color_manual(values = colors,guide = (last_tree && highlight_legend))
           
         } else if(is.list(to_color)){
             return_tree <- ggtree(temp_tree,size=branch_weight,aes(color=group)) %<+% ggtree_df
             return_tree <- return_tree + 
-              scale_color_manual("Focal Clades",breaks = names(to_color),values = colors)
+              scale_color_manual("Focal Clades",breaks = names(to_color),values = colors,guide = (last_tree && highlight_legend))
           }
         } else{
         return_tree <- ggtree(temp_tree,size=branch_weight) %<+% ggtree_df
@@ -746,12 +746,12 @@ treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_sup
           
           return_tree <- ggtree(temp_tree,branch.length = 'none',size=branch_weight,aes(color=group)) %<+% ggtree_df
           return_tree <- return_tree + 
-            scale_color_manual(values = colors)
+            scale_color_manual(values = colors,guide = (last_tree && highlight_legend))
           
         } else if(is.list(to_color)){
             return_tree <- ggtree(temp_tree,branch.length = 'none',size=branch_weight,aes(color=group)) %<+% ggtree_df
             return_tree <- return_tree + 
-              scale_color_manual("Focal Clades",breaks = names(to_color),values = colors)
+              scale_color_manual("Focal Clades",breaks = names(to_color),values = colors,guide = (last_tree && highlight_legend))
           }
         } else{
           return_tree <- ggtree(temp_tree,branch.length = 'none',size=branch_weight) %<+% ggtree_df
@@ -769,19 +769,19 @@ treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_sup
       if(is.character(to_color)){
         if(reverse_x){
           return_tree <- return_tree + geom_tiplab(size=taxa_font_size,fontface=taxa_fontface,offset = -taxa_offset,aes(color=group),align=TRUE,linetype=NA,hjust=1) +
-            scale_color_manual(values = colors)
+            scale_color_manual(values = colors,guide = (last_tree && highlight_legend))
         } else{
           return_tree <- return_tree + geom_tiplab(size=taxa_font_size,fontface=taxa_fontface,offset = taxa_offset,aes(color=group)) +
-            scale_color_manual(values = colors)          
+            scale_color_manual(values = colors,guide = (last_tree && highlight_legend))          
         }
 
       } else if(is.list(to_color)){
           if(reverse_x){
             return_tree <- return_tree + geom_tiplab(size=taxa_font_size,fontface=taxa_fontface,offset = -taxa_offset,aes(color=group),align=TRUE,linetype=NA,hjust=1) +
-              scale_color_manual("Focal Clades",breaks = names(to_color),values = colors)
+              scale_color_manual("Focal Clades",breaks = names(to_color),values = colors,guide = (last_tree && highlight_legend))
           } else{
             return_tree <- return_tree + geom_tiplab(size=taxa_font_size,fontface=taxa_fontface,offset = taxa_offset,aes(color=group)) +
-              scale_color_manual("Focal Clades",breaks = names(to_color),values = colors)            
+              scale_color_manual("Focal Clades",breaks = names(to_color),values = colors,guide = (last_tree && highlight_legend))            
           }
 
         }
@@ -797,10 +797,10 @@ treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_sup
           return_tree <- return_tree + 
             ggnewscale::new_scale_color() + 
             geom_nodepoint(size=geom_size, alpha=geom_alpha,aes(color=clade_count)) +
-            scale_discrete_manual(aesthetics = c('color'),limits = factor(clade_numbers),values = viridisLite::viridis(length(clade_numbers)),name = "Trees with Split")
+            scale_discrete_manual(aesthetics = c('color'),limits = factor(clade_numbers),values = viridisLite::viridis(length(clade_numbers)),name = "Trees with Split",guide = last_tree)
         } else{
           return_tree <- return_tree + geom_nodepoint(size=geom_size, alpha=geom_alpha,aes(color=clade_count)) +
-            scale_discrete_manual(aesthetics = c('color'),limits = factor(clade_numbers),values = viridisLite::viridis(length(clade_numbers)),name = "Trees with Split")
+            scale_discrete_manual(aesthetics = c('color'),limits = factor(clade_numbers),values = viridisLite::viridis(length(clade_numbers)),name = "Trees with Split",guide = last_tree)
         }
       } else if(cladeSupport & treeSupport){
         if(colorTips){
@@ -808,12 +808,12 @@ treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_sup
             ggnewscale::new_scale_color() + 
             geom_nodepoint(alpha=geom_alpha,aes(size=size_geom,color=clade_count)) +
             scale_size_identity() + 
-            scale_discrete_manual(aesthetics = c('color'),limits = factor(clade_numbers),values = viridisLite::viridis(length(clade_numbers)),name = "Trees with Split")
+            scale_discrete_manual(aesthetics = c('color'),limits = factor(clade_numbers),values = viridisLite::viridis(length(clade_numbers)),name = "Trees with Split",guide = last_tree)
         } else{
           return_tree <- return_tree + 
             geom_nodepoint(alpha=geom_alpha,aes(size=size_geom,color=clade_count)) +
             scale_size_identity() + 
-            scale_discrete_manual(aesthetics = c('color'),limits = factor(clade_numbers),values = viridisLite::viridis(length(clade_numbers)),name = "Trees with Split")
+            scale_discrete_manual(aesthetics = c('color'),limits = factor(clade_numbers),values = viridisLite::viridis(length(clade_numbers)),name = "Trees with Split",guide = last_tree)
         }
       }
     }
@@ -854,8 +854,7 @@ treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_sup
     # Adjust theme
     if(!last_tree){
       if(titlePlot){
-        return_tree <- return_tree + theme(plot.title = element_text(hjust = 0.5,face = plot_title_fontface,size = plot_title_size)) +
-          guides(color = FALSE)
+        return_tree <- return_tree + theme(plot.title = element_text(hjust = 0.5,face = plot_title_fontface,size = plot_title_size))
       }
     } else{
       if(titlePlot){

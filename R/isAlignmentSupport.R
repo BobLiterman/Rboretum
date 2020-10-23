@@ -50,10 +50,10 @@ isAlignmentSupport <- function(test_object,test_clade,partial){
   } else if(Rboretum::isMultiPhylo(test_clade,check_rooted = TRUE,check_three_taxa = TRUE)){
     
     # Reduce to common taxa if necessary
-    if(!Rboretum::isMultiPhylo(tree,check_all_taxa = TRUE)){
-      tree <- treeTrimmer(tree)
+    if(!Rboretum::isMultiPhylo(test_clade,check_all_taxa = TRUE)){
+      test_clade <- treeTrimmer(test_clade)
     }
-    test_clade <- Rboretum::getTreeClades(tree,include_root = TRUE)
+    test_clade <- Rboretum::getTreeClades(test_clade,include_root = TRUE)
   } else if(!is.character(test_clade)){ # Ensure 'test_clade' is a character vector of semicolon-separated clades
     stop("'test_clade' must be a phylo, multiPhylo, or character vector")
   } else if(!purrr::map(.x=test_clade,.f=function(x){str_detect(x,";")}) %>% unlist() %>% all()){

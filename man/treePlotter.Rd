@@ -132,7 +132,7 @@ treePlotter(
 
 \item{colors}{OPTIONAL: Colors for clade highlighting. Must be hex or valid R colors. Provide a color for each group (1 if character vector, 1 for each group if named list) or default colors will be used.}
 
-\item{highlight_legend}{OPTIONAL: Include a legend for colored tips, given a list; [Default: False: No highlight legend]}
+\item{highlight_legend}{OPTIONAL: Include a legend for colored tips, given a list (disabled if providing clade_support); [Default: False: No highlight legend]}
 
 \item{color_branches}{OPTIONAL: If TRUE and coloring taxa or clades, color the branches rather than the tip labels [Default: FALSE, colorize tip labels; DEACTIVATED IF clade_support is provided]}
 

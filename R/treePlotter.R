@@ -61,7 +61,7 @@
 #'   \item List of groups of taxa, each of which will have their own color. List can be named for use with a legend (set highlight_legend == TRUE)
 #' }
 #' @param colors OPTIONAL: Colors for clade highlighting. Must be hex or valid R colors. Provide a color for each group (1 if character vector, 1 for each group if named list) or default colors will be used.
-#' @param highlight_legend OPTIONAL: Include a legend for colored tips, given a list; [Default: False: No highlight legend]
+#' @param highlight_legend OPTIONAL: Include a legend for colored tips, given a list (disabled if providing clade_support); [Default: False: No highlight legend]
 #' @param color_branches OPTIONAL: If TRUE and coloring taxa or clades, color the branches rather than the tip labels [Default: FALSE, colorize tip labels; DEACTIVATED IF clade_support is provided]
 #' @param plot_title OPTIONAL: Character vector containing plot titles (1 per tree) [Default: No title for phylo, tree name for multiPhylo]
 #' @param plot_title_size OPTIONAL: Set ggplot title font size [Default: 14]
@@ -616,6 +616,11 @@ treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_sup
       scaled_totals  <- Rboretum::rescaleTreeSupport(tree_support,scale = geom_size,scale_range=scale_range)
       tree_support_summary <- data.frame(Clade=as.character(tree_support$Clade),total_sites = as.integer(raw_totals),scaled_total = as.numeric(scaled_totals),stringsAsFactors = FALSE)
     }
+  }
+  
+  # If plotting clade support, tip highlight legend is disabled
+  if(cladeSupport){
+    highlight_legend <- FALSE
   }
   
   # Create dummy multiPhylo for simple handling

@@ -83,7 +83,6 @@
 #' @export
 
 treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_support,geom_size,scale_range,use_pies,pie_colors,pie_scaler,pie_xnudge,pie_ynudge,pie_legend_position,branch_length,branch_weight,node_label,node_label_font_size,node_label_fontface,node_label_color,node_label_box,node_label_nudge,taxa_font_size,taxa_fontface,taxa_offset,xmax,xmin,reverse_x,to_color,colors,highlight_legend,color_branches,plot_title,plot_title_size,plot_title_fontface,legend_shape_size,legend_font_size,legend_title_size,geom_alpha,geom_color){  
-  
   # Ensure tree is valid for plotter
   if(!Rboretum::isMultiPhylo(tree) & !Rboretum::isPhylo(tree)){
     stop("'tree' must be either a phylo object or a mulitPhlyo object")
@@ -639,10 +638,19 @@ treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_sup
         mutate(pie_scales = pie_scaler*(scaled_total/max_scaled)) %>%
         ungroup()
     } else{
-      tree_support_summary <- tree_support_summary %>%
-        rowwise() %>%
-        mutate(pie_scales = pie_scaler*(total_sites/max_raw)) %>%
-        ungroup()
+      if(missing(scale_range)){
+        tree_support_summary <- tree_support_summary %>%
+          rowwise() %>%
+          mutate(pie_scales = pie_scaler*(total_sites/max_raw)) %>%
+          ungroup()
+      } else{
+        tree_support_summary <- tree_support_summary %>%
+          rowwise() %>%
+          mutate(pie_scales = ifelse(total_sites >= scale_range[2],1,
+                                     ifelse(total_sites <= scale_range[1],pie_scaler*(scale_range[1]/scale_range[2]),pie_scaler*(total_sites/scale_range[2])))) %>%
+          ungroup()
+      }
+      
     }
   }
   

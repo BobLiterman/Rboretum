@@ -31,12 +31,12 @@ timePlotter <- function(node_age_df,tree_support,plot_datasets,all_sites_col,lm_
   } else{
     
     # Check column names
-    if(!all(names(node_age_df)==c('Clade','Mean_Node_Age')) | !all(names(node_age_df)==c('Clade','Median_Node_Age')) | !all(names(node_age_df)==c('Clade','Node_Age'))){
+    if(names(node_age_df)[1] == 'Clade' && names(node_age_df)[2] %in% c('Node_Age','Mean_Node_Age','Median_Node_Age')){
+      node_age_df <- node_age_df %>% `names<-`(c('Clade','Node_Age'))
+    } else{
       stop("'node_age_df' should be the output from extractNodeAges() or extractNodeAges(return_summary=mean/median)")
     }
   }
-  
-  node_age_df <- node_age_df %>% `names<-`(c('Clade','Node_Age'))
 
   # Ensure tree_support contains at least two columns of data
   if(missing(tree_support)){

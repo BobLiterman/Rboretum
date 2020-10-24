@@ -646,7 +646,7 @@ treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_sup
       } else{
         tree_support_summary <- tree_support_summary %>%
           rowwise() %>%
-          mutate(pie_scales = ifelse(total_sites >= scale_range[2],1,
+          mutate(pie_scales = ifelse(total_sites >= scale_range[2],pie_scaler,
                                      ifelse(total_sites <= scale_range[1],pie_scaler*(scale_range[1]/scale_range[2]),pie_scaler*(total_sites/scale_range[2])))) %>%
           ungroup()
       }

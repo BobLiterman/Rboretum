@@ -14,13 +14,11 @@
 #' \itemize{
 #'   \item Single numeric value: All geom_nodepoint geoms will be this size [Default: 4]
 #'   \item c(min,max): If used with tree_support, geoms will be sized based on the total support across datasets and rescaled between min and max.
-#'   \item "log": If used with tree_support, geoms will be sized based on the log-transformed total support across datasets
-#'   \item "none": Do not print geom_nodepoints
 #' }
+#' @param log_transform OPTIONAL: If TRUE and plotting tree_support, log transform values prior to rescaling [Default: FALSE]
 #' @param scale_range OPTIONAL: If plotting tree_support, supply a min and max of values to be scaled. Values outside this range will be displayed as the otherwise min/max geom size. [Default: scale all data]
 #' @param use_pies OPTIONAL: If TRUE and tree_support contains inforomation from 2+ datasets, data from tree_support will be displayed as an inset pie chart rather than a geom_nodepoint [Default: FALSE, use geom_nodepoint; DEACTIVATED WHEN clade_support IS PROVIDED]	
 #' @param pie_colors OPTIONAL If plotting with pies, a vector of colors with one item per support column [Default: ggplot default colors]
-#' @param pie_scaler OPTIONAL: If plotting with pies, use pie_scaler to set a relative downward adjustment for geom size (ie. 0.1, 0.5, etc). If pie_scaler > 1, pies will be plotted without adjustment
 #' @param pie_xnudge OPTIONAL: Set ggtree pie label hjust [Default: 0]	
 #' @param pie_ynudge OPTIONAL: Set ggtree pie label yjust [Default: 0]	
 #' @param pie_legend_position OPTIONAL: Numerical vector of length four specifying legend xmin,xmax,ymin,ymax respectively. [Default = c(1,1,1,1); Necessary oddity of generating a legend for nodepie data]
@@ -82,7 +80,7 @@
 #' @return ggtree object or list of ggtree objects
 #' @export
 
-treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_support,geom_size,scale_range,use_pies,pie_colors,pie_scaler,pie_xnudge,pie_ynudge,pie_legend_position,branch_length,branch_weight,node_label,node_label_font_size,node_label_fontface,node_label_color,node_label_box,node_label_nudge,taxa_font_size,taxa_fontface,taxa_offset,xmax,xmin,reverse_x,to_color,colors,highlight_legend,color_branches,plot_title,plot_title_size,plot_title_fontface,legend_shape_size,legend_font_size,legend_title_size,geom_alpha,geom_color){  
+treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_support,geom_size,log_transform,scale_range,use_pies,pie_colors,pie_xnudge,pie_ynudge,pie_legend_position,branch_length,branch_weight,node_label,node_label_font_size,node_label_fontface,node_label_color,node_label_box,node_label_nudge,taxa_font_size,taxa_fontface,taxa_offset,xmax,xmin,reverse_x,to_color,colors,highlight_legend,color_branches,plot_title,plot_title_size,plot_title_fontface,legend_shape_size,legend_font_size,legend_title_size,geom_alpha,geom_color){  
   # Ensure tree is valid for plotter
   if(!Rboretum::isMultiPhylo(tree) & !Rboretum::isPhylo(tree)){
     stop("'tree' must be either a phylo object or a mulitPhlyo object")
@@ -285,7 +283,7 @@ treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_sup
     if(ncol(tree_support)>2 & !cladeSupport){	
       piePossible <- TRUE	
     } else{	
-      piePossible <- FALSE # TODO: Fix for node labels	
+      piePossible <- FALSE
     }
   }
   
@@ -306,15 +304,6 @@ treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_sup
   } else if(!piePossible){	
     use_pies <- FALSE	
   }	
-  
-  # Scale pies?	
-  if(missing(pie_scaler)){	
-    pie_scaler <- 1	
-  } else if(!is.numeric(pie_scaler)){	
-    pie_scaler <- 1
-  }	else if(pie_scaler > 1){
-    pie_scaler <- 1
-  }
   
   # Nudge pies?	
   if(missing(pie_xnudge)){	
@@ -339,49 +328,30 @@ treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_sup
     
     nodePoint <-  TRUE
     
+    # Set geom_size
     if(missing(geom_size)){
       geom_size <- 4
-    } else if(length(geom_size)==1){
-      if(is.character(geom_size)){
-        if(!geom_size %in% c('log','none')){
-          stop("If 'geom_size' is a character, only 'log' or 'none' are allowed")
-        } else if(!geom_size == 'none'){
-          if(treeSupport){
-            geom_size <- 'log'
-          } else{
-            geom_size <- 4
-          }
-        } else{
-          geom_size <- "none"
-          nodePoint <- FALSE
-        }
-      } else if(is.numeric(geom_size)){
+    } else if(is.numeric(geom_size)){
+      if(length(geom_size)==1){
         geom_size <- as.numeric(geom_size)
-      }
-    } else if(length(geom_size)==2){
-      
-      if(!is.numeric(geom_size)){
-        stop("'geom_size' is length 2, but not c(min,max)")
-      }
-      
-      min_geom <- geom_size[1]
-      max_geom <- geom_size[2]
-      if(min_geom < max_geom){
+      } else if(length(geom_size)==2){
+        
+        min_geom <- min(geom_size)
+        max_geom <- max(geom_size)
         
         if(treeSupport){
           geom_size <- as.numeric(geom_size)
         } else{
-          geom_size <- 4
-        }
-        
+          geom_size <- max_geom
+        } 
       } else{
-        stop("'geom_size' is length 2, but not c(min,max)")
+        stop("geom_size should be a one or two-element numeric vector.")
       }
     } else{
-      stop("If 'geom_size' is numeric, it should be one or two items long.")
+      stop("geom_size should be a one or two-element numeric vector.")
     }
   }
-  
+
   # Print tree with branch lengths?
   if(missing(branch_length)){
     branch_length <- FALSE
@@ -615,44 +585,38 @@ treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_sup
     highlight_legend <- FALSE
   }
   
+  # Log transform data?
+  if(missing(log_transform)){
+    log_transform <- FALSE
+  } else if(!is.logical(log_transform)){
+    log_transform <- FALSE
+  }
+  
   # Rescale tree support
   if(treeSupport){
+    
     raw_totals <- Rboretum::rescaleTreeSupport(tree_support,return_total = TRUE)
     
     if(missing(scale_range)){
-      scaled_totals  <- Rboretum::rescaleTreeSupport(tree_support,scale = geom_size)
+      scale_range <- c(min(raw_totals),max(raw_totals))
+    } else if(is.numeric(scale_range) && length(scale_range)==2){
+      scale_range <- c(min(scale_range),max(scale_range))
     } else{
-      scaled_totals  <- Rboretum::rescaleTreeSupport(tree_support,scale = geom_size,scale_range=scale_range)
+      stop("scale_range should be a 2-element numeric vector.")
     }
+    
+    if(log_transform){
+      tree_support <- mutate_if(is.numeric,log) %>%
+        mutate_if(is.numeric, function(x) ifelse(is.infinite(x), 0, x))
+    }
+
+    scaled_totals  <- Rboretum::rescaleTreeSupport(tree_support,scale = geom_size,scale_range=scale_range)
     
     tree_support_summary <- data.frame('Clade'=as.character(tree_support$Clade),
                                        'total_sites' = as.integer(raw_totals),
                                        'scaled_total' = as.numeric(scaled_totals),
                                        stringsAsFactors = FALSE)
-    max_raw <- max(raw_totals)
-    max_scaled <- max(scaled_totals)
-    
-    if("log" %in% geom_size){
-      tree_support_summary <- tree_support_summary %>%
-        rowwise() %>%
-        mutate(pie_scales = pie_scaler*(scaled_total/max_scaled)) %>%
-        ungroup()
-    } else{
-      if(missing(scale_range)){
-        tree_support_summary <- tree_support_summary %>%
-          rowwise() %>%
-          mutate(pie_scales = pie_scaler*(total_sites/max_raw)) %>%
-          ungroup()
-      } else{
-        tree_support_summary <- tree_support_summary %>%
-          rowwise() %>%
-          mutate(pie_scales = ifelse(total_sites >= scale_range[2],pie_scaler,
-                                     ifelse(total_sites <= scale_range[1],pie_scaler*(scale_range[1]/scale_range[2]),pie_scaler*(total_sites/scale_range[2])))) %>%
-          ungroup()
-      }
-      
     }
-  }
   
   # If plotting clade support, tip highlight legend is disabled
   if(cladeSupport){
@@ -962,17 +926,17 @@ treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_sup
     if(use_pies){	
       if(i!=tree_count){
         if(reverse_x){	
-          return_tree <- inset(return_tree,pies,height=pie_df$pie_scales,width=pie_df$pie_scales,hjust=pie_xnudge,vjust=pie_ynudge,reverse_x = TRUE)	
+          return_tree <- pie_inset(return_tree,pies,height=pie_df$pie_scales,width=pie_df$pie_scales,hjust=pie_xnudge,vjust=pie_ynudge,reverse_x = TRUE)	
         } else{	
-          return_tree <- inset(return_tree,pies,height=pie_df$pie_scales,width=pie_df$pie_scales,hjust=pie_xnudge,vjust=pie_ynudge)	
+          return_tree <- pie_inset(return_tree,pies,height=pie_df$pie_scales,width=pie_df$pie_scales,hjust=pie_xnudge,vjust=pie_ynudge)	
         }	
       } else{
         if(reverse_x){	
-          return_tree <- inset(return_tree,pies,height=pie_df$pie_scales,width=pie_df$pie_scales,hjust=pie_xnudge,vjust=pie_ynudge,reverse_x = TRUE) +
+          return_tree <- pie_inset(return_tree,pies,height=pie_df$pie_scales,width=pie_df$pie_scales,hjust=pie_xnudge,vjust=pie_ynudge,reverse_x = TRUE) +
             ggplot2::annotation_custom(grob = legend_for_pie,xmin = pie_legend_position[1],xmax = pie_legend_position[2],ymin = pie_legend_position[3],ymax = pie_legend_position[4])	
           
         } else{	
-          return_tree <- inset(return_tree,pies,height=pie_df$pie_scales,width=pie_df$pie_scales,hjust=pie_xnudge,vjust=pie_ynudge)	+
+          return_tree <- pie_inset(return_tree,pies,height=pie_df$pie_scales,width=pie_df$pie_scales,hjust=pie_xnudge,vjust=pie_ynudge)	+
             ggplot2::annotation_custom(grob = legend_for_pie,xmin = pie_legend_position[1],xmax = pie_legend_position[2],ymin = pie_legend_position[3],ymax = pie_legend_position[4])
         }	
       }

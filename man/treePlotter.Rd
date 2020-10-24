@@ -11,10 +11,10 @@ treePlotter(
   plot_root_support,
   clade_support,
   geom_size,
+  log_transform,
   scale_range,
   use_pies,
   pie_colors,
-  pie_scaler,
   pie_xnudge,
   pie_ynudge,
   pie_legend_position,
@@ -65,17 +65,15 @@ treePlotter(
 \itemize{
   \item Single numeric value: All geom_nodepoint geoms will be this size [Default: 4]
   \item c(min,max): If used with tree_support, geoms will be sized based on the total support across datasets and rescaled between min and max.
-  \item "log": If used with tree_support, geoms will be sized based on the log-transformed total support across datasets
-  \item "none": Do not print geom_nodepoints
 }}
+
+\item{log_transform}{OPTIONAL: If TRUE and plotting tree_support, log transform values prior to rescaling [Default: FALSE]}
 
 \item{scale_range}{OPTIONAL: If plotting tree_support, supply a min and max of values to be scaled. Values outside this range will be displayed as the otherwise min/max geom size. [Default: scale all data]}
 
 \item{use_pies}{OPTIONAL: If TRUE and tree_support contains inforomation from 2+ datasets, data from tree_support will be displayed as an inset pie chart rather than a geom_nodepoint [Default: FALSE, use geom_nodepoint; DEACTIVATED WHEN clade_support IS PROVIDED]}
 
 \item{pie_colors}{OPTIONAL If plotting with pies, a vector of colors with one item per support column [Default: ggplot default colors]}
-
-\item{pie_scaler}{OPTIONAL: If plotting with pies, use pie_scaler to set a relative downward adjustment for geom size (ie. 0.1, 0.5, etc). If pie_scaler > 1, pies will be plotted without adjustment}
 
 \item{pie_xnudge}{OPTIONAL: Set ggtree pie label hjust [Default: 0]}
 

@@ -19,12 +19,25 @@ timePlotter <- function(node_age_df,tree_support,plot_datasets,all_sites_col,lm_
     stop("'node_age_df' [output from extractNodeAges() or extractNodeAges(return_summary=mean/median)] is required")
   } else if(!is.data.frame(node_age_df)){
     stop("'node_age_df' should be the output from extractNodeAges() or extractNodeAges(return_summary=mean/median)")
-  } else if(!ncol(node_age_df) == 2){
-    stop("'node_age_df' should be the output from extractNodeAges() or extractNodeAges(return_summary=mean/median)")
-  } else if(!all(names(node_age_df)==c('Clade','Node_Age'))){
-    stop("'node_age_df' should be the output from extractNodeAges() or extractNodeAges(return_summary=mean/median)")
+  } 
+  
+  # Remove variation column
+  if(ncol(node_age_df)==3){
+    node_age_df <- node_age_df %>% select(-3)
   }
   
+  if(!ncol(node_age_df)==2){
+    stop("'node_age_df' should be the output from extractNodeAges() or extractNodeAges(return_summary=mean/median)")
+  } else{
+    
+    # Check column names
+    if(!all(names(node_age_df)==c('Clade','Mean_Node_Age')) | !all(names(node_age_df)==c('Clade','Median_Node_Age')) | !all(names(node_age_df)==c('Clade','Node_Age'))){
+      stop("'node_age_df' should be the output from extractNodeAges() or extractNodeAges(return_summary=mean/median)")
+    }
+  }
+  
+  node_age_df <- node_age_df %>% `names<-`(c('Clade','Node_Age'))
+
   # Ensure tree_support contains at least two columns of data
   if(missing(tree_support)){
     stop("'tree_support' (with 2+ data columns) is required.")

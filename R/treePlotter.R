@@ -926,17 +926,17 @@ treePlotter <- function(tree,basic_plot,tree_support,plot_root_support,clade_sup
     if(use_pies){	
       if(i!=tree_count){
         if(reverse_x){	
-          return_tree <- pie_inset(return_tree,pies,height=pie_df$pie_scales,width=pie_df$pie_scales,hjust=pie_xnudge,vjust=pie_ynudge,reverse_x = TRUE)	
+          return_tree <- pie_inset(return_tree,pies,height=pie_df$scaled_total,width=pie_df$scaled_total,hjust=pie_xnudge,vjust=pie_ynudge,reverse_x = TRUE)	
         } else{	
-          return_tree <- pie_inset(return_tree,pies,height=pie_df$pie_scales,width=pie_df$pie_scales,hjust=pie_xnudge,vjust=pie_ynudge)	
+          return_tree <- pie_inset(return_tree,pies,height=pie_df$scaled_total,width=pie_df$scaled_total,hjust=pie_xnudge,vjust=pie_ynudge)	
         }	
       } else{
         if(reverse_x){	
-          return_tree <- pie_inset(return_tree,pies,height=pie_df$pie_scales,width=pie_df$pie_scales,hjust=pie_xnudge,vjust=pie_ynudge,reverse_x = TRUE) +
+          return_tree <- pie_inset(return_tree,pies,height=pie_df$scaled_total,width=pie_df$scaled_total,hjust=pie_xnudge,vjust=pie_ynudge,reverse_x = TRUE) +
             ggplot2::annotation_custom(grob = legend_for_pie,xmin = pie_legend_position[1],xmax = pie_legend_position[2],ymin = pie_legend_position[3],ymax = pie_legend_position[4])	
           
         } else{	
-          return_tree <- pie_inset(return_tree,pies,height=pie_df$pie_scales,width=pie_df$pie_scales,hjust=pie_xnudge,vjust=pie_ynudge)	+
+          return_tree <- pie_inset(return_tree,pies,height=pie_df$scaled_total,width=pie_df$scaled_total,hjust=pie_xnudge,vjust=pie_ynudge)	+
             ggplot2::annotation_custom(grob = legend_for_pie,xmin = pie_legend_position[1],xmax = pie_legend_position[2],ymin = pie_legend_position[3],ymax = pie_legend_position[4])
         }	
       }

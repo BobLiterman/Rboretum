@@ -17,4 +17,8 @@ Installation
 **Rboretum** can be installed through devtools::
   
     devtools::install_github('BobLiterman/Rboretum')
+    
+    # If you get errors about packages being built under different versions of R that prevents installation, run:
+    # Sys.setenv(R_REMOTES_NO_ERRORS_FROM_WARNINGS=TRUE)
+    # and attempt to reinstall
 

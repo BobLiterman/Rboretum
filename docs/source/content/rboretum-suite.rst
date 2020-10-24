@@ -23,6 +23,7 @@ Plotting Functions
   :maxdepth: 1
 
   plotting_functions/tandemPlotter
+  plotting_functions/treePlotter
     
 Tree Functions
 ---------------

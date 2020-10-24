@@ -1,0 +1,427 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>treePlotter &mdash; Rboretum 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/Rboretum_Logo.png"/>
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="checkTips" href="../tree_functions/checkTips.html" />
+    <link rel="prev" title="tandemPlotter" href="tandemPlotter.html" />
+    <link href="../../_static/RAL_Style.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> Rboretum
+          
+
+          
+            
+            <img src="../../_static/Rboretum_Logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html"><strong>Installing Rboretum</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../loading.html"><strong>Loading Rboretum</strong></a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../rboretum-suite.html"><strong>Rboretum Functions</strong></a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../alignment_functions/getAlignmentComposition.html"><strong>getAlignmentComposition</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../alignment_functions/getAlignmentBreakdown.html"><strong>getAlignmentBreakdown</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../alignment_functions/getAlignmentPatterns.html"><strong>getAlignmentPatterns</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../alignment_functions/getAlignmentSignal.html"><strong>getAlignmentSignal</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../alignment_functions/getAlignmentSpecies.html"><strong>getAlignmentSpecies</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../alignment_functions/getAlignmentSupport.html"><strong>getAlignmentSupport</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../alignment_functions/getSpeciesComposition.html"><strong>getSpeciesComposition</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="tandemPlotter.html"><strong>tandemPlotter</strong></a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><strong>treePlotter</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/checkTips.html"><strong>checkTips</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/extractNodeAges.html"><strong>extractNodeAges</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/getSharedTaxa.html"><strong>getSharedTaxa</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/getTreeClades.html"><strong>getTreeClades</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/getTreeRoot.html"><strong>getTreeRoot</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/getTreeSplits.html"><strong>getTreeSplits</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/getUniqueTopologies.html"><strong>getUniqueTopologies</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/readRooted.html"><strong>readRooted</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/summarizeMultiphylo.html"><strong>summarizeMultiphylo</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/treeDater.html"><strong>treeDater</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/treeNamer.html"><strong>treeNamer</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/treeTrimmer.html"><strong>treeTrimmer</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utility_functions/convertLabels.html"><strong>convertLabels</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utility_functions/semiSorter.html"><strong>semiSorter</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utility_functions/semiVector.html"><strong>semiVector</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utility_functions/tableCount.html"><strong>tableCount</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utility_functions/vectorSemi.html"><strong>vectorSemi</strong></a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Rboretum</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../rboretum-suite.html"><strong>Rboretum Functions</strong></a> &raquo;</li>
+        
+      <li><strong>treePlotter</strong></li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/content/plotting_functions/treePlotter.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="treeplotter">
+<span id="id1"></span><h1><strong>treePlotter</strong><a class="headerlink" href="#treeplotter" title="Permalink to this headline">¶</a></h1>
+<p>This is a walkthrough for the Rboretum Tree Plotter. <strong>treePlotter</strong> is a wrapper for the <em>ggtree</em> function, and it adds many user-friendly customization options.</p>
+<div class="section" id="basic-plotting">
+<h2>Basic Plotting<a class="headerlink" href="#basic-plotting" title="Permalink to this headline">¶</a></h2>
+<p>To get started, let’s read in one tree.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">myTree</span> <span class="o">&lt;-</span> <span class="nf">readRooted</span><span class="p">(</span><span class="n">rb_tree1_path</span><span class="p">,</span><span class="s">&#39;Species_C;Species_H&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><br />
+If we run treePlotter(myTree), we can see the default settings.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">treePlotter</span><span class="p">(</span><span class="n">myTree</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/treePlotter_1.png"><img alt="../../_images/treePlotter_1.png" src="../../_images/treePlotter_1.png" style="width: 600px;" /></a>
+<p>D’oh! Don’t you hate it when that happens? <strong>treePlotter</strong> allows you to adjust the <em>xmin</em> and <em>xmax</em> of plots to help with cut-off labels.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">treePlotter</span><span class="p">(</span><span class="n">myTree</span><span class="p">,</span><span class="n">xmin</span><span class="o">=</span><span class="m">-1</span><span class="p">,</span><span class="n">xmax</span><span class="o">=</span><span class="m">8</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/treePlotter_2.png"><img alt="../../_images/treePlotter_2.png" src="../../_images/treePlotter_2.png" style="width: 600px;" /></a>
+<p>That’s better! If you want to adjust the thickness of your branches, you can use the <em>branch_weight</em> argument</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">treePlotter</span><span class="p">(</span><span class="n">myTree</span><span class="p">,</span><span class="n">xmin</span><span class="o">=</span><span class="m">-1</span><span class="p">,</span><span class="n">xmax</span><span class="o">=</span><span class="m">8</span><span class="p">,</span><span class="n">branch_weight</span><span class="o">=</span><span class="m">3</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/treePlotter_3.png"><img alt="../../_images/treePlotter_3.png" src="../../_images/treePlotter_3.png" style="width: 600px;" /></a>
+<p>There are a number of options to tweak the tip labels, including:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><em>taxa_font_size</em>: Set the font size for the tip labels</p></li>
+<li><p><em>taxa_fontface</em>: Options include ‘plain’ [default], ‘bold’,’italic’, and ‘bold.italic’</p></li>
+<li><p><em>taxa_offset</em>: Set tip label away from tree</p></li>
+</ul>
+</div></blockquote>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">treePlotter</span><span class="p">(</span><span class="n">myTree</span><span class="p">,</span><span class="n">xmin</span><span class="o">=</span><span class="m">-1</span><span class="p">,</span><span class="n">xmax</span><span class="o">=</span><span class="m">8</span><span class="p">,</span><span class="n">branch_weight</span><span class="o">=</span><span class="m">3</span><span class="p">,</span><span class="n">taxa_font_size</span><span class="o">=</span><span class="m">6</span><span class="p">,</span><span class="n">taxa_fontface</span> <span class="o">=</span> <span class="s">&#39;bold&#39;</span><span class="p">,</span><span class="n">taxa_offset</span> <span class="o">=</span> <span class="m">0.2</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/treePlotter_4.png"><img alt="../../_images/treePlotter_4.png" src="../../_images/treePlotter_4.png" style="width: 600px;" /></a>
+<p>Trees can be plotted with or without branch lengths via the <em>branch_length</em> argument. As default, trees are printed as cladograms (<em>branch_length</em> = FALSE)</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">treePlotter</span><span class="p">(</span><span class="n">myTree</span><span class="p">,</span><span class="n">branch_length</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">,</span><span class="n">xmax</span><span class="o">=</span><span class="m">0.09</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/treePlotter_5.png"><img alt="../../_images/treePlotter_5.png" src="../../_images/treePlotter_5.png" style="width: 600px;" /></a>
+<p>Node labels can also be customized. Basic options include:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><em>node_label</em>: What label to use.</p>
+<ul>
+<li><p>“bs”: Bootstrap [default]</p></li>
+<li><p>“none”: No label</p></li>
+<li><p>“node”: Print the Node ID (output from getMRCA)</p></li>
+</ul>
+</li>
+<li><p><em>node_label_font_size</em></p></li>
+<li><p><em>node_label_fontface</em></p></li>
+<li><p><em>node_label_color</em></p></li>
+<li><p><em>node_label_box</em>: Print nodel label in a box [Default = TRUE]</p></li>
+<li><p><em>node_label_nudge</em></p></li>
+</ul>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">treePlotter</span><span class="p">(</span><span class="n">myTree</span><span class="p">,</span><span class="n">xmax</span><span class="o">=</span><span class="m">8</span><span class="p">,</span><span class="n">node_label</span> <span class="o">=</span> <span class="s">&#39;node&#39;</span><span class="p">,</span><span class="n">node_label_nudge</span> <span class="o">=</span> <span class="m">0.05</span><span class="p">,</span><span class="n">node_label_box</span> <span class="o">=</span> <span class="kc">FALSE</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></blockquote>
+<a class="reference internal image-reference" href="../../_images/treePlotter_6.png"><img alt="../../_images/treePlotter_6.png" src="../../_images/treePlotter_6.png" style="width: 600px;" /></a>
+<p>You can highlight specific tip labels or branchs with colors. There are a few ways to specify groups, including a single vector of tips, or a list of different subsets.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">myFavoriteSpecies</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Species_N&#39;</span><span class="p">,</span><span class="s">&#39;Species_G&#39;</span><span class="p">,</span><span class="s">&#39;Species_I&#39;</span><span class="p">)</span>
+<span class="n">myWorstSpecies</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Species_A&#39;</span><span class="p">,</span><span class="s">&#39;Species_B&#39;</span><span class="p">)</span>
+
+<span class="n">species_list</span> <span class="o">&lt;-</span> <span class="nf">list</span><span class="p">(</span><span class="s">&quot;Good&quot;</span> <span class="o">=</span> <span class="n">myFavoriteSpecies</span><span class="p">,</span> <span class="s">&quot;Bad&quot;</span> <span class="o">=</span> <span class="n">myWorstSpecies</span><span class="p">)</span>
+
+<span class="nf">treePlotter</span><span class="p">(</span><span class="n">myTree</span><span class="p">,</span><span class="n">xmin</span><span class="o">=</span><span class="m">-1</span><span class="p">,</span><span class="n">xmax</span><span class="o">=</span><span class="m">8</span><span class="p">,</span><span class="n">branch_weight</span><span class="o">=</span><span class="m">3</span><span class="p">,</span><span class="n">taxa_font_size</span><span class="o">=</span><span class="m">6</span><span class="p">,</span><span class="n">taxa_fontface</span> <span class="o">=</span> <span class="s">&#39;bold&#39;</span><span class="p">,</span><span class="n">taxa_offset</span> <span class="o">=</span> <span class="m">0.2</span><span class="p">,</span><span class="n">to_color</span> <span class="o">=</span> <span class="n">myFavoriteSpecies</span><span class="p">,</span><span class="n">colors</span> <span class="o">=</span> <span class="s">&#39;red&#39;</span><span class="p">,</span><span class="n">color_branches</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
+<span class="nf">treePlotter</span><span class="p">(</span><span class="n">myTree</span><span class="p">,</span><span class="n">xmin</span><span class="o">=</span><span class="m">-1</span><span class="p">,</span><span class="n">xmax</span><span class="o">=</span><span class="m">8</span><span class="p">,</span><span class="n">branch_weight</span><span class="o">=</span><span class="m">3</span><span class="p">,</span><span class="n">taxa_font_size</span><span class="o">=</span><span class="m">6</span><span class="p">,</span><span class="n">taxa_fontface</span> <span class="o">=</span> <span class="s">&#39;bold&#39;</span><span class="p">,</span><span class="n">taxa_offset</span> <span class="o">=</span> <span class="m">0.2</span><span class="p">,</span><span class="n">to_color</span> <span class="o">=</span> <span class="n">myWorstSpecies</span><span class="p">,</span><span class="n">colors</span> <span class="o">=</span> <span class="s">&#39;blue&#39;</span><span class="p">)</span>
+
+<span class="nf">treePlotter</span><span class="p">(</span><span class="n">myTree</span><span class="p">,</span><span class="n">xmin</span><span class="o">=</span><span class="m">-1</span><span class="p">,</span><span class="n">xmax</span><span class="o">=</span><span class="m">8</span><span class="p">,</span><span class="n">branch_weight</span><span class="o">=</span><span class="m">3</span><span class="p">,</span><span class="n">taxa_font_size</span><span class="o">=</span><span class="m">6</span><span class="p">,</span><span class="n">taxa_fontface</span> <span class="o">=</span> <span class="s">&#39;bold&#39;</span><span class="p">,</span><span class="n">taxa_offset</span> <span class="o">=</span> <span class="m">0.2</span><span class="p">,</span><span class="n">to_color</span> <span class="o">=</span> <span class="n">species_list</span><span class="p">)</span>
+<span class="nf">treePlotter</span><span class="p">(</span><span class="n">myTree</span><span class="p">,</span><span class="n">xmin</span><span class="o">=</span><span class="m">-1</span><span class="p">,</span><span class="n">xmax</span><span class="o">=</span><span class="m">8</span><span class="p">,</span><span class="n">branch_weight</span><span class="o">=</span><span class="m">3</span><span class="p">,</span><span class="n">taxa_font_size</span><span class="o">=</span><span class="m">6</span><span class="p">,</span><span class="n">taxa_fontface</span> <span class="o">=</span> <span class="s">&#39;bold&#39;</span><span class="p">,</span><span class="n">taxa_offset</span> <span class="o">=</span> <span class="m">0.2</span><span class="p">,</span><span class="n">to_color</span> <span class="o">=</span> <span class="n">species_list</span><span class="p">,</span><span class="n">colors</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;green3&#39;</span><span class="p">,</span><span class="s">&#39;pink3&#39;</span><span class="p">),</span><span class="n">highlight_legend</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/treePlotter_7.png"><img alt="../../_images/treePlotter_7.png" src="../../_images/treePlotter_7.png" style="width: 600px;" /></a>
+<p><br /></p>
+<a class="reference internal image-reference" href="../../_images/treePlotter_8.png"><img alt="../../_images/treePlotter_8.png" src="../../_images/treePlotter_8.png" style="width: 600px;" /></a>
+<p><br /></p>
+<a class="reference internal image-reference" href="../../_images/treePlotter_9.png"><img alt="../../_images/treePlotter_9.png" src="../../_images/treePlotter_9.png" style="width: 600px;" /></a>
+<p><br /></p>
+<a class="reference internal image-reference" href="../../_images/treePlotter_10.png"><img alt="../../_images/treePlotter_10.png" src="../../_images/treePlotter_10.png" style="width: 600px;" /></a>
+<p>Reverse the X-axis using <em>reverse_x</em> = TRUE</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">plot1</span> <span class="o">&lt;-</span> <span class="nf">treePlotter</span><span class="p">(</span><span class="n">myTree</span><span class="p">,</span><span class="n">xmin</span><span class="o">=</span><span class="m">-1</span><span class="p">,</span><span class="n">xmax</span><span class="o">=</span><span class="m">8</span><span class="p">,</span><span class="n">branch_weight</span><span class="o">=</span><span class="m">3</span><span class="p">,</span><span class="n">taxa_font_size</span><span class="o">=</span><span class="m">6</span><span class="p">,</span><span class="n">taxa_fontface</span> <span class="o">=</span> <span class="s">&#39;bold&#39;</span><span class="p">,</span><span class="n">taxa_offset</span> <span class="o">=</span> <span class="m">0.2</span><span class="p">,</span><span class="n">to_color</span> <span class="o">=</span> <span class="n">myFavoriteSpecies</span><span class="p">,</span><span class="n">colors</span><span class="o">=</span><span class="s">&quot;red&quot;</span><span class="p">)</span>
+<span class="n">plot2</span> <span class="o">&lt;-</span> <span class="nf">treePlotter</span><span class="p">(</span><span class="n">myTree</span><span class="p">,</span><span class="n">xmin</span><span class="o">=</span><span class="m">-1</span><span class="p">,</span><span class="n">xmax</span><span class="o">=</span><span class="m">8</span><span class="p">,</span><span class="n">branch_weight</span><span class="o">=</span><span class="m">3</span><span class="p">,</span><span class="n">taxa_font_size</span><span class="o">=</span><span class="m">6</span><span class="p">,</span><span class="n">taxa_fontface</span> <span class="o">=</span> <span class="s">&#39;bold&#39;</span><span class="p">,</span><span class="n">taxa_offset</span> <span class="o">=</span> <span class="m">0.2</span><span class="p">,</span><span class="n">to_color</span> <span class="o">=</span> <span class="n">myWorstSpecies</span><span class="p">,</span><span class="n">colors</span><span class="o">=</span><span class="s">&quot;blue&quot;</span><span class="p">,</span><span class="n">reverse_x</span><span class="o">=</span><span class="kc">TRUE</span><span class="p">)</span>
+<span class="nf">tandemPlotter</span><span class="p">(</span><span class="n">plot1</span><span class="p">,</span><span class="n">plot2</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/treePlotter_11.png"><img alt="../../_images/treePlotter_11.png" src="../../_images/treePlotter_11.png" style="width: 1200px;" /></a>
+</div>
+<div class="section" id="multiphylo-plotting">
+<h2>MultiPhylo Plotting<a class="headerlink" href="#multiphylo-plotting" title="Permalink to this headline">¶</a></h2>
+<p><strong>treePlotter</strong> can take mutliPhylo arguments, and can handle them in one of two major ways.</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>By default, trees from the multiPhylo are first pruned down to a common set of taxa prior to plotting (if necessary)</p></li>
+<li><p>If <em>basic_plot</em> is TRUE, trees are plotted without pre-pruning.</p></li>
+</ol>
+<blockquote>
+<div><ul class="simple">
+<li><p>Under <em>basic_plot</em>, options like visualizing clade or alignment support are disabled.</p></li>
+</ul>
+</div></blockquote>
+</div></blockquote>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Read in multiPhylo of trees</span>
+<span class="n">myTrees</span> <span class="o">&lt;-</span> <span class="nf">readRooted</span><span class="p">(</span><span class="n">rb_unroot_dir</span><span class="p">,</span><span class="s">&#39;Species_C;Species_H&#39;</span><span class="p">)</span>
+
+<span class="c1"># Create a tree without Species A or B</span>
+<span class="n">myTrimmedTree</span> <span class="o">&lt;-</span> <span class="nf">treeTrimmer</span><span class="p">(</span><span class="n">myTree</span><span class="p">,</span><span class="n">myWorstSpecies</span><span class="p">,</span><span class="n">remove</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
+
+<span class="c1"># Add trimmed tree to mutliPhylo and rename trees</span>
+<span class="n">myNewTrees</span> <span class="o">&lt;-</span> <span class="nf">c</span><span class="p">(</span><span class="n">myTrees</span><span class="p">,</span><span class="n">myTrimmedTree</span><span class="p">)</span> <span class="o">%&gt;%</span> <span class="nf">treeNamer</span><span class="p">()</span>
+
+<span class="nf">treePlotter</span><span class="p">(</span><span class="n">myTrees</span><span class="p">,</span><span class="n">xmin</span><span class="o">=</span><span class="m">-1</span><span class="p">,</span><span class="n">xmax</span><span class="o">=</span><span class="m">8</span><span class="p">,</span><span class="n">node_label_font_size</span> <span class="o">=</span> <span class="m">3</span><span class="p">,</span><span class="n">taxa_offset</span> <span class="o">=</span> <span class="m">0.2</span><span class="p">,</span><span class="n">taxa_fontface</span> <span class="o">=</span> <span class="s">&quot;bold&quot;</span><span class="p">,</span><span class="n">taxa_font_size</span> <span class="o">=</span> <span class="m">3</span><span class="p">,</span><span class="n">to_color</span><span class="o">=</span><span class="n">species_list</span><span class="p">)</span>
+<span class="nf">treePlotter</span><span class="p">(</span><span class="n">myTrees</span><span class="p">,</span><span class="n">xmin</span><span class="o">=</span><span class="m">-1</span><span class="p">,</span><span class="n">xmax</span><span class="o">=</span><span class="m">8</span><span class="p">,</span><span class="n">node_label_font_size</span> <span class="o">=</span> <span class="m">3</span><span class="p">,</span><span class="n">taxa_offset</span> <span class="o">=</span> <span class="m">0.2</span><span class="p">,</span><span class="n">taxa_fontface</span> <span class="o">=</span> <span class="s">&quot;bold&quot;</span><span class="p">,</span><span class="n">taxa_font_size</span> <span class="o">=</span> <span class="m">3</span><span class="p">,</span><span class="n">basic_plot</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
+
+<span class="nf">treePlotter</span><span class="p">(</span><span class="n">myNewTrees</span><span class="p">,</span><span class="n">xmin</span><span class="o">=</span><span class="m">-1</span><span class="p">,</span><span class="n">xmax</span><span class="o">=</span><span class="m">8</span><span class="p">,</span><span class="n">node_label_font_size</span> <span class="o">=</span> <span class="m">3</span><span class="p">,</span><span class="n">taxa_offset</span> <span class="o">=</span> <span class="m">0.2</span><span class="p">,</span><span class="n">taxa_fontface</span> <span class="o">=</span> <span class="s">&quot;bold&quot;</span><span class="p">,</span><span class="n">taxa_font_size</span> <span class="o">=</span> <span class="m">3</span><span class="p">,</span><span class="n">to_color</span><span class="o">=</span><span class="n">species_list</span><span class="p">)</span>
+<span class="nf">treePlotter</span><span class="p">(</span><span class="n">myNewTrees</span><span class="p">,</span><span class="n">xmin</span><span class="o">=</span><span class="m">-1</span><span class="p">,</span><span class="n">xmax</span><span class="o">=</span><span class="m">8</span><span class="p">,</span><span class="n">node_label_font_size</span> <span class="o">=</span> <span class="m">3</span><span class="p">,</span><span class="n">taxa_offset</span> <span class="o">=</span> <span class="m">0.2</span><span class="p">,</span><span class="n">taxa_fontface</span> <span class="o">=</span> <span class="s">&quot;bold&quot;</span><span class="p">,</span><span class="n">taxa_font_size</span> <span class="o">=</span> <span class="m">3</span><span class="p">,</span><span class="n">to_color</span><span class="o">=</span><span class="n">species_list</span><span class="p">,</span><span class="n">basic_plot</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/treePlotter_12.png"><img alt="../../_images/treePlotter_12.png" src="../../_images/treePlotter_12.png" style="width: 1200px;" /></a>
+<p><br /></p>
+<a class="reference internal image-reference" href="../../_images/treePlotter_13.png"><img alt="../../_images/treePlotter_13.png" src="../../_images/treePlotter_13.png" style="width: 1200px;" /></a>
+<p><br /></p>
+<a class="reference internal image-reference" href="../../_images/treePlotter_14.png"><img alt="../../_images/treePlotter_14.png" src="../../_images/treePlotter_14.png" style="width: 1200px;" /></a>
+<p><br /></p>
+<a class="reference internal image-reference" href="../../_images/treePlotter_15.png"><img alt="../../_images/treePlotter_15.png" src="../../_images/treePlotter_15.png" style="width: 1200px;" /></a>
+<p>If a multiPhylo contains multiple topologies, you can easily visualize node support with <strong>treePlotter</strong> using the <em>clade_support</em> option.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">tree_clades</span> <span class="o">&lt;-</span> <span class="nf">getTreeClades</span><span class="p">(</span><span class="n">myTrees</span><span class="p">,</span><span class="n">return_counts</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
+<span class="nf">treePlotter</span><span class="p">(</span><span class="n">myTrees</span><span class="p">,</span><span class="n">clade_support</span> <span class="o">=</span> <span class="n">tree_clades</span><span class="p">,</span> <span class="n">xmin</span><span class="o">=</span><span class="m">-1</span><span class="p">,</span><span class="n">xmax</span><span class="o">=</span><span class="m">8</span><span class="p">,</span><span class="n">node_label</span> <span class="o">=</span> <span class="s">&#39;none&#39;</span><span class="p">,</span><span class="n">geom_alpha</span> <span class="o">=</span> <span class="m">1</span><span class="p">,</span><span class="n">taxa_offset</span> <span class="o">=</span> <span class="m">0.2</span><span class="p">,</span><span class="n">taxa_fontface</span> <span class="o">=</span> <span class="s">&quot;bold&quot;</span><span class="p">,</span><span class="n">to_color</span><span class="o">=</span><span class="n">species_list</span><span class="p">,</span><span class="n">geom_size</span> <span class="o">=</span> <span class="m">10</span><span class="p">,</span><span class="n">legend_shape_size</span> <span class="o">=</span> <span class="m">10</span><span class="p">,</span><span class="n">legend_font_size</span> <span class="o">=</span> <span class="m">15</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/treePlotter_16.png"><img alt="../../_images/treePlotter_16.png" src="../../_images/treePlotter_16.png" style="width: 1200px;" /></a>
+</div>
+<div class="section" id="plotting-support-from-alignments">
+<h2>Plotting Support From Alignments<a class="headerlink" href="#plotting-support-from-alignments" title="Permalink to this headline">¶</a></h2>
+<p>If you have multiple sequence alignment data from species in your phylo or multiPhylo object, <strong>treePlotter</strong> allows you to plot node support onto your phylogenies in a number of ways.</p>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get signal from an alignment file, as it relates to species from myTree</span>
+<span class="n">mySignal</span> <span class="o">&lt;-</span> <span class="nf">getAlignmentSignal</span><span class="p">(</span><span class="n">rb_align1_path</span><span class="p">,</span><span class="n">species_info</span> <span class="o">=</span> <span class="n">myTree</span><span class="p">,</span><span class="n">alignment_name</span> <span class="o">=</span> <span class="s">&quot;Gene A&quot;</span><span class="p">)</span>
+
+<span class="c1"># Break down support from mySignal as it relates to splits from myTree</span>
+<span class="n">mySupport</span> <span class="o">&lt;-</span> <span class="nf">getAlignmentSupport</span><span class="p">(</span><span class="n">mySignal</span><span class="p">,</span><span class="n">myTree</span><span class="p">,</span><span class="n">include_root</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span><span class="n">dataset_name</span> <span class="o">=</span> <span class="s">&quot;Gene A&quot;</span><span class="p">)</span>
+
+<span class="c1"># Plot tree with node labels corresponding to the number of sites supporting each split</span>
+<span class="nf">treePlotter</span><span class="p">(</span><span class="n">myTree</span><span class="p">,</span><span class="n">xmin</span><span class="o">=</span><span class="m">-1</span><span class="p">,</span><span class="n">xmax</span><span class="o">=</span><span class="m">8</span><span class="p">,</span><span class="n">branch_weight</span><span class="o">=</span><span class="m">3</span><span class="p">,</span><span class="n">taxa_font_size</span><span class="o">=</span><span class="m">6</span><span class="p">,</span><span class="n">taxa_fontface</span> <span class="o">=</span> <span class="s">&#39;bold&#39;</span><span class="p">,</span><span class="n">taxa_offset</span> <span class="o">=</span> <span class="m">0.2</span><span class="p">,</span>
+            <span class="n">tree_support</span> <span class="o">=</span> <span class="n">mySupport</span><span class="p">,</span><span class="n">node_label</span><span class="o">=</span><span class="s">&#39;support&#39;</span><span class="p">,</span><span class="n">plot_root_support</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/treePlotter_17.png"><img alt="../../_images/treePlotter_17.png" src="../../_images/treePlotter_17.png" style="width: 600px;" /></a>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot tree with node geoms, with sizes scaled to the number of sites supporting each split (rescaled from 5 - 30)</span>
+<span class="nf">treePlotter</span><span class="p">(</span><span class="n">myTree</span><span class="p">,</span><span class="n">xmin</span><span class="o">=</span><span class="m">-1</span><span class="p">,</span><span class="n">xmax</span><span class="o">=</span><span class="m">8</span><span class="p">,</span><span class="n">branch_weight</span><span class="o">=</span><span class="m">3</span><span class="p">,</span><span class="n">taxa_font_size</span><span class="o">=</span><span class="m">6</span><span class="p">,</span><span class="n">taxa_fontface</span> <span class="o">=</span> <span class="s">&#39;bold&#39;</span><span class="p">,</span><span class="n">taxa_offset</span> <span class="o">=</span> <span class="m">0.2</span><span class="p">,</span>
+            <span class="n">tree_support</span> <span class="o">=</span> <span class="n">mySupport</span><span class="p">,</span><span class="n">node_label</span><span class="o">=</span><span class="s">&#39;support&#39;</span><span class="p">,</span><span class="n">node_label_nudge</span> <span class="o">=</span> <span class="m">0.1</span><span class="p">,</span><span class="n">plot_root_support</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span><span class="n">geom_size</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="m">5</span><span class="p">,</span><span class="m">30</span><span class="p">),</span><span class="n">geom_alpha</span> <span class="o">=</span> <span class="m">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/treePlotter_18.png"><img alt="../../_images/treePlotter_18.png" src="../../_images/treePlotter_18.png" style="width: 600px;" /></a>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot support from 2+ multiple sequence alignments onto the phylogeny</span>
+
+<span class="c1"># Get signal from an alignment files, as it relates to species from myTrees</span>
+<span class="n">mySignals</span> <span class="o">&lt;-</span> <span class="nf">getAlignmentSignal</span><span class="p">(</span><span class="n">rb_alignment_dir</span><span class="p">,</span><span class="n">species_info</span> <span class="o">=</span> <span class="n">myTrees</span><span class="p">,</span><span class="n">suffix</span> <span class="o">=</span> <span class="s">&quot;.phy&quot;</span><span class="p">,</span><span class="n">alignment_name</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Gene_A&#39;</span><span class="p">,</span><span class="s">&#39;Gene_B&#39;</span><span class="p">,</span><span class="s">&#39;Gene_C&#39;</span><span class="p">,</span><span class="s">&#39;Gene_D&#39;</span><span class="p">,</span><span class="s">&#39;Gene_E&#39;</span><span class="p">))</span>
+
+<span class="c1"># Break down support from mySignals as it relates to splits from myTrees</span>
+<span class="n">mySupports</span> <span class="o">&lt;-</span> <span class="nf">getAlignmentSupport</span><span class="p">(</span><span class="n">mySignals</span><span class="p">,</span><span class="n">myTrees</span><span class="p">,</span><span class="n">include_root</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
+
+<span class="c1"># Plot support values as geoms scaled to the total support summed over all alignments</span>
+<span class="nf">treePlotter</span><span class="p">(</span><span class="n">myTrees</span><span class="p">,</span><span class="n">xmin</span><span class="o">=</span><span class="m">-1</span><span class="p">,</span><span class="n">xmax</span><span class="o">=</span><span class="m">8</span><span class="p">,</span><span class="n">branch_weight</span><span class="o">=</span><span class="m">3</span><span class="p">,</span><span class="n">taxa_font_size</span><span class="o">=</span><span class="m">4</span><span class="p">,</span><span class="n">taxa_fontface</span> <span class="o">=</span> <span class="s">&#39;bold&#39;</span><span class="p">,</span><span class="n">taxa_offset</span> <span class="o">=</span> <span class="m">0.1</span><span class="p">,</span>
+            <span class="n">tree_support</span> <span class="o">=</span> <span class="n">mySupports</span><span class="p">,</span><span class="n">node_label</span><span class="o">=</span><span class="s">&#39;support&#39;</span><span class="p">,</span><span class="n">node_label_nudge</span> <span class="o">=</span> <span class="m">0.1</span><span class="p">,</span><span class="n">plot_root_support</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span><span class="n">geom_size</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="m">5</span><span class="p">,</span><span class="m">30</span><span class="p">),</span><span class="n">geom_alpha</span> <span class="o">=</span> <span class="m">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/treePlotter_19.png"><img alt="../../_images/treePlotter_19.png" src="../../_images/treePlotter_19.png" style="width: 1200px;" /></a>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot support values as pies scaled to the total support summed over all alignments, and color coded by alignment</span>
+<span class="c1"># Note when using pies that the position of the legend needs to be set manually</span>
+<span class="nf">treePlotter</span><span class="p">(</span><span class="n">myTrees</span><span class="p">,</span><span class="n">xmin</span><span class="o">=</span><span class="m">-1</span><span class="p">,</span><span class="n">xmax</span><span class="o">=</span><span class="m">8</span><span class="p">,</span><span class="n">branch_weight</span><span class="o">=</span><span class="m">3</span><span class="p">,</span><span class="n">taxa_font_size</span><span class="o">=</span><span class="m">4</span><span class="p">,</span><span class="n">taxa_fontface</span> <span class="o">=</span> <span class="s">&#39;bold&#39;</span><span class="p">,</span><span class="n">taxa_offset</span> <span class="o">=</span> <span class="m">0.1</span><span class="p">,</span>
+            <span class="n">tree_support</span> <span class="o">=</span> <span class="n">mySupports</span><span class="p">,</span><span class="n">use_pies</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span><span class="n">node_label</span><span class="o">=</span><span class="s">&#39;support&#39;</span><span class="p">,</span><span class="n">node_label_fontface</span> <span class="o">=</span> <span class="s">&quot;bold&quot;</span><span class="p">,</span><span class="n">geom_size</span> <span class="o">=</span> <span class="m">4</span><span class="p">,</span><span class="n">node_label_color</span> <span class="o">=</span> <span class="s">&quot;red&quot;</span><span class="p">,</span><span class="n">node_label_font_size</span> <span class="o">=</span> <span class="m">3</span><span class="p">,</span><span class="n">node_label_nudge</span> <span class="o">=</span> <span class="m">0.4</span><span class="p">,</span><span class="n">plot_root_support</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span><span class="n">geom_alpha</span> <span class="o">=</span> <span class="m">1</span><span class="p">,</span><span class="n">pie_scaler</span><span class="o">=</span><span class="m">0.45</span><span class="p">,</span><span class="n">pie_colors</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;red&#39;</span><span class="p">,</span><span class="s">&#39;blue&#39;</span><span class="p">,</span><span class="s">&#39;green&#39;</span><span class="p">,</span><span class="s">&#39;orange&#39;</span><span class="p">,</span><span class="s">&#39;purple&#39;</span><span class="p">),</span><span class="n">pie_legend_position</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="m">1</span><span class="p">,</span><span class="m">14</span><span class="p">,</span><span class="m">14</span><span class="p">),</span><span class="n">scale_range</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="m">75</span><span class="p">,</span><span class="m">250</span><span class="p">))</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/treePlotter_20.png"><img alt="../../_images/treePlotter_20.png" src="../../_images/treePlotter_20.png" style="width: 1200px;" /></a>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../tree_functions/checkTips.html" class="btn btn-neutral float-right" title="checkTips" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="tandemPlotter.html" class="btn btn-neutral float-left" title="tandemPlotter" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Robert Literman
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

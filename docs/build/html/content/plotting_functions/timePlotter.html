@@ -1,0 +1,343 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>timePlotter &mdash; Rboretum 1.0 documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/Rboretum_Logo.png"/>
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="treePlotter" href="treePlotter.html" />
+    <link rel="prev" title="tandemPlotter" href="tandemPlotter.html" />
+    <link href="../../_static/RAL_Style.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../index.html" class="icon icon-home" alt="Documentation Home"> Rboretum
+          
+
+          
+            
+            <img src="../../_static/Rboretum_Logo.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installation.html"><strong>Installing Rboretum</strong></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../loading.html"><strong>Loading Rboretum</strong></a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../rboretum-suite.html"><strong>Rboretum Functions</strong></a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../alignment_functions/getAlignmentComposition.html"><strong>getAlignmentComposition</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../alignment_functions/getAlignmentBreakdown.html"><strong>getAlignmentBreakdown</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../alignment_functions/getAlignmentPatterns.html"><strong>getAlignmentPatterns</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../alignment_functions/getAlignmentSignal.html"><strong>getAlignmentSignal</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../alignment_functions/getAlignmentSpecies.html"><strong>getAlignmentSpecies</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../alignment_functions/getAlignmentSupport.html"><strong>getAlignmentSupport</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../alignment_functions/getSpeciesComposition.html"><strong>getSpeciesComposition</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="tandemPlotter.html"><strong>tandemPlotter</strong></a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><strong>timePlotter</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="treePlotter.html"><strong>treePlotter</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/checkTips.html"><strong>checkTips</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/extractNodeAges.html"><strong>extractNodeAges</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/getSharedTaxa.html"><strong>getSharedTaxa</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/getTreeClades.html"><strong>getTreeClades</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/getTreeRoot.html"><strong>getTreeRoot</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/getTreeSplits.html"><strong>getTreeSplits</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/getUniqueTopologies.html"><strong>getUniqueTopologies</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/readRooted.html"><strong>readRooted</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/summarizeMultiphylo.html"><strong>summarizeMultiphylo</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/treeDater.html"><strong>treeDater</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/treeNamer.html"><strong>treeNamer</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../tree_functions/treeTrimmer.html"><strong>treeTrimmer</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utility_functions/convertLabels.html"><strong>convertLabels</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utility_functions/semiSorter.html"><strong>semiSorter</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utility_functions/semiVector.html"><strong>semiVector</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utility_functions/tableCount.html"><strong>tableCount</strong></a></li>
+<li class="toctree-l2"><a class="reference internal" href="../utility_functions/vectorSemi.html"><strong>vectorSemi</strong></a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Rboretum</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../rboretum-suite.html"><strong>Rboretum Functions</strong></a> &raquo;</li>
+        
+      <li><strong>timePlotter</strong></li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/content/plotting_functions/timePlotter.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="timeplotter">
+<span id="id1"></span><h1><strong>timePlotter</strong><a class="headerlink" href="#timeplotter" title="Permalink to this headline">¶</a></h1>
+<p><strong>timePlotter</strong> takes as main arguments:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>A dataframe of node age information (ie. the output from <strong>extractNodeAges()</strong>)</p></li>
+<li><p>A dataframe of node site support data (ie. the output from <strong>getAlignmentSupport()</strong>)</p></li>
+</ul>
+</div></blockquote>
+<p>Taken together, <strong>timePlotter</strong> calculates the proportion of node support deriving from each alignment, and plots proportional support over time. <br /></p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Signicance of time effects is determined using linear models via the function <strong>time_lm.R</strong></p></li>
+<li><p>Results are interpreted at a user-set alpha (default: 0.05) and Bonferroni correction is applied based on the number of genes/subsets analyzed</p></li>
+<li><p>Genes/subsets with a signficant change in node support over time will have filled geoms</p></li>
+</ul>
+</div></blockquote>
+<div class="section" id="function-and-arguments">
+<h2>Function and Arguments<a class="headerlink" href="#function-and-arguments" title="Permalink to this headline">¶</a></h2>
+<p><strong>Usage</strong>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">timePlotter</span> <span class="o">&lt;-</span> <span class="n">function</span><span class="p">(</span><span class="n">node_age_df</span><span class="p">,</span><span class="n">tree_support</span><span class="p">,</span><span class="n">plot_datasets</span><span class="p">,</span><span class="n">all_sites_col</span><span class="p">,</span><span class="n">lm_alpha</span><span class="p">,</span><span class="n">wrap</span><span class="p">,</span><span class="n">wrap_scales</span><span class="p">,</span><span class="n">return_stats</span><span class="p">){</span>
+</pre></div>
+</div>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 11%" />
+<col style="width: 89%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Argument</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>node_age_df</strong></p></td>
+<td><p>Output from extractNodeAges(phylo) or extractNodeAges(multiPhylo,return_summary = ‘mean’ or ‘median’)</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>tree_support</strong></p></td>
+<td><p>Output from getAlignmentSupport with information about all clades in node_age_df and 2+ alignment support columns</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>plot_datasets</strong></p></td>
+<td><p>OPTIONAL: Character vector specifying the datasets desired for the plot (Must be 2+ and present in ‘tree_support’)</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>all_sites_col</strong></p></td>
+<td><p>OPTIONAL (Very special case): If there is is a column in the support data corresponding to all non-overlapping sites, specify the column name to be used when calculating proportions</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>lm_alpha</strong></p></td>
+<td><p>OPTIONAL: Run linear models at this alpha level (must be &gt; 0 and &lt; 1; Alpha will be automatically Bonferroni corrected based on dataset count) [Default: Do not run linear models]</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>wrap</strong></p></td>
+<td><p>OPTIONAL: (TRUE/FALSE); Plot datasets in separate facets [Default: FALSE; do not wrap and produce 1 plot]</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>wrap_scales</strong></p></td>
+<td><p>OPTIONAL: (‘free’/’fixed’): If wrapping, allow free or fixed scales on each facet [Default: ‘fixed’]</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>return_stats</strong></p></td>
+<td><p>OPTIONAL: (TRUE/FALSE): In addition to returning the plot, also return the statistical output from linear models in a list</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="example-usage">
+<h2>Example Usage<a class="headerlink" href="#example-usage" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">library</span><span class="p">(</span><span class="n">Rboretum</span><span class="p">)</span>
+<span class="nf">sourceRboretum</span><span class="p">()</span>
+
+<span class="c1"># Read in ultrametric timetrees (branch lengths ~ time)</span>
+<span class="n">timeTrees</span> <span class="o">&lt;-</span> <span class="nf">readRooted</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="n">rb_timeTree1_path</span><span class="p">,</span><span class="n">rb_timeTree2_path</span><span class="p">,</span><span class="n">rb_timeTree3_path</span><span class="p">),</span><span class="n">root_taxa</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Species_C&#39;</span><span class="p">,</span><span class="s">&#39;Species_H&#39;</span><span class="p">))</span> <span class="o">%&gt;%</span> <span class="nf">treeNamer</span><span class="p">()</span>
+
+<span class="c1"># Extract dates from 3 timetrees and get the mean node ages</span>
+<span class="n">tree_dates</span> <span class="o">&lt;-</span> <span class="nf">extractNodeAges</span><span class="p">(</span><span class="n">timeTrees</span><span class="p">,</span><span class="n">return_summary</span> <span class="o">=</span> <span class="s">&#39;mean&#39;</span><span class="p">)</span>
+
+<span class="c1"># Read in signal from 5 multiple sequence alignments</span>
+<span class="n">mySignals</span> <span class="o">&lt;-</span> <span class="nf">getAlignmentSignal</span><span class="p">(</span><span class="n">rb_alignment_dir</span><span class="p">,</span><span class="n">species_info</span> <span class="o">=</span> <span class="n">timeTrees</span><span class="p">,</span><span class="n">suffix</span> <span class="o">=</span> <span class="s">&quot;.phy&quot;</span><span class="p">,</span><span class="n">alignment_name</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Gene_A&#39;</span><span class="p">,</span><span class="s">&#39;Gene_B&#39;</span><span class="p">,</span><span class="s">&#39;Gene_C&#39;</span><span class="p">,</span><span class="s">&#39;Gene_D&#39;</span><span class="p">,</span><span class="s">&#39;Gene_E&#39;</span><span class="p">))</span>
+<span class="n">mySupports</span> <span class="o">&lt;-</span> <span class="nf">getAlignmentSupport</span><span class="p">(</span><span class="n">mySignals</span><span class="p">,</span><span class="n">timeTrees</span><span class="p">,</span><span class="n">include_root</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">,</span><span class="n">dataset_name</span> <span class="o">=</span> <span class="nf">c</span><span class="p">(</span><span class="s">&#39;Gene_A&#39;</span><span class="p">,</span><span class="s">&#39;Gene_B&#39;</span><span class="p">,</span><span class="s">&#39;Gene_C&#39;</span><span class="p">,</span><span class="s">&#39;Gene_D&#39;</span><span class="p">,</span><span class="s">&#39;Gene_E&#39;</span><span class="p">))</span>
+
+<span class="c1"># Plot percent breakdown of split support by alignment over time, looking for time effect at alpha = 0.05 (pre-Bonferroni correction)</span>
+<span class="c1"># Ie. For each node in the tree, what percentage of support comes from each gene/subset?</span>
+<span class="nf">timePlotter</span><span class="p">(</span><span class="n">node_age_df</span> <span class="o">=</span> <span class="n">tree_dates</span><span class="p">,</span><span class="n">tree_support</span> <span class="o">=</span> <span class="n">mySupports</span><span class="p">,</span><span class="n">lm_alpha</span> <span class="o">=</span> <span class="m">0.05</span><span class="p">,</span><span class="n">return_stats</span> <span class="o">=</span> <span class="kc">TRUE</span><span class="p">)</span>
+
+  <span class="o">$</span><span class="n">Stats</span>
+        <span class="n">Slope</span>     <span class="n">StdErr</span>    <span class="n">t_value</span>   <span class="n">p_value</span> <span class="n">Dataset</span> <span class="n">BF_Sig</span>    <span class="n">Adj_R_Sq</span> <span class="n">Intercept</span>
+<span class="m">1</span>  <span class="m">0.11845685</span> <span class="m">0.08182761</span>  <span class="m">1.4476392</span> <span class="m">0.1783318</span>  <span class="n">Gene_A</span>      <span class="n">N</span>  <span class="m">0.09058284</span>  <span class="m">6.644187</span>
+<span class="m">2</span>  <span class="m">0.07014702</span> <span class="m">0.24570274</span>  <span class="m">0.2854955</span> <span class="m">0.7810906</span>  <span class="n">Gene_B</span>      <span class="n">N</span> <span class="m">-0.09110665</span>  <span class="m">35.72811</span>
+<span class="m">3</span> <span class="m">-0.18168713</span> <span class="m">0.11408523</span> <span class="m">-1.5925562</span> <span class="m">0.1423441</span>  <span class="n">Gene_C</span>      <span class="n">N</span>   <span class="m">0.1225436</span>  <span class="m">26.54905</span>
+<span class="m">4</span> <span class="m">-0.03640601</span> <span class="m">0.20012941</span> <span class="m">-0.1819123</span> <span class="m">0.8592861</span>  <span class="n">Gene_D</span>      <span class="n">N</span> <span class="m">-0.09637188</span>  <span class="m">22.50165</span>
+<span class="m">5</span>  <span class="m">0.02948928</span> <span class="m">0.11397543</span>  <span class="m">0.2587337</span> <span class="m">0.8010884</span>  <span class="n">Gene_E</span>      <span class="n">N</span> <span class="m">-0.09268523</span>  <span class="m">8.576999</span>
+
+<span class="c1"># Note: In this case, there is not a significant effect of time, so no geoms are filled in</span>
+</pre></div>
+</div>
+<a class="reference internal image-reference" href="../../_images/timePlotter.png"><img alt="../../_images/timePlotter.png" src="../../_images/timePlotter.png" style="width: 600px;" /></a>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="treePlotter.html" class="btn btn-neutral float-right" title="treePlotter" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="tandemPlotter.html" class="btn btn-neutral float-left" title="tandemPlotter" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Robert Literman
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -23,17 +23,17 @@ Depends:
     tools (>= 3.6.1),
     reticulate (>= 1.16),
     scales (>= 1.1.1),
-    viridis (>= 0.5.1),
+    rlist (>= 0.4.6.1),
+    BiocManager (>= 1.30.10),
+    naturalsort (>= 0.1.3)
+Suggests: 
+    knitr,
+    rmarkdown,
+    testthat,
     cowplot (>= 1.0.0),
     ggtree (>= 1.16.6),
     ggimage (>= 0.2.8),
     grDevices (>= 3.6.1),
     viridisLite (>= 0.3.0),
-    rlist (>= 0.4.6.1),
-    BiocManager (>= 1.30.10),
-    naturalsort (>= 0.1.3),
-    ggnewscale (>= 0.4.3)
-Suggests: 
-    knitr,
-    rmarkdown,
-    testthat
+    ggnewscale (>= 0.4.3),
+    viridis (>= 0.5.1)

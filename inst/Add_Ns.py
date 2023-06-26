@@ -20,7 +20,6 @@ import copy
 import pickle
 import tempfile
 from functools import partial
-from Bio.Alphabet import generic_dna
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 
@@ -90,7 +89,7 @@ def simulate_missing(path_to_align,spp_info,prop_n):
             
             new_seq = add_n(raw_seq,spp_n_percent)
             #pruned_alignment.add_sequence(str(raw_id), new_seq)
-            pruned_alignment.append(SeqRecord(Seq(new_seq, generic_dna), id=str(raw_id)))
+            pruned_alignment.append(SeqRecord(Seq(new_seq), id=str(raw_id)))
         
         # If resulting alignment is empty, raise exception
         if int(pruned_alignment.get_alignment_length()) == 0:

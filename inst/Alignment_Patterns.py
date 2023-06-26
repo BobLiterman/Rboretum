@@ -293,7 +293,9 @@ def patternProcessor(path_to_align,spp_info,use_gaps,align_name):
         
         # Populate alignment by adding taxa sorted by taxon ID
         for i in spp_list:
-            pruned_alignment.add_sequence(str(raw_alignment[raw_spp.index(i)].id), str(raw_alignment[raw_spp.index(i)].seq))
+            #pruned_alignment.add_sequence(str(raw_alignment[raw_spp.index(i)].id), str(raw_alignment[raw_spp.index(i)].seq))
+            pruned_alignment.append(SeqRecord(Seq(str(raw_alignment[raw_spp.index(i)].seq), generic_dna), id=str(raw_alignment[raw_spp.index(i)].id)))
+
         
         # If resulting alignment is empty, raise exception
         if int(pruned_alignment.get_alignment_length()) == 0:

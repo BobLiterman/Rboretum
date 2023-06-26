@@ -156,9 +156,7 @@ getAlignmentComposition <- function(alignment_path,species_info,alignment_name,p
   # Python NaN
   composition_df <- composition_df %>%
     #mutate_all(~na_if(., 'NaN'))
-    mutate(
-    across(where(is.character), ~na_if(., 'NaN')),
-    across(where(is.numeric), ~na_if(., -1)))
+    mutate(across(where(is.character), ~na_if(., 'NaN')))
   
   composition_df[is.na(composition_df)] <- NA
   

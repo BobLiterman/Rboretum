@@ -19,6 +19,9 @@ import copy
 import pickle
 import tempfile
 from functools import partial
+from Bio.Alphabet import generic_dna
+from Bio.Seq import Seq
+from Bio.SeqRecord import SeqRecord
 
 def findOccurrences(s, ch):
     # findOccurrences returns indexes of occurrences of list items in a list or string

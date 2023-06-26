@@ -12,7 +12,6 @@ import pandas as pd
 from Bio import AlignIO, SeqIO
 import tempfile
 import pickle
-from Bio.Alphabet import generic_dna
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
     
@@ -66,7 +65,7 @@ def fetchSpeciesComposition(path_to_align,spp_info,align_name):
         # Populate alignment by adding taxa sorted by taxon ID
         for i in spp_list:
             #pruned_alignment.add_sequence(str(raw_alignment[raw_spp.index(i)].id), str(raw_alignment[raw_spp.index(i)].seq))
-            pruned_alignment.append(SeqRecord(Seq(str(raw_alignment[raw_spp.index(i)].seq), generic_dna), id=str(raw_alignment[raw_spp.index(i)].id)))
+            pruned_alignment.append(SeqRecord(Seq(str(raw_alignment[raw_spp.index(i)].seq)), id=str(raw_alignment[raw_spp.index(i)].id)))
 
         
         # If resulting alignment is empty, raise exception

@@ -12,6 +12,9 @@ import pandas as pd
 from Bio import AlignIO, SeqIO
 import pickle
 import tempfile
+from Bio.Alphabet import generic_dna
+from Bio.Seq import Seq
+from Bio.SeqRecord import SeqRecord
 
 # countAs returns the count of A/a in the alignment
 def countAs():

@@ -12,6 +12,9 @@ import pandas as pd
 from Bio import AlignIO, SeqIO
 import tempfile
 import pickle
+from Bio.Alphabet import generic_dna
+from Bio.Seq import Seq
+from Bio.SeqRecord import SeqRecord
     
 def fetchSpeciesComposition(path_to_align,spp_info,align_name):
         

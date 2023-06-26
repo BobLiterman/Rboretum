@@ -192,8 +192,7 @@ getAlignmentPatterns <- function(alignment_path,species_info,use_gaps,alignment_
   
   # Python NaN
   pattern_df <- pattern_df %>%
-    #mutate_all(~na_if(., 'NaN'))
-    mutate(across(where(is.character), ~na_if(., 'NaN')))
+    mutate_all(~na_if(as.character(.), 'NaN'))
   
   pattern_df[is.na(pattern_df)] <- NA
   

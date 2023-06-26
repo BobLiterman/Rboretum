@@ -185,8 +185,7 @@ getAlignmentSignal <- function(alignment_path,species_info,use_gaps,alignment_na
     splits_df <- rb_run_align_splits(user_python,rb_lib_dir,alignment_path,species_info,gap_list,alignment_name) %>%
       mutate_if(is.list,as.character) %>%
       select(-index) %>%
-      #mutate_all(~na_if(., 'NaN')) %>%
-      mutate(across(where(is.character), ~na_if(., 'NaN'))) %>%
+      mutate_all(~na_if(as.character(.), 'NaN')) %>%
       rowwise() %>%
       mutate(All_Site_Bases = semiSorter(All_Site_Bases)) %>%
       ungroup()
@@ -194,8 +193,7 @@ getAlignmentSignal <- function(alignment_path,species_info,use_gaps,alignment_na
     splits_df = purrr::map(.x=1:alignment_count,.f=function(x){rb_run_align_splits(user_python,rb_lib_dir,alignment_path[x],species_info[x],gap_list[x],alignment_name[x])}) %>% do.call(rbind, .) %>%
       mutate_if(is.list,as.character) %>%
       select(-index) %>%
-      #mutate_all(~na_if(., 'NaN')) %>%
-      mutate(across(where(is.character), ~na_if(., 'NaN'))) %>%
+      mutate_all(~na_if(as.character(.), 'NaN')) %>%
       rowwise() %>%
       mutate(All_Site_Bases = semiSorter(All_Site_Bases)) %>%
       ungroup()

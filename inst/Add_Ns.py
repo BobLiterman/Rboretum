@@ -20,6 +20,9 @@ import copy
 import pickle
 import tempfile
 from functools import partial
+from Bio.Alphabet import generic_dna
+from Bio.Seq import Seq
+from Bio.SeqRecord import SeqRecord
 
 # Convert 'percent_n' of 'seq' to N
 def add_n(seq,percent_n):

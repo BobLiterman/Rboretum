@@ -19,7 +19,6 @@ import copy
 import pickle
 import tempfile
 from functools import partial
-from Bio.Alphabet import generic_dna
 from Bio.Seq import Seq
 from Bio.SeqRecord import SeqRecord
 
@@ -297,7 +296,7 @@ def patternProcessor(path_to_align,spp_info,use_gaps,align_name):
         # Populate alignment by adding taxa sorted by taxon ID
         for i in spp_list:
             #pruned_alignment.add_sequence(str(raw_alignment[raw_spp.index(i)].id), str(raw_alignment[raw_spp.index(i)].seq))
-            pruned_alignment.append(SeqRecord(Seq(str(raw_alignment[raw_spp.index(i)].seq), generic_dna), id=str(raw_alignment[raw_spp.index(i)].id)))
+            pruned_alignment.append(SeqRecord(Seq(str(raw_alignment[raw_spp.index(i)].seq)), id=str(raw_alignment[raw_spp.index(i)].id)))
 
         
         # If resulting alignment is empty, raise exception
